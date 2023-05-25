@@ -67,8 +67,8 @@ class Wpmozo_Product_Carousel_For_Woocommerce {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'WPMOZO_PRODUCT_CAROUSEL_FOR_WOOCOMMERCE_VERSION' ) ) {
-			$this->version = WPMOZO_PRODUCT_CAROUSEL_FOR_WOOCOMMERCE_VERSION;
+		if ( defined( 'WPMOZO_VERSION' ) ) {
+			$this->version = WPMOZO_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
@@ -76,8 +76,6 @@ class Wpmozo_Product_Carousel_For_Woocommerce {
 
 		$this->load_dependencies();
 		$this->set_locale();
-		$this->define_admin_hooks();
-		$this->define_public_hooks();
 
 	}
 
@@ -86,10 +84,8 @@ class Wpmozo_Product_Carousel_For_Woocommerce {
 	 *
 	 * Include the following files that make up the plugin:
 	 *
-	 * - Wpmozo_Product_Carousel_For_Woocommerce_Loader. Orchestrates the hooks of the plugin.
-	 * - Wpmozo_Product_Carousel_For_Woocommerce_i18n. Defines internationalization functionality.
-	 * - Wpmozo_Product_Carousel_For_Woocommerce_Admin. Defines all hooks for the admin area.
-	 * - Wpmozo_Product_Carousel_For_Woocommerce_Public. Defines all hooks for the public side of the site.
+	 * - Wpmozo_Loader. Orchestrates the hooks of the plugin.
+	 * - Wpmozo_i18n. Defines internationalization functionality.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
@@ -103,26 +99,15 @@ class Wpmozo_Product_Carousel_For_Woocommerce {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wpmozo-product-carousel-for-woocommerce-loader.php';
+		require_once WPMOZO_INC_DIR_PATH . 'class-wpmozo-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wpmozo-product-carousel-for-woocommerce-i18n.php';
+		require_once WPMOZO_INC_DIR_PATH . 'class-wpmozo-i18n.php';
 
-		/**
-		 * The class responsible for defining all actions that occur in the admin area.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wpmozo-product-carousel-for-woocommerce-admin.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the public-facing
-		 * side of the site.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wpmozo-product-carousel-for-woocommerce-public.php';
-
-		$this->loader = new Wpmozo_Product_Carousel_For_Woocommerce_Loader();
+		$this->loader = new Wpmozo_Loader();
 
 	}
 
@@ -137,41 +122,9 @@ class Wpmozo_Product_Carousel_For_Woocommerce {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Wpmozo_Product_Carousel_For_Woocommerce_i18n();
+		$plugin_i18n = new Wpmozo_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-
-	}
-
-	/**
-	 * Register all of the hooks related to the admin area functionality
-	 * of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function define_admin_hooks() {
-
-		$plugin_admin = new Wpmozo_Product_Carousel_For_Woocommerce_Admin( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-
-	}
-
-	/**
-	 * Register all of the hooks related to the public-facing functionality
-	 * of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function define_public_hooks() {
-
-		$plugin_public = new Wpmozo_Product_Carousel_For_Woocommerce_Public( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 	}
 

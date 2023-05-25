@@ -24,7 +24,7 @@
  * @subpackage Wpmozo_Product_Carousel_For_Woocommerce/includes
  * @author     Elicus <hello@elicus.com>
  */
-class Wpmozo_Product_Carousel_For_Woocommerce_i18n {
+class Wpmozo_i18n {
 
 
 	/**

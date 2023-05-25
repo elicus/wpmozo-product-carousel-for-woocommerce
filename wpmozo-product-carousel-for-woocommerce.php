@@ -30,12 +30,18 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-/**
- * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
- */
-define( 'WPMOZO_PRODUCT_CAROUSEL_FOR_WOOCOMMERCE_VERSION', '1.0.0' );
+// Current plugin version.
+define( 'WPMOZO_VERSION', '1.0.0' );
+
+// Plugin dir path.
+define( 'WPMOZO_PLUGIN_DIR_PATH', plugin_dir_path( __FILE__ ) );
+
+// Plugin dir url
+define( 'WPMOZO_PLUGIN_DIR_URL', plugin_dir_url( __FILE__ ) );
+
+// Includes dir path.
+define( 'WPMOZO_INC_DIR_PATH', WPMOZO_PLUGIN_DIR_PATH . 'includes/' );
+
 
 /**
  * The code that runs during plugin activation.

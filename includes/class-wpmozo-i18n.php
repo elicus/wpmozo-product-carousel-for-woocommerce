@@ -42,6 +42,17 @@ class Wpmozo_i18n {
 
 	}
 
+	/**
+	 * Add all hooks
+	 *
+	 * @since 1.0.0
+	 * @param array $loader The instance of loader class.
+	 * @param array $instance The instance of this class.
+	 */
+	public function add_hooks( $loader, $instance ) {
 
+		$loader->add_action( 'plugins_loaded', $instance, 'load_plugin_textdomain' );
+
+	}
 
 }

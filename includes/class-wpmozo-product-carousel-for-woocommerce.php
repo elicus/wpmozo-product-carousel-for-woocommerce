@@ -30,6 +30,15 @@
 class Wpmozo_Product_Carousel_For_Woocommerce {
 
 	/**
+	 * The instances of classes.
+	 *
+	 * @since  1.0.0
+	 * @access protected
+	 * @var    array    $classes    The instances of all classes.
+	 */
+	protected $classes;
+
+	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
 	 * the plugin.
 	 *
@@ -75,7 +84,7 @@ class Wpmozo_Product_Carousel_For_Woocommerce {
 		$this->plugin_name = 'wpmozo-product-carousel-for-woocommerce';
 
 		$this->load_dependencies();
-		$this->set_locale();
+		$this->define_hooks();
 
 	}
 
@@ -100,31 +109,43 @@ class Wpmozo_Product_Carousel_For_Woocommerce {
 		 * core plugin.
 		 */
 		require_once WPMOZO_INC_DIR_PATH . 'class-wpmozo-loader.php';
+		$this->loader = new Wpmozo_Loader();
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
 		require_once WPMOZO_INC_DIR_PATH . 'class-wpmozo-i18n.php';
+		
+		/**
+		 * The class responsible for defining all actions for WP initialization of the plugin.
+		 */
+		include_once WPMOZO_INC_DIR_PATH . 'class-wpmozo-init.php';
 
-		$this->loader = new Wpmozo_Loader();
+		$wpmozo_i18n = new Wpmozo_I18n();
+		$wpmozo_init = new Wpmozo_Init();
+
+		$this->classes['i18n'] = $wpmozo_i18n;
+		$this->classes['init'] = $wpmozo_init;
 
 	}
 
 	/**
-	 * Define the locale for this plugin for internationalization.
+	 * Register all of the hooks of the plugin.
 	 *
-	 * Uses the Wpmozo_Product_Carousel_For_Woocommerce_i18n class in order to set the domain and to register the hook
-	 * with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @access   private
+	 * @since  1.0.0
+	 * @access private
 	 */
-	private function set_locale() {
+	private function define_hooks() {
 
-		$plugin_i18n = new Wpmozo_i18n();
-
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+		if ( ! empty( $this->classes ) ) {
+			foreach ( $this->classes as $key => $instance ) {
+				if ( method_exists( $instance, 'add_hooks' ) ) {
+					// Call method for register all hooks of plugin
+					$instance->add_hooks( $this->loader, $instance );
+				}
+			}
+		}
 
 	}
 

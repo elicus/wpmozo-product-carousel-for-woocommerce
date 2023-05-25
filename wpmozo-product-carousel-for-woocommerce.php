@@ -13,7 +13,7 @@
  * @package           Wpmozo_Product_Carousel_For_Woocommerce
  *
  * @wordpress-plugin
- * Plugin Name:       WP Mozo Product Carousel For WooCommerce
+ * Plugin Name:       WPMozo Product Carousel For WooCommerce
  * Plugin URI:        https://wpmozo.com/product/wpmozo-product-carousel-for-woocommerce
  * Description:       This plugin will create gutenberg block for woocommerce product carousel.
  * Version:           1.0.0
@@ -41,6 +41,18 @@ define( 'WPMOZO_PLUGIN_DIR_URL', plugin_dir_url( __FILE__ ) );
 
 // Includes dir path.
 define( 'WPMOZO_INC_DIR_PATH', WPMOZO_PLUGIN_DIR_PATH . 'includes/' );
+
+// Includes dir url.
+define( 'WPMOZO_INC_DIR_URL', WPMOZO_PLUGIN_DIR_URL . 'includes/' );
+
+// Includes dir path.
+define( 'WPMOZO_BLOCKS_DIR_PATH', WPMOZO_INC_DIR_PATH . 'blocks/' );
+
+// Includes dir url.
+define( 'WPMOZO_BLOCKS_DIR_URL', WPMOZO_INC_DIR_URL . 'blocks/' );
+
+// Assets dir url.
+define( 'WPMOZO_ASSE_DIR_URL', WPMOZO_PLUGIN_DIR_URL . 'assets/' );
 
 /**
  * The core plugin class that is used to define internationalization,

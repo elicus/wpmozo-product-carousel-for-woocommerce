@@ -108,17 +108,21 @@ class Wpmozo_Init {
 			    'default' => 'desc',
 			),
 			'IncludeCategories' => array(
-			    'type' => 'string',
+			    'type' => 'array',
 			),
 			'IncludeTags' => array(
-			    'type' => 'string',
+			    'type' => 'array',
 			),
 			'TaxonomiesRelation' => array(
 			    'type' => 'string',
 			    'default' => 'and',
 			),
-			// Design attributes
+			// Display attributes
 			'OutOfStock' => array(
+			    'type' => 'boolean',
+			    'default' => false,
+			),
+			'DisplayOutOfStockLabel' => array(
 			    'type' => 'boolean',
 			    'default' => false,
 			),
@@ -237,10 +241,35 @@ class Wpmozo_Init {
 			),
 		);
 
+		$get_all_sizes = wp_get_registered_image_subsizes();
+		$all_sizes = array();
+
+		if ( ! empty( $get_all_sizes ) ) {
+			foreach ($get_all_sizes as $key => $size) {
+				$all_sizes[] = array(
+					'label' => $key,
+					'value' => $key
+				);
+			}
+		}
+
+		$all_badge_types = array(
+			array(
+				'label' => __('Sale Label', 'wpmozo-product-carousel-for-woocommerce'),
+				'value' => 'sale_label',
+			),
+			array(
+				'label' => __('Sale Percentage', 'wpmozo-product-carousel-for-woocommerce'),
+				'value' => 'percentage',
+			),
+		);
+
 		$all_options = array( 
 			'attributes' => $attributes,
 			'order_by_options' => $order_by_options,
 			'product_view_type_options' => $product_view_type_options,
+			'all_sizes' => $all_sizes,
+			'all_badge_types' => $all_badge_types,
 		);
 
 		return $all_options;

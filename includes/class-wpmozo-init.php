@@ -26,13 +26,22 @@ class Wpmozo_Init {
 	 */
 	public function wpmozo_enqueue_scripts() {
 
-		// register the swiper script.
-		wp_register_script( 'wpmozo-swiper-script', WPMOZO_ASSE_DIR_URL . 'frontend/swiper/js/swiper-bundle.min.js', array(), time(), true );
-		wp_register_style( 'wpmozo-swiper-style', WPMOZO_ASSE_DIR_URL . 'frontend/swiper/css/swiper-bundle.css', array(), time());
-
 		wp_enqueue_script('wpmozo-swiper-script');
 		wp_enqueue_style('wpmozo-swiper-style');
 
+	}
+
+	/**
+	 * Add admin scripts for product carousel.
+	 *
+	 * @since 1.0.0
+	 */
+	public function wpmozo_enqueue_admin_scripts(){
+
+		wp_enqueue_script('wpmozo-swiper-script');
+		wp_enqueue_style('wpmozo-swiper-style');
+		wp_enqueue_style('woocommerce-layout');
+		wp_enqueue_style('woocommerce-general');
 
 	}
 
@@ -42,6 +51,25 @@ class Wpmozo_Init {
 	 * @since 1.0.0
 	 */
 	public function wpmozo_register_blocks() {
+		
+		// register the swiper script.
+		wp_register_script( 'wpmozo-swiper-script', WPMOZO_ASSE_DIR_URL . 'frontend/swiper/js/swiper-bundle.min.js', array(), time(), true );
+		wp_register_style( 'wpmozo-swiper-style', WPMOZO_ASSE_DIR_URL . 'frontend/swiper/css/swiper-bundle.css', array(), time());
+
+		// register the swiper script.
+		wp_register_script( 
+			'wpmozo-product-carousel-script',
+			WPMOZO_BLOCKS_DIR_URL . 'product-carousel/assets/js/product-carousel.js',
+			array('jquery','wpmozo-swiper-script'),
+			time(),
+			true
+		);
+		wp_register_style( 
+			'wpmozo-product-carousel-style',
+			WPMOZO_BLOCKS_DIR_URL . 'product-carousel/assets/css/product-carousel.css',
+			array(),
+			time(),
+		);
 
 		// register product carousel block script.
 		wp_register_script( 'wpmozo-block-product-carousel-script',
@@ -58,6 +86,8 @@ class Wpmozo_Init {
 		require_once WPMOZO_BLOCKS_DIR_PATH . 'product-carousel/block.php';
 		register_block_type( 'wpmozo/product-carousel', array(
 			'editor_script' => 'wpmozo-block-product-carousel-script',
+			'script' => 'wpmozo-product-carousel-script',
+			'style' => 'wpmozo-product-carousel-style',
 			'attributes' => $attributes,
 			'render_callback' => 'wpmozo_product_carousel_render_callback',
 		));
@@ -105,7 +135,7 @@ class Wpmozo_Init {
 			),
 			'Order' => array(
 			    'type' => 'string',
-			    'default' => 'desc',
+			    'default' => 'DESC',
 			),
 			'IncludeCategories' => array(
 			    'type' => 'array',
@@ -115,13 +145,13 @@ class Wpmozo_Init {
 			),
 			'TaxonomiesRelation' => array(
 			    'type' => 'string',
-			    'default' => 'and',
+			    'default' => 'AND',
 			),
-			// Display attributes
 			'OutOfStock' => array(
 			    'type' => 'boolean',
 			    'default' => false,
 			),
+			// Display attributes
 			'DisplayOutOfStockLabel' => array(
 			    'type' => 'boolean',
 			    'default' => false,
@@ -147,7 +177,7 @@ class Wpmozo_Init {
 			),
 			'FeaturedImageSize' => array(
 			    'type' => 'string',
-			    'default' => 'thumbnail',
+			    'default' => 'woocommerce_thumbnail',
 			),
 			'ShowRating' => array(
 			    'type' => 'boolean',
@@ -182,19 +212,19 @@ class Wpmozo_Init {
 			),
 			array(
 			    'label' => __('Featured Products', 'wpmozo-product-carousel-for-woocommerce'),
-			    'value' => 'featured_products'
+			    'value' => 'featured'
 			),
 			array(
 			    'label' => __('Sale Products', 'wpmozo-product-carousel-for-woocommerce'),
-			    'value' => 'sale_products'
+			    'value' => 'sale'
 			),
 			array(
 			    'label' => __('Best Selling Products', 'wpmozo-product-carousel-for-woocommerce'),
-			    'value' => 'best_selling_products'
+			    'value' => 'best_selling'
 			),
 			array(
 			    'label' => __('Top Rated Products', 'wpmozo-product-carousel-for-woocommerce'),
-			    'value' => 'top_rated_products'
+			    'value' => 'top_rated'
 			),
 		);
 
@@ -205,7 +235,7 @@ class Wpmozo_Init {
 			), 
 			array(
 			    'label' => __('Modified Date', 'wpmozo-product-carousel-for-woocommerce'),
-			    'value' => 'modified_date'
+			    'value' => 'modified'
 			),
 			array(
 			    'label' => __('Menu Order', 'wpmozo-product-carousel-for-woocommerce'),
@@ -217,15 +247,15 @@ class Wpmozo_Init {
 			),
 			array(
 			    'label' => __('Slug', 'wpmozo-product-carousel-for-woocommerce'),
-			    'value' => 'slug'
+			    'value' => 'name'
 			),
 			array(
 			    'label' => __('Id', 'wpmozo-product-carousel-for-woocommerce'),
-			    'value' => 'id'
+			    'value' => 'ID'
 			),
 			array(
 			    'label' => __('Random', 'wpmozo-product-carousel-for-woocommerce'),
-			    'value' => 'random'
+			    'value' => 'rand'
 			),
 			array(
 			    'label' => __('Stock Status', 'wpmozo-product-carousel-for-woocommerce'),
@@ -270,6 +300,7 @@ class Wpmozo_Init {
 			'product_view_type_options' => $product_view_type_options,
 			'all_sizes' => $all_sizes,
 			'all_badge_types' => $all_badge_types,
+			'ajax_url' => admin_url( 'admin-ajax.php' )
 		);
 
 		return $all_options;
@@ -285,6 +316,7 @@ class Wpmozo_Init {
 	public function add_hooks( $loader, $instance ) {
 
 		$loader->add_action( 'wp_enqueue_scripts', $instance, 'wpmozo_enqueue_scripts' );
+		$loader->add_action( 'admin_enqueue_scripts', $instance, 'wpmozo_enqueue_admin_scripts' );
 		$loader->add_action( 'init', $instance, 'wpmozo_register_blocks' );
 
 	}

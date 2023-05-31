@@ -6,14 +6,34 @@
     const registerBlockType = blocks.registerBlockType;
     const { InspectorControls, MediaUpload, MediaUploadCheck } = editor;
     const { PanelBody, RangeControl, SelectControl, TextControl, FormTokenField, ToggleControl, Button } = components;
-    const { Fragment, useState } = element;
+    const { Fragment, useState, useEffect } = element;
     const { useSelect, useDispatch } = wp.data;
+    const { serverSideRender: ServerSideRender } = wp;
 
     var GetOrderByOptions           = wpmozo_block_carousel_object.order_by_options,
         GetAttributes               = wpmozo_block_carousel_object.attributes,
         GetProductViewTypeOptions   = wpmozo_block_carousel_object.product_view_type_options,
         AllSizes                    = wpmozo_block_carousel_object.all_sizes,
         AllBadgeTypes               = wpmozo_block_carousel_object.all_badge_types;
+
+     var swiper;
+
+            jQuery('div[data-type="wpmozo/product-carousel"]').on('DOMSubtreeModified', function(){
+                
+                if ( jQuery(".wpmozo-product-carousel-wrap .swiper-slide ul.products li.product a").length > 0  ) {
+                    swiper = new Swiper(".wpmozo-product-carousel-wrap", {
+                        slidesPerView: 4,
+                        spaceBetween: 10,
+                        loop: true,
+                        navigation: {
+                            nextEl: ".swiper-button-next",
+                            prevEl: ".swiper-button-prev",
+                        },
+                    });
+                    console.log(swiper);
+                }
+
+            });
 
     registerBlockType( 'wpmozo/product-carousel', {
         title: __( 'WP Mozo Product Carousel', 'wpmozo-product-carousel-for-woocommerce' ),
@@ -22,6 +42,8 @@
         keywords: [ 'wpmozo', 'woocommerce-product-carousel', 'woocommerce', 'carousel' ],
         attributes: GetAttributes,
         edit: (function( props ) {  
+
+           
 
             let attributes = props.attributes;
 
@@ -104,39 +126,41 @@
                                     },
                                 }
                             ),
-                            el(
-                                SelectControl,
-                                {
-                                    key: 'wpmozp-product-carousel-orderby',
-                                    label: __('Order By', 'wpmozo-product-carousel-for-woocommerce'),
-                                    value: attributes.OrderBy,
-                                    options: GetOrderByOptions,
-                                    onChange: function( NewOrderBy ) {
-                                        props.setAttributes( { OrderBy: NewOrderBy } );
+                            'sale' !== attributes.ProductViewType && 'best_selling' !== attributes.ProductViewType && 'top_rated' !== attributes.ProductViewType &&
+                                el(
+                                    SelectControl,
+                                    {
+                                        key: 'wpmozp-product-carousel-orderby',
+                                        label: __('Order By', 'wpmozo-product-carousel-for-woocommerce'),
+                                        value: attributes.OrderBy,
+                                        options: GetOrderByOptions,
+                                        onChange: function( NewOrderBy ) {
+                                            props.setAttributes( { OrderBy: NewOrderBy } );
+                                        },
                                     },
-                                },
-                            ),
-                            el(
-                                SelectControl,
-                                {
-                                    key: 'wpmozp-product-carousel-order',
-                                    label: __('Order', 'wpmozo-product-carousel-for-woocommerce'),
-                                    value: attributes.Order,
-                                    options: [
-                                        {
-                                            label: __('Ascending', 'wpmozo-product-carousel-for-woocommerce'),
-                                            value: 'asc'
-                                        }, 
-                                        {
-                                            label: __('Descending', 'wpmozo-product-carousel-for-woocommerce'),
-                                            value: 'desc'
-                                        }
-                                    ],
-                                    onChange: function( NewOrder ) {
-                                        props.setAttributes( { Order: NewOrder } );
+                                ),
+                            'sale' !== attributes.ProductViewType && 'best_selling' !== attributes.ProductViewType && 'top_rated' !== attributes.ProductViewType &&
+                                el(
+                                    SelectControl,
+                                    {
+                                        key: 'wpmozp-product-carousel-order',
+                                        label: __('Order', 'wpmozo-product-carousel-for-woocommerce'),
+                                        value: attributes.Order,
+                                        options: [
+                                            {
+                                                label: __('Ascending', 'wpmozo-product-carousel-for-woocommerce'),
+                                                value: 'ASC'
+                                            }, 
+                                            {
+                                                label: __('Descending', 'wpmozo-product-carousel-for-woocommerce'),
+                                                value: 'DESC'
+                                            }
+                                        ],
+                                        onChange: function( NewOrder ) {
+                                            props.setAttributes( { Order: NewOrder } );
+                                        },
                                     },
-                                },
-                            ),
+                                ),
                             el(
                                 FormTokenField,
                                 {
@@ -144,7 +168,6 @@
                                     suggestions: product_cat_options,
                                     label: __( 'Include Categories', 'wpmozo-product-carousel-for-woocommerce' ),
                                     onChange: function( NewCats ) {
-                                        console.log(NewCats);
                                         props.setAttributes( { IncludeCategories: NewCats } );
                                     },
                                 }
@@ -169,11 +192,11 @@
                                     options: [
                                         {
                                             label: __('OR', 'wpmozo-product-carousel-for-woocommerce'),
-                                            value: 'or'
+                                            value: 'OR'
                                         }, 
                                         {
                                             label: __('AND', 'wpmozo-product-carousel-for-woocommerce'),
-                                            value: 'and'
+                                            value: 'AND'
                                         }
                                     ],
                                     onChange: function( NewTaxonomiesRelation ) {
@@ -363,7 +386,14 @@
                             ),
                         ),
                     ),
-                )
+                ),
+                el(
+                    ServerSideRender,
+                    {
+                        block: 'wpmozo/product-carousel',
+                        attributes: attributes,
+                    },
+                ),
             ];
         }),
         save: function() {

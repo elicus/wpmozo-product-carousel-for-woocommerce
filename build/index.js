@@ -23,17 +23,36 @@ var __webpack_exports__ = {};
   } = components;
   const {
     Fragment,
-    useState
+    useState,
+    useEffect
   } = element;
   const {
     useSelect,
     useDispatch
   } = wp.data;
+  const {
+    serverSideRender: ServerSideRender
+  } = wp;
   var GetOrderByOptions = wpmozo_block_carousel_object.order_by_options,
     GetAttributes = wpmozo_block_carousel_object.attributes,
     GetProductViewTypeOptions = wpmozo_block_carousel_object.product_view_type_options,
     AllSizes = wpmozo_block_carousel_object.all_sizes,
     AllBadgeTypes = wpmozo_block_carousel_object.all_badge_types;
+  var swiper;
+  jQuery('div[data-type="wpmozo/product-carousel"]').on('DOMSubtreeModified', function () {
+    if (jQuery(".wpmozo-product-carousel-wrap .swiper-slide ul.products li.product a").length > 0) {
+      swiper = new Swiper(".wpmozo-product-carousel-wrap", {
+        slidesPerView: 4,
+        spaceBetween: 10,
+        loop: true,
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev"
+        }
+      });
+      console.log(swiper);
+    }
+  });
   registerBlockType('wpmozo/product-carousel', {
     title: __('WP Mozo Product Carousel', 'wpmozo-product-carousel-for-woocommerce'),
     icon: 'products',
@@ -109,7 +128,7 @@ var __webpack_exports__ = {};
             NumberOfProducts: NewNumberOfProducts
           });
         }
-      }), el(SelectControl, {
+      }), 'sale' !== attributes.ProductViewType && 'best_selling' !== attributes.ProductViewType && 'top_rated' !== attributes.ProductViewType && el(SelectControl, {
         key: 'wpmozp-product-carousel-orderby',
         label: __('Order By', 'wpmozo-product-carousel-for-woocommerce'),
         value: attributes.OrderBy,
@@ -119,16 +138,16 @@ var __webpack_exports__ = {};
             OrderBy: NewOrderBy
           });
         }
-      }), el(SelectControl, {
+      }), 'sale' !== attributes.ProductViewType && 'best_selling' !== attributes.ProductViewType && 'top_rated' !== attributes.ProductViewType && el(SelectControl, {
         key: 'wpmozp-product-carousel-order',
         label: __('Order', 'wpmozo-product-carousel-for-woocommerce'),
         value: attributes.Order,
         options: [{
           label: __('Ascending', 'wpmozo-product-carousel-for-woocommerce'),
-          value: 'asc'
+          value: 'ASC'
         }, {
           label: __('Descending', 'wpmozo-product-carousel-for-woocommerce'),
-          value: 'desc'
+          value: 'DESC'
         }],
         onChange: function (NewOrder) {
           props.setAttributes({
@@ -140,7 +159,6 @@ var __webpack_exports__ = {};
         suggestions: product_cat_options,
         label: __('Include Categories', 'wpmozo-product-carousel-for-woocommerce'),
         onChange: function (NewCats) {
-          console.log(NewCats);
           props.setAttributes({
             IncludeCategories: NewCats
           });
@@ -160,10 +178,10 @@ var __webpack_exports__ = {};
         value: attributes.TaxonomiesRelation,
         options: [{
           label: __('OR', 'wpmozo-product-carousel-for-woocommerce'),
-          value: 'or'
+          value: 'OR'
         }, {
           label: __('AND', 'wpmozo-product-carousel-for-woocommerce'),
-          value: 'and'
+          value: 'AND'
         }],
         onChange: function (NewTaxonomiesRelation) {
           props.setAttributes({
@@ -309,7 +327,10 @@ var __webpack_exports__ = {};
             SaleLabelText: NewSaleLabelText
           });
         }
-      }))))];
+      })))), el(ServerSideRender, {
+        block: 'wpmozo/product-carousel',
+        attributes: attributes
+      })];
     },
     save: function () {
       return null;

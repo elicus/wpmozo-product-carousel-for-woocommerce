@@ -33,6 +33,9 @@ if ( ! defined( 'WPINC' ) ) {
 // Current plugin version.
 define( 'WPMOZO_VERSION', '1.0.0' );
 
+// Plugin main file.
+define( 'WPMOZO_FILE', __FILE__ );
+
 // Plugin dir path.
 define( 'WPMOZO_PLUGIN_DIR_PATH', plugin_dir_path( __FILE__ ) );
 
@@ -45,10 +48,10 @@ define( 'WPMOZO_INC_DIR_PATH', WPMOZO_PLUGIN_DIR_PATH . 'includes/' );
 // Includes dir url.
 define( 'WPMOZO_INC_DIR_URL', WPMOZO_PLUGIN_DIR_URL . 'includes/' );
 
-// Includes dir path.
+// Blocks dir path.
 define( 'WPMOZO_BLOCKS_DIR_PATH', WPMOZO_INC_DIR_PATH . 'blocks/' );
 
-// Includes dir url.
+// Blocks dir url.
 define( 'WPMOZO_BLOCKS_DIR_URL', WPMOZO_INC_DIR_URL . 'blocks/' );
 
 // Assets dir url.
@@ -71,8 +74,12 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-wpmozo-product-carousel-fo
  */
 function run_wpmozo_product_carousel_for_woocommerce() {
 
-	$plugin = new Wpmozo_Product_Carousel_For_Woocommerce();
-	$plugin->run();
+	$wpmozo = new Wpmozo_Product_Carousel_For_Woocommerce();
+    if ( ! class_exists( 'WooCommerce' ) ) {
+        $wpmozo->deactivate();
+    } else {
+        $wpmozo->run();
+    }
 
 }
-run_wpmozo_product_carousel_for_woocommerce();
+add_action( 'plugins_loaded', 'run_wpmozo_product_carousel_for_woocommerce' );

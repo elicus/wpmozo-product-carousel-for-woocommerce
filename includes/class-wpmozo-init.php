@@ -26,22 +26,10 @@ class Wpmozo_Init {
 	 */
 	public function wpmozo_enqueue_scripts() {
 
-		wp_enqueue_script('wpmozo-swiper-script');
-		wp_enqueue_style('wpmozo-swiper-style');
-
-	}
-
-	/**
-	 * Add admin scripts for product carousel.
-	 *
-	 * @since 1.0.0
-	 */
-	public function wpmozo_enqueue_admin_scripts(){
-
-		wp_enqueue_script('wpmozo-swiper-script');
-		wp_enqueue_style('wpmozo-swiper-style');
-		wp_enqueue_style('woocommerce-layout');
-		wp_enqueue_style('woocommerce-general');
+		if( has_block( 'wpmozo/product-carousel' ) ){
+			wp_enqueue_script('wpmozo-swiper-script');
+			wp_enqueue_style('wpmozo-swiper-style');
+		}
 
 	}
 
@@ -56,7 +44,7 @@ class Wpmozo_Init {
 		wp_register_script( 'wpmozo-swiper-script', WPMOZO_ASSE_DIR_URL . 'frontend/swiper/js/swiper-bundle.min.js', array(), time(), true );
 		wp_register_style( 'wpmozo-swiper-style', WPMOZO_ASSE_DIR_URL . 'frontend/swiper/css/swiper-bundle.css', array(), time());
 
-		// register the swiper script.
+		// register the swiper scripts.
 		wp_register_script( 
 			'wpmozo-product-carousel-script',
 			WPMOZO_BLOCKS_DIR_URL . 'product-carousel/assets/js/product-carousel.js',
@@ -86,8 +74,16 @@ class Wpmozo_Init {
 		require_once WPMOZO_BLOCKS_DIR_PATH . 'product-carousel/block.php';
 		register_block_type( 'wpmozo/product-carousel', array(
 			'editor_script' => 'wpmozo-block-product-carousel-script',
-			'script' => 'wpmozo-product-carousel-script',
-			'style' => 'wpmozo-product-carousel-style',
+			'script_handles' => array(
+				'wpmozo-swiper-script',
+				'wpmozo-product-carousel-script',
+			),
+			'style_handles' => array(
+				'wpmozo-swiper-style',
+				'woocommerce-layout',
+				'woocommerce-general',
+				'wpmozo-product-carousel-style',
+			),
 			'attributes' => $attributes,
 			'render_callback' => 'wpmozo_product_carousel_render_callback',
 		));
@@ -104,18 +100,41 @@ class Wpmozo_Init {
 	public function wpmozo_get_all_settings_options() {
 
 		$attributes = array(
+			'clientId' => array(
+			    'type' => 'string',
+			),
 		 	// Carousel attributes
 			'Columns' => array(
 			    'type' => 'integer',
 			    'default' => 4,
 			),
-			'Speed' => array(
-			    'type' => 'integer',
-			    'default' => 1000,
-			),
 			'SpaceBetween' => array(
 			    'type' => 'integer',
 			    'default' => 10,
+			),
+			'AutoPlay' => array(
+			    'type' => 'boolean',
+			    'default' => false,
+			),
+			'Delay' => array(
+			    'type' => 'integer',
+			    'default' => 3000,
+			),
+			'Loop' => array(
+			    'type' => 'boolean',
+			    'default' => false,
+			),
+			'ShowNavigation' => array(
+			    'type' => 'boolean',
+			    'default' => true,
+			),
+			'ShowPagination' => array(
+			    'type' => 'boolean',
+			    'default' => true,
+			),
+			'PaginationType' => array(
+			    'type' => 'string',
+			    'default' => 'bullets',
 			),
 			// Query attributes
 			'ProductViewType' => array(
@@ -316,7 +335,6 @@ class Wpmozo_Init {
 	public function add_hooks( $loader, $instance ) {
 
 		$loader->add_action( 'wp_enqueue_scripts', $instance, 'wpmozo_enqueue_scripts' );
-		$loader->add_action( 'admin_enqueue_scripts', $instance, 'wpmozo_enqueue_admin_scripts' );
 		$loader->add_action( 'init', $instance, 'wpmozo_register_blocks' );
 
 	}

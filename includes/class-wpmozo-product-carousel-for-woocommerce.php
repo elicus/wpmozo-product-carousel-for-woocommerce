@@ -83,9 +83,6 @@ class Wpmozo_Product_Carousel_For_Woocommerce {
 		}
 		$this->plugin_name = 'wpmozo-product-carousel-for-woocommerce';
 
-		$this->load_dependencies();
-		$this->define_hooks();
-
 	}
 
 	/**
@@ -155,7 +152,58 @@ class Wpmozo_Product_Carousel_For_Woocommerce {
 	 * @since    1.0.0
 	 */
 	public function run() {
+
+		$this->load_dependencies();
+		$this->define_hooks();
 		$this->loader->run();
+
+	}
+
+	/**
+	 * Deactivate this plugin if WooCmmerce is not activate.
+	 *
+	 * @since    1.0.0
+	 */
+	public function deactivate() {
+
+		if ( ! function_exists( 'deactivate_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		if ( isset( $_GET['activate'] ) ) {
+			unset( $_GET['activate'] );
+			$_GET['deactivate'] = true;
+		}
+		add_action('admin_notices', array( $this, 'deactivation_notice' ) );
+		deactivate_plugins( WPMOZO_FILE );
+
+	}
+
+	/**
+	 * Display notice if WooCmmerce is not activate.
+	 *
+	 * @since    1.0.0
+	 */
+	public function deactivation_notice() {
+
+		$plugin_name = sprintf( '<strong>%s</strong>', esc_html( 'WPMozo Product Carousel For WooCommerce' ) );
+		$message     = esc_html( 'plugin requires WooCommerce in order to work. So please ensure that WooCommerce is installed and activated.' );
+		$notice      = sprintf( '%s %s', $plugin_name, $message );
+
+		?>
+		<div class="error notice is-dismissible">
+			<p>
+			<?php 
+			echo wp_kses( 
+				$notice, 
+			 	array(
+		        	'strong' => array(),
+		    	)
+			);
+    		?>
+    		</p>
+		</div>
+		<?php
 	}
 
 	/**

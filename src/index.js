@@ -5,7 +5,7 @@
     const el = element.createElement;
     const registerBlockType = blocks.registerBlockType;
     const { InspectorControls, MediaUpload, MediaUploadCheck } = editor;
-    const { PanelBody, RangeControl, SelectControl, TextControl, FormTokenField, ToggleControl, Button } = components;
+    const { PanelBody, RangeControl, SelectControl, TextControl, FormTokenField, ToggleControl, Button, Spinner } = components;
     const { Fragment, useState, useEffect } = element;
     const { useSelect, useDispatch } = wp.data;
     const { serverSideRender: ServerSideRender } = wp;
@@ -16,24 +16,76 @@
         AllSizes                    = wpmozo_block_carousel_object.all_sizes,
         AllBadgeTypes               = wpmozo_block_carousel_object.all_badge_types;
 
-     var swiper;
+    const initializeSwiper = ( attributes ) => {
+        var sw_obj = {
+            slidesPerView: attributes.Columns,
+            spaceBetween: attributes.SpaceBetween,
+            loop: attributes.Loop,
+        }
 
-            jQuery('div[data-type="wpmozo/product-carousel"]').on('DOMSubtreeModified', function(){
-                
-                if ( jQuery(".wpmozo-product-carousel-wrap .swiper-slide ul.products li.product a").length > 0  ) {
-                    swiper = new Swiper(".wpmozo-product-carousel-wrap", {
-                        slidesPerView: 4,
-                        spaceBetween: 10,
-                        loop: true,
-                        navigation: {
-                            nextEl: ".swiper-button-next",
-                            prevEl: ".swiper-button-prev",
-                        },
-                    });
-                    console.log(swiper);
-                }
+        if ( attributes.AutoPlay ) {
+            sw_obj.autoplay = {
+               delay: attributes.Delay,
+            };
+        }
 
+        if ( attributes.ShowNavigation ) {
+            sw_obj.navigation = {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            };
+        }
+
+        if ( attributes.ShowPagination ) {
+            sw_obj.pagination = {
+                el: '.swiper-pagination',
+                type: attributes.PaginationType,
+            };
+        }
+
+        let selector = 'wpmozo_'+attributes.clientId;
+
+        let _swiper = new Swiper('#'+selector, sw_obj);
+    };
+
+    wp.hooks.addAction( 'server-side-loading-finished', 'function_name', initializeSwiper );
+
+    const TriggerWhenLoadingFinished = (attributes) => {
+        return ({ children, showLoader }) => {
+            useEffect(() => {
+              return () => {
+                wp.hooks.doAction("server-side-loading-finished", attributes);
+              };
             });
+            return el( Fragment, {}, 
+                el("div", {
+                        style: {
+                            position: "relative",
+                        },
+                    },
+                    showLoader &&
+                        el("div", {
+                            style: {
+                                position: "absolute",
+                                top: "50%",
+                                left: "50%",
+                                marginTop: "-9px",
+                                marginLeft: "-9px"
+                            },
+                        },
+                        el(Spinner, {})
+                        ),
+                    el("div", {
+                            style: {
+                                opacity: showLoader ? "0.3" : 1
+                            },
+                        },
+                        children
+                    ),
+                ),
+            );
+        };
+    };
 
     registerBlockType( 'wpmozo/product-carousel', {
         title: __( 'WP Mozo Product Carousel', 'wpmozo-product-carousel-for-woocommerce' ),
@@ -43,9 +95,8 @@
         attributes: GetAttributes,
         edit: (function( props ) {  
 
-           
-
             let attributes = props.attributes;
+            props.setAttributes( { clientId: props.clientId } );
 
             let product_cats = wp.data.select('core').getEntityRecords( 'taxonomy', 'product_cat' );
             let product_cat_options = [];
@@ -91,15 +142,80 @@
                                 }
                             ),
                             el(
-                                TextControl,
+                                ToggleControl,
                                 {
-                                    key: 'wpmozp-product-carousel-speed',
-                                    value: attributes.Speed,
-                                    label: __( 'Speed of Animation', 'wpmozo-product-carousel-for-woocommerce' ),
-                                    onChange: function( NewSpeed ) {
-                                        props.setAttributes( { Speed: NewSpeed } );
+                                    checked: attributes.AutoPlay, 
+                                    label: __( 'Auto Play', 'wpmozo-product-carousel-for-woocommerce' ),
+                                    onChange: function( NewAutoPlay ) {
+                                        props.setAttributes( { AutoPlay: NewAutoPlay } );
                                     },
                                 }
+                            ),
+                            el(
+                                TextControl,
+                                {
+                                    key: 'wpmozp-product-carousel-delay',
+                                    value: attributes.Delay,
+                                    label: __( 'Delay of Animation', 'wpmozo-product-carousel-for-woocommerce' ),
+                                    onChange: function( NewDelay ) {
+                                        props.setAttributes( { Delay: NewDelay } );
+                                    },
+                                }
+                            ),
+                            el(
+                                ToggleControl,
+                                {
+                                    checked: attributes.Loop, 
+                                    label: __( 'Loop', 'wpmozo-product-carousel-for-woocommerce' ),
+                                    onChange: function( NewLoop ) {
+                                        props.setAttributes( { Loop: NewLoop } );
+                                    },
+                                }
+                            ),
+                            el(
+                                ToggleControl,
+                                {
+                                    checked: attributes.ShowNavigation, 
+                                    label: __( 'Show Navigation', 'wpmozo-product-carousel-for-woocommerce' ),
+                                    onChange: function( NewShowNavigation ) {
+                                        props.setAttributes( { ShowNavigation: NewShowNavigation } );
+                                    },
+                                }
+                            ),
+                            el(
+                                ToggleControl,
+                                {
+                                    checked: attributes.ShowPagination, 
+                                    label: __( 'Show Pagination', 'wpmozo-product-carousel-for-woocommerce' ),
+                                    onChange: function( NewShowPagination ) {
+                                        props.setAttributes( { ShowPagination: NewShowPagination } );
+                                    },
+                                }
+                            ),
+                            el(
+                                SelectControl,
+                                {
+                                    key: 'wpmozp-product-carousel-paginationtype',
+                                    label: __('Pagination Type', 'wpmozo-product-carousel-for-woocommerce'),
+                                    value: attributes.PaginationType,
+                                    options: [
+                                        {
+                                            label: __('Bullets', 'wpmozo-product-carousel-for-woocommerce'),
+                                            value: 'bullets'
+                                        }, 
+                                        {
+                                            label: __('Fraction', 'wpmozo-product-carousel-for-woocommerce'),
+                                            value: 'fraction'
+                                        },
+                                        {
+                                            label: __('Progressbar', 'wpmozo-product-carousel-for-woocommerce'),
+                                            value: 'progressbar'
+                                        }
+                                    ],
+                                    onChange: function( NewPaginationType ) {
+                                        props.setAttributes( { PaginationType: NewPaginationType } );
+                                    },
+                                },
                             ),
                         ),
                         el( PanelBody, { title: __( 'Query Settings', 'wpmozo-product-carousel-for-woocommerce' ), initialOpen: true },
@@ -392,6 +508,7 @@
                     {
                         block: 'wpmozo/product-carousel',
                         attributes: attributes,
+                        LoadingResponsePlaceholder: TriggerWhenLoadingFinished( attributes ),
                     },
                 ),
             ];

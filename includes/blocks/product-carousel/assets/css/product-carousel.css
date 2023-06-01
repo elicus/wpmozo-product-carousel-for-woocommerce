@@ -1,0 +1,10 @@
+.wpmozo-product-carousel-wrap {
+	width: 100%;
+	height: 100%;
+}
+.wpmozo-product-carousel-wrap ul.products li.product{
+	width: 100% !important;
+	list-style: none;
+	margin-top: 0;
+	display: unset;
+}

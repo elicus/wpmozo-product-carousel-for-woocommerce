@@ -132,7 +132,7 @@ function wpmozo_product_carousel_prepare_query_args( $args ){
 function wpmozo_product_carousel_before_hooks( $args ){
 
     if ( ! $args['OutOfStock'] && $args['DisplayOutOfStockLabel'] && ! empty( $args['OutOfStockLabel'] ) ) {
-        add_filter( 'woocommerce_before_shop_loop_item_title', 'wpmozo_product_carousel_outofstock_badge', 10);
+        add_action( 'woocommerce_before_shop_loop_item_title', 'wpmozo_product_carousel_outofstock_badge', 10);
     }
     if ( ! $args['ShowFeaturedImage'] ) {
         remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
@@ -154,6 +154,9 @@ function wpmozo_product_carousel_before_hooks( $args ){
     }
     if ( $args['ShowSaleBadge'] && ( ( 'sale_label' === $args['SaleBadgeType'] && ! empty( $args['SaleLabelText'] ) ) || 'percentage' === $args['SaleBadgeType'] ) ) {
         add_filter( 'woocommerce_sale_flash', 'wpmozo_product_carousel_sale_badge', 10, 3);
+    }
+    if ( $args['EnableQuickViewLink'] ) {
+        add_filter( 'woocommerce_product_get_image', 'wpmozo_product_carousel_quick_view_button', 10, 2 );
     }
 
 }
@@ -189,6 +192,9 @@ function wpmozo_product_carousel_after_hooks( $args ){
     }
     if ( ! $args['OutOfStock'] && $args['DisplayOutOfStockLabel'] && ! empty( $args['OutOfStockLabel'] ) ) {
         remove_filter( 'woocommerce_before_shop_loop_item_title', 'wpmozo_product_carousel_outofstock_badge', 10);
+    }
+    if ( $args['EnableQuickViewLink'] ) {
+        remove_filter( 'woocommerce_product_get_image', 'wpmozo_product_carousel_quick_view_button', 10, 2 );
     }
     
 }
@@ -324,3 +330,93 @@ function wpmozo_product_carousel_outofstock_badge(){
     }
 
 }
+
+/**
+ * Display quick view link.
+ *
+ * @since 1.0.0
+ */
+function wpmozo_product_carousel_quick_view_button( $image, $product ){
+
+    global $wpmozo_product_carousel_args;
+    $pro_id = $product->get_id();
+    $button_text = esc_html__( $wpmozo_product_carousel_args['QuickViewLinkText'], 'wpmozo-product-carousel-for-woocommerce' );
+    $icon = $wpmozo_product_carousel_args['QuickViewLinkIcon'];
+
+    ob_start();
+    ?>
+    <?php if ( ! empty( $button_text ) || ! empty( $icon ) ) { ?>
+        <div class="wpmozo-product__overlay">
+            <button class="button wpmozo-quick-view-button" data-pro-id="<?php echo esc_attr( $pro_id ); ?>">
+                <?php if ( ! empty( $icon ) ) { ?>
+                    <img src="<?php echo esc_attr( $icon ); ?>">
+                <?php } ?>
+                <?php echo $button_text; ?>
+            </button>
+        </div>
+    <?php } ?>
+    <?php
+    $html = ob_get_clean();
+
+    $image .= $html;
+    return $image;
+
+}
+
+/**
+ * Display quick view content.
+ *
+ * @since 1.0.0
+ */
+function wpmozo_quick_view_content(){
+
+    check_ajax_referer( 'ajax-nonce' );
+    if ( isset( $_GET['pro_id'] ) ) {
+
+        global $product,$post;
+        $pro_id = sanitize_text_field( $_GET['pro_id'] );
+        $post = get_post( $pro_id );
+        $product = wc_get_product( $pro_id );
+
+        ?>
+        <div class="wpmozo-product-quick-view woocommerce">
+            <div id="product-<?php echo $pro_id; ?>" <?php wc_product_class( '', $product ); ?>>
+
+                <?php
+                /**
+                 * Hook: woocommerce_before_single_product_summary.
+                 *
+                 * @hooked woocommerce_show_product_sale_flash - 10
+                 * @hooked woocommerce_show_product_images - 20
+                 */
+                do_action( 'woocommerce_before_single_product_summary' );
+                ?>
+
+                <div class="summary entry-summary">
+                    <?php
+                    /**
+                     * Hook: woocommerce_single_product_summary.
+                     *
+                     * @hooked woocommerce_template_single_title - 5
+                     * @hooked woocommerce_template_single_rating - 10
+                     * @hooked woocommerce_template_single_price - 10
+                     * @hooked woocommerce_template_single_excerpt - 20
+                     * @hooked woocommerce_template_single_add_to_cart - 30
+                     * @hooked woocommerce_template_single_meta - 40
+                     * @hooked woocommerce_template_single_sharing - 50
+                     * @hooked WC_Structured_Data::generate_product_data() - 60
+                     */
+                    do_action( 'woocommerce_single_product_summary' );
+                    ?>
+                </div>
+
+            </div>
+        </div>
+        <?php
+        wp_reset_postdata();
+    }
+    wp_die();
+
+}
+add_action('wp_ajax_wpmozo_quick_view_content', 'wpmozo_quick_view_content');
+add_action('wp_ajax_nopriv_wpmozo_quick_view_content', 'wpmozo_quick_view_content');

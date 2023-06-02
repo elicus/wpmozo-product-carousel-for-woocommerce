@@ -32,7 +32,8 @@ var __webpack_exports__ = {};
     useDispatch
   } = wp.data;
   const {
-    serverSideRender: ServerSideRender
+    serverSideRender: ServerSideRender,
+    hooks
   } = wp;
   var GetOrderByOptions = wpmozo_block_carousel_object.order_by_options,
     GetAttributes = wpmozo_block_carousel_object.attributes,
@@ -65,7 +66,7 @@ var __webpack_exports__ = {};
     let selector = 'wpmozo_' + attributes.clientId;
     let _swiper = new Swiper('#' + selector, sw_obj);
   };
-  wp.hooks.addAction('server-side-loading-finished', 'function_name', initializeSwiper);
+  hooks.addAction('server-side-loading-finished', 'function_name', initializeSwiper);
   const TriggerWhenLoadingFinished = attributes => {
     return _ref => {
       let {
@@ -74,7 +75,7 @@ var __webpack_exports__ = {};
       } = _ref;
       useEffect(() => {
         return () => {
-          wp.hooks.doAction("server-side-loading-finished", attributes);
+          hooks.doAction("server-side-loading-finished", attributes);
         };
       });
       return el(Fragment, {}, el("div", {
@@ -97,7 +98,7 @@ var __webpack_exports__ = {};
     };
   };
   registerBlockType('wpmozo/product-carousel', {
-    title: __('WP Mozo Product Carousel', 'wpmozo-product-carousel-for-woocommerce'),
+    title: __('WPMozo Product Carousel', 'wpmozo-product-carousel-for-woocommerce'),
     icon: 'products',
     category: 'woocommerce',
     keywords: ['wpmozo', 'woocommerce-product-carousel', 'woocommerce', 'carousel'],

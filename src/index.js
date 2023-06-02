@@ -8,7 +8,7 @@
     const { PanelBody, RangeControl, SelectControl, TextControl, FormTokenField, ToggleControl, Button, Spinner } = components;
     const { Fragment, useState, useEffect } = element;
     const { useSelect, useDispatch } = wp.data;
-    const { serverSideRender: ServerSideRender } = wp;
+    const { serverSideRender: ServerSideRender, hooks } = wp;
 
     var GetOrderByOptions           = wpmozo_block_carousel_object.order_by_options,
         GetAttributes               = wpmozo_block_carousel_object.attributes,
@@ -48,13 +48,13 @@
         let _swiper = new Swiper('#'+selector, sw_obj);
     };
 
-    wp.hooks.addAction( 'server-side-loading-finished', 'function_name', initializeSwiper );
+    hooks.addAction( 'server-side-loading-finished', 'function_name', initializeSwiper );
 
     const TriggerWhenLoadingFinished = (attributes) => {
         return ({ children, showLoader }) => {
             useEffect(() => {
               return () => {
-                wp.hooks.doAction("server-side-loading-finished", attributes);
+                hooks.doAction("server-side-loading-finished", attributes);
               };
             });
             return el( Fragment, {}, 
@@ -88,7 +88,7 @@
     };
 
     registerBlockType( 'wpmozo/product-carousel', {
-        title: __( 'WP Mozo Product Carousel', 'wpmozo-product-carousel-for-woocommerce' ),
+        title: __( 'WPMozo Product Carousel', 'wpmozo-product-carousel-for-woocommerce' ),
         icon: 'products',
         category: 'woocommerce',
         keywords: [ 'wpmozo', 'woocommerce-product-carousel', 'woocommerce', 'carousel' ],

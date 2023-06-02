@@ -8,3 +8,66 @@
 	margin-top: 0;
 	display: unset;
 }
+
+/* Quick view style start  */
+.wpmozo-product__overlay {
+	visibility: hidden;
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	transition: all 0.15s ease-in;
+}
+.wpmozo-product-carousel-wrap li.product:hover .wpmozo-product__overlay,
+.wpmozo-product-carousel-wrap li.product:focus .wpmozo-product__overlay {
+	visibility: visible;
+	opacity: 1;
+}
+.wpmozo-quick-view-button {
+  	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%) !important;
+}
+.wpmozo-product-carousel-wrap li.product:hover .wpmozo-quick-view-button {
+	-ms-transform: translateY(-85%);
+	-webkit-transform: translateY(-85%);
+	transform: translateY(-85%);
+}
+.wpmozo-quick-view-button img{
+	width: 25px;
+    height: auto;
+    vertical-align: middle;
+}
+.wpmozo-product-carousel-wrap li.product .woocommerce-loop-product__link{
+	position: relative;
+}
+.wpmozo-product-quick-view{
+	position: relative;
+    width: 90%;
+    margin: 0 auto;
+    padding: 10px;
+    max-width: 900px;
+    box-sizing: border-box;
+    background: #fff;
+}
+.wpmozo-product-quick-view > div.product {
+	display: inline-block;
+	position: relative;
+}
+.wpmozo-quick-view-image-wrap{
+	float: left;
+    width: 48%;
+}
+/* Quick view style over  */
+
+.soldout-text{
+	padding: 5px 12px;
+    border: 1px solid red;
+    border-radius: 3px;
+    color: red;
+    font-size: 14px;
+    font-weight: 500;
+}

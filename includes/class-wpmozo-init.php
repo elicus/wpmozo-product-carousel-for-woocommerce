@@ -19,19 +19,6 @@
  */
 class Wpmozo_Init {
 
-	/**
-	 * Add scripts for front.
-	 *
-	 * @since 1.0.0
-	 */
-	public function wpmozo_enqueue_scripts() {
-
-		if( has_block( 'wpmozo/product-carousel' ) ){
-			wp_enqueue_script('wpmozo-swiper-script');
-			wp_enqueue_style('wpmozo-swiper-style');
-		}
-
-	}
 
 	/**
 	 * Register the blocks.
@@ -48,13 +35,28 @@ class Wpmozo_Init {
 		wp_register_script( 
 			'wpmozo-product-carousel-script',
 			WPMOZO_BLOCKS_DIR_URL . 'product-carousel/assets/js/product-carousel.js',
-			array('jquery','wpmozo-swiper-script'),
+			array('jquery','wpmozo-swiper-script','wpmozo-magnific-script'),
 			time(),
 			true
 		);
 		wp_register_style( 
 			'wpmozo-product-carousel-style',
 			WPMOZO_BLOCKS_DIR_URL . 'product-carousel/assets/css/product-carousel.css',
+			array(),
+			time(),
+		);
+
+		// register the magnific popup scripts.
+		wp_register_script( 
+			'wpmozo-magnific-script',
+			WPMOZO_ASSE_DIR_URL . 'frontend/magnific-popup/js/jquery.magnific-popup.min.js',
+			array('jquery'),
+			time(),
+			true
+		);
+		wp_register_style( 
+			'wpmozo-magnific-style',
+			WPMOZO_ASSE_DIR_URL . 'frontend/magnific-popup/css/magnific-popup.css',
 			array(),
 			time(),
 		);
@@ -70,6 +72,14 @@ class Wpmozo_Init {
 		$attributes = $all_options['attributes'];
 
 		wp_localize_script( 'wpmozo-block-product-carousel-script', 'wpmozo_block_carousel_object', $all_options);
+
+		$wpmozo_carousel_object = array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'loading' => esc_html__('Loading...', 'wpmozo-product-carousel-for-woocommerce'),
+			'nonce' => wp_create_nonce('ajax-nonce'),
+		);
+
+		wp_localize_script( 'wpmozo-product-carousel-script', 'wpmozo_carousel_object', $wpmozo_carousel_object);
 		
 		require_once WPMOZO_BLOCKS_DIR_PATH . 'product-carousel/block.php';
 		register_block_type( 'wpmozo/product-carousel', array(
@@ -77,12 +87,19 @@ class Wpmozo_Init {
 			'script_handles' => array(
 				'wpmozo-swiper-script',
 				'wpmozo-product-carousel-script',
+				'wpmozo-magnific-script',
+				'wc-add-to-cart-variation',
+				'zoom',
+				'flexslider',
+				'photoswipe-ui-default',
+				'wc-single-product',
 			),
 			'style_handles' => array(
 				'wpmozo-swiper-style',
 				'woocommerce-layout',
 				'woocommerce-general',
 				'wpmozo-product-carousel-style',
+				'wpmozo-magnific-style',
 			),
 			'attributes' => $attributes,
 			'render_callback' => 'wpmozo_product_carousel_render_callback',
@@ -319,7 +336,7 @@ class Wpmozo_Init {
 			'product_view_type_options' => $product_view_type_options,
 			'all_sizes' => $all_sizes,
 			'all_badge_types' => $all_badge_types,
-			'ajax_url' => admin_url( 'admin-ajax.php' )
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
 		);
 
 		return $all_options;
@@ -334,7 +351,6 @@ class Wpmozo_Init {
 	 */
 	public function add_hooks( $loader, $instance ) {
 
-		$loader->add_action( 'wp_enqueue_scripts', $instance, 'wpmozo_enqueue_scripts' );
 		$loader->add_action( 'init', $instance, 'wpmozo_register_blocks' );
 
 	}

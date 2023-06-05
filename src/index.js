@@ -387,6 +387,7 @@
                                     render: ({ open }) => {
                                         return el(Fragment, {},
                                             el('div', {
+                                                class: "components-base-control wpmozo-quvili-icon-wrap",
                                                 children: [
                                                     attributes.QuickViewLinkIcon &&
                                                     el('img',

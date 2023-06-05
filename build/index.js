@@ -343,6 +343,7 @@ var __webpack_exports__ = {};
             open
           } = _ref2;
           return el(Fragment, {}, el('div', {
+            class: "components-base-control wpmozo-quvili-icon-wrap",
             children: [attributes.QuickViewLinkIcon && el('img', {
               class: "wpmozo-quvili-icon",
               src: attributes.QuickViewLinkIcon

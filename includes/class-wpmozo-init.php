@@ -40,6 +40,12 @@ class Wpmozo_Init {
 			true
 		);
 		wp_register_style( 
+			'wpmozo-block-product-carousel-style',
+			WPMOZO_BLOCKS_DIR_URL . 'product-carousel/assets/css/product-carousel-editor.css',
+			array(),
+			time(),
+		);
+		wp_register_style( 
 			'wpmozo-product-carousel-style',
 			WPMOZO_BLOCKS_DIR_URL . 'product-carousel/assets/css/product-carousel.css',
 			array(),
@@ -84,6 +90,7 @@ class Wpmozo_Init {
 		require_once WPMOZO_BLOCKS_DIR_PATH . 'product-carousel/block.php';
 		register_block_type( 'wpmozo/product-carousel', array(
 			'editor_script' => 'wpmozo-block-product-carousel-script',
+			'editor_style' => 'wpmozo-block-product-carousel-style',
 			'script_handles' => array(
 				'wpmozo-swiper-script',
 				'wpmozo-product-carousel-script',

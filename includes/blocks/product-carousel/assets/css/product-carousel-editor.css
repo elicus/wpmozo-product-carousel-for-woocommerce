@@ -10,3 +10,7 @@
     margin: 0px 20px;
     vertical-align: middle;
 }
+
+.wpmozo-product-carousel-wrap a{
+	pointer-events: none;
+}

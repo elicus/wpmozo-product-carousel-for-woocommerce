@@ -33,7 +33,7 @@ function wpmozo_product_carousel_render_callback( $args ){
     ?>
     <?php if ( $pro_query->have_posts() ) { ?>
         <?php wpmozo_product_carousel_before_hooks( $args ); ?>
-        <div class="wpmozo-product-carousel-wrap swiper" data-atts='<?php echo json_encode($args); ?>' id="wpmozo_<?php echo esc_attr( $args['clientId'] ); ?>">
+        <div class="wpmozo-product-carousel-wrap swiper <?php echo $args['Layout']; ?>" data-atts='<?php echo json_encode($args); ?>' id="wpmozo_<?php echo esc_attr( $args['clientId'] ); ?>">
             <div class="swiper-wrapper">
                 <?php while ( $pro_query->have_posts() ) { ?>
                     <?php

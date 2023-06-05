@@ -14,7 +14,8 @@
         GetAttributes               = wpmozo_block_carousel_object.attributes,
         GetProductViewTypeOptions   = wpmozo_block_carousel_object.product_view_type_options,
         AllSizes                    = wpmozo_block_carousel_object.all_sizes,
-        AllBadgeTypes               = wpmozo_block_carousel_object.all_badge_types;
+        AllBadgeTypes               = wpmozo_block_carousel_object.all_badge_types,
+        AllLayouts                  = wpmozo_block_carousel_object.all_layouts;
 
     const initializeSwiper = ( attributes ) => {
         var sw_obj = {
@@ -93,6 +94,7 @@
         category: 'woocommerce',
         keywords: [ 'wpmozo', 'woocommerce-product-carousel', 'woocommerce', 'carousel' ],
         attributes: GetAttributes,
+        example: {},
         edit: (function( props ) {  
 
             let attributes = props.attributes;
@@ -332,6 +334,18 @@
                             ),
                         ),
                         el( PanelBody, { title: __( 'Display Settings', 'wpmozo-product-carousel-for-woocommerce' ), initialOpen: true },
+                            el(
+                                SelectControl,
+                                {
+                                    key: 'wpmozp-product-carousel-layout',
+                                    label: __('Layout', 'wpmozo-product-carousel-for-woocommerce'),
+                                    value: attributes.Layout,
+                                    options: AllLayouts,
+                                    onChange: function( NewLayout ) {
+                                        props.setAttributes( { Layout: NewLayout } );
+                                    },
+                                },
+                            ),
                             ! attributes.OutOfStock &&
                             el(
                                 ToggleControl,

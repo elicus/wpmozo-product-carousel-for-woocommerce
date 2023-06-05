@@ -195,6 +195,10 @@ class Wpmozo_Init {
 			    'default' => false,
 			),
 			// Display attributes
+			'Layout' => array(
+			    'type' => 'string',
+			    'default' => 'default',
+			),
 			'DisplayOutOfStockLabel' => array(
 			    'type' => 'boolean',
 			    'default' => false,
@@ -337,6 +341,17 @@ class Wpmozo_Init {
 			),
 		);
 
+		$all_layouts = array(
+			array(
+				'label' => __('Default', 'wpmozo-product-carousel-for-woocommerce'),
+				'value' => 'default',
+			),
+			array(
+				'label' => __('Layout 1', 'wpmozo-product-carousel-for-woocommerce'),
+				'value' => 'layout-1',
+			),
+		);
+
 		$all_options = array( 
 			'attributes' => $attributes,
 			'order_by_options' => $order_by_options,
@@ -344,6 +359,7 @@ class Wpmozo_Init {
 			'all_sizes' => $all_sizes,
 			'all_badge_types' => $all_badge_types,
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'all_layouts' => $all_layouts,
 		);
 
 		return $all_options;

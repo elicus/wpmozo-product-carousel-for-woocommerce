@@ -39,7 +39,8 @@ var __webpack_exports__ = {};
     GetAttributes = wpmozo_block_carousel_object.attributes,
     GetProductViewTypeOptions = wpmozo_block_carousel_object.product_view_type_options,
     AllSizes = wpmozo_block_carousel_object.all_sizes,
-    AllBadgeTypes = wpmozo_block_carousel_object.all_badge_types;
+    AllBadgeTypes = wpmozo_block_carousel_object.all_badge_types,
+    AllLayouts = wpmozo_block_carousel_object.all_layouts;
   const initializeSwiper = attributes => {
     var sw_obj = {
       slidesPerView: attributes.Columns,
@@ -103,6 +104,7 @@ var __webpack_exports__ = {};
     category: 'woocommerce',
     keywords: ['wpmozo', 'woocommerce-product-carousel', 'woocommerce', 'carousel'],
     attributes: GetAttributes,
+    example: {},
     edit: function (props) {
       let attributes = props.attributes;
       props.setAttributes({
@@ -297,7 +299,17 @@ var __webpack_exports__ = {};
       })), el(PanelBody, {
         title: __('Display Settings', 'wpmozo-product-carousel-for-woocommerce'),
         initialOpen: true
-      }, !attributes.OutOfStock && el(ToggleControl, {
+      }, el(SelectControl, {
+        key: 'wpmozp-product-carousel-layout',
+        label: __('Layout', 'wpmozo-product-carousel-for-woocommerce'),
+        value: attributes.Layout,
+        options: AllLayouts,
+        onChange: function (NewLayout) {
+          props.setAttributes({
+            Layout: NewLayout
+          });
+        }
+      }), !attributes.OutOfStock && el(ToggleControl, {
         checked: attributes.DisplayOutOfStockLabel,
         label: __('Display Out of Stock Label', 'wpmozo-product-carousel-for-woocommerce'),
         onChange: function (NewDisplayOutOfStockLabel) {

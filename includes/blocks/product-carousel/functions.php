@@ -131,7 +131,7 @@ function wpmozo_product_carousel_prepare_query_args( $args ){
  */
 function wpmozo_product_carousel_before_hooks( $args ){
 
-    if ( ! $args['OutOfStock'] && $args['DisplayOutOfStockLabel'] && ! empty( $args['OutOfStockLabel'] ) ) {
+    if ( ! $args['OutOfStock'] && $args['DisplayOutOfStockLabel'] ) {
         add_action( 'woocommerce_before_shop_loop_item_title', 'wpmozo_product_carousel_outofstock_badge', 10);
     }
     if ( ! $args['ShowFeaturedImage'] ) {
@@ -157,6 +157,12 @@ function wpmozo_product_carousel_before_hooks( $args ){
     }
     if ( $args['EnableQuickViewLink'] ) {
         add_filter( 'woocommerce_product_get_image', 'wpmozo_product_carousel_quick_view_button', 10, 2 );
+    }
+
+    if ( 'layout-1' === $args['Layout'] ) {
+        remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
+        remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+        add_action( 'woocommerce_after_shop_loop_item', 'wpmozo_product_carousel_layout_1_bottom', 10 );
     }
 
 }
@@ -190,11 +196,18 @@ function wpmozo_product_carousel_after_hooks( $args ){
     if ( $args['ShowSaleBadge'] && ( ( 'sale_label' === $args['SaleBadgeType'] && ! empty( $args['SaleLabelText'] ) ) || 'percentage' === $args['SaleBadgeType'] ) ) {
         remove_filter( 'woocommerce_sale_flash', 'wpmozo_product_carousel_sale_badge', 10, 3);
     }
-    if ( ! $args['OutOfStock'] && $args['DisplayOutOfStockLabel'] && ! empty( $args['OutOfStockLabel'] ) ) {
+    if ( ! $args['OutOfStock'] && $args['DisplayOutOfStockLabel'] ) {
         remove_filter( 'woocommerce_before_shop_loop_item_title', 'wpmozo_product_carousel_outofstock_badge', 10);
     }
     if ( $args['EnableQuickViewLink'] ) {
         remove_filter( 'woocommerce_product_get_image', 'wpmozo_product_carousel_quick_view_button', 10, 2 );
+    }
+
+    // Layout 1 hooks
+    if ( 'layout-1' === $args['Layout'] ) {
+        add_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
+        add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+        remove_action( 'woocommerce_after_shop_loop_item', 'wpmozo_product_carousel_layout_1_bottom', 10 );
     }
     
 }
@@ -232,6 +245,13 @@ function wpmozo_product_carousel_add_hooks_admin_preview( $args ){
     }
     if ( $args['ShowSaleBadge'] && ( ( 'sale_label' === $args['SaleBadgeType'] && ! empty( $args['SaleLabelText'] ) ) || 'percentage' === $args['SaleBadgeType'] ) ) {
         add_filter( 'woocommerce_sale_flash', 'wpmozo_product_carousel_sale_badge', 10, 3);
+    }
+
+    // Layout 1 hooks
+    if ( 'layout-1' === $args['Layout'] ) {
+        remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
+        remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+        add_action( 'woocommerce_after_shop_loop_item', 'wpmozo_product_carousel_layout_1_bottom', 10 );
     }
 
 }
@@ -325,7 +345,13 @@ function wpmozo_product_carousel_outofstock_badge(){
 
     global $product,$wpmozo_product_carousel_args;
     if ( ! $product->is_in_stock() ) {
-        $out_text = esc_html__( $wpmozo_product_carousel_args['OutOfStockLabel'], 'wpmozo-product-carousel-for-woocommerce' );
+        if ( ! empty( $wpmozo_product_carousel_args['OutOfStockLabel'] ) ) {
+            $out_text = esc_html__( $wpmozo_product_carousel_args['OutOfStockLabel'], 'wpmozo-product-carousel-for-woocommerce' );
+        }else{
+            $all_status_text = wc_get_product_stock_status_options();
+            $out_text = $all_status_text['outofstock'];
+        }
+        
         echo sprintf('<span class="soldout-text">%s</span>', $out_text);
     }
 
@@ -342,17 +368,16 @@ function wpmozo_product_carousel_quick_view_button( $image, $product ){
     $pro_id = $product->get_id();
     $button_text = esc_html__( $wpmozo_product_carousel_args['QuickViewLinkText'], 'wpmozo-product-carousel-for-woocommerce' );
     $icon = $wpmozo_product_carousel_args['QuickViewLinkIcon'];
+    $inline = '';
+    if ( ! empty( $icon ) ) {
+        $inline = 'background-image: url('.$icon.');background-size:0px;';
+    }
 
     ob_start();
     ?>
     <?php if ( ! empty( $button_text ) || ! empty( $icon ) ) { ?>
         <div class="wpmozo-product__overlay">
-            <button class="button wpmozo-quick-view-button" data-pro-id="<?php echo esc_attr( $pro_id ); ?>">
-                <?php if ( ! empty( $icon ) ) { ?>
-                    <img src="<?php echo esc_attr( $icon ); ?>">
-                <?php } ?>
-                <?php echo $button_text; ?>
-            </button>
+            <button class="button wpmozo-quick-view-button" data-pro-id="<?php echo esc_attr( $pro_id ); ?>" style="<?php echo esc_attr( $inline ); ?>"><?php echo $button_text; ?></button>
         </div>
     <?php } ?>
     <?php
@@ -420,3 +445,23 @@ function wpmozo_quick_view_content(){
 }
 add_action('wp_ajax_wpmozo_quick_view_content', 'wpmozo_quick_view_content');
 add_action('wp_ajax_nopriv_wpmozo_quick_view_content', 'wpmozo_quick_view_content');
+
+/**
+ * Display product carousel layout 1
+ *
+ * @since 1.0.0
+ */
+function wpmozo_product_carousel_layout_1_bottom(){
+
+    ?>
+    <div class="wpmozo-product-bottom">
+        <div class="wpmozo-product-bottom-price">
+            <?php woocommerce_template_loop_price(); ?>
+        </div>
+        <div class="wpmozo-product-bottom-add-to-cart">
+            <?php woocommerce_template_loop_add_to_cart(); ?>
+        </div>
+    </div>
+    <?php
+
+}

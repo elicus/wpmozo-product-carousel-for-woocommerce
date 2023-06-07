@@ -33,8 +33,8 @@ function wpmozo_product_carousel_render_callback( $args ){
     ?>
     <?php if ( $pro_query->have_posts() ) { ?>
         <?php wpmozo_product_carousel_before_hooks( $args ); ?>
-        <div class="wpmozo-product-carousel-wrap swiper <?php echo $args['Layout']; ?>" data-atts='<?php echo json_encode($args); ?>' id="wpmozo_<?php echo esc_attr( $args['clientId'] ); ?>">
-            <div class="swiper-wrapper">
+        <div class="wpmozo-product-carousel-wrap woocommerce swiper <?php echo $args['Layout']; ?>" data-atts='<?php echo json_encode($args); ?>' id="wpmozo_<?php echo esc_attr( $args['clientId'] ); ?>">
+            <ul class="products swiper-wrapper">
                 <?php while ( $pro_query->have_posts() ) { ?>
                     <?php
                     $pro_query->the_post();
@@ -42,20 +42,16 @@ function wpmozo_product_carousel_render_callback( $args ){
                     $visibility = $product->get_catalog_visibility();
                     ?>
                     <?php if ( 'hidden' !== $visibility ) { ?>
-                        <div class="swiper-slide woocommerce">
-                            <ul class="products">
-                                <?php wc_get_template_part( 'content', 'product' ); ?>
-                            </ul>
-                        </div>
+                        <?php wc_get_template_part( 'content', 'product' ); ?>
                     <?php } ?>
                 <?php } ?>
-            </div>
+            </ul>
             <div class="swiper-button-next"></div>
             <div class="swiper-button-prev"></div>
             <div class="swiper-pagination"></div>
         </div>
-        <?php } ?>
         <?php wpmozo_product_carousel_after_hooks( $args ); ?>
+    <?php } ?>
     <?php 
 
     wp_reset_postdata();

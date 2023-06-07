@@ -4,10 +4,10 @@
     const __ = wp.i18n.__;
     const el = element.createElement;
     const registerBlockType = blocks.registerBlockType;
-    const { InspectorControls, MediaUpload, MediaUploadCheck } = editor;
+    const { InspectorControls, MediaUpload, MediaUploadCheck, useBlockProps } = editor;
     const { PanelBody, RangeControl, SelectControl, TextControl, FormTokenField, ToggleControl, Button, Spinner } = components;
     const { Fragment, useState, useEffect } = element;
-    const { useSelect, useDispatch } = wp.data;
+    const { useSelect, useDispatch, dispatch } = wp.data;
     const { serverSideRender: ServerSideRender, hooks } = wp;
 
     var GetOrderByOptions           = wpmozo_block_carousel_object.order_by_options,
@@ -22,6 +22,12 @@
             slidesPerView: attributes.Columns,
             spaceBetween: attributes.SpaceBetween,
             loop: attributes.Loop,
+            swipeHandler: 'li.product',
+            on: {
+                tap: function(swiper, event){
+                    dispatch( 'core/block-editor' ).selectBlock( attributes.clientId );
+                }
+            },
         }
 
         if ( attributes.AutoPlay ) {
@@ -124,6 +130,7 @@
                                     allowReset: false,
                                     initialPosition: 4,
                                     max: 8,
+                                    min: 1,
                                     label: __( 'Columns', 'wpmozo-product-carousel-for-woocommerce' ),
                                     onChange: function( NewColumns ) {
                                         props.setAttributes( { Columns: NewColumns } );

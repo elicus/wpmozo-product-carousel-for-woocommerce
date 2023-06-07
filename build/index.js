@@ -10,7 +10,8 @@ var __webpack_exports__ = {};
   const {
     InspectorControls,
     MediaUpload,
-    MediaUploadCheck
+    MediaUploadCheck,
+    useBlockProps
   } = editor;
   const {
     PanelBody,
@@ -29,7 +30,8 @@ var __webpack_exports__ = {};
   } = element;
   const {
     useSelect,
-    useDispatch
+    useDispatch,
+    dispatch
   } = wp.data;
   const {
     serverSideRender: ServerSideRender,
@@ -45,7 +47,13 @@ var __webpack_exports__ = {};
     var sw_obj = {
       slidesPerView: attributes.Columns,
       spaceBetween: attributes.SpaceBetween,
-      loop: attributes.Loop
+      loop: attributes.Loop,
+      swipeHandler: 'li.product',
+      on: {
+        tap: function (swiper, event) {
+          dispatch('core/block-editor').selectBlock(attributes.clientId);
+        }
+      }
     };
     if (attributes.AutoPlay) {
       sw_obj.autoplay = {
@@ -129,6 +137,7 @@ var __webpack_exports__ = {};
         allowReset: false,
         initialPosition: 4,
         max: 8,
+        min: 1,
         label: __('Columns', 'wpmozo-product-carousel-for-woocommerce'),
         onChange: function (NewColumns) {
           props.setAttributes({

@@ -105,6 +105,7 @@ class Wpmozo_Init {
 				'wpmozo-swiper-style',
 				'woocommerce-layout',
 				'woocommerce-general',
+				'woocommerce-blocktheme',
 				'wpmozo-product-carousel-style',
 				'wpmozo-magnific-style',
 			),
@@ -349,6 +350,10 @@ class Wpmozo_Init {
 			array(
 				'label' => __('Layout 1', 'wpmozo-product-carousel-for-woocommerce'),
 				'value' => 'layout-1',
+			),
+			array(
+				'label' => __('Layout 3', 'wpmozo-product-carousel-for-woocommerce'),
+				'value' => 'layout-3',
 			),
 		);
 

@@ -48,7 +48,6 @@ class Wpmozo_Init {
 		wp_register_style( 
 			'wpmozo-product-carousel-style',
 			WPMOZO_BLOCKS_DIR_URL . 'product-carousel/assets/css/product-carousel.css',
-			array(),
 			time(),
 		);
 

@@ -113,6 +113,21 @@ var __webpack_exports__ = {};
     keywords: ['wpmozo', 'woocommerce-product-carousel', 'woocommerce', 'carousel'],
     attributes: GetAttributes,
     example: {},
+    supports: {
+      "typography": {
+        "fontSize": true,
+        "lineHeight": true,
+        "__experimentalFontFamily": true,
+        "__experimentalTextDecoration": true,
+        "__experimentalFontStyle": true,
+        "__experimentalFontWeight": true,
+        "__experimentalLetterSpacing": true,
+        "__experimentalTextTransform": true,
+        "__experimentalDefaultControls": {
+          "fontSize": true
+        }
+      }
+    },
     edit: function (props) {
       let attributes = props.attributes;
       props.setAttributes({

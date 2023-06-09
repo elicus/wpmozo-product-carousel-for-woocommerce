@@ -394,7 +394,9 @@ function wpmozo_product_carousel_quick_view_button( $image, $product ){
     $button_text = esc_html__( $wpmozo_product_carousel_args['QuickViewLinkText'], 'wpmozo-product-carousel-for-woocommerce' );
     $icon = $wpmozo_product_carousel_args['QuickViewLinkIcon'];
     $inline = '';
+    $has_icon = '';
     if ( ! empty( $icon ) ) {
+        $has_icon = ' has-icon';
         $inline = 'background-image: url('.$icon.');background-size:0px;';
     }
 
@@ -402,7 +404,7 @@ function wpmozo_product_carousel_quick_view_button( $image, $product ){
     ?>
     <?php if ( ! empty( $button_text ) || ! empty( $icon ) ) { ?>
         <div class="wpmozo-product__overlay">
-            <button class="button wpmozo-quick-view-button" data-pro-id="<?php echo esc_attr( $pro_id ); ?>" style="<?php echo esc_attr( $inline ); ?>"><?php echo $button_text; ?></button>
+            <button class="button wpmozo-quick-view-button<?php echo esc_attr( $has_icon ); ?>" data-pro-id="<?php echo esc_attr( $pro_id ); ?>" style="<?php echo esc_attr( $inline ); ?>"><?php echo $button_text; ?></button>
         </div>
     <?php } ?>
     <?php

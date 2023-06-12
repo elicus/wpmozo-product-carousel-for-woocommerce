@@ -250,6 +250,37 @@ class Wpmozo_Init {
 			    'type' => 'string',
 			    'default' => '',
 			),
+			'TitleStyle' => array(
+				'type' => 'object',
+				'FontSize' => array(
+			    	'type' => 'string',
+			    	'default' => '',
+			    ),
+			    'FontAppearance' => array(
+			    	'type' => 'object',
+			    	'default' => array(
+			    		'fontStyle' => '',
+			    		'fontWeight' => '',
+			    	),
+			    ),
+			    'LetterSpacing' => array(
+			    	'type' => 'string',
+			    	'default' => '',
+			    ),
+			    'Decoration' => array(
+			    	'type' => 'string',
+			    	'default' => '',
+			    ),
+			    'default' => array(
+			    	'FontSize' => '',
+			    	'FontAppearance' => array(
+			    		'fontStyle' => '',
+			    		'fontWeight' => '',
+			    	),
+			    	'LetterSpacing' => '',
+			    	'Decoration' => '',
+			    ),
+			),
 		);
 
 		$product_view_type_options = array(

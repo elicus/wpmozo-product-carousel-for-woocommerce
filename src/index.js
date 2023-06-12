@@ -4,7 +4,7 @@
     const __ = wp.i18n.__;
     const el = element.createElement;
     const registerBlockType = blocks.registerBlockType;
-    const { InspectorControls, MediaUpload, MediaUploadCheck, useBlockProps } = editor;
+    const { InspectorControls, MediaUpload, MediaUploadCheck, useBlockProps, __experimentalFontAppearanceControl, FontSizePicker, __experimentalLetterSpacingControl, __experimentalTextDecorationControl } = editor;
     const { PanelBody, RangeControl, SelectControl, TextControl, FormTokenField, ToggleControl, Button, Spinner } = components;
     const { Fragment, useState, useEffect } = element;
     const { useSelect, useDispatch, dispatch } = wp.data;
@@ -101,21 +101,21 @@
         keywords: [ 'wpmozo', 'woocommerce-product-carousel', 'woocommerce', 'carousel' ],
         attributes: GetAttributes,
         example: {},
-        supports: {
-            "typography": {
-                "fontSize": true,
-                "lineHeight": true,
-                "__experimentalFontFamily": true,
-                "__experimentalTextDecoration": true,
-                "__experimentalFontStyle": true,
-                "__experimentalFontWeight": true,
-                "__experimentalLetterSpacing": true,
-                "__experimentalTextTransform": true,
-                "__experimentalDefaultControls": {
-                    "fontSize": true
-                }
-            },
-        },
+        // supports: {
+        //     "typography": {
+        //         "fontSize": true,
+        //         "lineHeight": true,
+        //         "__experimentalFontFamily": true,
+        //         "__experimentalTextDecoration": true,
+        //         "__experimentalFontStyle": true,
+        //         "__experimentalFontWeight": true,
+        //         "__experimentalLetterSpacing": true,
+        //         "__experimentalTextTransform": true,
+        //         "__experimentalDefaultControls": {
+        //             "fontSize": true
+        //         }
+        //     },
+        // },
         edit: (function( props ) {  
 
             let attributes = props.attributes;
@@ -133,6 +133,8 @@
                 product_tag_options = product_tags.map( value => value.name );
             }
             
+            console.log(attributes);
+
             return [
                 el( Fragment, {},
                     el( InspectorControls, {},
@@ -246,7 +248,7 @@
                             el(
                                 SelectControl,
                                 {
-                                    key: 'wpmozp-product-carousel-orderby',
+                                    key: 'wpmozp-product-carousel-viewtype',
                                     label: __(' Product View Type', 'wpmozo-product-carousel-for-woocommerce'),
                                     value: attributes.ProductViewType,
                                     options: GetProductViewTypeOptions,
@@ -535,6 +537,50 @@
                                     onChange: function( NewSaleLabelText ) {
                                         props.setAttributes( { SaleLabelText: NewSaleLabelText } );
                                     },
+                                }
+                            ),
+                        ),
+                    ),
+                    el( InspectorControls , { group: 'styles' },
+                        el( PanelBody, { title: __( 'Title Styles', 'wpmozo-product-carousel-for-woocommerce' ), initialOpen: true },
+                            el( FontSizePicker,
+                                {
+                                    value: attributes.TitleStyle.FontSize,
+                                    onChange: function( NewFontSize ) {
+                                        attributes.TitleStyle.FontSize = NewFontSize;
+                                        props.setAttributes( { TitleStyle: attributes.TitleStyle } );
+                                    },
+                                }
+                            ),
+                            el( __experimentalFontAppearanceControl, 
+                                {
+                                    key: 'wpmozp-product-carousel-titleapp',
+                                    value: {
+                                      fontStyle: attributes.TitleStyle.FontAppearance.fontStyle,
+                                      fontWeight: attributes.TitleStyle.FontAppearance.fontWeight
+                                    },
+                                    onChange: function( NewFontAppearance ) {
+                                        attributes.TitleStyle.FontAppearance = NewFontAppearance;
+                                        props.setAttributes( { TitleStyle: attributes.TitleStyle } );
+                                    },
+                                } 
+                            ),
+                            el( __experimentalLetterSpacingControl, 
+                                {
+                                    value: attributes.TitleStyle.LetterSpacing,
+                                    onChange: function( NewLetterSpacing ) {
+                                        attributes.TitleStyle.LetterSpacing = NewLetterSpacing;
+                                        props.setAttributes( { TitleStyle: attributes.TitleStyle } );
+                                    },
+                                } 
+                            ),
+                            el( __experimentalTextDecorationControl,
+                                {
+                                    value: attributes.TitleStyle.Decoration,
+                                    onChange: function( NewDecoration ) {
+                                        attributes.TitleStyle.Decoration = NewDecoration;
+                                        props.setAttributes( { TitleStyle: attributes.TitleStyle } );
+                                    }, 
                                 }
                             ),
                         ),

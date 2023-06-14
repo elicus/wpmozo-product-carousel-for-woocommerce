@@ -1,8 +1,190 @@
 /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./src/components/wpmozo-typography/wpmozo-typography.js":
+/*!***************************************************************!*\
+  !*** ./src/components/wpmozo-typography/wpmozo-typography.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const el = window.wp.element.createElement;
+const __ = wp.i18n.__;
+const {
+  __experimentalFontAppearanceControl,
+  FontSizePicker,
+  __experimentalLetterSpacingControl,
+  __experimentalTextTransformControl,
+  __experimentalTextDecorationControl
+} = window.wp.blockEditor;
+const {
+  __experimentalToolsPanel,
+  __experimentalToolsPanelItem
+} = window.wp.components;
+const wpmozoTypography = function (args) {
+  const {
+    TypographyKey,
+    attributes,
+    props
+  } = args;
+  const typoSetValue = function (styleType) {
+    let value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    let _Typography = Object.assign({}, attributes[TypographyKey]);
+    _Typography[styleType] = null !== value ? value : '';
+    props.setAttributes({
+      [TypographyKey]: _Typography
+    });
+  };
+  return [el(__experimentalToolsPanel, {
+    label: __('Typography', 'wpmozo-product-carousel-for-woocommerce'),
+    resetAll: () => {
+      let _Typography = {
+        FontSize: '',
+        LetterSpacing: '',
+        Decoration: '',
+        FontAppearance: {
+          fontStyle: '',
+          fontWeight: ''
+        }
+      };
+      props.setAttributes({
+        [TypographyKey]: _Typography
+      });
+    }
+  }, el(__experimentalToolsPanelItem, {
+    label: __('Font Size', 'wpmozo-product-carousel-for-woocommerce'),
+    hasValue: () => true,
+    isShownByDefault: true,
+    onDeselect: () => typoSetValue('FontSize')
+  }, el(FontSizePicker, {
+    value: attributes[TypographyKey].FontSize,
+    onChange: NewFontSize => {
+      typoSetValue('FontSize', NewFontSize);
+    }
+  })), el(__experimentalToolsPanelItem, {
+    className: "single-column",
+    label: __('Appearance', 'wpmozo-product-carousel-for-woocommerce'),
+    hasValue: () => true,
+    isShownByDefault: true,
+    onDeselect: () => typoSetValue('FontAppearance', {
+      fontStyle: '',
+      fontWeight: ''
+    })
+  }, el(__experimentalFontAppearanceControl, {
+    key: 'wpmozp-product-carousel-titleapp',
+    value: {
+      fontStyle: attributes[TypographyKey].FontAppearance.fontStyle,
+      fontWeight: attributes[TypographyKey].FontAppearance.fontWeight
+    },
+    onChange: NewFontAppearance => {
+      typoSetValue('FontAppearance', NewFontAppearance);
+    }
+  })), el(__experimentalToolsPanelItem, {
+    className: "single-column",
+    label: __('Letter spacing', 'wpmozo-product-carousel-for-woocommerce'),
+    hasValue: () => true,
+    isShownByDefault: true,
+    onDeselect: () => typoSetValue('LetterSpacing')
+  }, el(__experimentalLetterSpacingControl, {
+    value: attributes[TypographyKey].LetterSpacing,
+    onChange: NewLetterSpacing => {
+      typoSetValue('LetterSpacing', NewLetterSpacing);
+    }
+  })), el(__experimentalToolsPanelItem, {
+    label: __('Decoration', 'wpmozo-product-carousel-for-woocommerce'),
+    hasValue: () => true,
+    isShownByDefault: true,
+    onDeselect: () => typoSetValue('Decoration')
+  }, el(__experimentalTextDecorationControl, {
+    value: attributes[TypographyKey].Decoration,
+    onChange: NewDecoration => {
+      typoSetValue('Decoration', NewDecoration);
+    }
+  })), el(__experimentalToolsPanelItem, {
+    label: __('Letter case', 'wpmozo-product-carousel-for-woocommerce'),
+    hasValue: () => true,
+    isShownByDefault: true,
+    onDeselect: () => typoSetValue('LetterCase')
+  }, el(__experimentalTextTransformControl, {
+    value: attributes[TypographyKey].LetterCase,
+    onChange: NewLetterCase => {
+      typoSetValue('LetterCase', NewLetterCase);
+    }
+  })))];
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (wpmozoTypography);
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
 var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../src/components/wpmozo-typography/wpmozo-typography */ "./src/components/wpmozo-typography/wpmozo-typography.js");
+
 (function (blocks, editor, element, components) {
   const __ = wp.i18n.__;
   const el = element.createElement;
@@ -11,11 +193,7 @@ var __webpack_exports__ = {};
     InspectorControls,
     MediaUpload,
     MediaUploadCheck,
-    useBlockProps,
-    __experimentalFontAppearanceControl,
-    FontSizePicker,
-    __experimentalLetterSpacingControl,
-    __experimentalTextDecorationControl
+    useBlockProps
   } = editor;
   const {
     PanelBody,
@@ -41,13 +219,45 @@ var __webpack_exports__ = {};
     serverSideRender: ServerSideRender,
     hooks
   } = wp;
+  function convetInlineStyle(options) {
+    let style = '';
+    if ('undefined' !== typeof options.FontSize && '' !== options.FontSize) {
+      style += 'font-size: ' + options.FontSize + ';';
+    }
+    if ('undefined' !== typeof options.FontAppearance.fontStyle && '' !== options.FontAppearance.fontStyle) {
+      style += 'font-style: ' + options.FontAppearance.fontStyle + ';';
+    }
+    if ('undefined' !== typeof options.FontAppearance.fontWeight && '' !== options.FontAppearance.fontWeight) {
+      style += 'font-weight: ' + options.FontAppearance.fontWeight + ';';
+    }
+    if ('undefined' !== typeof options.LetterSpacing && '' !== options.LetterSpacing) {
+      style += 'letter-spacing: ' + options.LetterSpacing + ';';
+    }
+    if ('undefined' !== typeof options.Decoration && '' !== options.Decoration) {
+      style += 'text-decoration: ' + options.Decoration + ';';
+    }
+    if ('undefined' !== typeof options.LetterCase && '' !== options.LetterCase) {
+      style += 'text-transform: ' + options.LetterCase + ';';
+    }
+    return style;
+  }
+  function appendInlineStyle(item, wraper, atts) {
+    let attKey = item.attKey;
+    let selector = item.selector;
+    let inlineStyle = convetInlineStyle(atts[attKey]);
+    if ('' !== inlineStyle) {
+      wraper.find(selector).attr('style', inlineStyle);
+    }
+  }
   var GetOrderByOptions = wpmozo_block_carousel_object.order_by_options,
     GetAttributes = wpmozo_block_carousel_object.attributes,
     GetProductViewTypeOptions = wpmozo_block_carousel_object.product_view_type_options,
     AllSizes = wpmozo_block_carousel_object.all_sizes,
     AllBadgeTypes = wpmozo_block_carousel_object.all_badge_types,
-    AllLayouts = wpmozo_block_carousel_object.all_layouts;
+    AllLayouts = wpmozo_block_carousel_object.all_layouts,
+    ProductTypes = wpmozo_block_carousel_object.products_types;
   const initializeSwiper = attributes => {
+    let selector = 'wpmozo_' + attributes.clientId;
     var sw_obj = {
       slidesPerView: attributes.Columns,
       spaceBetween: attributes.SpaceBetween,
@@ -56,6 +266,37 @@ var __webpack_exports__ = {};
       on: {
         tap: function (swiper, event) {
           dispatch('core/block-editor').selectBlock(attributes.clientId);
+        },
+        beforeInit: function (swiper) {
+          let add_to_cart_selector = '.add_to_cart_button';
+          if (ProductTypes.length) {
+            jQuery.each(ProductTypes, function (key, type) {
+              add_to_cart_selector += ', .button.product_type_' + type;
+            });
+          }
+          let wraper = jQuery('#' + selector);
+          let styles = [{
+            attKey: 'TitleStyle',
+            selector: '.woocommerce-loop-product__title'
+          }, {
+            attKey: 'PriceStyle',
+            selector: '.price'
+          }, {
+            attKey: 'AddToCartStyle',
+            selector: add_to_cart_selector
+          }, {
+            attKey: 'QuickViewStyle',
+            selector: '.wpmozo-quick-view-button'
+          }, {
+            attKey: 'SaleLabelStyle',
+            selector: '.onsale'
+          }, {
+            attKey: 'StockLabelStyle',
+            selector: '.soldout-text'
+          }];
+          styles.map(function (item) {
+            appendInlineStyle(item, wraper, attributes);
+          });
         }
       }
     };
@@ -76,7 +317,6 @@ var __webpack_exports__ = {};
         type: attributes.PaginationType
       };
     }
-    let selector = 'wpmozo_' + attributes.clientId;
     let _swiper = new Swiper('#' + selector, sw_obj);
   };
   hooks.addAction('server-side-loading-finished', 'function_name', initializeSwiper);
@@ -117,26 +357,9 @@ var __webpack_exports__ = {};
     keywords: ['wpmozo', 'woocommerce-product-carousel', 'woocommerce', 'carousel'],
     attributes: GetAttributes,
     example: {},
-    // supports: {
-    //     "typography": {
-    //         "fontSize": true,
-    //         "lineHeight": true,
-    //         "__experimentalFontFamily": true,
-    //         "__experimentalTextDecoration": true,
-    //         "__experimentalFontStyle": true,
-    //         "__experimentalFontWeight": true,
-    //         "__experimentalLetterSpacing": true,
-    //         "__experimentalTextTransform": true,
-    //         "__experimentalDefaultControls": {
-    //             "fontSize": true
-    //         }
-    //     },
-    // },
     edit: function (props) {
       let attributes = props.attributes;
-      props.setAttributes({
-        clientId: props.clientId
-      });
+      attributes.clientId = props.clientId;
       let product_cats = wp.data.select('core').getEntityRecords('taxonomy', 'product_cat');
       let product_cat_options = [];
       if (product_cats) {
@@ -147,7 +370,6 @@ var __webpack_exports__ = {};
       if (product_tags) {
         product_tag_options = product_tags.map(value => value.name);
       }
-      console.log(attributes);
       return [el(Fragment, {}, el(InspectorControls, {}, el(PanelBody, {
         title: __('Carousel Settings', 'wpmozo-product-carousel-for-woocommerce'),
         initialOpen: true
@@ -470,44 +692,53 @@ var __webpack_exports__ = {};
       }))), el(InspectorControls, {
         group: 'styles'
       }, el(PanelBody, {
-        title: __('Title Styles', 'wpmozo-product-carousel-for-woocommerce'),
-        initialOpen: true
-      }, el(FontSizePicker, {
-        value: attributes.TitleStyle.FontSize,
-        onChange: function (NewFontSize) {
-          attributes.TitleStyle.FontSize = NewFontSize;
-          props.setAttributes({
-            TitleStyle: attributes.TitleStyle
-          });
-        }
-      }), el(__experimentalFontAppearanceControl, {
-        key: 'wpmozp-product-carousel-titleapp',
-        value: {
-          fontStyle: attributes.TitleStyle.FontAppearance.fontStyle,
-          fontWeight: attributes.TitleStyle.FontAppearance.fontWeight
-        },
-        onChange: function (NewFontAppearance) {
-          attributes.TitleStyle.FontAppearance = NewFontAppearance;
-          props.setAttributes({
-            TitleStyle: attributes.TitleStyle
-          });
-        }
-      }), el(__experimentalLetterSpacingControl, {
-        value: attributes.TitleStyle.LetterSpacing,
-        onChange: function (NewLetterSpacing) {
-          attributes.TitleStyle.LetterSpacing = NewLetterSpacing;
-          props.setAttributes({
-            TitleStyle: attributes.TitleStyle
-          });
-        }
-      }), el(__experimentalTextDecorationControl, {
-        value: attributes.TitleStyle.Decoration,
-        onChange: function (NewDecoration) {
-          attributes.TitleStyle.Decoration = NewDecoration;
-          props.setAttributes({
-            TitleStyle: attributes.TitleStyle
-          });
-        }
+        title: __('Title Style', 'wpmozo-product-carousel-for-woocommerce'),
+        className: "wpmozo-typography-panel",
+        initialOpen: false
+      }, el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
+        TypographyKey: 'TitleStyle',
+        attributes: attributes,
+        props: props
+      })), el(PanelBody, {
+        title: __('Price Style', 'wpmozo-product-carousel-for-woocommerce'),
+        className: "wpmozo-typography-panel",
+        initialOpen: false
+      }, el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
+        TypographyKey: 'PriceStyle',
+        attributes: attributes,
+        props: props
+      })), el(PanelBody, {
+        title: __('Add to Cart Style', 'wpmozo-product-carousel-for-woocommerce'),
+        className: "wpmozo-typography-panel",
+        initialOpen: false
+      }, el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
+        TypographyKey: 'AddToCartStyle',
+        attributes: attributes,
+        props: props
+      })), el(PanelBody, {
+        title: __('Quick View Style', 'wpmozo-product-carousel-for-woocommerce'),
+        className: "wpmozo-typography-panel",
+        initialOpen: false
+      }, el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
+        TypographyKey: 'QuickViewStyle',
+        attributes: attributes,
+        props: props
+      })), el(PanelBody, {
+        title: __('Sale Label Style', 'wpmozo-product-carousel-for-woocommerce'),
+        className: "wpmozo-typography-panel",
+        initialOpen: false
+      }, el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
+        TypographyKey: 'SaleLabelStyle',
+        attributes: attributes,
+        props: props
+      })), !attributes.OutOfStock && attributes.DisplayOutOfStockLabel && el(PanelBody, {
+        title: __('Out Of Stock Label Style', 'wpmozo-product-carousel-for-woocommerce'),
+        className: "wpmozo-typography-panel",
+        initialOpen: false
+      }, el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
+        TypographyKey: 'StockLabelStyle',
+        attributes: attributes,
+        props: props
       })))), el(ServerSideRender, {
         block: 'wpmozo/product-carousel',
         attributes: attributes,
@@ -519,6 +750,8 @@ var __webpack_exports__ = {};
     }
   });
 })(window.wp.blocks, window.wp.blockEditor, window.wp.element, window.wp.components);
+})();
+
 /******/ })()
 ;
 //# sourceMappingURL=index.js.map

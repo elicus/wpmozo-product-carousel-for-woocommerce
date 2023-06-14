@@ -1,23 +1,67 @@
 
+import wpmozoTypography from '../src/components/wpmozo-typography/wpmozo-typography';
+
 ( function(blocks, editor, element, components) {
 
     const __ = wp.i18n.__;
     const el = element.createElement;
     const registerBlockType = blocks.registerBlockType;
-    const { InspectorControls, MediaUpload, MediaUploadCheck, useBlockProps, __experimentalFontAppearanceControl, FontSizePicker, __experimentalLetterSpacingControl, __experimentalTextDecorationControl } = editor;
+    const { InspectorControls, MediaUpload, MediaUploadCheck, useBlockProps } = editor;
     const { PanelBody, RangeControl, SelectControl, TextControl, FormTokenField, ToggleControl, Button, Spinner } = components;
     const { Fragment, useState, useEffect } = element;
     const { useSelect, useDispatch, dispatch } = wp.data;
     const { serverSideRender: ServerSideRender, hooks } = wp;
+
+    function convetInlineStyle( options ){
+
+        let style = '';
+
+        if ( 'undefined' !== typeof options.FontSize && '' !== options.FontSize ) {
+            style += 'font-size: '+options.FontSize+';';
+        }
+        if ( 'undefined' !== typeof options.FontAppearance.fontStyle && '' !== options.FontAppearance.fontStyle ) {
+            style += 'font-style: '+options.FontAppearance.fontStyle+';';
+        }
+        if ( 'undefined' !== typeof options.FontAppearance.fontWeight && '' !== options.FontAppearance.fontWeight ) {
+            style += 'font-weight: '+options.FontAppearance.fontWeight+';';
+        }
+        if ( 'undefined' !== typeof options.LetterSpacing && '' !== options.LetterSpacing ) {
+            style += 'letter-spacing: '+options.LetterSpacing+';';
+        }
+        if ( 'undefined' !== typeof options.Decoration && '' !== options.Decoration ) {
+            style += 'text-decoration: '+options.Decoration+';';
+        }
+        if ( 'undefined' !== typeof options.LetterCase && '' !== options.LetterCase ) {
+            style += 'text-transform: '+options.LetterCase+';';
+        }
+
+        return style;
+
+    }
+
+    function appendInlineStyle( item, wraper, atts ){
+
+        let attKey = item.attKey;
+        let selector = item.selector;
+        let inlineStyle = convetInlineStyle( atts[attKey] );
+        if ( '' !== inlineStyle ) {
+            wraper.find(selector).attr('style', inlineStyle);
+        }
+
+    }
 
     var GetOrderByOptions           = wpmozo_block_carousel_object.order_by_options,
         GetAttributes               = wpmozo_block_carousel_object.attributes,
         GetProductViewTypeOptions   = wpmozo_block_carousel_object.product_view_type_options,
         AllSizes                    = wpmozo_block_carousel_object.all_sizes,
         AllBadgeTypes               = wpmozo_block_carousel_object.all_badge_types,
-        AllLayouts                  = wpmozo_block_carousel_object.all_layouts;
+        AllLayouts                  = wpmozo_block_carousel_object.all_layouts,
+        ProductTypes                = wpmozo_block_carousel_object.products_types;
 
     const initializeSwiper = ( attributes ) => {
+
+        let selector = 'wpmozo_'+attributes.clientId;
+
         var sw_obj = {
             slidesPerView: attributes.Columns,
             spaceBetween: attributes.SpaceBetween,
@@ -26,6 +70,29 @@
             on: {
                 tap: function(swiper, event){
                     dispatch( 'core/block-editor' ).selectBlock( attributes.clientId );
+                },
+                beforeInit: function(swiper){
+
+                    let add_to_cart_selector = '.add_to_cart_button';
+                    if ( ProductTypes.length ) {
+                        jQuery.each(ProductTypes, function(key, type){
+                            add_to_cart_selector += ', .button.product_type_'+type;
+                        });
+                    }
+
+                    let wraper = jQuery('#'+selector);
+                    let styles = [
+                        {attKey: 'TitleStyle', selector: '.woocommerce-loop-product__title'},
+                        {attKey: 'PriceStyle', selector: '.price'},
+                        {attKey: 'AddToCartStyle', selector: add_to_cart_selector},
+                        {attKey: 'QuickViewStyle', selector: '.wpmozo-quick-view-button'},
+                        {attKey: 'SaleLabelStyle', selector: '.onsale'},
+                        {attKey: 'StockLabelStyle', selector: '.soldout-text'},
+                    ];
+
+                    styles.map(
+                        function(item) { appendInlineStyle(item, wraper, attributes); }
+                    );
                 }
             },
         }
@@ -49,8 +116,6 @@
                 type: attributes.PaginationType,
             };
         }
-
-        let selector = 'wpmozo_'+attributes.clientId;
 
         let _swiper = new Swiper('#'+selector, sw_obj);
     };
@@ -101,25 +166,10 @@
         keywords: [ 'wpmozo', 'woocommerce-product-carousel', 'woocommerce', 'carousel' ],
         attributes: GetAttributes,
         example: {},
-        // supports: {
-        //     "typography": {
-        //         "fontSize": true,
-        //         "lineHeight": true,
-        //         "__experimentalFontFamily": true,
-        //         "__experimentalTextDecoration": true,
-        //         "__experimentalFontStyle": true,
-        //         "__experimentalFontWeight": true,
-        //         "__experimentalLetterSpacing": true,
-        //         "__experimentalTextTransform": true,
-        //         "__experimentalDefaultControls": {
-        //             "fontSize": true
-        //         }
-        //     },
-        // },
         edit: (function( props ) {  
 
             let attributes = props.attributes;
-            props.setAttributes( { clientId: props.clientId } );
+            attributes.clientId = props.clientId;
 
             let product_cats = wp.data.select('core').getEntityRecords( 'taxonomy', 'product_cat' );
             let product_cat_options = [];
@@ -132,8 +182,6 @@
             if( product_tags ) {
                 product_tag_options = product_tags.map( value => value.name );
             }
-            
-            console.log(attributes);
 
             return [
                 el( Fragment, {},
@@ -371,28 +419,28 @@
                                 },
                             ),
                             ! attributes.OutOfStock &&
-                            el(
-                                ToggleControl,
-                                {
-                                    checked: attributes.DisplayOutOfStockLabel, 
-                                    label: __( 'Display Out of Stock Label', 'wpmozo-product-carousel-for-woocommerce' ),
-                                    onChange: function( NewDisplayOutOfStockLabel ) {
-                                        props.setAttributes( { DisplayOutOfStockLabel: NewDisplayOutOfStockLabel } );
-                                    },
-                                }
-                            ),
+                                el(
+                                    ToggleControl,
+                                    {
+                                        checked: attributes.DisplayOutOfStockLabel, 
+                                        label: __( 'Display Out of Stock Label', 'wpmozo-product-carousel-for-woocommerce' ),
+                                        onChange: function( NewDisplayOutOfStockLabel ) {
+                                            props.setAttributes( { DisplayOutOfStockLabel: NewDisplayOutOfStockLabel } );
+                                        },
+                                    }
+                                ),
                             ! attributes.OutOfStock && attributes.DisplayOutOfStockLabel &&
-                            el(
-                                TextControl,
-                                {
-                                    key: 'wpmozp-product-outofstock-label',
-                                    value: attributes.OutOfStockLabel,
-                                    label: __( 'Out Of Stock Label', 'wpmozo-product-carousel-for-woocommerce' ),
-                                    onChange: function( NewOutOfStockLabel ) {
-                                        props.setAttributes( { OutOfStockLabel: NewOutOfStockLabel } );
-                                    },
-                                }
-                            ),
+                                el(
+                                    TextControl,
+                                    {
+                                        key: 'wpmozp-product-outofstock-label',
+                                        value: attributes.OutOfStockLabel,
+                                        label: __( 'Out Of Stock Label', 'wpmozo-product-carousel-for-woocommerce' ),
+                                        onChange: function( NewOutOfStockLabel ) {
+                                            props.setAttributes( { OutOfStockLabel: NewOutOfStockLabel } );
+                                        },
+                                    }
+                                ),
                             el(
                                 ToggleControl,
                                 {
@@ -462,18 +510,18 @@
                                 }
                             ),
                             attributes.ShowFeaturedImage &&
-                            el(
-                                SelectControl,
-                                {
-                                    key: 'wpmozp-product-carousel-featimasize',
-                                    label: __('Featured Image Size', 'wpmozo-product-carousel-for-woocommerce'),
-                                    value: attributes.FeaturedImageSize,
-                                    options: AllSizes,
-                                    onChange: function( NewFeaturedImageSize ) {
-                                        props.setAttributes( { FeaturedImageSize: NewFeaturedImageSize } );
+                                el(
+                                    SelectControl,
+                                    {
+                                        key: 'wpmozp-product-carousel-featimasize',
+                                        label: __('Featured Image Size', 'wpmozo-product-carousel-for-woocommerce'),
+                                        value: attributes.FeaturedImageSize,
+                                        options: AllSizes,
+                                        onChange: function( NewFeaturedImageSize ) {
+                                            props.setAttributes( { FeaturedImageSize: NewFeaturedImageSize } );
+                                        },
                                     },
-                                },
-                            ),
+                                ),
                             el(
                                 ToggleControl,
                                 {
@@ -515,75 +563,106 @@
                                 }
                             ),
                             attributes.ShowSaleBadge &&
-                            el(
-                                SelectControl,
-                                {
-                                    key: 'wpmozp-product-carousel-salebadgetype',
-                                    label: __('Sale Badge Type', 'wpmozo-product-carousel-for-woocommerce'),
-                                    value: attributes.SaleBadgeType,
-                                    options: AllBadgeTypes,
-                                    onChange: function( NewSaleBadgeType ) {
-                                        props.setAttributes( { SaleBadgeType: NewSaleBadgeType } );
+                                el(
+                                    SelectControl,
+                                    {
+                                        key: 'wpmozp-product-carousel-salebadgetype',
+                                        label: __('Sale Badge Type', 'wpmozo-product-carousel-for-woocommerce'),
+                                        value: attributes.SaleBadgeType,
+                                        options: AllBadgeTypes,
+                                        onChange: function( NewSaleBadgeType ) {
+                                            props.setAttributes( { SaleBadgeType: NewSaleBadgeType } );
+                                        },
                                     },
-                                },
-                            ),
+                                ),
                             attributes.ShowSaleBadge && 'sale_label' === attributes.SaleBadgeType &&
-                            el(
-                                TextControl,
-                                {
-                                    key: 'wpmozp-product-salebadge-label',
-                                    value: attributes.SaleLabelText,
-                                    label: __( 'Sale Label Text', 'wpmozo-product-carousel-for-woocommerce' ),
-                                    onChange: function( NewSaleLabelText ) {
-                                        props.setAttributes( { SaleLabelText: NewSaleLabelText } );
-                                    },
-                                }
-                            ),
+                                el(
+                                    TextControl,
+                                    {
+                                        key: 'wpmozp-product-salebadge-label',
+                                        value: attributes.SaleLabelText,
+                                        label: __( 'Sale Label Text', 'wpmozo-product-carousel-for-woocommerce' ),
+                                        onChange: function( NewSaleLabelText ) {
+                                            props.setAttributes( { SaleLabelText: NewSaleLabelText } );
+                                        },
+                                    }
+                                ),
                         ),
                     ),
                     el( InspectorControls , { group: 'styles' },
-                        el( PanelBody, { title: __( 'Title Styles', 'wpmozo-product-carousel-for-woocommerce' ), initialOpen: true },
-                            el( FontSizePicker,
-                                {
-                                    value: attributes.TitleStyle.FontSize,
-                                    onChange: function( NewFontSize ) {
-                                        attributes.TitleStyle.FontSize = NewFontSize;
-                                        props.setAttributes( { TitleStyle: attributes.TitleStyle } );
-                                    },
-                                }
-                            ),
-                            el( __experimentalFontAppearanceControl, 
-                                {
-                                    key: 'wpmozp-product-carousel-titleapp',
-                                    value: {
-                                      fontStyle: attributes.TitleStyle.FontAppearance.fontStyle,
-                                      fontWeight: attributes.TitleStyle.FontAppearance.fontWeight
-                                    },
-                                    onChange: function( NewFontAppearance ) {
-                                        attributes.TitleStyle.FontAppearance = NewFontAppearance;
-                                        props.setAttributes( { TitleStyle: attributes.TitleStyle } );
-                                    },
-                                } 
-                            ),
-                            el( __experimentalLetterSpacingControl, 
-                                {
-                                    value: attributes.TitleStyle.LetterSpacing,
-                                    onChange: function( NewLetterSpacing ) {
-                                        attributes.TitleStyle.LetterSpacing = NewLetterSpacing;
-                                        props.setAttributes( { TitleStyle: attributes.TitleStyle } );
-                                    },
-                                } 
-                            ),
-                            el( __experimentalTextDecorationControl,
-                                {
-                                    value: attributes.TitleStyle.Decoration,
-                                    onChange: function( NewDecoration ) {
-                                        attributes.TitleStyle.Decoration = NewDecoration;
-                                        props.setAttributes( { TitleStyle: attributes.TitleStyle } );
-                                    }, 
-                                }
-                            ),
+                        el( PanelBody, 
+                            { 
+                                title: __( 'Title Style', 'wpmozo-product-carousel-for-woocommerce' ),
+                                className: "wpmozo-typography-panel",
+                                initialOpen: false,
+                            },
+                            el( wpmozoTypography, {
+                                TypographyKey: 'TitleStyle',
+                                attributes: attributes,
+                                props: props,
+                            } ),
                         ),
+                        el( PanelBody, 
+                            { 
+                                title: __( 'Price Style', 'wpmozo-product-carousel-for-woocommerce' ),
+                                className: "wpmozo-typography-panel",
+                                initialOpen: false,
+                            },
+                            el( wpmozoTypography, {
+                                TypographyKey: 'PriceStyle',
+                                attributes: attributes,
+                                props: props,
+                            } ),
+                        ),
+                        el( PanelBody, 
+                            { 
+                                title: __( 'Add to Cart Style', 'wpmozo-product-carousel-for-woocommerce' ),
+                                className: "wpmozo-typography-panel",
+                                initialOpen: false,
+                            },
+                            el( wpmozoTypography, {
+                                TypographyKey: 'AddToCartStyle',
+                                attributes: attributes,
+                                props: props,
+                            } ),
+                        ),
+                        el( PanelBody, 
+                            { 
+                                title: __( 'Quick View Style', 'wpmozo-product-carousel-for-woocommerce' ),
+                                className: "wpmozo-typography-panel",
+                                initialOpen: false,
+                            },
+                            el( wpmozoTypography, {
+                                TypographyKey: 'QuickViewStyle',
+                                attributes: attributes,
+                                props: props,
+                            } ),
+                        ),
+                        el( PanelBody, 
+                            { 
+                                title: __( 'Sale Label Style', 'wpmozo-product-carousel-for-woocommerce' ),
+                                className: "wpmozo-typography-panel",
+                                initialOpen: false,
+                            },
+                            el( wpmozoTypography, {
+                                TypographyKey: 'SaleLabelStyle',
+                                attributes: attributes,
+                                props: props,
+                            } ),
+                        ),
+                        ! attributes.OutOfStock && attributes.DisplayOutOfStockLabel &&
+                            el( PanelBody, 
+                                { 
+                                    title: __( 'Out Of Stock Label Style', 'wpmozo-product-carousel-for-woocommerce' ),
+                                    className: "wpmozo-typography-panel",
+                                    initialOpen: false,
+                                },
+                                el( wpmozoTypography, {
+                                    TypographyKey: 'StockLabelStyle',
+                                    attributes: attributes,
+                                    props: props,
+                                } ),
+                            ),
                     ),
                 ),
                 el(

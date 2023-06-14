@@ -13,3 +13,15 @@
 .wpmozo-product-carousel-wrap a{
 	pointer-events: none;
 }
+.wpmozo-typography-panel .components-tools-panel{
+	padding: 10px 0px;
+}
+.wpmozo-typography-panel .single-column .components-input-control__container{
+	width: 100%;
+}
+.wpmozo-typography-panel .single-column{
+    grid-column: span 1;
+}
+.wpmozo-typography-panel .components-font-size-picker__controls{
+	margin-bottom: 0px;
+}

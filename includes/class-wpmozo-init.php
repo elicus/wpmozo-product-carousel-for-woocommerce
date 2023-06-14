@@ -76,12 +76,17 @@ class Wpmozo_Init {
 		$all_options = $this->wpmozo_get_all_settings_options();
 		$attributes = $all_options['attributes'];
 
+		$products_types = wc_get_product_types();
+		$products_type_keys = array_keys( $products_types );
+		$all_options['products_types'] = $products_type_keys;
+
 		wp_localize_script( 'wpmozo-block-product-carousel-script', 'wpmozo_block_carousel_object', $all_options);
 
 		$wpmozo_carousel_object = array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'loading' => esc_html__('Loading...', 'wpmozo-product-carousel-for-woocommerce'),
 			'nonce' => wp_create_nonce('ajax-nonce'),
+			'products_types' => $products_type_keys,
 		);
 
 		wp_localize_script( 'wpmozo-product-carousel-script', 'wpmozo_carousel_object', $wpmozo_carousel_object);
@@ -122,6 +127,51 @@ class Wpmozo_Init {
 	 * @return array $all_options All settings options
 	 */
 	public function wpmozo_get_all_settings_options() {
+
+		$typography_atts = array(
+			'type' => 'object',
+			'FontSize' => array(
+		    	'type' => 'string',
+		    	'default' => '',
+		    ),
+		    'FontAppearance' => array(
+		    	'type' => 'object',
+			    'fontStyle' => array(
+			    	'type' => 'string',
+			    	'default' => '',
+			    ),
+			    'fontWeight' => array(
+			    	'type' => 'string',
+			    	'default' => '',
+			    ),
+		    	'default' => array(
+		    		'fontStyle' => '',
+		    		'fontWeight' => '',
+		    	),
+		    ),
+		    'LetterSpacing' => array(
+		    	'type' => 'string',
+		    	'default' => '',
+		    ),
+		    'Decoration' => array(
+		    	'type' => 'string',
+		    	'default' => '',
+		    ),
+		    'LetterCase' => array(
+		    	'type' => 'string',
+		    	'default' => '',
+		    ),
+		    'default' => array(
+		    	'FontSize' => '',
+		    	'FontAppearance' => array(
+		    		'fontStyle' => '',
+		    		'fontWeight' => '',
+		    	),
+		    	'LetterSpacing' => '',
+		    	'Decoration' => '',
+		    	'LetterCase' => '',
+		    ),
+		);
 
 		$attributes = array(
 			'clientId' => array(
@@ -250,37 +300,13 @@ class Wpmozo_Init {
 			    'type' => 'string',
 			    'default' => '',
 			),
-			'TitleStyle' => array(
-				'type' => 'object',
-				'FontSize' => array(
-			    	'type' => 'string',
-			    	'default' => '',
-			    ),
-			    'FontAppearance' => array(
-			    	'type' => 'object',
-			    	'default' => array(
-			    		'fontStyle' => '',
-			    		'fontWeight' => '',
-			    	),
-			    ),
-			    'LetterSpacing' => array(
-			    	'type' => 'string',
-			    	'default' => '',
-			    ),
-			    'Decoration' => array(
-			    	'type' => 'string',
-			    	'default' => '',
-			    ),
-			    'default' => array(
-			    	'FontSize' => '',
-			    	'FontAppearance' => array(
-			    		'fontStyle' => '',
-			    		'fontWeight' => '',
-			    	),
-			    	'LetterSpacing' => '',
-			    	'Decoration' => '',
-			    ),
-			),
+			// Styles attributes
+			'TitleStyle' => $typography_atts,
+			'PriceStyle' => $typography_atts,
+			'AddToCartStyle' => $typography_atts,
+			'QuickViewStyle' => $typography_atts,
+			'SaleLabelStyle' => $typography_atts,
+			'StockLabelStyle' => $typography_atts,
 		);
 
 		$product_view_type_options = array(

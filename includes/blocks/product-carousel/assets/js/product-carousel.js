@@ -2,16 +2,44 @@
 
 	"use strict";
 
+	var ProductTypes = wpmozo_carousel_object.products_types;
+
 	var swiper = [];
 
 	$('.wpmozo-product-carousel-wrap').each(function(){
 
-		var atts = $(this).data('atts');
+		var $this = $(this),
+		 	atts = $(this).data('atts');
 
 		var sw_obj = {
 			slidesPerView: atts.Columns,
 		  	spaceBetween: atts.SpaceBetween,
 			loop: atts.Loop,
+			on: {
+                beforeInit: function(swiper){
+
+                	let add_to_cart_selector = '.add_to_cart_button';
+                    if ( ProductTypes.length ) {
+                        jQuery.each(ProductTypes, function(key, type){
+                            add_to_cart_selector += ', .button.product_type_'+type;
+                        });
+                    }
+
+                    let styles = [
+                    	{attKey: 'TitleStyle', selector: '.woocommerce-loop-product__title'},
+                    	{attKey: 'PriceStyle', selector: '.price'},
+                    	{attKey: 'AddToCartStyle', selector: add_to_cart_selector},
+                    	{attKey: 'QuickViewStyle', selector: '.wpmozo-quick-view-button'},
+                    	{attKey: 'SaleLabelStyle', selector: '.onsale'},
+                    	{attKey: 'StockLabelStyle', selector: '.soldout-text'},
+                    ];
+
+                    styles.map(
+					  	function(item) { appendInlineStyle(item, $this, atts); }
+					);
+
+                }
+            },
 		}
 
 		if ( atts.AutoPlay ) {
@@ -86,5 +114,43 @@
         });
 
 	});
+
+	function appendInlineStyle( item, wraper, atts ){
+
+		let attKey = item.attKey;
+		let selector = item.selector;
+		let inlineStyle = convetInlineStyle( atts[attKey] );
+        if ( '' !== inlineStyle ) {
+            wraper.find(selector).attr('style', inlineStyle);
+        }
+
+	}
+
+	function convetInlineStyle( options ){
+
+        let style = '';
+
+        if ( 'undefined' !== typeof options.FontSize && '' !== options.FontSize ) {
+            style += 'font-size: '+options.FontSize+';';
+        }
+        if ( 'undefined' !== typeof options.FontAppearance.fontStyle && '' !== options.FontAppearance.fontStyle ) {
+            style += 'font-style: '+options.FontAppearance.fontStyle+';';
+        }
+        if ( 'undefined' !== typeof options.FontAppearance.fontWeight && '' !== options.FontAppearance.fontWeight ) {
+            style += 'font-weight: '+options.FontAppearance.fontWeight+';';
+        }
+        if ( 'undefined' !== typeof options.LetterSpacing && '' !== options.LetterSpacing ) {
+            style += 'letter-spacing: '+options.LetterSpacing+';';
+        }
+        if ( 'undefined' !== typeof options.Decoration && '' !== options.Decoration ) {
+            style += 'text-decoration: '+options.Decoration+';';
+        }
+        if ( 'undefined' !== typeof options.LetterCase && '' !== options.LetterCase ) {
+            style += 'text-transform: '+options.LetterCase+';';
+        }
+
+        return style;
+
+    }
 
 } )(jQuery);

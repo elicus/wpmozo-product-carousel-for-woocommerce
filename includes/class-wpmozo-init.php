@@ -54,14 +54,14 @@ class Wpmozo_Init {
 		// register the magnific popup scripts.
 		wp_register_script( 
 			'wpmozo-magnific-script',
-			WPMOZO_ASSE_DIR_URL . 'frontend/magnific-popup/js/jquery.magnific-popup.min.js',
+			WPMOZO_ASSE_DIR_URL . 'frontend/magnific/js/jquery.magnific-popup.min.js',
 			array('jquery'),
 			time(),
 			true
 		);
 		wp_register_style( 
 			'wpmozo-magnific-style',
-			WPMOZO_ASSE_DIR_URL . 'frontend/magnific-popup/css/magnific-popup.css',
+			WPMOZO_ASSE_DIR_URL . 'frontend/magnific/css/magnific-popup.css',
 			array(),
 			time(),
 		);

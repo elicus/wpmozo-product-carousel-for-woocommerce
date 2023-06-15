@@ -102,11 +102,13 @@
 /* Layout 1 style over */
 
 /* Layout 3 style start  */
-.wpmozo-product-carousel-wrap.layout-3 ul.products li.product a.button{
+.wpmozo-product-carousel-wrap.layout-3 .wpmozo-layout-wraper{
 	width: 100%;
 	display: block;
-	max-width: -webkit-fill-available;
-	margin-top: -9px !important;
+}
+.wpmozo-product-carousel-wrap.layout-3 ul.products li.product a.button{
+	display: block;
+	margin-top: 0px !important;
 }
 .wpmozo-product-carousel-wrap.layout-3 .woocommerce-loop-product__link, 
 .wpmozo-product-carousel-wrap.layout-3 .attachment-woocommerce_thumbnail{

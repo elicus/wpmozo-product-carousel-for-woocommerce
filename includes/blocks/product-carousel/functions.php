@@ -132,7 +132,11 @@ function wpmozo_product_carousel_prepare_query_args( $args ){
 function wpmozo_product_carousel_before_hooks( $args ){
 
     if ( ! $args['OutOfStock'] && $args['DisplayOutOfStockLabel'] ) {
-        add_action( 'woocommerce_before_shop_loop_item_title', 'wpmozo_product_carousel_outofstock_badge', 10);
+        if ( 'layout-3' === $args['Layout'] ) {
+            add_action( 'woocommerce_shop_loop_item_title', 'wpmozo_product_carousel_outofstock_badge', 9);
+        }else{
+            add_action( 'woocommerce_before_shop_loop_item_title', 'wpmozo_product_carousel_outofstock_badge', 10);
+        }
     }
     if ( ! $args['ShowFeaturedImage'] ) {
         remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
@@ -166,7 +170,8 @@ function wpmozo_product_carousel_before_hooks( $args ){
     }
 
     if ( 'layout-3' === $args['Layout'] && $args['ShowFeaturedImage'] && $args['ShowAddToCartButton'] ) {
-        remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
+        //remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
+        add_action( 'woocommerce_before_shop_loop_item', 'add_div_to_top', 0 );
         remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
         add_action( 'woocommerce_before_shop_loop_item_title', 'wpmozo_woocommerce_template_loop_product_thumbnail', 10 );
     }
@@ -205,7 +210,11 @@ function wpmozo_product_carousel_after_hooks( $args ){
         remove_filter( 'woocommerce_sale_flash', 'wpmozo_product_carousel_sale_badge', 10, 3);
     }
     if ( ! $args['OutOfStock'] && $args['DisplayOutOfStockLabel'] ) {
-        remove_filter( 'woocommerce_before_shop_loop_item_title', 'wpmozo_product_carousel_outofstock_badge', 10);
+        if ( 'layout-3' === $args['Layout'] ) {
+            remove_action( 'woocommerce_shop_loop_item_title', 'wpmozo_product_carousel_outofstock_badge', 9);
+        }else{
+            remove_action( 'woocommerce_before_shop_loop_item_title', 'wpmozo_product_carousel_outofstock_badge', 10);
+        }
     }
     if ( $args['EnableQuickViewLink'] ) {
         remove_filter( 'woocommerce_product_get_image', 'wpmozo_product_carousel_quick_view_button', 10, 2 );
@@ -220,7 +229,8 @@ function wpmozo_product_carousel_after_hooks( $args ){
 
     // Layout 3 hooks
     if ( 'layout-3' === $args['Layout'] && $args['ShowFeaturedImage'] && $args['ShowAddToCartButton'] ) {
-        add_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
+        //add_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
+        remove_action( 'woocommerce_before_shop_loop_item', 'add_div_to_top', 0 );
         add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
         remove_action( 'woocommerce_before_shop_loop_item_title', 'wpmozo_woocommerce_template_loop_product_thumbnail', 10 );
     }
@@ -425,13 +435,18 @@ function wpmozo_quick_view_content(){
     check_ajax_referer( 'ajax-nonce' );
     if ( isset( $_GET['pro_id'] ) ) {
 
+        if ( post_password_required() ) {
+            echo get_the_password_form(); // WPCS: XSS ok.
+            return;
+        }
+
         global $product,$post;
         $pro_id = sanitize_text_field( $_GET['pro_id'] );
         $post = get_post( $pro_id );
         $product = wc_get_product( $pro_id );
 
         ?>
-        <div class="wpmozo-product-quick-view woocommerce">
+        <div class="wpmozo-product-quick-view woocommerce single-product">
             <div id="product-<?php echo $pro_id; ?>" <?php wc_product_class( '', $product ); ?>>
 
                 <?php
@@ -493,6 +508,11 @@ function wpmozo_product_carousel_layout_1_bottom(){
 
 }
 
+/**
+ * Remove unnecessary class of product loop 
+ *
+ * @since 1.0.0
+ */
 function wpmozo_product_carousel_add_class( $classes, $product ){
 
     $classes[] = 'swiper-slide';
@@ -508,11 +528,27 @@ function wpmozo_product_carousel_add_class( $classes, $product ){
 
 }
 
+/**
+ * Display product carousel layout 3
+ *
+ * @since 1.0.0
+ */
 function wpmozo_woocommerce_template_loop_product_thumbnail(){
 
-    echo woocommerce_get_product_thumbnail();
     echo '</a>';
     woocommerce_template_loop_add_to_cart();
+    echo '</span>';
     woocommerce_template_loop_product_link_open();
+
+}
+
+/**
+ * Display wraper for layout 3
+ *
+ * @since 1.0.0
+ */
+function add_div_to_top(){
+
+    echo '<span class="wpmozo-layout-wraper">';
 
 }

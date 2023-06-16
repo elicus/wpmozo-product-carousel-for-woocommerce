@@ -246,6 +246,10 @@ __webpack_require__.r(__webpack_exports__);
     let selector = item.selector;
     let inlineStyle = convetInlineStyle(atts[attKey]);
     if ('' !== inlineStyle) {
+      var defaultStyle = wraper.find(selector).attr('style');
+      if ('' !== defaultStyle && 'undefined' !== typeof defaultStyle) {
+        inlineStyle += defaultStyle;
+      }
       wraper.find(selector).attr('style', inlineStyle);
     }
   }
@@ -438,7 +442,7 @@ __webpack_require__.r(__webpack_exports__);
             ShowPagination: NewShowPagination
           });
         }
-      }), el(SelectControl, {
+      }), attributes.ShowPagination && el(SelectControl, {
         key: 'wpmozp-product-carousel-paginationtype',
         label: __('Pagination Type', 'wpmozo-product-carousel-for-woocommerce'),
         value: attributes.PaginationType,

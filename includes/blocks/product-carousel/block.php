@@ -46,11 +46,19 @@ function wpmozo_product_carousel_render_callback( $args ){
                     <?php } ?>
                 <?php } ?>
             </ul>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-pagination"></div>
+            <?php if ( $args['ShowNavigation'] ) { ?>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            <?php } ?>
+            <?php if ( $args['ShowPagination'] ) { ?>
+                <div class="swiper-pagination"></div>
+            <?php } ?>
         </div>
         <?php wpmozo_product_carousel_after_hooks( $args ); ?>
+    <?php }else{ ?>
+        <div class="wpmozo-product-carousel-nofound-wrap">
+            <p class="wpmozo-product-carousel-nofound"><?php echo esc_html__('No products found.', 'wpmozo-product-carousel-for-woocommerce'); ?></p>
+        </div>
     <?php } ?>
     <?php 
 

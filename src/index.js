@@ -45,6 +45,10 @@ import wpmozoTypography from '../src/components/wpmozo-typography/wpmozo-typogra
         let selector = item.selector;
         let inlineStyle = convetInlineStyle( atts[attKey] );
         if ( '' !== inlineStyle ) {
+            var defaultStyle = wraper.find(selector).attr('style');
+            if ( '' !== defaultStyle && 'undefined' !== typeof defaultStyle ) {
+                inlineStyle += defaultStyle;
+            }
             wraper.find(selector).attr('style', inlineStyle);
         }
 
@@ -266,31 +270,32 @@ import wpmozoTypography from '../src/components/wpmozo-typography/wpmozo-typogra
                                     },
                                 }
                             ),
-                            el(
-                                SelectControl,
-                                {
-                                    key: 'wpmozp-product-carousel-paginationtype',
-                                    label: __('Pagination Type', 'wpmozo-product-carousel-for-woocommerce'),
-                                    value: attributes.PaginationType,
-                                    options: [
-                                        {
-                                            label: __('Bullets', 'wpmozo-product-carousel-for-woocommerce'),
-                                            value: 'bullets'
-                                        }, 
-                                        {
-                                            label: __('Fraction', 'wpmozo-product-carousel-for-woocommerce'),
-                                            value: 'fraction'
+                            attributes.ShowPagination &&
+                                el(
+                                    SelectControl,
+                                    {
+                                        key: 'wpmozp-product-carousel-paginationtype',
+                                        label: __('Pagination Type', 'wpmozo-product-carousel-for-woocommerce'),
+                                        value: attributes.PaginationType,
+                                        options: [
+                                            {
+                                                label: __('Bullets', 'wpmozo-product-carousel-for-woocommerce'),
+                                                value: 'bullets'
+                                            }, 
+                                            {
+                                                label: __('Fraction', 'wpmozo-product-carousel-for-woocommerce'),
+                                                value: 'fraction'
+                                            },
+                                            {
+                                                label: __('Progressbar', 'wpmozo-product-carousel-for-woocommerce'),
+                                                value: 'progressbar'
+                                            }
+                                        ],
+                                        onChange: function( NewPaginationType ) {
+                                            props.setAttributes( { PaginationType: NewPaginationType } );
                                         },
-                                        {
-                                            label: __('Progressbar', 'wpmozo-product-carousel-for-woocommerce'),
-                                            value: 'progressbar'
-                                        }
-                                    ],
-                                    onChange: function( NewPaginationType ) {
-                                        props.setAttributes( { PaginationType: NewPaginationType } );
                                     },
-                                },
-                            ),
+                                ),
                         ),
                         el( PanelBody, { title: __( 'Query Settings', 'wpmozo-product-carousel-for-woocommerce' ), initialOpen: true },
                             el(

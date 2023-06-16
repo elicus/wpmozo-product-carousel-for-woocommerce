@@ -42,7 +42,7 @@ class Wpmozo_Init {
 		wp_register_style( 
 			'wpmozo-block-product-carousel-style',
 			WPMOZO_BLOCKS_DIR_URL . 'product-carousel/assets/css/product-carousel-editor.css',
-			array(),
+			array('wp-edit-blocks'),
 			time(),
 		);
 		wp_register_style( 
@@ -90,6 +90,17 @@ class Wpmozo_Init {
 		);
 
 		wp_localize_script( 'wpmozo-product-carousel-script', 'wpmozo_carousel_object', $wpmozo_carousel_object);
+
+		$wc_styles = WC_Frontend_Scripts::get_styles();
+		$styles_handles = array(
+			'wpmozo-swiper-style',
+			'wpmozo-product-carousel-style',
+			'wpmozo-magnific-style',
+		);
+		if ( ! empty( $wc_styles ) ) {
+			$wc_styles_handles = array_keys( $wc_styles );
+			$styles_handles = array_merge($wc_styles_handles, $styles_handles);
+		}
 		
 		require_once WPMOZO_BLOCKS_DIR_PATH . 'product-carousel/block.php';
 		register_block_type( 'wpmozo/product-carousel', array(
@@ -105,14 +116,7 @@ class Wpmozo_Init {
 				'photoswipe-ui-default',
 				'wc-single-product',
 			),
-			'style_handles' => array(
-				'wpmozo-swiper-style',
-				'woocommerce-layout',
-				'woocommerce-general',
-				'woocommerce-blocktheme',
-				'wpmozo-product-carousel-style',
-				'wpmozo-magnific-style',
-			),
+			'style_handles' => $styles_handles,
 			'attributes' => $attributes,
 			'render_callback' => 'wpmozo_product_carousel_render_callback',
 		));

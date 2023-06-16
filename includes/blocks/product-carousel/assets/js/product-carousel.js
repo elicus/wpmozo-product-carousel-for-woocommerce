@@ -121,6 +121,10 @@
 		let selector = item.selector;
 		let inlineStyle = convetInlineStyle( atts[attKey] );
         if ( '' !== inlineStyle ) {
+        	var defaultStyle = wraper.find(selector).attr('style');
+        	if ( '' !== defaultStyle && 'undefined' !== typeof defaultStyle ) {
+        		inlineStyle += defaultStyle;
+        	}
             wraper.find(selector).attr('style', inlineStyle);
         }
 

@@ -2,6 +2,61 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/components/wpmozo-loader/wpmozo-loader.js":
+/*!*******************************************************!*\
+  !*** ./src/components/wpmozo-loader/wpmozo-loader.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+
+const {
+  Component
+} = wp.element;
+class wpmozoLoader extends Component {
+  render() {
+    const {
+      column
+    } = this.props;
+    let loader = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-item"
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-12"
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-picture"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-row"
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-8"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-4 empty"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-4"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-8 empty"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-12 empty"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-6 big"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-6 empty"
+      })))),
+      html = [];
+    for (var i = 0; i < column; i++) {
+      html.push(loader);
+    }
+    return html;
+  }
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (wpmozoLoader);
+
+/***/ }),
+
 /***/ "./src/components/wpmozo-typography/wpmozo-typography.js":
 /*!***************************************************************!*\
   !*** ./src/components/wpmozo-typography/wpmozo-typography.js ***!
@@ -118,6 +173,16 @@ const wpmozoTypography = function (args) {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (wpmozoTypography);
 
+/***/ }),
+
+/***/ "@wordpress/element":
+/*!*********************************!*\
+  !*** external ["wp","element"] ***!
+  \*********************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["element"];
+
 /***/ })
 
 /******/ 	});
@@ -147,6 +212,18 @@ const wpmozoTypography = function (args) {
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -184,6 +261,8 @@ var __webpack_exports__ = {};
   \**********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../src/components/wpmozo-typography/wpmozo-typography */ "./src/components/wpmozo-typography/wpmozo-typography.js");
+/* harmony import */ var _src_components_wpmozo_loader_wpmozo_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/components/wpmozo-loader/wpmozo-loader */ "./src/components/wpmozo-loader/wpmozo-loader.js");
+
 
 (function (blocks, editor, element, components) {
   const __ = wp.i18n.__;
@@ -202,8 +281,7 @@ __webpack_require__.r(__webpack_exports__);
     TextControl,
     FormTokenField,
     ToggleControl,
-    Button,
-    Spinner
+    Button
   } = components;
   const {
     Fragment,
@@ -336,22 +414,15 @@ __webpack_require__.r(__webpack_exports__);
         };
       });
       return el(Fragment, {}, el("div", {
+        class: "wpmozo-loader backend",
         style: {
-          position: "relative"
-        }
-      }, showLoader && el("div", {
-        style: {
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          marginTop: "-9px",
-          marginLeft: "-9px"
-        }
-      }, el(Spinner, {})), el("div", {
-        style: {
-          opacity: showLoader ? "0.3" : 1
-        }
-      }, children)));
+          "display": "grid",
+          "grid-auto-flow": "column"
+        },
+        children: [el(_src_components_wpmozo_loader_wpmozo_loader__WEBPACK_IMPORTED_MODULE_1__["default"], {
+          column: attributes.Columns
+        })]
+      }));
     };
   };
   registerBlockType('wpmozo/product-carousel', {

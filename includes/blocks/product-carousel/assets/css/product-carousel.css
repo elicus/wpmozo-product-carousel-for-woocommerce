@@ -2,6 +2,10 @@
 	width: 100%;
 	height: 100%;
 }
+.wpmozo-product-carousel-wrap.loading .swiper-pagination, 
+.wpmozo-product-carousel-wrap.loading .swiper-navigation{
+	display: none !important;
+}
 .wpmozo-product-carousel-wrap.woocommerce ul.products {
     padding-inline-start: unset;
     display: flex;
@@ -39,6 +43,7 @@
 	left: 50% !important;
 	transform: translate(-50%, -50%) !important;
 	border: none;
+	cursor: pointer;
 }
 .wpmozo-quick-view-button.has-icon:before {
 	content: "";
@@ -46,9 +51,11 @@
 	width: 25px;
 	height: 25px;
 	background-size: cover;
-	margin-right: 5px;
 	background-image: inherit;
 	vertical-align: middle;
+}
+.wpmozo-quick-view-button.has-text:before{
+	margin-right: 5px;
 }
 .wpmozo-product-carousel-wrap li.product:hover .wpmozo-quick-view-button {
 	-ms-transform: translateY(-85%);
@@ -102,10 +109,13 @@
 .wpmozo-product-carousel-wrap.layout-3 .wpmozo-layout-wraper{
 	width: 100%;
 	display: block;
+	margin-bottom: 12px;
 }
 .wpmozo-product-carousel-wrap.layout-3 ul.products li.product a.button{
 	display: block;
 	margin-top: 0px !important;
+	text-align: center !important;
+	margin-bottom: 0px !important;
 }
 .wpmozo-product-carousel-wrap.layout-3 .woocommerce-loop-product__link, 
 .wpmozo-product-carousel-wrap.layout-3 .woocommerce-loop-product__link img{
@@ -134,7 +144,29 @@
 }
 /* Layout 3 style over */
 
+.ph-item{
+	margin-right: 10px;
+	min-height: inherit;
+}
+.ph-item:last-child{
+	margin-right: 0px;
+}
+.wpmozo-loader.frontend{
+	position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: grid;
+    grid-auto-flow: column;
+    background: #fff;
+}
+
 @media (min-width: 767px) {
+	.wpmozo-loader.backend{
+		min-height: 400px;
+	}
 	.wpmozo-product-bottom{
 		display: flex;
 	    align-items: center;
@@ -148,19 +180,23 @@
 }
 @media (max-width: 767px) {
 	.wpmozo-product-bottom-price {
+		display: block;
 	    margin-bottom: 10px;
+	}
+	.wpmozo-product-bottom-add-to-cart{
+		display: block;
 	}
 }
 @media (max-width: 1024px) {
 	.wpmozo-product__overlay{
-		position: unset;
+		position: unset !important;
 	    width: auto;
 	    height: auto;
 	    visibility: visible;
     	opacity: 1;
 	}
 	.wpmozo-quick-view-button{
-		position: unset;
+		position: unset !important;
    		transform: unset !important;
 	}
 }

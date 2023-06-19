@@ -33,7 +33,27 @@ function wpmozo_product_carousel_render_callback( $args ){
     ?>
     <?php if ( $pro_query->have_posts() ) { ?>
         <?php wpmozo_product_carousel_before_hooks( $args ); ?>
-        <div class="wpmozo-product-carousel-wrap woocommerce swiper <?php echo $args['Layout']; ?>" data-atts='<?php echo json_encode($args); ?>' id="wpmozo_<?php echo esc_attr( $args['clientId'] ); ?>">
+        <div class="wpmozo-product-carousel-wrap woocommerce swiper <?php echo $args['Layout']; ?> loading" data-atts='<?php echo json_encode($args); ?>' id="wpmozo_<?php echo esc_attr( $args['clientId'] ); ?>">
+            <?php if ( ! isset( $_GET['context'] ) ) { ?>
+                <div class="wpmozo-loader frontend">
+                    <?php for ($i=0; $i < $args['Columns']; $i++) { ?>
+                        <div class="ph-item">
+                            <div class="ph-col-12">
+                                <div class="ph-picture"></div>
+                                <div class="ph-row">
+                                    <div class="ph-col-8"></div>
+                                    <div class="ph-col-4 empty"></div>
+                                    <div class="ph-col-4"></div>
+                                    <div class="ph-col-8 empty"></div>
+                                    <div class="ph-col-12 empty"></div>
+                                    <div class="ph-col-6 big"></div>
+                                    <div class="ph-col-6 empty"></div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                </div>  
+            <?php } ?>   
             <ul class="products swiper-wrapper">
                 <?php while ( $pro_query->have_posts() ) { ?>
                     <?php
@@ -47,8 +67,8 @@ function wpmozo_product_carousel_render_callback( $args ){
                 <?php } ?>
             </ul>
             <?php if ( $args['ShowNavigation'] ) { ?>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
+                <div class="swiper-navigation swiper-button-next"></div>
+                <div class="swiper-navigation swiper-button-prev"></div>
             <?php } ?>
             <?php if ( $args['ShowPagination'] ) { ?>
                 <div class="swiper-pagination"></div>

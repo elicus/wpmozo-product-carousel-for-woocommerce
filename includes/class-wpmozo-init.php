@@ -48,7 +48,14 @@ class Wpmozo_Init {
 		wp_register_style( 
 			'wpmozo-product-carousel-style',
 			WPMOZO_BLOCKS_DIR_URL . 'product-carousel/assets/css/product-carousel.css',
+			array(),
 			time(),
+		);
+
+		wp_register_style( 'wpmozo-product-carousel-placeholder', 
+			WPMOZO_ASSE_DIR_URL . 'placeholder-loading.css',
+			array(),
+			time()
 		);
 
 		// register the magnific popup scripts.
@@ -96,6 +103,7 @@ class Wpmozo_Init {
 			'wpmozo-swiper-style',
 			'wpmozo-product-carousel-style',
 			'wpmozo-magnific-style',
+			'wpmozo-product-carousel-placeholder',
 		);
 		if ( ! empty( $wc_styles ) ) {
 			$wc_styles_handles = array_keys( $wc_styles );
@@ -122,6 +130,65 @@ class Wpmozo_Init {
 		));
 
 
+	}
+
+	/**
+	 * Enqueue editor style for block.
+	 *
+	 * @since 1.0.0
+	 */
+	public function wpmozo_add_editor_style(){
+
+		if ( has_block( 'wpmozo/product-carousel' ) ) {
+
+			global $wp_filter;
+			$wc_styles = WC_Frontend_Scripts::get_styles();
+
+			if ( empty( $wc_styles ) ) {
+				
+				$all_hooks = $wp_filter['woocommerce_enqueue_styles'];
+				$all_callbacks = $all_hooks->callbacks;
+
+				// Remove all filter for enqueue style.
+				if ( ! empty( $all_callbacks ) ) {
+					foreach ($all_callbacks as $priority => $_callback) {
+						if ( is_array( $_callback ) ) {
+							foreach ($_callback as $funname => $__callback) {
+								remove_filter( 'woocommerce_enqueue_styles', $__callback['function'], $priority, $__callback['accepted_args'] );
+							}
+						}else{
+							remove_filter( 'woocommerce_enqueue_styles', $_callback['function'], $priority, $_callback['accepted_args'] );
+						}
+					}
+				}
+
+				$wc_styles = WC_Frontend_Scripts::get_styles();
+				if ( $wc_styles ) {
+					foreach ( $wc_styles as $handle => $args ) {
+						if ( ! isset( $args['has_rtl'] ) ) {
+							$args['has_rtl'] = false;
+						}
+						wp_enqueue_style( $handle, $args['src'], $args['deps'], $args['version'], $args['media'], $args['has_rtl'] );
+					}
+				}
+
+				// Add all filter for enqueue style.
+				if ( ! empty( $all_callbacks ) ) {
+					foreach ($all_callbacks as $priority => $_callback) {
+						if ( is_array( $_callback ) ) {
+							foreach ($_callback as $funname => $__callback) {
+								add_filter( 'woocommerce_enqueue_styles', $__callback['function'], $priority, $__callback['accepted_args'] );
+							}
+						}else{
+							add_filter( 'woocommerce_enqueue_styles', $_callback['function'], $priority, $_callback['accepted_args'] );
+						}
+					}
+				}
+
+			}
+
+		}
+			
 	}
 
 	/**
@@ -440,6 +507,7 @@ class Wpmozo_Init {
 	public function add_hooks( $loader, $instance ) {
 
 		$loader->add_action( 'init', $instance, 'wpmozo_register_blocks' );
+		$loader->add_action('enqueue_block_editor_assets', $instance, 'wpmozo_add_editor_style' );
 
 	}
 

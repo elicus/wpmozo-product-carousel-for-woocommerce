@@ -38,6 +38,12 @@
 					  	function(item) { appendInlineStyle(item, $this, atts); }
 					);
 
+                },
+                afterInit: function(swiper){
+
+                	$this.find('.wpmozo-loader').remove();
+                	$this.removeClass('loading');
+
                 }
             },
 		}

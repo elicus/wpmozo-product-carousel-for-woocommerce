@@ -1,5 +1,6 @@
 
 import wpmozoTypography from '../src/components/wpmozo-typography/wpmozo-typography';
+import wpmozoLoader from '../src/components/wpmozo-loader/wpmozo-loader';
 
 ( function(blocks, editor, element, components) {
 
@@ -7,7 +8,7 @@ import wpmozoTypography from '../src/components/wpmozo-typography/wpmozo-typogra
     const el = element.createElement;
     const registerBlockType = blocks.registerBlockType;
     const { InspectorControls, MediaUpload, MediaUploadCheck, useBlockProps } = editor;
-    const { PanelBody, RangeControl, SelectControl, TextControl, FormTokenField, ToggleControl, Button, Spinner } = components;
+    const { PanelBody, RangeControl, SelectControl, TextControl, FormTokenField, ToggleControl, Button } = components;
     const { Fragment, useState, useEffect } = element;
     const { useSelect, useDispatch, dispatch } = wp.data;
     const { serverSideRender: ServerSideRender, hooks } = wp;
@@ -133,32 +134,20 @@ import wpmozoTypography from '../src/components/wpmozo-typography/wpmozo-typogra
                 hooks.doAction("server-side-loading-finished", attributes);
               };
             });
+
             return el( Fragment, {}, 
                 el("div", {
-                        style: {
-                            position: "relative",
-                        },
+                    class: "wpmozo-loader backend",
+                    style: {
+                        "display": "grid",
+                        "grid-auto-flow": "column",
                     },
-                    showLoader &&
-                        el("div", {
-                            style: {
-                                position: "absolute",
-                                top: "50%",
-                                left: "50%",
-                                marginTop: "-9px",
-                                marginLeft: "-9px"
-                            },
-                        },
-                        el(Spinner, {})
-                        ),
-                    el("div", {
-                            style: {
-                                opacity: showLoader ? "0.3" : 1
-                            },
-                        },
-                        children
-                    ),
-                ),
+                    children: [
+                        el(wpmozoLoader, {
+                            column: attributes.Columns,
+                        }),
+                    ], 
+                }),
             );
         };
     };

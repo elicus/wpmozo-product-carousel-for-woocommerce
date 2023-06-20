@@ -1,11 +1,12 @@
 const { Component } = wp.element;
+const { compose } = wp.compose;
 
-class wpmozoLoader extends Component{
+class WpmozoLoader extends Component{
 	render () {
 
-		const { column } = this.props;
+		const { column, margin } = this.props;
 		let loader = (
-			<div className="ph-item">
+			<div className="ph-item" style={{marginRight: margin}}>
                 <div className="ph-col-12">
                     <div className="ph-picture"></div>
                     <div className="ph-row">
@@ -31,4 +32,4 @@ class wpmozoLoader extends Component{
 	}
 }
 
-export default wpmozoLoader
+export default compose()( WpmozoLoader );

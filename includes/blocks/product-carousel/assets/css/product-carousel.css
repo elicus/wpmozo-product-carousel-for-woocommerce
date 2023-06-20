@@ -44,6 +44,7 @@
 	transform: translate(-50%, -50%) !important;
 	border: none;
 	cursor: pointer;
+	margin: 0px !important;
 }
 .wpmozo-quick-view-button.has-icon:before {
 	content: "";
@@ -145,7 +146,6 @@
 /* Layout 3 style over */
 
 .ph-item{
-	margin-right: 10px;
 	min-height: inherit;
 }
 .ph-item:last-child{

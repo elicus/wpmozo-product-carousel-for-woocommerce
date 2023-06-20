@@ -24,8 +24,10 @@ function wpmozo_product_carousel_render_callback( $args ){
     $wpmozo_product_carousel_args = $args;
     $qu_args = wpmozo_product_carousel_prepare_query_args( $args );
     $pro_query = new WP_Query( $qu_args );
+    $admin_class = ' loading';
 
     if ( isset( $_GET['context'] ) && 'edit' === $_GET['context'] ) {
+        $admin_class = '';
         wpmozo_product_carousel_add_hooks_admin_preview( $args );
     }
     
@@ -33,11 +35,11 @@ function wpmozo_product_carousel_render_callback( $args ){
     ?>
     <?php if ( $pro_query->have_posts() ) { ?>
         <?php wpmozo_product_carousel_before_hooks( $args ); ?>
-        <div class="wpmozo-product-carousel-wrap woocommerce swiper <?php echo $args['Layout']; ?> loading" data-atts='<?php echo json_encode($args); ?>' id="wpmozo_<?php echo esc_attr( $args['clientId'] ); ?>">
+        <div class="wpmozo-product-carousel-wrap woocommerce swiper <?php echo esc_attr( $args['Layout'] ); ?><?php echo esc_attr( $admin_class ); ?>" data-atts='<?php echo json_encode($args); ?>' id="wpmozo_<?php echo esc_attr( $args['clientId'] ); ?>">
             <?php if ( ! isset( $_GET['context'] ) ) { ?>
                 <div class="wpmozo-loader frontend">
                     <?php for ($i=0; $i < $args['Columns']; $i++) { ?>
-                        <div class="ph-item">
+                        <div class="ph-item" style="margin-right: <?php echo esc_attr( $args['SpaceBetween'] ); ?>px;">
                             <div class="ph-col-12">
                                 <div class="ph-picture"></div>
                                 <div class="ph-row">

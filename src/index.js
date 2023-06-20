@@ -1,6 +1,6 @@
 
-import wpmozoTypography from '../src/components/wpmozo-typography/wpmozo-typography';
-import wpmozoLoader from '../src/components/wpmozo-loader/wpmozo-loader';
+import WpmozoTypography from '../src/components/wpmozo-typography/wpmozo-typography';
+import WpmozoLoader from '../src/components/wpmozo-loader/wpmozo-loader';
 
 ( function(blocks, editor, element, components) {
 
@@ -8,7 +8,7 @@ import wpmozoLoader from '../src/components/wpmozo-loader/wpmozo-loader';
     const el = element.createElement;
     const registerBlockType = blocks.registerBlockType;
     const { InspectorControls, MediaUpload, MediaUploadCheck, useBlockProps } = editor;
-    const { PanelBody, RangeControl, SelectControl, TextControl, FormTokenField, ToggleControl, Button } = components;
+    const { PanelBody, RangeControl, SelectControl, TextControl, FormTokenField, ToggleControl, Button, __experimentalDimensionControl } = components;
     const { Fragment, useState, useEffect } = element;
     const { useSelect, useDispatch, dispatch } = wp.data;
     const { serverSideRender: ServerSideRender, hooks } = wp;
@@ -143,8 +143,9 @@ import wpmozoLoader from '../src/components/wpmozo-loader/wpmozo-loader';
                         "grid-auto-flow": "column",
                     },
                     children: [
-                        el(wpmozoLoader, {
+                        el(WpmozoLoader, {
                             column: attributes.Columns,
+                            margin: attributes.SpaceBetween,
                         }),
                     ], 
                 }),
@@ -180,6 +181,7 @@ import wpmozoLoader from '../src/components/wpmozo-loader/wpmozo-loader';
                 el( Fragment, {},
                     el( InspectorControls, {},
                         el( PanelBody, { title: __( 'Carousel Settings', 'wpmozo-product-carousel-for-woocommerce' ), initialOpen: true },
+                            el(__experimentalDimensionControl, {label: 'sdfsdf'}),
                             el(
                                 RangeControl,
                                 {
@@ -590,7 +592,7 @@ import wpmozoLoader from '../src/components/wpmozo-loader/wpmozo-loader';
                                 className: "wpmozo-typography-panel",
                                 initialOpen: false,
                             },
-                            el( wpmozoTypography, {
+                            el( WpmozoTypography, {
                                 TypographyKey: 'TitleStyle',
                                 attributes: attributes,
                                 props: props,
@@ -602,7 +604,7 @@ import wpmozoLoader from '../src/components/wpmozo-loader/wpmozo-loader';
                                 className: "wpmozo-typography-panel",
                                 initialOpen: false,
                             },
-                            el( wpmozoTypography, {
+                            el( WpmozoTypography, {
                                 TypographyKey: 'PriceStyle',
                                 attributes: attributes,
                                 props: props,
@@ -614,7 +616,7 @@ import wpmozoLoader from '../src/components/wpmozo-loader/wpmozo-loader';
                                 className: "wpmozo-typography-panel",
                                 initialOpen: false,
                             },
-                            el( wpmozoTypography, {
+                            el( WpmozoTypography, {
                                 TypographyKey: 'AddToCartStyle',
                                 attributes: attributes,
                                 props: props,
@@ -626,7 +628,7 @@ import wpmozoLoader from '../src/components/wpmozo-loader/wpmozo-loader';
                                 className: "wpmozo-typography-panel",
                                 initialOpen: false,
                             },
-                            el( wpmozoTypography, {
+                            el( WpmozoTypography, {
                                 TypographyKey: 'QuickViewStyle',
                                 attributes: attributes,
                                 props: props,
@@ -638,7 +640,7 @@ import wpmozoLoader from '../src/components/wpmozo-loader/wpmozo-loader';
                                 className: "wpmozo-typography-panel",
                                 initialOpen: false,
                             },
-                            el( wpmozoTypography, {
+                            el( WpmozoTypography, {
                                 TypographyKey: 'SaleLabelStyle',
                                 attributes: attributes,
                                 props: props,
@@ -651,7 +653,7 @@ import wpmozoLoader from '../src/components/wpmozo-loader/wpmozo-loader';
                                     className: "wpmozo-typography-panel",
                                     initialOpen: false,
                                 },
-                                el( wpmozoTypography, {
+                                el( WpmozoTypography, {
                                     TypographyKey: 'StockLabelStyle',
                                     attributes: attributes,
                                     props: props,

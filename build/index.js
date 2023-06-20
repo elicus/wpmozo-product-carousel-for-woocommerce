@@ -18,13 +18,20 @@ __webpack_require__.r(__webpack_exports__);
 const {
   Component
 } = wp.element;
-class wpmozoLoader extends Component {
+const {
+  compose
+} = wp.compose;
+class WpmozoLoader extends Component {
   render() {
     const {
-      column
+      column,
+      margin
     } = this.props;
     let loader = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-        className: "ph-item"
+        className: "ph-item",
+        style: {
+          marginRight: margin
+        }
       }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-col-12"
       }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -53,7 +60,7 @@ class wpmozoLoader extends Component {
     return html;
   }
 }
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (wpmozoLoader);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (compose()(WpmozoLoader));
 
 /***/ }),
 
@@ -80,7 +87,10 @@ const {
   __experimentalToolsPanel,
   __experimentalToolsPanelItem
 } = window.wp.components;
-const wpmozoTypography = function (args) {
+const {
+  compose
+} = wp.compose;
+const WpmozoTypography = function (args) {
   const {
     TypographyKey,
     attributes,
@@ -171,7 +181,7 @@ const wpmozoTypography = function (args) {
     }
   })))];
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (wpmozoTypography);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (compose()(WpmozoTypography));
 
 /***/ }),
 
@@ -281,7 +291,8 @@ __webpack_require__.r(__webpack_exports__);
     TextControl,
     FormTokenField,
     ToggleControl,
-    Button
+    Button,
+    __experimentalDimensionControl
   } = components;
   const {
     Fragment,
@@ -420,7 +431,8 @@ __webpack_require__.r(__webpack_exports__);
           "grid-auto-flow": "column"
         },
         children: [el(_src_components_wpmozo_loader_wpmozo_loader__WEBPACK_IMPORTED_MODULE_1__["default"], {
-          column: attributes.Columns
+          column: attributes.Columns,
+          margin: attributes.SpaceBetween
         })]
       }));
     };
@@ -448,7 +460,9 @@ __webpack_require__.r(__webpack_exports__);
       return [el(Fragment, {}, el(InspectorControls, {}, el(PanelBody, {
         title: __('Carousel Settings', 'wpmozo-product-carousel-for-woocommerce'),
         initialOpen: true
-      }, el(RangeControl, {
+      }, el(__experimentalDimensionControl, {
+        label: 'sdfsdf'
+      }), el(RangeControl, {
         key: 'wpmozp-product-carousel-columns',
         value: attributes.Columns,
         allowReset: false,

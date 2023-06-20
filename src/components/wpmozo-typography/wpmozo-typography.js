@@ -3,9 +3,10 @@ const el = window.wp.element.createElement;
 const __ = wp.i18n.__;
 const { __experimentalFontAppearanceControl, FontSizePicker, __experimentalLetterSpacingControl, __experimentalTextTransformControl, __experimentalTextDecorationControl } = window.wp.blockEditor;
 const { __experimentalToolsPanel, __experimentalToolsPanelItem } = window.wp.components;
+const { compose } = wp.compose;
 
 
-const wpmozoTypography = function(args){
+const WpmozoTypography = function(args){
 	
     const { TypographyKey, attributes, props } = args;
 
@@ -113,4 +114,4 @@ const wpmozoTypography = function(args){
 
 }
 
-export default wpmozoTypography
+export default compose()( WpmozoTypography );

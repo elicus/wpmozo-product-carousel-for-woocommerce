@@ -133,7 +133,7 @@ function wpmozo_product_carousel_prepare_query_args( $args ){
  */
 function wpmozo_product_carousel_before_hooks( $args ){
 
-    add_filter('is_woocommerce', 'wpmozo_product_carousel_set_is_woocommerce');
+    add_filter('is_woocommerce', 'wpmozo_product_carousel_set_is_woocommerce', 99);
 
     if ( ! $args['OutOfStock'] && $args['DisplayOutOfStockLabel'] ) {
         if ( 'layout-3' === $args['Layout'] ) {
@@ -143,19 +143,19 @@ function wpmozo_product_carousel_before_hooks( $args ){
         }
     }
     if ( ! $args['ShowFeaturedImage'] ) {
-        remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
+        wpmozo_remove_hooks('woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail');
     }
     if ( ! $args['ShowRating'] ) {
-        remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_rating', 5 );
+        wpmozo_remove_hooks('woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_rating');
     }
     if ( ! $args['ShowPrice'] ) {
-        remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
+        wpmozo_remove_hooks('woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price');
     }
     if ( ! $args['ShowAddToCartButton'] ) {
-        remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+        wpmozo_remove_hooks('woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart');
     }
     if ( ! $args['ShowSaleBadge'] ) {
-        remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_show_product_loop_sale_flash', 10 );
+        wpmozo_remove_hooks('woocommerce_before_shop_loop_item_title', 'woocommerce_show_product_loop_sale_flash');
     }
     if ( ! empty( $args['FeaturedImageSize'] ) ) {
         add_filter( 'single_product_archive_thumbnail_size', 'wpmozo_product_carousel_image_size', 10 );
@@ -168,15 +168,14 @@ function wpmozo_product_carousel_before_hooks( $args ){
     }
 
     if ( 'layout-1' === $args['Layout'] && $args['ShowPrice'] && $args['ShowAddToCartButton'] ) {
-        remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
-        remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+        wpmozo_remove_hooks('woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price');
+        wpmozo_remove_hooks('woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart');
         add_action( 'woocommerce_after_shop_loop_item', 'wpmozo_product_carousel_layout_1_bottom', 10 );
     }
 
     if ( 'layout-3' === $args['Layout'] && $args['ShowFeaturedImage'] && $args['ShowAddToCartButton'] ) {
-        //remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
-        add_action( 'woocommerce_before_shop_loop_item', 'add_div_to_top', 0 );
-        remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+        add_action( 'woocommerce_before_shop_loop_item', 'wpmozo_add_div_to_top', 0 );
+        wpmozo_remove_hooks('woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart');
         add_action( 'woocommerce_before_shop_loop_item_title', 'wpmozo_woocommerce_template_loop_product_thumbnail', 10 );
     }
 
@@ -191,24 +190,10 @@ function wpmozo_product_carousel_before_hooks( $args ){
  * @param array $args The arguments of carousel.
  */
 function wpmozo_product_carousel_after_hooks( $args ){
-    
-    remove_filter('is_woocommerce', 'wpmozo_product_carousel_set_is_woocommerce');
+        
+    wpmozo_add_hooks();
+    remove_filter('is_woocommerce', 'wpmozo_product_carousel_set_is_woocommerce', 99);
 
-    if ( ! $args['ShowFeaturedImage'] ) {
-        add_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
-    }
-    if ( ! $args['ShowRating'] ) {
-        add_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_rating', 5 );
-    }
-    if ( ! $args['ShowPrice'] ) {
-        add_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
-    }
-    if ( ! $args['ShowAddToCartButton'] ) {
-        add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
-    }
-    if ( ! $args['ShowSaleBadge'] ) {
-        add_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_show_product_loop_sale_flash', 10 );
-    }
     if ( ! empty( $args['FeaturedImageSize'] ) ) {
         remove_filter( 'single_product_archive_thumbnail_size', 'wpmozo_product_carousel_image_size', 10 );
     }
@@ -228,16 +213,12 @@ function wpmozo_product_carousel_after_hooks( $args ){
 
     // Layout 1 hooks
     if ( 'layout-1' === $args['Layout'] && $args['ShowPrice'] && $args['ShowAddToCartButton'] ) {
-        add_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
-        add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
         remove_action( 'woocommerce_after_shop_loop_item', 'wpmozo_product_carousel_layout_1_bottom', 10 );
     }
 
     // Layout 3 hooks
     if ( 'layout-3' === $args['Layout'] && $args['ShowFeaturedImage'] && $args['ShowAddToCartButton'] ) {
-        //add_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
-        remove_action( 'woocommerce_before_shop_loop_item', 'add_div_to_top', 0 );
-        add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+        remove_action( 'woocommerce_before_shop_loop_item', 'wpmozo_add_div_to_top', 0 );
         remove_action( 'woocommerce_before_shop_loop_item_title', 'wpmozo_woocommerce_template_loop_product_thumbnail', 10 );
     }
     
@@ -569,8 +550,110 @@ function wpmozo_woocommerce_template_loop_product_thumbnail(){
  *
  * @since 1.0.0
  */
-function add_div_to_top(){
+function wpmozo_add_div_to_top(){
 
     echo '<span class="wpmozo-layout-wraper">';
+
+}
+
+/**
+ * Remove hooks.
+ *
+ * It will remove default and custom hooks for woocommerce.
+ * 
+ * @since 1.0.0
+ * @param string $hook_name The name of hook.
+ * @param string $callback The name of callback function.
+ * @param boolean $to_add Add after or not.
+ */
+function wpmozo_remove_hooks( $hook_name, $callback, $to_add = true ){
+
+    global $wp_filter;
+    $check_hooks = array(
+        'woocommerce_before_shop_loop_item',
+        'woocommerce_before_shop_loop_item_title',
+        'woocommerce_shop_loop_item_title',
+        'woocommerce_after_shop_loop_item_title',
+        'woocommerce_after_shop_loop_item',
+    );
+    $removed_hooks = wp_cache_get('wpmozo_removed_hooks');
+    if ( empty( $removed_hooks ) ) {
+        $removed_hooks = array();
+    }
+    $hook_data = array(
+        'hook' => $hook_name,
+        'callback' => $callback,
+    );
+    $has_action = has_action($hook_name, $callback);
+
+    if ( $has_action !== false ) {
+        
+        $hook_data['priority'] = $has_action;
+        $hook_data['accepted_args'] = 1;
+        $removed = remove_action($hook_name, $callback, $has_action);
+        
+        if ( $removed && $to_add ) {
+            $removed_hooks[] = $hook_data;
+        }
+
+    }else{
+
+        foreach ($check_hooks as $key => $hook) {
+            
+            $hook_data['hook'] = $hook;
+            $get_hook = isset( $wp_filter[$hook] ) ? $wp_filter[$hook] : array();
+
+            if ( ! empty( $get_hook ) ) {
+
+                $callbacks = $get_hook->callbacks;
+
+                foreach ($callbacks as $priority => $_callback) {
+
+                    if ( isset( $_callback[$callback]['function'] ) && $_callback[$callback]['function'] === $callback ) {
+
+                        $accepted_args = isset( $_callback[$callback]['accepted_args'] ) ? $_callback[$callback]['accepted_args'] : 1;
+                        $removed = remove_action($hook, $callback, $priority, $accepted_args);
+                        $hook_data['priority'] = $priority;
+                        $hook_data['accepted_args'] = $accepted_args;
+
+                        if ( $removed && $to_add ) {
+                            $removed_hooks[] = $hook_data;
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+    wp_cache_set('wpmozo_removed_hooks', $removed_hooks);
+
+}
+
+/**
+ * Add before removed hooks.
+ *
+ * It will add default and custom hooks for woocommerce.
+ * 
+ * @since 1.0.0
+ */
+function wpmozo_add_hooks(){
+
+    $removed_hooks = wp_cache_get('wpmozo_removed_hooks');
+
+    if ( ! empty( $removed_hooks ) ) {
+        
+        foreach ($removed_hooks as $key => $hookdata) {
+            
+            add_action( $hookdata['hook'], $hookdata['callback'], $hookdata['priority'], $hookdata['accepted_args'] );
+
+        }
+
+        wp_cache_delete('wpmozo_removed_hooks');
+    }
 
 }

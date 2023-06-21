@@ -1,6 +1,7 @@
 
 import WpmozoTypography from '../src/components/wpmozo-typography/wpmozo-typography';
 import WpmozoLoader from '../src/components/wpmozo-loader/wpmozo-loader';
+import WpmozoIconpicker from '../src/components/wpmozo-iconpicker/wpmozo-iconpicker';
 
 ( function(blocks, editor, element, components) {
 
@@ -8,7 +9,7 @@ import WpmozoLoader from '../src/components/wpmozo-loader/wpmozo-loader';
     const el = element.createElement;
     const registerBlockType = blocks.registerBlockType;
     const { InspectorControls, MediaUpload, MediaUploadCheck, useBlockProps } = editor;
-    const { PanelBody, RangeControl, SelectControl, TextControl, FormTokenField, ToggleControl, Button, __experimentalDimensionControl } = components;
+    const { PanelBody, RangeControl, SelectControl, TextControl, FormTokenField, ToggleControl, Button } = components;
     const { Fragment, useState, useEffect } = element;
     const { useSelect, useDispatch, dispatch } = wp.data;
     const { serverSideRender: ServerSideRender, hooks } = wp;
@@ -181,7 +182,6 @@ import WpmozoLoader from '../src/components/wpmozo-loader/wpmozo-loader';
                 el( Fragment, {},
                     el( InspectorControls, {},
                         el( PanelBody, { title: __( 'Carousel Settings', 'wpmozo-product-carousel-for-woocommerce' ), initialOpen: true },
-                            el(__experimentalDimensionControl, {label: 'sdfsdf'}),
                             el(
                                 RangeControl,
                                 {
@@ -448,53 +448,81 @@ import WpmozoLoader from '../src/components/wpmozo-loader/wpmozo-loader';
                                 }
                             ),
                             attributes.EnableQuickViewLink &&
-                            el(
-                                TextControl,
-                                {
-                                    key: 'wpmozp-product-carousel-quickviewlinktext',
-                                    value: attributes.QuickViewLinkText,
-                                    label: __( 'Quickview link text', 'wpmozo-product-carousel-for-woocommerce' ),
-                                    onChange: function( NewQuickViewLinkText ) {
-                                        props.setAttributes( { QuickViewLinkText: NewQuickViewLinkText } );
-                                    },
-                                }
-                            ),
-                            attributes.EnableQuickViewLink &&
-                            el(MediaUploadCheck, {}, 
-                                el(MediaUpload, {
-                                    onSelect: (media) => props.setAttributes( { QuickViewLinkIcon: media.url } ),
-                                    allowedTypes: ["image"],
-                                    accept: "image/*",
-                                    value: attributes.QuickViewLinkIcon,
-                                    render: ({ open }) => {
-                                        return el(Fragment, {},
-                                            el('div', {
-                                                class: "components-base-control wpmozo-quvili-icon-wrap",
-                                                children: [
-                                                    attributes.QuickViewLinkIcon &&
-                                                    el('img',
-                                                      {
-                                                        class: "wpmozo-quvili-icon",
-                                                        src: attributes.QuickViewLinkIcon,
-                                                      },
-                                                    ),
-                                                    el(Button, {
-                                                      isPrimary: true,
-                                                      onClick: (event) => {
-                                                        event.stopPropagation();
-                                                        open();
-                                                      },
-                                                      children:
-                                                        attributes.QuickViewLinkIcon
-                                                          ? __("Edit Icon", "wpmozo-product-carousel-for-woocommerce")
-                                                          : __("Select Icon", "wpmozo-product-carousel-for-woocommerce")
-                                                    })
-                                                ],
-                                            })
-                                        );
+                                el(
+                                    TextControl,
+                                    {
+                                        key: 'wpmozp-product-carousel-quickviewlinktext',
+                                        value: attributes.QuickViewLinkText,
+                                        label: __( 'Quickview link text', 'wpmozo-product-carousel-for-woocommerce' ),
+                                        onChange: function( NewQuickViewLinkText ) {
+                                            props.setAttributes( { QuickViewLinkText: NewQuickViewLinkText } );
+                                        },
                                     }
-                                })
-                            ),
+                                ),
+                            attributes.EnableQuickViewLink && attributes.EnableQuickViewLink &&
+                                el(
+                                    ToggleControl,
+                                    {
+                                        checked: attributes.QuickViewLinkIconEnabled, 
+                                        label: __( 'Quickview Display icon', 'wpmozo-product-carousel-for-woocommerce' ),
+                                        onChange: function( NewQuickViewLinkIconEnabled ) {
+                                            props.setAttributes( { QuickViewLinkIconEnabled: NewQuickViewLinkIconEnabled } );
+                                        },
+                                    }
+                                ),
+                            attributes.EnableQuickViewLink && attributes.QuickViewLinkIconEnabled && ! attributes.QuickViewLinkCustomIcon &&
+                                el( WpmozoIconpicker, { 
+                                    label: __('Quickview Icon', 'wpmozo-product-carousel-for-woocommerce'),
+                                    props: props,
+                                    attributes: attributes
+                                } ),
+                            attributes.EnableQuickViewLink && attributes.QuickViewLinkIconEnabled &&
+                                el(
+                                    ToggleControl,
+                                    {
+                                        checked: attributes.QuickViewLinkCustomIcon, 
+                                        label: __( 'Quickview custom icon', 'wpmozo-product-carousel-for-woocommerce' ),
+                                        onChange: function( NewQuickViewLinkCustomIcon ) {
+                                            props.setAttributes( { QuickViewLinkCustomIcon: NewQuickViewLinkCustomIcon } );
+                                        },
+                                    }
+                                ),
+                            attributes.EnableQuickViewLink && attributes.QuickViewLinkIconEnabled && attributes.QuickViewLinkCustomIcon &&
+                                el(MediaUploadCheck, {}, 
+                                    el(MediaUpload, {
+                                        onSelect: (media) => props.setAttributes( { QuickViewLinkImg: media.url } ),
+                                        allowedTypes: ["image"],
+                                        accept: "image/*",
+                                        value: attributes.QuickViewLinkImg,
+                                        render: ({ open }) => {
+                                            return el(Fragment, {},
+                                                el('div', {
+                                                    class: "components-base-control wpmozo-quvili-icon-wrap",
+                                                    children: [
+                                                        attributes.QuickViewLinkImg &&
+                                                        el('img',
+                                                          {
+                                                            class: "wpmozo-quvili-icon",
+                                                            src: attributes.QuickViewLinkImg,
+                                                          },
+                                                        ),
+                                                        el(Button, {
+                                                          isPrimary: true,
+                                                          onClick: (event) => {
+                                                            event.stopPropagation();
+                                                            open();
+                                                          },
+                                                          children:
+                                                            attributes.QuickViewLinkImg
+                                                              ? __("Edit Icon", "wpmozo-product-carousel-for-woocommerce")
+                                                              : __("Select Icon", "wpmozo-product-carousel-for-woocommerce")
+                                                        })
+                                                    ],
+                                                })
+                                            );
+                                        }
+                                    })
+                                ),
                             el(
                                 ToggleControl,
                                 {

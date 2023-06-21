@@ -2,6 +2,57 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/components/wpmozo-iconpicker/wpmozo-iconpicker.js":
+/*!***************************************************************!*\
+  !*** ./src/components/wpmozo-iconpicker/wpmozo-iconpicker.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const {
+  compose
+} = wp.compose;
+const {
+  ComboboxControl
+} = wp.components;
+const el = wp.element.createElement;
+const options = wpmozo_block_carousel_object.icons;
+const WpmozoIconpicker = function (args) {
+  const props = args.props;
+  const attributes = args.attributes;
+  const label = args.label;
+  return [el('div', {
+    className: 'wpmozo-icon-picker'
+  }, el(ComboboxControl, {
+    label: label,
+    value: attributes.QuickViewLinkIcon,
+    onChange: function (icon) {
+      props.setAttributes({
+        QuickViewLinkIcon: icon
+      });
+    },
+    options: options,
+    __experimentalRenderItem: function (option) {
+      let iconClass = option.item.value;
+      return el("span", {
+        children: [el("i", {
+          class: iconClass
+        }), " ", option.item.label]
+      });
+    }
+  }), attributes.QuickViewLinkIcon && el('div', {
+    className: 'wpmozo-icon-wraper'
+  }, el('i', {
+    class: attributes.QuickViewLinkIcon
+  })))];
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (WpmozoIconpicker);
+
+/***/ }),
+
 /***/ "./src/components/wpmozo-loader/wpmozo-loader.js":
 /*!*******************************************************!*\
   !*** ./src/components/wpmozo-loader/wpmozo-loader.js ***!
@@ -272,6 +323,8 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../src/components/wpmozo-typography/wpmozo-typography */ "./src/components/wpmozo-typography/wpmozo-typography.js");
 /* harmony import */ var _src_components_wpmozo_loader_wpmozo_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/components/wpmozo-loader/wpmozo-loader */ "./src/components/wpmozo-loader/wpmozo-loader.js");
+/* harmony import */ var _src_components_wpmozo_iconpicker_wpmozo_iconpicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../src/components/wpmozo-iconpicker/wpmozo-iconpicker */ "./src/components/wpmozo-iconpicker/wpmozo-iconpicker.js");
+
 
 
 (function (blocks, editor, element, components) {
@@ -291,8 +344,7 @@ __webpack_require__.r(__webpack_exports__);
     TextControl,
     FormTokenField,
     ToggleControl,
-    Button,
-    __experimentalDimensionControl
+    Button
   } = components;
   const {
     Fragment,
@@ -460,9 +512,7 @@ __webpack_require__.r(__webpack_exports__);
       return [el(Fragment, {}, el(InspectorControls, {}, el(PanelBody, {
         title: __('Carousel Settings', 'wpmozo-product-carousel-for-woocommerce'),
         initialOpen: true
-      }, el(__experimentalDimensionControl, {
-        label: 'sdfsdf'
-      }), el(RangeControl, {
+      }, el(RangeControl, {
         key: 'wpmozp-product-carousel-columns',
         value: attributes.Columns,
         allowReset: false,
@@ -683,29 +733,49 @@ __webpack_require__.r(__webpack_exports__);
             QuickViewLinkText: NewQuickViewLinkText
           });
         }
-      }), attributes.EnableQuickViewLink && el(MediaUploadCheck, {}, el(MediaUpload, {
+      }), attributes.EnableQuickViewLink && attributes.EnableQuickViewLink && el(ToggleControl, {
+        checked: attributes.QuickViewLinkIconEnabled,
+        label: __('Quickview Display icon', 'wpmozo-product-carousel-for-woocommerce'),
+        onChange: function (NewQuickViewLinkIconEnabled) {
+          props.setAttributes({
+            QuickViewLinkIconEnabled: NewQuickViewLinkIconEnabled
+          });
+        }
+      }), attributes.EnableQuickViewLink && attributes.QuickViewLinkIconEnabled && !attributes.QuickViewLinkCustomIcon && el(_src_components_wpmozo_iconpicker_wpmozo_iconpicker__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        label: __('Quickview Icon', 'wpmozo-product-carousel-for-woocommerce'),
+        props: props,
+        attributes: attributes
+      }), attributes.EnableQuickViewLink && attributes.QuickViewLinkIconEnabled && el(ToggleControl, {
+        checked: attributes.QuickViewLinkCustomIcon,
+        label: __('Quickview custom icon', 'wpmozo-product-carousel-for-woocommerce'),
+        onChange: function (NewQuickViewLinkCustomIcon) {
+          props.setAttributes({
+            QuickViewLinkCustomIcon: NewQuickViewLinkCustomIcon
+          });
+        }
+      }), attributes.EnableQuickViewLink && attributes.QuickViewLinkIconEnabled && attributes.QuickViewLinkCustomIcon && el(MediaUploadCheck, {}, el(MediaUpload, {
         onSelect: media => props.setAttributes({
-          QuickViewLinkIcon: media.url
+          QuickViewLinkImg: media.url
         }),
         allowedTypes: ["image"],
         accept: "image/*",
-        value: attributes.QuickViewLinkIcon,
+        value: attributes.QuickViewLinkImg,
         render: _ref2 => {
           let {
             open
           } = _ref2;
           return el(Fragment, {}, el('div', {
             class: "components-base-control wpmozo-quvili-icon-wrap",
-            children: [attributes.QuickViewLinkIcon && el('img', {
+            children: [attributes.QuickViewLinkImg && el('img', {
               class: "wpmozo-quvili-icon",
-              src: attributes.QuickViewLinkIcon
+              src: attributes.QuickViewLinkImg
             }), el(Button, {
               isPrimary: true,
               onClick: event => {
                 event.stopPropagation();
                 open();
               },
-              children: attributes.QuickViewLinkIcon ? __("Edit Icon", "wpmozo-product-carousel-for-woocommerce") : __("Select Icon", "wpmozo-product-carousel-for-woocommerce")
+              children: attributes.QuickViewLinkImg ? __("Edit Icon", "wpmozo-product-carousel-for-woocommerce") : __("Select Icon", "wpmozo-product-carousel-for-woocommerce")
             })]
           }));
         }

@@ -30,6 +30,8 @@ class Wpmozo_Init {
 		// register the swiper script.
 		wp_register_script( 'wpmozo-swiper-script', WPMOZO_ASSE_DIR_URL . 'frontend/swiper/js/swiper-bundle.min.js', array(), time(), true );
 		wp_register_style( 'wpmozo-swiper-style', WPMOZO_ASSE_DIR_URL . 'frontend/swiper/css/swiper-bundle.css', array(), time());
+		// rgister fontawesome style.
+		wp_register_style( 'wpmozo-fontawesome-style', WPMOZO_ASSE_DIR_URL . 'frontend/fontawesome/all.min.css', array(), time());
 
 		// register the swiper scripts.
 		wp_register_script( 
@@ -104,6 +106,7 @@ class Wpmozo_Init {
 			'wpmozo-product-carousel-style',
 			'wpmozo-magnific-style',
 			'wpmozo-product-carousel-placeholder',
+			'wpmozo-fontawesome-style',
 		);
 		if ( ! empty( $wc_styles ) ) {
 			$wc_styles_handles = array_keys( $wc_styles );
@@ -335,7 +338,19 @@ class Wpmozo_Init {
 			    'type' => 'string',
 			    'default' => '',
 			),
+			'QuickViewLinkIconEnabled' => array(
+			    'type' => 'boolean',
+			    'default' => false,
+			),
 			'QuickViewLinkIcon' => array(
+			    'type' => 'string',
+			    'default' => 'fas fa-eye',
+			),
+			'QuickViewLinkCustomIcon' => array(
+			    'type' => 'boolean',
+			    'default' => false,
+			),
+			'QuickViewLinkImg' => array(
 			    'type' => 'string',
 			    'default' => '',
 			),
@@ -484,6 +499,8 @@ class Wpmozo_Init {
 			),
 		);
 
+		$icons = $this->wpmozo_get_icons();
+
 		$all_options = array( 
 			'attributes' => $attributes,
 			'order_by_options' => $order_by_options,
@@ -492,9 +509,23 @@ class Wpmozo_Init {
 			'all_badge_types' => $all_badge_types,
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'all_layouts' => $all_layouts,
+			'icons' => $icons,
 		);
 
 		return $all_options;
+	}
+
+	/**
+	 * Get font awesome icons array
+	 *
+	 * @since 1.0.0
+	 * @return array $icons All icons.
+	 */
+	public function wpmozo_get_icons(){
+
+		$json = file_get_contents(WPMOZO_ASSE_DIR_URL . 'frontend/fontawesome/fonts.json');
+		$icons = json_decode( $json );
+		return $icons;
 	}
 
 	/**

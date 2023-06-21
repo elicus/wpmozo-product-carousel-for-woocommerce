@@ -400,13 +400,17 @@ function wpmozo_product_carousel_quick_view_button( $image, $product ){
     global $wpmozo_product_carousel_args;
     $pro_id = $product->get_id();
     $button_text = esc_html__( $wpmozo_product_carousel_args['QuickViewLinkText'], 'wpmozo-product-carousel-for-woocommerce' );
-    $icon = $wpmozo_product_carousel_args['QuickViewLinkIcon'];
-    $inline = '';
-    $has_icon = '';
-    if ( ! empty( $icon ) ) {
+    $icon = $inline = $has_icon = '';
+
+    if ( $wpmozo_product_carousel_args['QuickViewLinkIconEnabled'] ) {
+        $icon = ( $wpmozo_product_carousel_args['QuickViewLinkCustomIcon'] ) ? $wpmozo_product_carousel_args['QuickViewLinkImg'] : $wpmozo_product_carousel_args['QuickViewLinkIcon'];
+    }
+    
+    if ( ! empty( $icon ) && $wpmozo_product_carousel_args['QuickViewLinkCustomIcon'] ) {
         $has_icon = ' has-icon';
         $inline = 'background-image: url('.$icon.');background-size: 0;';
     }
+
     $has_text = ! empty( $button_text ) ? ' has-text' : '';
 
     ob_start();
@@ -415,7 +419,12 @@ function wpmozo_product_carousel_quick_view_button( $image, $product ){
         <?php if ( 'layout-3' !== $wpmozo_product_carousel_args['Layout'] ) { ?>
             <div class="wpmozo-product__overlay">
         <?php } ?>
-                <button class="button wpmozo-quick-view-button<?php echo esc_attr( $has_icon );echo esc_attr( $has_text ); ?>" data-pro-id="<?php echo esc_attr( $pro_id ); ?>" style="<?php echo esc_attr( $inline ); ?>"><?php echo $button_text; ?></button>
+                <button class="button wpmozo-quick-view-button<?php echo esc_attr( $has_icon );echo esc_attr( $has_text ); ?>" data-pro-id="<?php echo esc_attr( $pro_id ); ?>" style="<?php echo esc_attr( $inline ); ?>">
+                    <?php if ( ! empty( $icon ) && ! $wpmozo_product_carousel_args['QuickViewLinkCustomIcon'] ) { ?>
+                        <i class="<?php echo esc_attr( $icon ); ?>"></i>
+                    <?php } ?>
+                    <?php echo $button_text; ?>        
+                </button>
         <?php if ( 'layout-3' !== $wpmozo_product_carousel_args['Layout'] ) { ?>
             </div>
         <?php } ?>

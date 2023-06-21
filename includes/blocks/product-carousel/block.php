@@ -24,8 +24,10 @@ function wpmozo_product_carousel_render_callback( $args ){
     $wpmozo_product_carousel_args = $args;
     $qu_args = wpmozo_product_carousel_prepare_query_args( $args );
     $pro_query = new WP_Query( $qu_args );
+    $admin_class = ' loading';
 
     if ( isset( $_GET['context'] ) && 'edit' === $_GET['context'] ) {
+        $admin_class = '';
         wpmozo_product_carousel_add_hooks_admin_preview( $args );
     }
     
@@ -33,7 +35,27 @@ function wpmozo_product_carousel_render_callback( $args ){
     ?>
     <?php if ( $pro_query->have_posts() ) { ?>
         <?php wpmozo_product_carousel_before_hooks( $args ); ?>
-        <div class="wpmozo-product-carousel-wrap woocommerce swiper <?php echo $args['Layout']; ?>" data-atts='<?php echo json_encode($args); ?>' id="wpmozo_<?php echo esc_attr( $args['clientId'] ); ?>">
+        <div class="wpmozo-product-carousel-wrap woocommerce swiper <?php echo esc_attr( $args['Layout'] ); ?><?php echo esc_attr( $admin_class ); ?>" data-atts='<?php echo json_encode($args); ?>' id="wpmozo_<?php echo esc_attr( $args['clientId'] ); ?>">
+            <?php if ( ! isset( $_GET['context'] ) ) { ?>
+                <div class="wpmozo-loader frontend">
+                    <?php for ($i=0; $i < $args['Columns']; $i++) { ?>
+                        <div class="ph-item" style="margin-right: <?php echo esc_attr( $args['SpaceBetween'] ); ?>px;">
+                            <div class="ph-col-12">
+                                <div class="ph-picture"></div>
+                                <div class="ph-row">
+                                    <div class="ph-col-8"></div>
+                                    <div class="ph-col-4 empty"></div>
+                                    <div class="ph-col-4"></div>
+                                    <div class="ph-col-8 empty"></div>
+                                    <div class="ph-col-12 empty"></div>
+                                    <div class="ph-col-6 big"></div>
+                                    <div class="ph-col-6 empty"></div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                </div>  
+            <?php } ?>   
             <ul class="products swiper-wrapper">
                 <?php while ( $pro_query->have_posts() ) { ?>
                     <?php
@@ -46,11 +68,19 @@ function wpmozo_product_carousel_render_callback( $args ){
                     <?php } ?>
                 <?php } ?>
             </ul>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-pagination"></div>
+            <?php if ( $args['ShowNavigation'] ) { ?>
+                <div class="swiper-navigation swiper-button-next"></div>
+                <div class="swiper-navigation swiper-button-prev"></div>
+            <?php } ?>
+            <?php if ( $args['ShowPagination'] ) { ?>
+                <div class="swiper-pagination"></div>
+            <?php } ?>
         </div>
         <?php wpmozo_product_carousel_after_hooks( $args ); ?>
+    <?php }else{ ?>
+        <div class="wpmozo-product-carousel-nofound-wrap">
+            <p class="wpmozo-product-carousel-nofound"><?php echo esc_html__('No products found.', 'wpmozo-product-carousel-for-woocommerce'); ?></p>
+        </div>
     <?php } ?>
     <?php 
 

@@ -30,6 +30,8 @@ class Wpmozo_Init {
 		// register the swiper script.
 		wp_register_script( 'wpmozo-swiper-script', WPMOZO_ASSE_DIR_URL . 'frontend/swiper/js/swiper-bundle.min.js', array(), time(), true );
 		wp_register_style( 'wpmozo-swiper-style', WPMOZO_ASSE_DIR_URL . 'frontend/swiper/css/swiper-bundle.css', array(), time());
+		// rgister fontawesome style.
+		wp_register_style( 'wpmozo-fontawesome-style', WPMOZO_ASSE_DIR_URL . 'frontend/fontawesome/all.min.css', array(), time());
 
 		// register the swiper scripts.
 		wp_register_script( 
@@ -42,26 +44,33 @@ class Wpmozo_Init {
 		wp_register_style( 
 			'wpmozo-block-product-carousel-style',
 			WPMOZO_BLOCKS_DIR_URL . 'product-carousel/assets/css/product-carousel-editor.css',
-			array(),
+			array('wp-edit-blocks'),
 			time(),
 		);
 		wp_register_style( 
 			'wpmozo-product-carousel-style',
 			WPMOZO_BLOCKS_DIR_URL . 'product-carousel/assets/css/product-carousel.css',
+			array(),
 			time(),
+		);
+
+		wp_register_style( 'wpmozo-product-carousel-placeholder', 
+			WPMOZO_ASSE_DIR_URL . 'placeholder-loading.css',
+			array(),
+			time()
 		);
 
 		// register the magnific popup scripts.
 		wp_register_script( 
 			'wpmozo-magnific-script',
-			WPMOZO_ASSE_DIR_URL . 'frontend/magnific-popup/js/jquery.magnific-popup.min.js',
+			WPMOZO_ASSE_DIR_URL . 'frontend/magnific/js/jquery.magnific-popup.min.js',
 			array('jquery'),
 			time(),
 			true
 		);
 		wp_register_style( 
 			'wpmozo-magnific-style',
-			WPMOZO_ASSE_DIR_URL . 'frontend/magnific-popup/css/magnific-popup.css',
+			WPMOZO_ASSE_DIR_URL . 'frontend/magnific/css/magnific-popup.css',
 			array(),
 			time(),
 		);
@@ -90,6 +99,19 @@ class Wpmozo_Init {
 		);
 
 		wp_localize_script( 'wpmozo-product-carousel-script', 'wpmozo_carousel_object', $wpmozo_carousel_object);
+
+		$wc_styles = WC_Frontend_Scripts::get_styles();
+		$styles_handles = array(
+			'wpmozo-swiper-style',
+			'wpmozo-product-carousel-style',
+			'wpmozo-magnific-style',
+			'wpmozo-product-carousel-placeholder',
+			'wpmozo-fontawesome-style',
+		);
+		if ( ! empty( $wc_styles ) ) {
+			$wc_styles_handles = array_keys( $wc_styles );
+			$styles_handles = array_merge($wc_styles_handles, $styles_handles);
+		}
 		
 		require_once WPMOZO_BLOCKS_DIR_PATH . 'product-carousel/block.php';
 		register_block_type( 'wpmozo/product-carousel', array(
@@ -105,19 +127,71 @@ class Wpmozo_Init {
 				'photoswipe-ui-default',
 				'wc-single-product',
 			),
-			'style_handles' => array(
-				'wpmozo-swiper-style',
-				'woocommerce-layout',
-				'woocommerce-general',
-				'woocommerce-blocktheme',
-				'wpmozo-product-carousel-style',
-				'wpmozo-magnific-style',
-			),
+			'style_handles' => $styles_handles,
 			'attributes' => $attributes,
 			'render_callback' => 'wpmozo_product_carousel_render_callback',
 		));
 
 
+	}
+
+	/**
+	 * Enqueue editor style for block.
+	 *
+	 * @since 1.0.0
+	 */
+	public function wpmozo_add_editor_style(){
+
+		if ( has_block( 'wpmozo/product-carousel' ) ) {
+
+			global $wp_filter;
+			$wc_styles = WC_Frontend_Scripts::get_styles();
+
+			if ( empty( $wc_styles ) ) {
+				
+				$all_hooks = $wp_filter['woocommerce_enqueue_styles'];
+				$all_callbacks = $all_hooks->callbacks;
+
+				// Remove all filter for enqueue style.
+				if ( ! empty( $all_callbacks ) ) {
+					foreach ($all_callbacks as $priority => $_callback) {
+						if ( is_array( $_callback ) ) {
+							foreach ($_callback as $funname => $__callback) {
+								remove_filter( 'woocommerce_enqueue_styles', $__callback['function'], $priority, $__callback['accepted_args'] );
+							}
+						}else{
+							remove_filter( 'woocommerce_enqueue_styles', $_callback['function'], $priority, $_callback['accepted_args'] );
+						}
+					}
+				}
+
+				$wc_styles = WC_Frontend_Scripts::get_styles();
+				if ( $wc_styles ) {
+					foreach ( $wc_styles as $handle => $args ) {
+						if ( ! isset( $args['has_rtl'] ) ) {
+							$args['has_rtl'] = false;
+						}
+						wp_enqueue_style( $handle, $args['src'], $args['deps'], $args['version'], $args['media'], $args['has_rtl'] );
+					}
+				}
+
+				// Add all filter for enqueue style.
+				if ( ! empty( $all_callbacks ) ) {
+					foreach ($all_callbacks as $priority => $_callback) {
+						if ( is_array( $_callback ) ) {
+							foreach ($_callback as $funname => $__callback) {
+								add_filter( 'woocommerce_enqueue_styles', $__callback['function'], $priority, $__callback['accepted_args'] );
+							}
+						}else{
+							add_filter( 'woocommerce_enqueue_styles', $_callback['function'], $priority, $_callback['accepted_args'] );
+						}
+					}
+				}
+
+			}
+
+		}
+			
 	}
 
 	/**
@@ -264,7 +338,19 @@ class Wpmozo_Init {
 			    'type' => 'string',
 			    'default' => '',
 			),
+			'QuickViewLinkIconEnabled' => array(
+			    'type' => 'boolean',
+			    'default' => false,
+			),
 			'QuickViewLinkIcon' => array(
+			    'type' => 'string',
+			    'default' => 'fas fa-eye',
+			),
+			'QuickViewLinkCustomIcon' => array(
+			    'type' => 'boolean',
+			    'default' => false,
+			),
+			'QuickViewLinkImg' => array(
 			    'type' => 'string',
 			    'default' => '',
 			),
@@ -413,6 +499,8 @@ class Wpmozo_Init {
 			),
 		);
 
+		$icons = $this->wpmozo_get_icons();
+
 		$all_options = array( 
 			'attributes' => $attributes,
 			'order_by_options' => $order_by_options,
@@ -421,9 +509,23 @@ class Wpmozo_Init {
 			'all_badge_types' => $all_badge_types,
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'all_layouts' => $all_layouts,
+			'icons' => $icons,
 		);
 
 		return $all_options;
+	}
+
+	/**
+	 * Get font awesome icons array
+	 *
+	 * @since 1.0.0
+	 * @return array $icons All icons.
+	 */
+	public function wpmozo_get_icons(){
+
+		$json = file_get_contents(WPMOZO_ASSE_DIR_URL . 'frontend/fontawesome/fonts.json');
+		$icons = json_decode( $json );
+		return $icons;
 	}
 
 	/**
@@ -436,6 +538,7 @@ class Wpmozo_Init {
 	public function add_hooks( $loader, $instance ) {
 
 		$loader->add_action( 'init', $instance, 'wpmozo_register_blocks' );
+		$loader->add_action('enqueue_block_editor_assets', $instance, 'wpmozo_add_editor_style' );
 
 	}
 

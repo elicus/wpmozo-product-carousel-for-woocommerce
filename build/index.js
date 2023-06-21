@@ -2,6 +2,119 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/components/wpmozo-iconpicker/wpmozo-iconpicker.js":
+/*!***************************************************************!*\
+  !*** ./src/components/wpmozo-iconpicker/wpmozo-iconpicker.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const {
+  compose
+} = wp.compose;
+const {
+  ComboboxControl
+} = wp.components;
+const el = wp.element.createElement;
+const options = wpmozo_block_carousel_object.icons;
+const WpmozoIconpicker = function (args) {
+  const props = args.props;
+  const attributes = args.attributes;
+  const label = args.label;
+  return [el('div', {
+    className: 'wpmozo-icon-picker'
+  }, el(ComboboxControl, {
+    label: label,
+    value: attributes.QuickViewLinkIcon,
+    onChange: function (icon) {
+      props.setAttributes({
+        QuickViewLinkIcon: icon
+      });
+    },
+    options: options,
+    __experimentalRenderItem: function (option) {
+      let iconClass = option.item.value;
+      return el("span", {
+        children: [el("i", {
+          class: iconClass
+        }), " ", option.item.label]
+      });
+    }
+  }), attributes.QuickViewLinkIcon && el('div', {
+    className: 'wpmozo-icon-wraper'
+  }, el('i', {
+    class: attributes.QuickViewLinkIcon
+  })))];
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (WpmozoIconpicker);
+
+/***/ }),
+
+/***/ "./src/components/wpmozo-loader/wpmozo-loader.js":
+/*!*******************************************************!*\
+  !*** ./src/components/wpmozo-loader/wpmozo-loader.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+
+const {
+  Component
+} = wp.element;
+const {
+  compose
+} = wp.compose;
+class WpmozoLoader extends Component {
+  render() {
+    const {
+      column,
+      margin
+    } = this.props;
+    let loader = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-item",
+        style: {
+          marginRight: margin
+        }
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-12"
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-picture"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-row"
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-8"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-4 empty"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-4"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-8 empty"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-12 empty"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-6 big"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-6 empty"
+      })))),
+      html = [];
+    for (var i = 0; i < column; i++) {
+      html.push(loader);
+    }
+    return html;
+  }
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (compose()(WpmozoLoader));
+
+/***/ }),
+
 /***/ "./src/components/wpmozo-typography/wpmozo-typography.js":
 /*!***************************************************************!*\
   !*** ./src/components/wpmozo-typography/wpmozo-typography.js ***!
@@ -25,7 +138,10 @@ const {
   __experimentalToolsPanel,
   __experimentalToolsPanelItem
 } = window.wp.components;
-const wpmozoTypography = function (args) {
+const {
+  compose
+} = wp.compose;
+const WpmozoTypography = function (args) {
   const {
     TypographyKey,
     attributes,
@@ -116,7 +232,17 @@ const wpmozoTypography = function (args) {
     }
   })))];
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (wpmozoTypography);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (compose()(WpmozoTypography));
+
+/***/ }),
+
+/***/ "@wordpress/element":
+/*!*********************************!*\
+  !*** external ["wp","element"] ***!
+  \*********************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["element"];
 
 /***/ })
 
@@ -147,6 +273,18 @@ const wpmozoTypography = function (args) {
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -184,6 +322,10 @@ var __webpack_exports__ = {};
   \**********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../src/components/wpmozo-typography/wpmozo-typography */ "./src/components/wpmozo-typography/wpmozo-typography.js");
+/* harmony import */ var _src_components_wpmozo_loader_wpmozo_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/components/wpmozo-loader/wpmozo-loader */ "./src/components/wpmozo-loader/wpmozo-loader.js");
+/* harmony import */ var _src_components_wpmozo_iconpicker_wpmozo_iconpicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../src/components/wpmozo-iconpicker/wpmozo-iconpicker */ "./src/components/wpmozo-iconpicker/wpmozo-iconpicker.js");
+
+
 
 (function (blocks, editor, element, components) {
   const __ = wp.i18n.__;
@@ -202,8 +344,7 @@ __webpack_require__.r(__webpack_exports__);
     TextControl,
     FormTokenField,
     ToggleControl,
-    Button,
-    Spinner
+    Button
   } = components;
   const {
     Fragment,
@@ -246,6 +387,10 @@ __webpack_require__.r(__webpack_exports__);
     let selector = item.selector;
     let inlineStyle = convetInlineStyle(atts[attKey]);
     if ('' !== inlineStyle) {
+      var defaultStyle = wraper.find(selector).attr('style');
+      if ('' !== defaultStyle && 'undefined' !== typeof defaultStyle) {
+        inlineStyle += defaultStyle;
+      }
       wraper.find(selector).attr('style', inlineStyle);
     }
   }
@@ -332,22 +477,16 @@ __webpack_require__.r(__webpack_exports__);
         };
       });
       return el(Fragment, {}, el("div", {
+        class: "wpmozo-loader backend",
         style: {
-          position: "relative"
-        }
-      }, showLoader && el("div", {
-        style: {
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          marginTop: "-9px",
-          marginLeft: "-9px"
-        }
-      }, el(Spinner, {})), el("div", {
-        style: {
-          opacity: showLoader ? "0.3" : 1
-        }
-      }, children)));
+          "display": "grid",
+          "grid-auto-flow": "column"
+        },
+        children: [el(_src_components_wpmozo_loader_wpmozo_loader__WEBPACK_IMPORTED_MODULE_1__["default"], {
+          column: attributes.Columns,
+          margin: attributes.SpaceBetween
+        })]
+      }));
     };
   };
   registerBlockType('wpmozo/product-carousel', {
@@ -438,7 +577,7 @@ __webpack_require__.r(__webpack_exports__);
             ShowPagination: NewShowPagination
           });
         }
-      }), el(SelectControl, {
+      }), attributes.ShowPagination && el(SelectControl, {
         key: 'wpmozp-product-carousel-paginationtype',
         label: __('Pagination Type', 'wpmozo-product-carousel-for-woocommerce'),
         value: attributes.PaginationType,
@@ -594,29 +733,49 @@ __webpack_require__.r(__webpack_exports__);
             QuickViewLinkText: NewQuickViewLinkText
           });
         }
-      }), attributes.EnableQuickViewLink && el(MediaUploadCheck, {}, el(MediaUpload, {
+      }), attributes.EnableQuickViewLink && attributes.EnableQuickViewLink && el(ToggleControl, {
+        checked: attributes.QuickViewLinkIconEnabled,
+        label: __('Quickview Display icon', 'wpmozo-product-carousel-for-woocommerce'),
+        onChange: function (NewQuickViewLinkIconEnabled) {
+          props.setAttributes({
+            QuickViewLinkIconEnabled: NewQuickViewLinkIconEnabled
+          });
+        }
+      }), attributes.EnableQuickViewLink && attributes.QuickViewLinkIconEnabled && !attributes.QuickViewLinkCustomIcon && el(_src_components_wpmozo_iconpicker_wpmozo_iconpicker__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        label: __('Quickview Icon', 'wpmozo-product-carousel-for-woocommerce'),
+        props: props,
+        attributes: attributes
+      }), attributes.EnableQuickViewLink && attributes.QuickViewLinkIconEnabled && el(ToggleControl, {
+        checked: attributes.QuickViewLinkCustomIcon,
+        label: __('Quickview custom icon', 'wpmozo-product-carousel-for-woocommerce'),
+        onChange: function (NewQuickViewLinkCustomIcon) {
+          props.setAttributes({
+            QuickViewLinkCustomIcon: NewQuickViewLinkCustomIcon
+          });
+        }
+      }), attributes.EnableQuickViewLink && attributes.QuickViewLinkIconEnabled && attributes.QuickViewLinkCustomIcon && el(MediaUploadCheck, {}, el(MediaUpload, {
         onSelect: media => props.setAttributes({
-          QuickViewLinkIcon: media.url
+          QuickViewLinkImg: media.url
         }),
         allowedTypes: ["image"],
         accept: "image/*",
-        value: attributes.QuickViewLinkIcon,
+        value: attributes.QuickViewLinkImg,
         render: _ref2 => {
           let {
             open
           } = _ref2;
           return el(Fragment, {}, el('div', {
             class: "components-base-control wpmozo-quvili-icon-wrap",
-            children: [attributes.QuickViewLinkIcon && el('img', {
+            children: [attributes.QuickViewLinkImg && el('img', {
               class: "wpmozo-quvili-icon",
-              src: attributes.QuickViewLinkIcon
+              src: attributes.QuickViewLinkImg
             }), el(Button, {
               isPrimary: true,
               onClick: event => {
                 event.stopPropagation();
                 open();
               },
-              children: attributes.QuickViewLinkIcon ? __("Edit Icon", "wpmozo-product-carousel-for-woocommerce") : __("Select Icon", "wpmozo-product-carousel-for-woocommerce")
+              children: attributes.QuickViewLinkImg ? __("Edit Icon", "wpmozo-product-carousel-for-woocommerce") : __("Select Icon", "wpmozo-product-carousel-for-woocommerce")
             })]
           }));
         }

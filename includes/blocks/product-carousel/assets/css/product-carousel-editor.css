@@ -46,3 +46,13 @@
     text-align: center;
     font-size: 18px;
 }
+.wpmozo-color-dropdown-container{
+	width: 100%;
+}
+.wpmozo-color-dropdown-container .components-button{
+	width: 100%;
+    border: 1px solid rgb(0 0 0 / 57%);
+}
+.wpmozo-color-dropdown-container .components-button .component-color-indicator{
+	margin-right: 8px;
+}

@@ -2,6 +2,104 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/components/wpmozo-colorpicker/wpmozo-colorpicker.js":
+/*!*****************************************************************!*\
+  !*** ./src/components/wpmozo-colorpicker/wpmozo-colorpicker.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const el = window.wp.element.createElement;
+const __ = wp.i18n.__;
+const {
+  __experimentalUseMultipleOriginColorsAndGradients
+} = window.wp.blockEditor;
+const {
+  __experimentalToolsPanel,
+  __experimentalToolsPanelItem,
+  Dropdown,
+  Button,
+  ColorIndicator,
+  ColorPalette
+} = window.wp.components;
+const WpmozoColorPicker = function (args) {
+  const {
+    ColorKey,
+    ColorTypes,
+    attributes,
+    props
+  } = args;
+  const AllColors = __experimentalUseMultipleOriginColorsAndGradients();
+  const _color = attributes[ColorKey];
+  const colorSetValue = function (styleType) {
+    let value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    let colors = Object.assign({}, _color);
+    colors[styleType] = null !== value ? value : '';
+    props.setAttributes({
+      [ColorKey]: colors
+    });
+  };
+  const colorDropdown = function (colorType, label) {
+    return el(Dropdown, {
+      className: "wpmozo-color-dropdown-container",
+      contentClassName: "wpmozo-color-popover-content",
+      popoverProps: {
+        placement: 'left-start',
+        offset: 36,
+        shift: true
+      },
+      renderToggle: _ref => {
+        let {
+          isOpen,
+          onToggle
+        } = _ref;
+        return el(Button, {
+          onClick: onToggle,
+          "aria-expanded": isOpen,
+          children: [el(ColorIndicator, {
+            colorValue: _color[colorType]
+          }), label]
+        });
+      },
+      renderContent: () => el(ColorPalette, {
+        colors: AllColors.colors,
+        value: _color[colorType],
+        onChange: function (NewColor) {
+          colorSetValue(colorType, NewColor);
+        }
+      })
+    });
+  };
+  const Panels = [];
+  for (var i = 0; i < ColorTypes.length; i++) {
+    let ct = ColorTypes[i];
+    let Panel = el(__experimentalToolsPanelItem, {
+      label: ct.label,
+      hasValue: () => true,
+      isShownByDefault: true,
+      onDeselect: () => colorSetValue(ct.key)
+    }, colorDropdown(ct.key, ct.label));
+    Panels.push(Panel);
+  }
+  return [el(__experimentalToolsPanel, {
+    label: __('Color', 'wpmozo-product-carousel-for-woocommerce'),
+    resetAll: () => {
+      let colors = {
+        text: ''
+      };
+      props.setAttributes({
+        [ColorKey]: colors
+      });
+    }
+  }, Panels)];
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (WpmozoColorPicker);
+
+/***/ }),
+
 /***/ "./src/components/wpmozo-iconpicker/wpmozo-iconpicker.js":
 /*!***************************************************************!*\
   !*** ./src/components/wpmozo-iconpicker/wpmozo-iconpicker.js ***!
@@ -324,6 +422,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../src/components/wpmozo-typography/wpmozo-typography */ "./src/components/wpmozo-typography/wpmozo-typography.js");
 /* harmony import */ var _src_components_wpmozo_loader_wpmozo_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/components/wpmozo-loader/wpmozo-loader */ "./src/components/wpmozo-loader/wpmozo-loader.js");
 /* harmony import */ var _src_components_wpmozo_iconpicker_wpmozo_iconpicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../src/components/wpmozo-iconpicker/wpmozo-iconpicker */ "./src/components/wpmozo-iconpicker/wpmozo-iconpicker.js");
+/* harmony import */ var _src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../src/components/wpmozo-colorpicker/wpmozo-colorpicker */ "./src/components/wpmozo-colorpicker/wpmozo-colorpicker.js");
+
 
 
 
@@ -335,7 +435,10 @@ __webpack_require__.r(__webpack_exports__);
     InspectorControls,
     MediaUpload,
     MediaUploadCheck,
-    useBlockProps
+    useBlockProps,
+    useSetting,
+    ColorPaletteControl,
+    __experimentalUseMultipleOriginColorsAndGradients
   } = editor;
   const {
     PanelBody,
@@ -344,7 +447,12 @@ __webpack_require__.r(__webpack_exports__);
     TextControl,
     FormTokenField,
     ToggleControl,
-    Button
+    Button,
+    ColorPalette,
+    Dropdown,
+    ColorIndicator,
+    Popover,
+    TabPanel
   } = components;
   const {
     Fragment,
@@ -360,32 +468,54 @@ __webpack_require__.r(__webpack_exports__);
     serverSideRender: ServerSideRender,
     hooks
   } = wp;
-  function convetInlineStyle(options) {
+  let textColorObject = [{
+    key: 'text',
+    label: __('Text', 'wpmozo-product-carousel-for-woocommerce')
+  }];
+  let twoColorObject = [{
+    key: 'text',
+    label: __('Text', 'wpmozo-product-carousel-for-woocommerce')
+  }, {
+    key: 'background',
+    label: __('Background', 'wpmozo-product-carousel-for-woocommerce')
+  }];
+  function convetInlineStyle(options, type) {
     let style = '';
-    if ('undefined' !== typeof options.FontSize && '' !== options.FontSize) {
-      style += 'font-size: ' + options.FontSize + ';';
+    if ('style' === type) {
+      if ('undefined' !== typeof options.FontSize && '' !== options.FontSize) {
+        style += 'font-size: ' + options.FontSize + ';';
+      }
+      if ('undefined' !== typeof options.FontAppearance.fontStyle && '' !== options.FontAppearance.fontStyle) {
+        style += 'font-style: ' + options.FontAppearance.fontStyle + ';';
+      }
+      if ('undefined' !== typeof options.FontAppearance.fontWeight && '' !== options.FontAppearance.fontWeight) {
+        style += 'font-weight: ' + options.FontAppearance.fontWeight + ';';
+      }
+      if ('undefined' !== typeof options.LetterSpacing && '' !== options.LetterSpacing) {
+        style += 'letter-spacing: ' + options.LetterSpacing + ';';
+      }
+      if ('undefined' !== typeof options.Decoration && '' !== options.Decoration) {
+        style += 'text-decoration: ' + options.Decoration + ';';
+      }
+      if ('undefined' !== typeof options.LetterCase && '' !== options.LetterCase) {
+        style += 'text-transform: ' + options.LetterCase + ';';
+      }
     }
-    if ('undefined' !== typeof options.FontAppearance.fontStyle && '' !== options.FontAppearance.fontStyle) {
-      style += 'font-style: ' + options.FontAppearance.fontStyle + ';';
-    }
-    if ('undefined' !== typeof options.FontAppearance.fontWeight && '' !== options.FontAppearance.fontWeight) {
-      style += 'font-weight: ' + options.FontAppearance.fontWeight + ';';
-    }
-    if ('undefined' !== typeof options.LetterSpacing && '' !== options.LetterSpacing) {
-      style += 'letter-spacing: ' + options.LetterSpacing + ';';
-    }
-    if ('undefined' !== typeof options.Decoration && '' !== options.Decoration) {
-      style += 'text-decoration: ' + options.Decoration + ';';
-    }
-    if ('undefined' !== typeof options.LetterCase && '' !== options.LetterCase) {
-      style += 'text-transform: ' + options.LetterCase + ';';
+    if ('color' === type) {
+      if ('undefined' !== typeof options.text && '' !== options.text) {
+        style += 'color: ' + options.text + ';';
+      }
+      if ('undefined' !== typeof options.background && '' !== options.background) {
+        style += 'background: ' + options.background + ';';
+      }
     }
     return style;
   }
   function appendInlineStyle(item, wraper, atts) {
-    let attKey = item.attKey;
-    let selector = item.selector;
-    let inlineStyle = convetInlineStyle(atts[attKey]);
+    let attKey = item.attKey,
+      selector = item.selector,
+      type = item.type,
+      inlineStyle = convetInlineStyle(atts[attKey], type);
     if ('' !== inlineStyle) {
       var defaultStyle = wraper.find(selector).attr('style');
       if ('' !== defaultStyle && 'undefined' !== typeof defaultStyle) {
@@ -422,21 +552,51 @@ __webpack_require__.r(__webpack_exports__);
           let wraper = jQuery('#' + selector);
           let styles = [{
             attKey: 'TitleStyle',
+            type: 'style',
             selector: '.woocommerce-loop-product__title'
           }, {
             attKey: 'PriceStyle',
+            type: 'style',
             selector: '.price'
           }, {
             attKey: 'AddToCartStyle',
+            type: 'style',
             selector: add_to_cart_selector
           }, {
             attKey: 'QuickViewStyle',
+            type: 'style',
             selector: '.wpmozo-quick-view-button'
           }, {
             attKey: 'SaleLabelStyle',
+            type: 'style',
             selector: '.onsale'
           }, {
             attKey: 'StockLabelStyle',
+            type: 'style',
+            selector: '.soldout-text'
+          }, {
+            attKey: 'TitleColor',
+            type: 'color',
+            selector: '.woocommerce-loop-product__title'
+          }, {
+            attKey: 'PriceColor',
+            type: 'color',
+            selector: '.price'
+          }, {
+            attKey: 'AddToCartColor',
+            type: 'color',
+            selector: add_to_cart_selector
+          }, {
+            attKey: 'QuickViewColor',
+            type: 'color',
+            selector: '.wpmozo-quick-view-button'
+          }, {
+            attKey: 'SaleLabelColor',
+            type: 'color',
+            selector: '.onsale'
+          }, {
+            attKey: 'StockLabelColor',
+            type: 'color',
             selector: '.soldout-text'
           }];
           styles.map(function (item) {
@@ -854,39 +1014,64 @@ __webpack_require__.r(__webpack_exports__);
         title: __('Title Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
         initialOpen: false
-      }, el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
+      }, el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        ColorKey: 'TitleColor',
+        attributes: attributes,
+        props: props,
+        ColorTypes: textColorObject
+      }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'TitleStyle',
         attributes: attributes,
         props: props
-      })), el(PanelBody, {
+      })), attributes.ShowPrice && el(PanelBody, {
         title: __('Price Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
         initialOpen: false
-      }, el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
+      }, el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        ColorKey: 'PriceColor',
+        attributes: attributes,
+        props: props,
+        ColorTypes: textColorObject
+      }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'PriceStyle',
         attributes: attributes,
         props: props
-      })), el(PanelBody, {
+      })), attributes.ShowAddToCartButton && el(PanelBody, {
         title: __('Add to Cart Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
         initialOpen: false
-      }, el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
+      }, el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        ColorKey: 'AddToCartColor',
+        attributes: attributes,
+        props: props,
+        ColorTypes: twoColorObject
+      }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'AddToCartStyle',
         attributes: attributes,
         props: props
-      })), el(PanelBody, {
+      })), attributes.EnableQuickViewLink && el(PanelBody, {
         title: __('Quick View Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
         initialOpen: false
-      }, el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
+      }, el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        ColorKey: 'QuickViewColor',
+        attributes: attributes,
+        props: props,
+        ColorTypes: twoColorObject
+      }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'QuickViewStyle',
         attributes: attributes,
         props: props
-      })), el(PanelBody, {
+      })), attributes.ShowSaleBadge && el(PanelBody, {
         title: __('Sale Label Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
         initialOpen: false
-      }, el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
+      }, el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        ColorKey: 'SaleLabelColor',
+        attributes: attributes,
+        props: props,
+        ColorTypes: twoColorObject
+      }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'SaleLabelStyle',
         attributes: attributes,
         props: props
@@ -894,7 +1079,12 @@ __webpack_require__.r(__webpack_exports__);
         title: __('Out Of Stock Label Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
         initialOpen: false
-      }, el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
+      }, el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        ColorKey: 'StockLabelColor',
+        attributes: attributes,
+        props: props,
+        ColorTypes: textColorObject
+      }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'StockLabelStyle',
         attributes: attributes,
         props: props

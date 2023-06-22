@@ -32,6 +32,12 @@
                     	{attKey: 'QuickViewStyle', selector: '.wpmozo-quick-view-button'},
                     	{attKey: 'SaleLabelStyle', selector: '.onsale'},
                     	{attKey: 'StockLabelStyle', selector: '.soldout-text'},
+                    	{attKey: 'TitleColor', type: 'color', selector: '.woocommerce-loop-product__title'},
+                        {attKey: 'PriceColor', type: 'color', selector: '.price'},
+                        {attKey: 'AddToCartColor', type: 'color', selector: add_to_cart_selector},
+                        {attKey: 'QuickViewColor', type: 'color', selector: '.wpmozo-quick-view-button'},
+                        {attKey: 'SaleLabelColor', type: 'color', selector: '.onsale'},
+                        {attKey: 'StockLabelColor', type: 'color', selector: '.soldout-text'},
                     ];
 
                     styles.map(
@@ -123,40 +129,52 @@
 
 	function appendInlineStyle( item, wraper, atts ){
 
-		let attKey = item.attKey;
-		let selector = item.selector;
-		let inlineStyle = convetInlineStyle( atts[attKey] );
+        let attKey = item.attKey,
+            selector = item.selector,
+            type = item.type,
+            inlineStyle = convetInlineStyle( atts[attKey], type );
         if ( '' !== inlineStyle ) {
-        	var defaultStyle = wraper.find(selector).attr('style');
-        	if ( '' !== defaultStyle && 'undefined' !== typeof defaultStyle ) {
-        		inlineStyle += defaultStyle;
-        	}
+            var defaultStyle = wraper.find(selector).attr('style');
+            if ( '' !== defaultStyle && 'undefined' !== typeof defaultStyle ) {
+                inlineStyle += defaultStyle;
+            }
             wraper.find(selector).attr('style', inlineStyle);
         }
 
-	}
+    }
 
-	function convetInlineStyle( options ){
+	function convetInlineStyle( options, type ){
 
         let style = '';
 
-        if ( 'undefined' !== typeof options.FontSize && '' !== options.FontSize ) {
-            style += 'font-size: '+options.FontSize+';';
+        if ( 'style' === type ) {
+            if ( 'undefined' !== typeof options.FontSize && '' !== options.FontSize ) {
+                style += 'font-size: '+options.FontSize+';';
+            }
+            if ( 'undefined' !== typeof options.FontAppearance.fontStyle && '' !== options.FontAppearance.fontStyle ) {
+                style += 'font-style: '+options.FontAppearance.fontStyle+';';
+            }
+            if ( 'undefined' !== typeof options.FontAppearance.fontWeight && '' !== options.FontAppearance.fontWeight ) {
+                style += 'font-weight: '+options.FontAppearance.fontWeight+';';
+            }
+            if ( 'undefined' !== typeof options.LetterSpacing && '' !== options.LetterSpacing ) {
+                style += 'letter-spacing: '+options.LetterSpacing+';';
+            }
+            if ( 'undefined' !== typeof options.Decoration && '' !== options.Decoration ) {
+                style += 'text-decoration: '+options.Decoration+';';
+            }
+            if ( 'undefined' !== typeof options.LetterCase && '' !== options.LetterCase ) {
+                style += 'text-transform: '+options.LetterCase+';';
+            }
         }
-        if ( 'undefined' !== typeof options.FontAppearance.fontStyle && '' !== options.FontAppearance.fontStyle ) {
-            style += 'font-style: '+options.FontAppearance.fontStyle+';';
-        }
-        if ( 'undefined' !== typeof options.FontAppearance.fontWeight && '' !== options.FontAppearance.fontWeight ) {
-            style += 'font-weight: '+options.FontAppearance.fontWeight+';';
-        }
-        if ( 'undefined' !== typeof options.LetterSpacing && '' !== options.LetterSpacing ) {
-            style += 'letter-spacing: '+options.LetterSpacing+';';
-        }
-        if ( 'undefined' !== typeof options.Decoration && '' !== options.Decoration ) {
-            style += 'text-decoration: '+options.Decoration+';';
-        }
-        if ( 'undefined' !== typeof options.LetterCase && '' !== options.LetterCase ) {
-            style += 'text-transform: '+options.LetterCase+';';
+
+        if ( 'color' === type ) {
+            if ( 'undefined' !== typeof options.text && '' !== options.text ) {
+                style += 'color: '+options.text+';';
+            }
+            if ( 'undefined' !== typeof options.background && '' !== options.background ) {
+                style += 'background: '+options.background+';';
+            }
         }
 
         return style;

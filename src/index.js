@@ -2,39 +2,68 @@
 import WpmozoTypography from '../src/components/wpmozo-typography/wpmozo-typography';
 import WpmozoLoader from '../src/components/wpmozo-loader/wpmozo-loader';
 import WpmozoIconpicker from '../src/components/wpmozo-iconpicker/wpmozo-iconpicker';
+import WpmozoColorPicker from '../src/components/wpmozo-colorpicker/wpmozo-colorpicker';
 
 ( function(blocks, editor, element, components) {
 
     const __ = wp.i18n.__;
     const el = element.createElement;
     const registerBlockType = blocks.registerBlockType;
-    const { InspectorControls, MediaUpload, MediaUploadCheck, useBlockProps } = editor;
-    const { PanelBody, RangeControl, SelectControl, TextControl, FormTokenField, ToggleControl, Button } = components;
+    const { InspectorControls, MediaUpload, MediaUploadCheck, useBlockProps, useSetting, ColorPaletteControl, __experimentalUseMultipleOriginColorsAndGradients } = editor;
+    const { PanelBody, RangeControl, SelectControl, TextControl, FormTokenField, ToggleControl, Button, ColorPalette, Dropdown, ColorIndicator, Popover, TabPanel } = components;
     const { Fragment, useState, useEffect } = element;
     const { useSelect, useDispatch, dispatch } = wp.data;
     const { serverSideRender: ServerSideRender, hooks } = wp;
 
-    function convetInlineStyle( options ){
+    let textColorObject =  [
+        {
+            key: 'text',
+            label: __( 'Text', 'wpmozo-product-carousel-for-woocommerce' ),
+        },
+    ];
+    let twoColorObject =  [
+        {
+            key: 'text',
+            label: __( 'Text', 'wpmozo-product-carousel-for-woocommerce' ),
+        },
+        {
+            key: 'background',
+            label: __( 'Background', 'wpmozo-product-carousel-for-woocommerce' ),
+        },
+    ];
+
+    function convetInlineStyle( options, type ){
 
         let style = '';
 
-        if ( 'undefined' !== typeof options.FontSize && '' !== options.FontSize ) {
-            style += 'font-size: '+options.FontSize+';';
+        if ( 'style' === type ) {
+            if ( 'undefined' !== typeof options.FontSize && '' !== options.FontSize ) {
+                style += 'font-size: '+options.FontSize+';';
+            }
+            if ( 'undefined' !== typeof options.FontAppearance.fontStyle && '' !== options.FontAppearance.fontStyle ) {
+                style += 'font-style: '+options.FontAppearance.fontStyle+';';
+            }
+            if ( 'undefined' !== typeof options.FontAppearance.fontWeight && '' !== options.FontAppearance.fontWeight ) {
+                style += 'font-weight: '+options.FontAppearance.fontWeight+';';
+            }
+            if ( 'undefined' !== typeof options.LetterSpacing && '' !== options.LetterSpacing ) {
+                style += 'letter-spacing: '+options.LetterSpacing+';';
+            }
+            if ( 'undefined' !== typeof options.Decoration && '' !== options.Decoration ) {
+                style += 'text-decoration: '+options.Decoration+';';
+            }
+            if ( 'undefined' !== typeof options.LetterCase && '' !== options.LetterCase ) {
+                style += 'text-transform: '+options.LetterCase+';';
+            }
         }
-        if ( 'undefined' !== typeof options.FontAppearance.fontStyle && '' !== options.FontAppearance.fontStyle ) {
-            style += 'font-style: '+options.FontAppearance.fontStyle+';';
-        }
-        if ( 'undefined' !== typeof options.FontAppearance.fontWeight && '' !== options.FontAppearance.fontWeight ) {
-            style += 'font-weight: '+options.FontAppearance.fontWeight+';';
-        }
-        if ( 'undefined' !== typeof options.LetterSpacing && '' !== options.LetterSpacing ) {
-            style += 'letter-spacing: '+options.LetterSpacing+';';
-        }
-        if ( 'undefined' !== typeof options.Decoration && '' !== options.Decoration ) {
-            style += 'text-decoration: '+options.Decoration+';';
-        }
-        if ( 'undefined' !== typeof options.LetterCase && '' !== options.LetterCase ) {
-            style += 'text-transform: '+options.LetterCase+';';
+
+        if ( 'color' === type ) {
+            if ( 'undefined' !== typeof options.text && '' !== options.text ) {
+                style += 'color: '+options.text+';';
+            }
+            if ( 'undefined' !== typeof options.background && '' !== options.background ) {
+                style += 'background: '+options.background+';';
+            }
         }
 
         return style;
@@ -43,9 +72,10 @@ import WpmozoIconpicker from '../src/components/wpmozo-iconpicker/wpmozo-iconpic
 
     function appendInlineStyle( item, wraper, atts ){
 
-        let attKey = item.attKey;
-        let selector = item.selector;
-        let inlineStyle = convetInlineStyle( atts[attKey] );
+        let attKey = item.attKey,
+            selector = item.selector,
+            type = item.type,
+            inlineStyle = convetInlineStyle( atts[attKey], type );
         if ( '' !== inlineStyle ) {
             var defaultStyle = wraper.find(selector).attr('style');
             if ( '' !== defaultStyle && 'undefined' !== typeof defaultStyle ) {
@@ -88,12 +118,18 @@ import WpmozoIconpicker from '../src/components/wpmozo-iconpicker/wpmozo-iconpic
 
                     let wraper = jQuery('#'+selector);
                     let styles = [
-                        {attKey: 'TitleStyle', selector: '.woocommerce-loop-product__title'},
-                        {attKey: 'PriceStyle', selector: '.price'},
-                        {attKey: 'AddToCartStyle', selector: add_to_cart_selector},
-                        {attKey: 'QuickViewStyle', selector: '.wpmozo-quick-view-button'},
-                        {attKey: 'SaleLabelStyle', selector: '.onsale'},
-                        {attKey: 'StockLabelStyle', selector: '.soldout-text'},
+                        {attKey: 'TitleStyle', type: 'style', selector: '.woocommerce-loop-product__title'},
+                        {attKey: 'PriceStyle', type: 'style', selector: '.price'},
+                        {attKey: 'AddToCartStyle', type: 'style', selector: add_to_cart_selector},
+                        {attKey: 'QuickViewStyle', type: 'style', selector: '.wpmozo-quick-view-button'},
+                        {attKey: 'SaleLabelStyle', type: 'style', selector: '.onsale'},
+                        {attKey: 'StockLabelStyle', type: 'style', selector: '.soldout-text'},
+                        {attKey: 'TitleColor', type: 'color', selector: '.woocommerce-loop-product__title'},
+                        {attKey: 'PriceColor', type: 'color', selector: '.price'},
+                        {attKey: 'AddToCartColor', type: 'color', selector: add_to_cart_selector},
+                        {attKey: 'QuickViewColor', type: 'color', selector: '.wpmozo-quick-view-button'},
+                        {attKey: 'SaleLabelColor', type: 'color', selector: '.onsale'},
+                        {attKey: 'StockLabelColor', type: 'color', selector: '.soldout-text'},
                     ];
 
                     styles.map(
@@ -620,60 +656,94 @@ import WpmozoIconpicker from '../src/components/wpmozo-iconpicker/wpmozo-iconpic
                                 className: "wpmozo-typography-panel",
                                 initialOpen: false,
                             },
+                            el( WpmozoColorPicker, {
+                                ColorKey: 'TitleColor',
+                                attributes: attributes,
+                                props: props,
+                                ColorTypes: textColorObject
+                            }),
                             el( WpmozoTypography, {
                                 TypographyKey: 'TitleStyle',
                                 attributes: attributes,
                                 props: props,
                             } ),
                         ),
+                    attributes.ShowPrice &&
                         el( PanelBody, 
                             { 
                                 title: __( 'Price Style', 'wpmozo-product-carousel-for-woocommerce' ),
                                 className: "wpmozo-typography-panel",
                                 initialOpen: false,
                             },
+                            el( WpmozoColorPicker, {
+                                ColorKey: 'PriceColor',
+                                attributes: attributes,
+                                props: props,
+                                ColorTypes: textColorObject
+                            }),
                             el( WpmozoTypography, {
                                 TypographyKey: 'PriceStyle',
                                 attributes: attributes,
                                 props: props,
                             } ),
                         ),
-                        el( PanelBody, 
-                            { 
-                                title: __( 'Add to Cart Style', 'wpmozo-product-carousel-for-woocommerce' ),
-                                className: "wpmozo-typography-panel",
-                                initialOpen: false,
-                            },
-                            el( WpmozoTypography, {
-                                TypographyKey: 'AddToCartStyle',
-                                attributes: attributes,
-                                props: props,
-                            } ),
-                        ),
-                        el( PanelBody, 
-                            { 
-                                title: __( 'Quick View Style', 'wpmozo-product-carousel-for-woocommerce' ),
-                                className: "wpmozo-typography-panel",
-                                initialOpen: false,
-                            },
-                            el( WpmozoTypography, {
-                                TypographyKey: 'QuickViewStyle',
-                                attributes: attributes,
-                                props: props,
-                            } ),
-                        ),
-                        el( PanelBody, 
-                            { 
-                                title: __( 'Sale Label Style', 'wpmozo-product-carousel-for-woocommerce' ),
-                                className: "wpmozo-typography-panel",
-                                initialOpen: false,
-                            },
-                            el( WpmozoTypography, {
-                                TypographyKey: 'SaleLabelStyle',
-                                attributes: attributes,
-                                props: props,
-                            } ),
-                        ),
+                        attributes.ShowAddToCartButton &&
+                            el( PanelBody, 
+                                { 
+                                    title: __( 'Add to Cart Style', 'wpmozo-product-carousel-for-woocommerce' ),
+                                    className: "wpmozo-typography-panel",
+                                    initialOpen: false,
+                                },
+                                el( WpmozoColorPicker, {
+                                    ColorKey: 'AddToCartColor',
+                                    attributes: attributes,
+                                    props: props,
+                                    ColorTypes: twoColorObject
+                                }),
+                                el( WpmozoTypography, {
+                                    TypographyKey: 'AddToCartStyle',
+                                    attributes: attributes,
+                                    props: props,
+                                } ),
+                            ),
+                        attributes.EnableQuickViewLink &&
+                            el( PanelBody, 
+                                { 
+                                    title: __( 'Quick View Style', 'wpmozo-product-carousel-for-woocommerce' ),
+                                    className: "wpmozo-typography-panel",
+                                    initialOpen: false,
+                                },
+                                el( WpmozoColorPicker, {
+                                    ColorKey: 'QuickViewColor',
+                                    attributes: attributes,
+                                    props: props,
+                                    ColorTypes: twoColorObject
+                                }),
+                                el( WpmozoTypography, {
+                                    TypographyKey: 'QuickViewStyle',
+                                    attributes: attributes,
+                                    props: props,
+                                } ),
+                            ),
+                        attributes.ShowSaleBadge &&
+                            el( PanelBody, 
+                                { 
+                                    title: __( 'Sale Label Style', 'wpmozo-product-carousel-for-woocommerce' ),
+                                    className: "wpmozo-typography-panel",
+                                    initialOpen: false,
+                                },
+                                el( WpmozoColorPicker, {
+                                    ColorKey: 'SaleLabelColor',
+                                    attributes: attributes,
+                                    props: props,
+                                    ColorTypes: twoColorObject
+                                }),
+                                el( WpmozoTypography, {
+                                    TypographyKey: 'SaleLabelStyle',
+                                    attributes: attributes,
+                                    props: props,
+                                } ),
+                            ),
                         ! attributes.OutOfStock && attributes.DisplayOutOfStockLabel &&
                             el( PanelBody, 
                                 { 
@@ -681,6 +751,12 @@ import WpmozoIconpicker from '../src/components/wpmozo-iconpicker/wpmozo-iconpic
                                     className: "wpmozo-typography-panel",
                                     initialOpen: false,
                                 },
+                                el( WpmozoColorPicker, {
+                                    ColorKey: 'StockLabelColor',
+                                    attributes: attributes,
+                                    props: props,
+                                    ColorTypes: textColorObject
+                                }),
                                 el( WpmozoTypography, {
                                     TypographyKey: 'StockLabelStyle',
                                     attributes: attributes,

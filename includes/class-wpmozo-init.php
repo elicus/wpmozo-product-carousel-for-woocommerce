@@ -247,6 +247,33 @@ class Wpmozo_Init {
 		    ),
 		);
 
+		$text_color_atts = array(
+			'type' => 'object',
+			'text' => array( 
+				'type' => 'string',
+		    	'default' => '',
+			),
+			'default' => array(
+				'text' => '',
+			),
+		);
+
+		$two_color_atts = array(
+			'type' => 'object',
+			'text' => array( 
+				'type' => 'string',
+		    	'default' => '',
+			),
+			'background' => array( 
+				'type' => 'string',
+		    	'default' => '',
+			),
+			'default' => array(
+				'text' => '',
+				'background' => '',
+			),
+		);
+
 		$attributes = array(
 			'clientId' => array(
 			    'type' => 'string',
@@ -393,6 +420,12 @@ class Wpmozo_Init {
 			'QuickViewStyle' => $typography_atts,
 			'SaleLabelStyle' => $typography_atts,
 			'StockLabelStyle' => $typography_atts,
+			'TitleColor' => $text_color_atts,
+			'PriceColor' => $text_color_atts,
+			'AddToCartColor' => $two_color_atts,
+			'QuickViewColor' => $two_color_atts,
+			'SaleLabelColor' => $two_color_atts,
+			'StockLabelColor' => $text_color_atts,
 		);
 
 		$product_view_type_options = array(

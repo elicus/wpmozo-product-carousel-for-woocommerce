@@ -1,6 +1,6 @@
 /******/ (() => { // webpackBootstrap
-/******/ 	"use strict";
-/******/ 	var __webpack_modules__ = ({
+/******/  "use strict";
+/******/  var __webpack_modules__ = ({
 
 /***/ "./src/components/wpmozo-colorpicker/wpmozo-colorpicker.js":
 /*!*****************************************************************!*\
@@ -98,63 +98,319 @@ const WpmozoColorPicker = function (args) {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (WpmozoColorPicker);
 
+/***/ }),
+
+/***/ "./src/components/wpmozo-iconpicker/wpmozo-iconpicker.js":
+/*!***************************************************************!*\
+  !*** ./src/components/wpmozo-iconpicker/wpmozo-iconpicker.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const {
+  compose
+} = wp.compose;
+const {
+  ComboboxControl
+} = wp.components;
+const el = wp.element.createElement;
+const options = wpmozo_block_carousel_object.icons;
+const WpmozoIconpicker = function (args) {
+  const props = args.props;
+  const attributes = args.attributes;
+  const label = args.label;
+  return [el('div', {
+    className: 'wpmozo-icon-picker'
+  }, el(ComboboxControl, {
+    label: label,
+    value: attributes.QuickViewLinkIcon,
+    onChange: function (icon) {
+      props.setAttributes({
+        QuickViewLinkIcon: icon
+      });
+    },
+    options: options,
+    __experimentalRenderItem: function (option) {
+      let iconClass = option.item.value;
+      return el("span", {
+        children: [el("i", {
+          class: iconClass
+        }), " ", option.item.label]
+      });
+    }
+  }), attributes.QuickViewLinkIcon && el('div', {
+    className: 'wpmozo-icon-wraper'
+  }, el('i', {
+    class: attributes.QuickViewLinkIcon
+  })))];
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (WpmozoIconpicker);
+
+/***/ }),
+
+/***/ "./src/components/wpmozo-loader/wpmozo-loader.js":
+/*!*******************************************************!*\
+  !*** ./src/components/wpmozo-loader/wpmozo-loader.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+
+const {
+  Component
+} = wp.element;
+const {
+  compose
+} = wp.compose;
+class WpmozoLoader extends Component {
+  render() {
+    const {
+      column,
+      margin
+    } = this.props;
+    let loader = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-item",
+        style: {
+          marginRight: margin
+        }
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-12"
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-picture"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-row"
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-8"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-4 empty"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-4"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-8 empty"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-12 empty"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-6 big"
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "ph-col-6 empty"
+      })))),
+      html = [];
+    for (var i = 0; i < column; i++) {
+      html.push(loader);
+    }
+    return html;
+  }
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (compose()(WpmozoLoader));
+
+/***/ }),
+
+/***/ "./src/components/wpmozo-typography/wpmozo-typography.js":
+/*!***************************************************************!*\
+  !*** ./src/components/wpmozo-typography/wpmozo-typography.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const el = window.wp.element.createElement;
+const __ = wp.i18n.__;
+const {
+  __experimentalFontAppearanceControl,
+  FontSizePicker,
+  __experimentalLetterSpacingControl,
+  __experimentalTextTransformControl,
+  __experimentalTextDecorationControl
+} = window.wp.blockEditor;
+const {
+  __experimentalToolsPanel,
+  __experimentalToolsPanelItem
+} = window.wp.components;
+const {
+  compose
+} = wp.compose;
+const WpmozoTypography = function (args) {
+  const {
+    TypographyKey,
+    attributes,
+    props
+  } = args;
+  const typoSetValue = function (styleType) {
+    let value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    let _Typography = Object.assign({}, attributes[TypographyKey]);
+    _Typography[styleType] = null !== value ? value : '';
+    props.setAttributes({
+      [TypographyKey]: _Typography
+    });
+  };
+  return [el(__experimentalToolsPanel, {
+    label: __('Typography', 'wpmozo-product-carousel-for-woocommerce'),
+    resetAll: () => {
+      let _Typography = {
+        FontSize: '',
+        LetterSpacing: '',
+        Decoration: '',
+        FontAppearance: {
+          fontStyle: '',
+          fontWeight: ''
+        }
+      };
+      props.setAttributes({
+        [TypographyKey]: _Typography
+      });
+    }
+  }, el(__experimentalToolsPanelItem, {
+    label: __('Font Size', 'wpmozo-product-carousel-for-woocommerce'),
+    hasValue: () => true,
+    isShownByDefault: true,
+    onDeselect: () => typoSetValue('FontSize')
+  }, el(FontSizePicker, {
+    value: attributes[TypographyKey].FontSize,
+    onChange: NewFontSize => {
+      typoSetValue('FontSize', NewFontSize);
+    }
+  })), el(__experimentalToolsPanelItem, {
+    className: "single-column",
+    label: __('Appearance', 'wpmozo-product-carousel-for-woocommerce'),
+    hasValue: () => true,
+    isShownByDefault: true,
+    onDeselect: () => typoSetValue('FontAppearance', {
+      fontStyle: '',
+      fontWeight: ''
+    })
+  }, el(__experimentalFontAppearanceControl, {
+    key: 'wpmozp-product-carousel-titleapp',
+    value: {
+      fontStyle: attributes[TypographyKey].FontAppearance.fontStyle,
+      fontWeight: attributes[TypographyKey].FontAppearance.fontWeight
+    },
+    onChange: NewFontAppearance => {
+      typoSetValue('FontAppearance', NewFontAppearance);
+    }
+  })), el(__experimentalToolsPanelItem, {
+    className: "single-column",
+    label: __('Letter spacing', 'wpmozo-product-carousel-for-woocommerce'),
+    hasValue: () => true,
+    isShownByDefault: true,
+    onDeselect: () => typoSetValue('LetterSpacing')
+  }, el(__experimentalLetterSpacingControl, {
+    value: attributes[TypographyKey].LetterSpacing,
+    onChange: NewLetterSpacing => {
+      typoSetValue('LetterSpacing', NewLetterSpacing);
+    }
+  })), el(__experimentalToolsPanelItem, {
+    label: __('Decoration', 'wpmozo-product-carousel-for-woocommerce'),
+    hasValue: () => true,
+    isShownByDefault: true,
+    onDeselect: () => typoSetValue('Decoration')
+  }, el(__experimentalTextDecorationControl, {
+    value: attributes[TypographyKey].Decoration,
+    onChange: NewDecoration => {
+      typoSetValue('Decoration', NewDecoration);
+    }
+  })), el(__experimentalToolsPanelItem, {
+    label: __('Letter case', 'wpmozo-product-carousel-for-woocommerce'),
+    hasValue: () => true,
+    isShownByDefault: true,
+    onDeselect: () => typoSetValue('LetterCase')
+  }, el(__experimentalTextTransformControl, {
+    value: attributes[TypographyKey].LetterCase,
+    onChange: NewLetterCase => {
+      typoSetValue('LetterCase', NewLetterCase);
+    }
+  })))];
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (compose()(WpmozoTypography));
+
+/***/ }),
+
+/***/ "@wordpress/element":
+/*!*********************************!*\
+  !*** external ["wp","element"] ***!
+  \*********************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["element"];
+
 /***/ })
 
-/******/ 	});
+/******/  });
 /************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/ 	
+/******/  // The module cache
+/******/  var __webpack_module_cache__ = {};
+/******/  
+/******/  // The require function
+/******/  function __webpack_require__(moduleId) {
+/******/    // Check if module is in cache
+/******/    var cachedModule = __webpack_module_cache__[moduleId];
+/******/    if (cachedModule !== undefined) {
+/******/      return cachedModule.exports;
+/******/    }
+/******/    // Create a new module (and put it into the cache)
+/******/    var module = __webpack_module_cache__[moduleId] = {
+/******/      // no module.id needed
+/******/      // no module.loaded needed
+/******/      exports: {}
+/******/    };
+/******/  
+/******/    // Execute the module function
+/******/    __webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/  
+/******/    // Return the exports of the module
+/******/    return module.exports;
+/******/  }
+/******/  
 /************************************************************************/
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	})();
-/******/ 	
+/******/  /* webpack/runtime/compat get default export */
+/******/  (() => {
+/******/    // getDefaultExport function for compatibility with non-harmony modules
+/******/    __webpack_require__.n = (module) => {
+/******/      var getter = module && module.__esModule ?
+/******/        () => (module['default']) :
+/******/        () => (module);
+/******/      __webpack_require__.d(getter, { a: getter });
+/******/      return getter;
+/******/    };
+/******/  })();
+/******/  
+/******/  /* webpack/runtime/define property getters */
+/******/  (() => {
+/******/    // define getter functions for harmony exports
+/******/    __webpack_require__.d = (exports, definition) => {
+/******/      for(var key in definition) {
+/******/        if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/          Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/        }
+/******/      }
+/******/    };
+/******/  })();
+/******/  
+/******/  /* webpack/runtime/hasOwnProperty shorthand */
+/******/  (() => {
+/******/    __webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/  })();
+/******/  
+/******/  /* webpack/runtime/make namespace object */
+/******/  (() => {
+/******/    // define __esModule on exports
+/******/    __webpack_require__.r = (exports) => {
+/******/      if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/        Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/      }
+/******/      Object.defineProperty(exports, '__esModule', { value: true });
+/******/    };
+/******/  })();
+/******/  
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
@@ -163,10 +419,10 @@ var __webpack_exports__ = {};
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-Object(function webpackMissingModule() { var e = new Error("Cannot find module '../src/components/wpmozo-typography/wpmozo-typography'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
-Object(function webpackMissingModule() { var e = new Error("Cannot find module '../src/components/wpmozo-loader/wpmozo-loader'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
-Object(function webpackMissingModule() { var e = new Error("Cannot find module '../src/components/wpmozo-iconpicker/wpmozo-iconpicker'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
-/* harmony import */ var _src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/components/wpmozo-colorpicker/wpmozo-colorpicker */ "./src/components/wpmozo-colorpicker/wpmozo-colorpicker.js");
+/* harmony import */ var _src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../src/components/wpmozo-typography/wpmozo-typography */ "./src/components/wpmozo-typography/wpmozo-typography.js");
+/* harmony import */ var _src_components_wpmozo_loader_wpmozo_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/components/wpmozo-loader/wpmozo-loader */ "./src/components/wpmozo-loader/wpmozo-loader.js");
+/* harmony import */ var _src_components_wpmozo_iconpicker_wpmozo_iconpicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../src/components/wpmozo-iconpicker/wpmozo-iconpicker */ "./src/components/wpmozo-iconpicker/wpmozo-iconpicker.js");
+/* harmony import */ var _src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../src/components/wpmozo-colorpicker/wpmozo-colorpicker */ "./src/components/wpmozo-colorpicker/wpmozo-colorpicker.js");
 
 
 
@@ -386,7 +642,7 @@ Object(function webpackMissingModule() { var e = new Error("Cannot find module '
           "display": "grid",
           "grid-auto-flow": "column"
         },
-        children: [el(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../src/components/wpmozo-loader/wpmozo-loader'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), {
+        children: [el(_src_components_wpmozo_loader_wpmozo_loader__WEBPACK_IMPORTED_MODULE_1__["default"], {
           column: attributes.Columns,
           margin: attributes.SpaceBetween
         })]
@@ -645,7 +901,7 @@ Object(function webpackMissingModule() { var e = new Error("Cannot find module '
             QuickViewLinkIconEnabled: NewQuickViewLinkIconEnabled
           });
         }
-      }), attributes.EnableQuickViewLink && attributes.QuickViewLinkIconEnabled && !attributes.QuickViewLinkCustomIcon && el(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../src/components/wpmozo-iconpicker/wpmozo-iconpicker'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), {
+      }), attributes.EnableQuickViewLink && attributes.QuickViewLinkIconEnabled && !attributes.QuickViewLinkCustomIcon && el(_src_components_wpmozo_iconpicker_wpmozo_iconpicker__WEBPACK_IMPORTED_MODULE_2__["default"], {
         label: __('Quickview Icon', 'wpmozo-product-carousel-for-woocommerce'),
         props: props,
         attributes: attributes
@@ -758,12 +1014,12 @@ Object(function webpackMissingModule() { var e = new Error("Cannot find module '
         title: __('Title Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
         initialOpen: false
-      }, el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }, el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_3__["default"], {
         ColorKey: 'TitleColor',
         attributes: attributes,
         props: props,
         ColorTypes: textColorObject
-      }), el(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../src/components/wpmozo-typography/wpmozo-typography'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), {
+      }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'TitleStyle',
         attributes: attributes,
         props: props
@@ -771,12 +1027,12 @@ Object(function webpackMissingModule() { var e = new Error("Cannot find module '
         title: __('Price Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
         initialOpen: false
-      }, el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }, el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_3__["default"], {
         ColorKey: 'PriceColor',
         attributes: attributes,
         props: props,
         ColorTypes: textColorObject
-      }), el(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../src/components/wpmozo-typography/wpmozo-typography'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), {
+      }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'PriceStyle',
         attributes: attributes,
         props: props
@@ -784,12 +1040,12 @@ Object(function webpackMissingModule() { var e = new Error("Cannot find module '
         title: __('Add to Cart Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
         initialOpen: false
-      }, el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }, el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_3__["default"], {
         ColorKey: 'AddToCartColor',
         attributes: attributes,
         props: props,
         ColorTypes: twoColorObject
-      }), el(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../src/components/wpmozo-typography/wpmozo-typography'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), {
+      }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'AddToCartStyle',
         attributes: attributes,
         props: props
@@ -797,12 +1053,12 @@ Object(function webpackMissingModule() { var e = new Error("Cannot find module '
         title: __('Quick View Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
         initialOpen: false
-      }, el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }, el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_3__["default"], {
         ColorKey: 'QuickViewColor',
         attributes: attributes,
         props: props,
         ColorTypes: twoColorObject
-      }), el(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../src/components/wpmozo-typography/wpmozo-typography'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), {
+      }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'QuickViewStyle',
         attributes: attributes,
         props: props
@@ -810,12 +1066,12 @@ Object(function webpackMissingModule() { var e = new Error("Cannot find module '
         title: __('Sale Label Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
         initialOpen: false
-      }, el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }, el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_3__["default"], {
         ColorKey: 'SaleLabelColor',
         attributes: attributes,
         props: props,
         ColorTypes: twoColorObject
-      }), el(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../src/components/wpmozo-typography/wpmozo-typography'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), {
+      }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'SaleLabelStyle',
         attributes: attributes,
         props: props
@@ -823,12 +1079,12 @@ Object(function webpackMissingModule() { var e = new Error("Cannot find module '
         title: __('Out Of Stock Label Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
         initialOpen: false
-      }, el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }, el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_3__["default"], {
         ColorKey: 'StockLabelColor',
         attributes: attributes,
         props: props,
         ColorTypes: textColorObject
-      }), el(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../src/components/wpmozo-typography/wpmozo-typography'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), {
+      }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'StockLabelStyle',
         attributes: attributes,
         props: props

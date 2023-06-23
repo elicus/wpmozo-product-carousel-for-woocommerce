@@ -100,6 +100,81 @@ const WpmozoColorPicker = function (args) {
 
 /***/ }),
 
+/***/ "./src/components/wpmozo-dimensions/wpmozo-dimensions.js":
+/*!***************************************************************!*\
+  !*** ./src/components/wpmozo-dimensions/wpmozo-dimensions.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const el = window.wp.element.createElement;
+const __ = wp.i18n.__;
+const {
+  __experimentalSpacingSizesControl
+} = window.wp.blockEditor;
+const {
+  __experimentalToolsPanel,
+  __experimentalToolsPanelItem
+} = window.wp.components;
+const WpmozoDimensions = function (args) {
+  const {
+    DimensionKey,
+    DimensionsTypes,
+    attributes,
+    props
+  } = args;
+  const _dimensions = attributes[DimensionKey];
+  const dimensionsSetValue = function (styleType) {
+    let value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    let dimensions = Object.assign({}, _dimensions);
+    dimensions[styleType] = null !== value ? value : '';
+    props.setAttributes({
+      [DimensionKey]: dimensions
+    });
+  };
+  return [el(__experimentalToolsPanel, {
+    label: __('Dimensions', 'wpmozo-product-carousel-for-woocommerce'),
+    resetAll: () => {
+      let dimensions = {
+        text: ''
+      };
+      props.setAttributes({
+        [DimensionKey]: dimensions
+      });
+    }
+  }, DimensionsTypes.padding && el(__experimentalToolsPanelItem, {
+    label: __('Padding', 'wpmozo-product-carousel-for-woocommerce'),
+    hasValue: () => true,
+    isShownByDefault: true,
+    className: 'tools-panel-item-spacing',
+    onDeselect: () => dimensionsSetValue('padding')
+  }, el(__experimentalSpacingSizesControl, {
+    label: 'Padding',
+    values: attributes.CarContStyle.padding,
+    onChange: function (NewPadding) {
+      dimensionsSetValue('padding', NewPadding);
+    }
+  })), DimensionsTypes.margin && el(__experimentalToolsPanelItem, {
+    label: __('Margin', 'wpmozo-product-carousel-for-woocommerce'),
+    hasValue: () => true,
+    isShownByDefault: true,
+    className: 'tools-panel-item-spacing',
+    onDeselect: () => dimensionsSetValue('margin')
+  }, el(__experimentalSpacingSizesControl, {
+    label: 'Margin',
+    values: attributes.CarContStyle.margin,
+    onChange: function (NewMargin) {
+      dimensionsSetValue('margin', NewMargin);
+    }
+  })))];
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (WpmozoDimensions);
+
+/***/ }),
+
 /***/ "./src/components/wpmozo-iconpicker/wpmozo-iconpicker.js":
 /*!***************************************************************!*\
   !*** ./src/components/wpmozo-iconpicker/wpmozo-iconpicker.js ***!
@@ -423,6 +498,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_components_wpmozo_loader_wpmozo_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/components/wpmozo-loader/wpmozo-loader */ "./src/components/wpmozo-loader/wpmozo-loader.js");
 /* harmony import */ var _src_components_wpmozo_iconpicker_wpmozo_iconpicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../src/components/wpmozo-iconpicker/wpmozo-iconpicker */ "./src/components/wpmozo-iconpicker/wpmozo-iconpicker.js");
 /* harmony import */ var _src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../src/components/wpmozo-colorpicker/wpmozo-colorpicker */ "./src/components/wpmozo-colorpicker/wpmozo-colorpicker.js");
+/* harmony import */ var _src_components_wpmozo_dimensions_wpmozo_dimensions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../src/components/wpmozo-dimensions/wpmozo-dimensions */ "./src/components/wpmozo-dimensions/wpmozo-dimensions.js");
+
 
 
 
@@ -438,7 +515,8 @@ __webpack_require__.r(__webpack_exports__);
     useBlockProps,
     useSetting,
     ColorPaletteControl,
-    __experimentalUseMultipleOriginColorsAndGradients
+    __experimentalUseMultipleOriginColorsAndGradients,
+    __experimentalSpacingSizesControl
   } = editor;
   const {
     PanelBody,
@@ -533,6 +611,15 @@ __webpack_require__.r(__webpack_exports__);
     ProductTypes = wpmozo_block_carousel_object.products_types;
   const initializeSwiper = attributes => {
     let selector = 'wpmozo_' + attributes.clientId;
+    let options = attributes.CarContStyle;
+    let style = '';
+    if ('undefined' !== typeof options.padding && '' !== options.padding && ('undefined' !== typeof options.padding.top || 'undefined' !== typeof options.padding.right || 'undefined' !== typeof options.padding.bottom || 'undefined' !== typeof options.padding.left)) {
+      style += 'padding: ' + options.padding.top + ' ' + options.padding.right + ' ' + options.padding.bottom + ' ' + options.padding.left + ';';
+    }
+    if ('undefined' !== typeof options.margin && '' !== options.margin && ('undefined' !== typeof options.margin.top || 'undefined' !== typeof options.margin.right || 'undefined' !== typeof options.margin.bottom || 'undefined' !== typeof options.margin.left)) {
+      style += 'margin: ' + options.margin.top + ' ' + options.margin.right + ' ' + options.margin.bottom + ' ' + options.margin.left + ';';
+    }
+    jQuery('#' + selector).attr('style', style);
     var sw_obj = {
       slidesPerView: attributes.Columns,
       spaceBetween: attributes.SpaceBetween,
@@ -669,6 +756,7 @@ __webpack_require__.r(__webpack_exports__);
       if (product_tags) {
         product_tag_options = product_tags.map(value => value.name);
       }
+      console.log(attributes.CarContStyle);
       return [el(Fragment, {}, el(InspectorControls, {}, el(PanelBody, {
         title: __('Carousel Settings', 'wpmozo-product-carousel-for-woocommerce'),
         initialOpen: true
@@ -1011,6 +1099,18 @@ __webpack_require__.r(__webpack_exports__);
       }))), el(InspectorControls, {
         group: 'styles'
       }, el(PanelBody, {
+        title: __('Carousel Container Style', 'wpmozo-product-carousel-for-woocommerce'),
+        className: "wpmozo-typography-panel",
+        initialOpen: false
+      }, el(_src_components_wpmozo_dimensions_wpmozo_dimensions__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        DimensionKey: 'CarContStyle',
+        DimensionsTypes: {
+          padding: true,
+          margin: true
+        },
+        attributes: attributes,
+        props: props
+      })), el(PanelBody, {
         title: __('Title Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
         initialOpen: false

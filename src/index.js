@@ -3,14 +3,15 @@ import WpmozoTypography from '../src/components/wpmozo-typography/wpmozo-typogra
 import WpmozoLoader from '../src/components/wpmozo-loader/wpmozo-loader';
 import WpmozoIconpicker from '../src/components/wpmozo-iconpicker/wpmozo-iconpicker';
 import WpmozoColorPicker from '../src/components/wpmozo-colorpicker/wpmozo-colorpicker';
+import WpmozoDimensions from '../src/components/wpmozo-dimensions/wpmozo-dimensions';
 
 ( function(blocks, editor, element, components) {
 
     const __ = wp.i18n.__;
     const el = element.createElement;
     const registerBlockType = blocks.registerBlockType;
-    const { InspectorControls, MediaUpload, MediaUploadCheck, useBlockProps, useSetting, ColorPaletteControl, __experimentalUseMultipleOriginColorsAndGradients } = editor;
-    const { PanelBody, RangeControl, SelectControl, TextControl, FormTokenField, ToggleControl, Button, ColorPalette, Dropdown, ColorIndicator, Popover, TabPanel } = components;
+    const { InspectorControls, MediaUpload, MediaUploadCheck, useBlockProps, useSetting, ColorPaletteControl, __experimentalUseMultipleOriginColorsAndGradients, __experimentalSpacingSizesControl } = editor;
+    const { PanelBody, RangeControl, SelectControl, TextControl, FormTokenField, ToggleControl, Button, ColorPalette, Dropdown, ColorIndicator, Popover, TabPanel  } = components;
     const { Fragment, useState, useEffect } = element;
     const { useSelect, useDispatch, dispatch } = wp.data;
     const { serverSideRender: ServerSideRender, hooks } = wp;
@@ -97,6 +98,24 @@ import WpmozoColorPicker from '../src/components/wpmozo-colorpicker/wpmozo-color
     const initializeSwiper = ( attributes ) => {
 
         let selector = 'wpmozo_'+attributes.clientId;
+
+        let options = attributes.CarContStyle;
+        let style = '';
+        if ( 'undefined' !== typeof options.padding && '' !== options.padding && ( 
+            'undefined' !== typeof options.padding.top || 
+            'undefined' !== typeof options.padding.right || 
+            'undefined' !== typeof options.padding.bottom || 
+            'undefined' !== typeof options.padding.left ) ) {
+            style += 'padding: '+options.padding.top+' '+options.padding.right+' '+options.padding.bottom+' '+options.padding.left+';';
+        }
+        if ( 'undefined' !== typeof options.margin && '' !== options.margin && ( 
+            'undefined' !== typeof options.margin.top || 
+            'undefined' !== typeof options.margin.right || 
+            'undefined' !== typeof options.margin.bottom || 
+            'undefined' !== typeof options.margin.left ) ) {
+            style += 'margin: '+options.margin.top+' '+options.margin.right+' '+options.margin.bottom+' '+options.margin.left+';';
+        }
+        jQuery('#'+selector).attr('style', style);
 
         var sw_obj = {
             slidesPerView: attributes.Columns,
@@ -213,6 +232,8 @@ import WpmozoColorPicker from '../src/components/wpmozo-colorpicker/wpmozo-color
             if( product_tags ) {
                 product_tag_options = product_tags.map( value => value.name );
             }
+
+            console.log(attributes.CarContStyle);
 
             return [
                 el( Fragment, {},
@@ -652,6 +673,22 @@ import WpmozoColorPicker from '../src/components/wpmozo-colorpicker/wpmozo-color
                     el( InspectorControls , { group: 'styles' },
                         el( PanelBody, 
                             { 
+                                title: __( 'Carousel Container Style', 'wpmozo-product-carousel-for-woocommerce' ),
+                                className: "wpmozo-typography-panel",
+                                initialOpen: false,
+                            },
+                            el( WpmozoDimensions, {
+                                DimensionKey: 'CarContStyle',
+                                DimensionsTypes: {
+                                    padding: true,
+                                    margin: true,
+                                },
+                                attributes: attributes,
+                                props: props,
+                            } ),  
+                        ),
+                        el( PanelBody, 
+                            { 
                                 title: __( 'Title Style', 'wpmozo-product-carousel-for-woocommerce' ),
                                 className: "wpmozo-typography-panel",
                                 initialOpen: false,
@@ -668,25 +705,25 @@ import WpmozoColorPicker from '../src/components/wpmozo-colorpicker/wpmozo-color
                                 props: props,
                             } ),
                         ),
-                    attributes.ShowPrice &&
-                        el( PanelBody, 
-                            { 
-                                title: __( 'Price Style', 'wpmozo-product-carousel-for-woocommerce' ),
-                                className: "wpmozo-typography-panel",
-                                initialOpen: false,
-                            },
-                            el( WpmozoColorPicker, {
-                                ColorKey: 'PriceColor',
-                                attributes: attributes,
-                                props: props,
-                                ColorTypes: textColorObject
-                            }),
-                            el( WpmozoTypography, {
-                                TypographyKey: 'PriceStyle',
-                                attributes: attributes,
-                                props: props,
-                            } ),
-                        ),
+                        attributes.ShowPrice &&
+                            el( PanelBody, 
+                                { 
+                                    title: __( 'Price Style', 'wpmozo-product-carousel-for-woocommerce' ),
+                                    className: "wpmozo-typography-panel",
+                                    initialOpen: false,
+                                },
+                                el( WpmozoColorPicker, {
+                                    ColorKey: 'PriceColor',
+                                    attributes: attributes,
+                                    props: props,
+                                    ColorTypes: textColorObject
+                                }),
+                                el( WpmozoTypography, {
+                                    TypographyKey: 'PriceStyle',
+                                    attributes: attributes,
+                                    props: props,
+                                } ),
+                            ),
                         attributes.ShowAddToCartButton &&
                             el( PanelBody, 
                                 { 

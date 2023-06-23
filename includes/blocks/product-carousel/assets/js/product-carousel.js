@@ -11,6 +11,24 @@
 		var $this = $(this),
 		 	atts = $(this).data('atts');
 
+        let options = atts.CarContStyle;
+        let style = '';
+        if ( 'undefined' !== typeof options.padding && '' !== options.padding && ( 
+            'undefined' !== typeof options.padding.top || 
+            'undefined' !== typeof options.padding.right || 
+            'undefined' !== typeof options.padding.bottom || 
+            'undefined' !== typeof options.padding.left ) ) {
+            style += 'padding: '+options.padding.top+' '+options.padding.right+' '+options.padding.bottom+' '+options.padding.left+';';
+        }
+        if ( 'undefined' !== typeof options.margin && '' !== options.margin && ( 
+            'undefined' !== typeof options.margin.top || 
+            'undefined' !== typeof options.margin.right || 
+            'undefined' !== typeof options.margin.bottom || 
+            'undefined' !== typeof options.margin.left ) ) {
+            style += 'margin: '+options.margin.top+' '+options.margin.right+' '+options.margin.bottom+' '+options.margin.left+';';
+        }
+        $this.attr('style', style);
+
 		var sw_obj = {
 			slidesPerView: atts.Columns,
 		  	spaceBetween: atts.SpaceBetween,

@@ -6,13 +6,20 @@
 .wpmozo-product-carousel-wrap.loading .swiper-navigation{
 	display: none !important;
 }
+.wpmozo-product-carousel-wrap ul.products{
+	margin-bottom: 30px !important;
+}
 .wpmozo-product-carousel-wrap.woocommerce ul.products {
-    padding-inline-start: unset;
-    display: flex;
-    align-items: unset;
-    flex-direction: unset;
-    flex-wrap: unset;
-    justify-content: unset;
+    padding-inline-start: unset !important;
+    display: flex !important;
+    align-items: unset !important;
+    flex-direction: unset !important;
+    flex-wrap: unset !important;
+    justify-content: unset !important;
+}
+.wpmozo-product-carousel-wrap.woocommerce ul.products li {
+	margin-top: 0px !important;
+	margin-bottom: 0px !important;
 }
 .wpmozo-product-carousel-wrap .woocommerce-loop-product__link{
 	width: 100%;
@@ -106,44 +113,44 @@
 }
 /* Layout 1 style over */
 
-/* Layout 3 style start  */
-.wpmozo-product-carousel-wrap.layout-3 .wpmozo-layout-wraper{
+/* Layout 2 style start  */
+.wpmozo-product-carousel-wrap.layout-2 .wpmozo-layout-wraper{
 	width: 100%;
 	display: block;
 	margin-bottom: 12px;
 }
-.wpmozo-product-carousel-wrap.layout-3 ul.products li.product a.button{
+.wpmozo-product-carousel-wrap.layout-2 ul.products li.product a.button{
 	display: block;
 	margin-top: 0px !important;
 	text-align: center !important;
 	margin-bottom: 0px !important;
 }
-.wpmozo-product-carousel-wrap.layout-3 .woocommerce-loop-product__link, 
-.wpmozo-product-carousel-wrap.layout-3 .woocommerce-loop-product__link img{
+.wpmozo-product-carousel-wrap.layout-2 .woocommerce-loop-product__link, 
+.wpmozo-product-carousel-wrap.layout-2 .woocommerce-loop-product__link img{
 	margin-bottom: 0px !important;
 }
-.wpmozo-product-carousel-wrap.layout-3 .onsale{
+.wpmozo-product-carousel-wrap.layout-2 .onsale{
 	position: absolute !important;
 	left: 10px !important;
     right: auto !important;
     top: 10px !important;
 }
-.wpmozo-product-carousel-wrap.layout-3 .wpmozo-quick-view-button{
+.wpmozo-product-carousel-wrap.layout-2 .wpmozo-quick-view-button{
 	position: absolute !important;
     top: 10px !important;
     right: 10px !important;
     left: auto !important;
     transform: unset !important;
 }
-.wpmozo-product-carousel-wrap.layout-3 .woocommerce-loop-product__link img{
+.wpmozo-product-carousel-wrap.layout-2 .woocommerce-loop-product__link img{
 	display: block !important;
 }
 @supports (-moz-appearance:none) {
-	.wpmozo-product-carousel-wrap.layout-3 ul.products li.product a.button{
+	.wpmozo-product-carousel-wrap.layout-2 ul.products li.product a.button{
 		max-width: -moz-available;
 	}
 }
-/* Layout 3 style over */
+/* Layout 2 style over */
 
 .ph-item{
 	min-height: inherit;

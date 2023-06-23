@@ -285,7 +285,7 @@ class Wpmozo_Init {
 			),
 			'SpaceBetween' => array(
 			    'type' => 'integer',
-			    'default' => 10,
+			    'default' => 20,
 			),
 			'AutoPlay' => array(
 			    'type' => 'boolean',
@@ -414,6 +414,24 @@ class Wpmozo_Init {
 			    'default' => '',
 			),
 			// Styles attributes
+			'CarContStyle' => array(
+				'type' => 'object',
+				'padding' => array(
+					'type' => 'object',
+				),
+				'margin' => array(
+					'type' => 'object',
+				),
+				'default' => array(
+					'padding' => array(
+						'bottom' => '20px',
+						'left' => '20px',
+						'right' => '20px',
+						'top' => '20px',
+					),
+					'margin' => array(),
+				),
+			),
 			'TitleStyle' => $typography_atts,
 			'PriceStyle' => $typography_atts,
 			'AddToCartStyle' => $typography_atts,
@@ -527,8 +545,8 @@ class Wpmozo_Init {
 				'value' => 'layout-1',
 			),
 			array(
-				'label' => __('Layout 3', 'wpmozo-product-carousel-for-woocommerce'),
-				'value' => 'layout-3',
+				'label' => __('Layout 2', 'wpmozo-product-carousel-for-woocommerce'),
+				'value' => 'layout-2',
 			),
 		);
 

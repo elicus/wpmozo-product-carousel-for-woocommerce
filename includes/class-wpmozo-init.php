@@ -556,7 +556,10 @@ class Wpmozo_Init {
 	 */
 	public function wpmozo_get_icons(){
 
-		$json = file_get_contents(WPMOZO_ASSE_DIR_URL . 'frontend/fontawesome/fonts.json');
+		$json = file_get_contents(WPMOZO_PLUGIN_DIR_PATH . 'assets/frontend/fontawesome/fonts.json');
+		if ( empty( $json ) ) {
+			return array();
+		}
 		$icons = json_decode( $json );
 		return $icons;
 	}

@@ -243,11 +243,12 @@ import WpmozoDimensions from '../src/components/wpmozo-dimensions/wpmozo-dimensi
    
     }
 
+
     registerBlockType( 'wpmozo/product-carousel', {
         title: __( 'WPMozo Product Carousel', 'wpmozo-product-carousel-for-woocommerce' ),
         icon: 'products',
         apiVersion: 3,
-        category: 'woocommerce',
+        category: 'wpmozo',
         keywords: [ 'wpmozo', 'woocommerce-product-carousel', 'woocommerce', 'carousel' ],
         attributes: GetAttributes,
         supports: {

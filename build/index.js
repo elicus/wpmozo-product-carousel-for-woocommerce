@@ -781,7 +781,7 @@ __webpack_require__.r(__webpack_exports__);
     title: __('WPMozo Product Carousel', 'wpmozo-product-carousel-for-woocommerce'),
     icon: 'products',
     apiVersion: 3,
-    category: 'woocommerce',
+    category: 'wpmozo',
     keywords: ['wpmozo', 'woocommerce-product-carousel', 'woocommerce', 'carousel'],
     attributes: GetAttributes,
     supports: {

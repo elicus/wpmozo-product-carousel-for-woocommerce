@@ -38,13 +38,13 @@
                     }
 
                     let styles = [
-                    	{attKey: 'TitleStyle', selector: '.woocommerce-loop-product__title'},
-                    	{attKey: 'PriceStyle', selector: '.price'},
-                    	{attKey: 'AddToCartStyle', selector: add_to_cart_selector},
-                    	{attKey: 'QuickViewStyle', selector: '.wpmozo-quick-view-button'},
-                    	{attKey: 'SaleLabelStyle', selector: '.onsale'},
-                    	{attKey: 'StockLabelStyle', selector: '.soldout-text'},
-                    	{attKey: 'TitleColor', type: 'color', selector: '.woocommerce-loop-product__title'},
+                        {attKey: 'TitleStyle', type: 'style', selector: '.woocommerce-loop-product__title'},
+                        {attKey: 'PriceStyle', type: 'style', selector: '.price'},
+                        {attKey: 'AddToCartStyle', type: 'style', selector: add_to_cart_selector},
+                        {attKey: 'QuickViewStyle', type: 'style', selector: '.wpmozo-quick-view-button'},
+                        {attKey: 'SaleLabelStyle', type: 'style', selector: '.onsale'},
+                        {attKey: 'StockLabelStyle', type: 'style', selector: '.soldout-text'},
+                        {attKey: 'TitleColor', type: 'color', selector: '.woocommerce-loop-product__title'},
                         {attKey: 'PriceColor', type: 'color', selector: '.price'},
                         {attKey: 'AddToCartColor', type: 'color', selector: add_to_cart_selector},
                         {attKey: 'QuickViewColor', type: 'color', selector: '.wpmozo-quick-view-button'},

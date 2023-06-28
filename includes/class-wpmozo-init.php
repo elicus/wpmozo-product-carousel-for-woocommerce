@@ -605,6 +605,24 @@ class Wpmozo_Init {
 	}
 
 	/**
+	 * Add block category
+	 *
+	 * @param array $categories The block categories.
+	 * @return array The block categories.
+	 */
+	public function wpmozo_block_category( $categories ) {
+		return array_merge(
+			$categories,
+			array(
+				array(
+					'slug'  => 'wpmozo',
+					'title' => __( 'WPMozo', 'wpmozo-product-carousel-for-woocommerce' ),
+				),
+			)
+		);
+	}
+
+	/**
 	 * Add all hooks
 	 *
 	 * @since 1.0.0
@@ -613,6 +631,7 @@ class Wpmozo_Init {
 	 */
 	public function add_hooks( $loader, $instance ) {
 
+		$loader->add_filter( 'block_categories_all', $instance, 'wpmozo_block_category', 10, 2 );
 		$loader->add_action( 'init', $instance, 'wpmozo_register_blocks' );
 		$loader->add_action('enqueue_block_editor_assets', $instance, 'wpmozo_add_editor_style' );
 

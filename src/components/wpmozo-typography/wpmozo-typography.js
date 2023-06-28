@@ -44,6 +44,7 @@ const WpmozoTypography = function(args){
                     {
                         value: attributes[TypographyKey].FontSize,
                         onChange: (NewFontSize) => { typoSetValue('FontSize', NewFontSize) },
+                        __nextHasNoMarginBottom: true,
                     }
                 ),
             ),

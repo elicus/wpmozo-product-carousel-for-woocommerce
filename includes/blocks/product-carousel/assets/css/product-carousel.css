@@ -1,7 +1,3 @@
-.wpmozo-product-carousel-wrap {
-	width: 100%;
-	height: 100%;
-}
 .wpmozo-product-carousel-wrap.loading .swiper-pagination, 
 .wpmozo-product-carousel-wrap.loading .swiper-navigation{
 	display: none !important;
@@ -201,6 +197,7 @@
 	    height: auto;
 	    visibility: visible;
     	opacity: 1;
+    	margin: 10px 0px;
 	}
 	.wpmozo-quick-view-button{
 		position: unset !important;

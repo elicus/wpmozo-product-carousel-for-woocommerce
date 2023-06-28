@@ -283,6 +283,10 @@ class Wpmozo_Init {
 			    'type' => 'integer',
 			    'default' => 4,
 			),
+			'SlidesToScroll' => array(
+			    'type' => 'integer',
+			    'default' => 4,
+			),
 			'SpaceBetween' => array(
 			    'type' => 'integer',
 			    'default' => 20,
@@ -310,6 +314,28 @@ class Wpmozo_Init {
 			'PaginationType' => array(
 			    'type' => 'string',
 			    'default' => 'bullets',
+			),
+			// Responsive attributes
+			'Responsive' => array(
+			    'type' => 'object',
+			    'mobile' => array(
+			    	'type' => 'object',
+			    ),
+			    'tablet' => array(
+			    	'type' => 'object',
+			    ),
+			    'default' => array(
+			    	'mobile' => array(
+			    		'Columns' =>  1,
+						'SlidesToScroll' => 1,
+						'SpaceBetween' => 20,
+			    	),
+			    	'tablet' => array(
+			    		'Columns' => 2,
+						'SlidesToScroll' => 2,
+						'SpaceBetween' => 20,
+			    	),
+			    ),
 			),
 			// Query attributes
 			'ProductViewType' => array(
@@ -419,9 +445,6 @@ class Wpmozo_Init {
 				'padding' => array(
 					'type' => 'object',
 				),
-				'margin' => array(
-					'type' => 'object',
-				),
 				'default' => array(
 					'padding' => array(
 						'bottom' => '20px',
@@ -429,7 +452,6 @@ class Wpmozo_Init {
 						'right' => '20px',
 						'top' => '20px',
 					),
-					'margin' => array(),
 				),
 			),
 			'TitleStyle' => $typography_atts,

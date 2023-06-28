@@ -119,6 +119,7 @@ const {
   __experimentalToolsPanel,
   __experimentalToolsPanelItem
 } = window.wp.components;
+const preAttributes = wpmozo_block_carousel_object.attributes;
 const WpmozoDimensions = function (args) {
   const {
     DimensionKey,
@@ -129,18 +130,19 @@ const WpmozoDimensions = function (args) {
   const _dimensions = attributes[DimensionKey];
   const dimensionsSetValue = function (styleType) {
     let value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-    let dimensions = Object.assign({}, _dimensions);
-    dimensions[styleType] = null !== value ? value : '';
+    let _dimensions = Object.assign({}, attributes[DimensionKey]);
+    if (null == value && 'undefined' !== typeof preAttributes[DimensionKey].default[styleType]) {
+      value = preAttributes[DimensionKey].default[styleType];
+    }
+    _dimensions[styleType] = null !== value ? value : '';
     props.setAttributes({
-      [DimensionKey]: dimensions
+      [DimensionKey]: _dimensions
     });
   };
   return [el(__experimentalToolsPanel, {
     label: __('Dimensions', 'wpmozo-product-carousel-for-woocommerce'),
     resetAll: () => {
-      let dimensions = {
-        text: ''
-      };
+      let dimensions = preAttributes[DimensionKey].default;
       props.setAttributes({
         [DimensionKey]: dimensions
       });
@@ -153,7 +155,7 @@ const WpmozoDimensions = function (args) {
     onDeselect: () => dimensionsSetValue('padding')
   }, el(__experimentalSpacingSizesControl, {
     label: 'Padding',
-    values: attributes.CarContStyle.padding,
+    values: attributes[DimensionKey].padding,
     onChange: function (NewPadding) {
       dimensionsSetValue('padding', NewPadding);
     }
@@ -165,7 +167,7 @@ const WpmozoDimensions = function (args) {
     onDeselect: () => dimensionsSetValue('margin')
   }, el(__experimentalSpacingSizesControl, {
     label: 'Margin',
-    values: attributes.CarContStyle.margin,
+    values: attributes[DimensionKey].margin,
     onChange: function (NewMargin) {
       dimensionsSetValue('margin', NewMargin);
     }
@@ -245,7 +247,18 @@ const {
 const {
   compose
 } = wp.compose;
+const {
+  hooks
+} = wp;
 class WpmozoLoader extends Component {
+  componentDidMount() {
+    const {
+      clientId
+    } = this.props;
+    if (window.WpmozoSwipers.hasOwnProperty(clientId)) {
+      delete window.WpmozoSwipers[clientId];
+    }
+  }
   render() {
     const {
       column,
@@ -353,7 +366,8 @@ const WpmozoTypography = function (args) {
     value: attributes[TypographyKey].FontSize,
     onChange: NewFontSize => {
       typoSetValue('FontSize', NewFontSize);
-    }
+    },
+    __nextHasNoMarginBottom: true
   })), el(__experimentalToolsPanelItem, {
     className: "single-column",
     label: __('Appearance', 'wpmozo-product-carousel-for-woocommerce'),
@@ -530,7 +544,8 @@ __webpack_require__.r(__webpack_exports__);
     Dropdown,
     ColorIndicator,
     Popover,
-    TabPanel
+    TabPanel,
+    Spinner
   } = components;
   const {
     Fragment,
@@ -546,6 +561,7 @@ __webpack_require__.r(__webpack_exports__);
     serverSideRender: ServerSideRender,
     hooks
   } = wp;
+  window.WpmozoSwipers = {};
   let textColorObject = [{
     key: 'text',
     label: __('Text', 'wpmozo-product-carousel-for-woocommerce')
@@ -602,6 +618,17 @@ __webpack_require__.r(__webpack_exports__);
       wraper.find(selector).attr('style', inlineStyle);
     }
   }
+  function convetVarStyle(options) {
+    let spacing = Object.assign({}, options);
+    for (const type in spacing) {
+      let value = spacing[type];
+      if (value.startsWith("var:")) {
+        let str = value.replace('var:', 'var(--wp--').replace(/\|/g, '--') + ')';
+        spacing[type] = str;
+      }
+    }
+    return spacing;
+  }
   var GetOrderByOptions = wpmozo_block_carousel_object.order_by_options,
     GetAttributes = wpmozo_block_carousel_object.attributes,
     GetProductViewTypeOptions = wpmozo_block_carousel_object.product_view_type_options,
@@ -610,24 +637,23 @@ __webpack_require__.r(__webpack_exports__);
     AllLayouts = wpmozo_block_carousel_object.all_layouts,
     ProductTypes = wpmozo_block_carousel_object.products_types;
   const initializeSwiper = attributes => {
-    let selector = 'wpmozo_' + attributes.clientId;
+    let clientId = attributes.clientId,
+      selector = 'wpmozo_' + clientId;
     let options = attributes.CarContStyle;
     let style = '';
     if ('undefined' !== typeof options.padding && '' !== options.padding && ('undefined' !== typeof options.padding.top || 'undefined' !== typeof options.padding.right || 'undefined' !== typeof options.padding.bottom || 'undefined' !== typeof options.padding.left)) {
-      style += 'padding: ' + options.padding.top + ' ' + options.padding.right + ' ' + options.padding.bottom + ' ' + options.padding.left + ';';
-    }
-    if ('undefined' !== typeof options.margin && '' !== options.margin && ('undefined' !== typeof options.margin.top || 'undefined' !== typeof options.margin.right || 'undefined' !== typeof options.margin.bottom || 'undefined' !== typeof options.margin.left)) {
-      style += 'margin: ' + options.margin.top + ' ' + options.margin.right + ' ' + options.margin.bottom + ' ' + options.margin.left + ';';
+      let spacing = convetVarStyle(options.padding);
+      style += 'padding: ' + spacing.top + ' ' + spacing.right + ' ' + spacing.bottom + ' ' + spacing.left + ';';
     }
     jQuery('#' + selector).attr('style', style);
+    let mobileSett = attributes.Responsive.mobile;
+    let tabletSett = attributes.Responsive.tablet;
     var sw_obj = {
-      slidesPerView: attributes.Columns,
-      spaceBetween: attributes.SpaceBetween,
       loop: attributes.Loop,
       swipeHandler: 'li.product',
       on: {
         tap: function (swiper, event) {
-          dispatch('core/block-editor').selectBlock(attributes.clientId);
+          dispatch('core/block-editor').selectBlock(clientId);
         },
         beforeInit: function (swiper) {
           let add_to_cart_selector = '.add_to_cart_button';
@@ -690,6 +716,23 @@ __webpack_require__.r(__webpack_exports__);
             appendInlineStyle(item, wraper, attributes);
           });
         }
+      },
+      breakpoints: {
+        0: {
+          slidesPerView: mobileSett.Columns,
+          spaceBetween: mobileSett.SpaceBetween,
+          slidesPerGroup: mobileSett.SlidesToScroll
+        },
+        480: {
+          slidesPerView: tabletSett.Columns,
+          spaceBetween: tabletSett.SpaceBetween,
+          slidesPerGroup: tabletSett.SlidesToScroll
+        },
+        1025: {
+          slidesPerView: attributes.Columns,
+          spaceBetween: attributes.SpaceBetween,
+          slidesPerGroup: attributes.SlidesToScroll
+        }
       }
     };
     if (attributes.AutoPlay) {
@@ -710,42 +753,44 @@ __webpack_require__.r(__webpack_exports__);
       };
     }
     let _swiper = new Swiper('#' + selector, sw_obj);
+    window.WpmozoSwipers[clientId] = _swiper;
   };
   hooks.addAction('server-side-loading-finished', 'function_name', initializeSwiper);
-  const TriggerWhenLoadingFinished = attributes => {
-    return _ref => {
-      let {
-        children,
-        showLoader
-      } = _ref;
-      useEffect(() => {
-        return () => {
-          hooks.doAction("server-side-loading-finished", attributes);
-        };
-      });
-      return el(Fragment, {}, el("div", {
-        class: "wpmozo-loader backend",
-        style: {
-          "display": "grid",
-          "grid-auto-flow": "column"
-        },
-        children: [el(_src_components_wpmozo_loader_wpmozo_loader__WEBPACK_IMPORTED_MODULE_1__["default"], {
-          column: attributes.Columns,
-          margin: attributes.SpaceBetween
-        })]
-      }));
-    };
+  const TriggerWhenLoadingFinished = args => {
+    let attributes = args.attributes;
+    useEffect(() => {
+      return () => {
+        hooks.doAction("server-side-loading-finished", attributes);
+      };
+    });
+    return el(Fragment, {}, el("div", {
+      class: "wpmozo-loader backend",
+      style: {
+        "display": "grid",
+        "grid-auto-flow": "column"
+      },
+      children: [el(_src_components_wpmozo_loader_wpmozo_loader__WEBPACK_IMPORTED_MODULE_1__["default"], {
+        attributes: attributes,
+        clientId: attributes.clientId,
+        column: attributes.Columns,
+        margin: attributes.SpaceBetween
+      })]
+    }));
   };
   registerBlockType('wpmozo/product-carousel', {
     title: __('WPMozo Product Carousel', 'wpmozo-product-carousel-for-woocommerce'),
     icon: 'products',
+    apiVersion: 3,
     category: 'woocommerce',
     keywords: ['wpmozo', 'woocommerce-product-carousel', 'woocommerce', 'carousel'],
     attributes: GetAttributes,
-    example: {},
+    supports: {
+      html: false
+    },
     edit: function (props) {
       let attributes = props.attributes;
       attributes.clientId = props.clientId;
+      let clientId = attributes.clientId;
       let product_cats = wp.data.select('core').getEntityRecords('taxonomy', 'product_cat');
       let product_cat_options = [];
       if (product_cats) {
@@ -756,8 +801,12 @@ __webpack_require__.r(__webpack_exports__);
       if (product_tags) {
         product_tag_options = product_tags.map(value => value.name);
       }
-      console.log(attributes.CarContStyle);
-      return [el(Fragment, {}, el(InspectorControls, {}, el(PanelBody, {
+      let blockProps = useBlockProps();
+      return [el('div', blockProps, el(ServerSideRender, {
+        block: 'wpmozo/product-carousel',
+        attributes: attributes,
+        LoadingResponsePlaceholder: TriggerWhenLoadingFinished
+      })), el(InspectorControls, {}, el(PanelBody, {
         title: __('Carousel Settings', 'wpmozo-product-carousel-for-woocommerce'),
         initialOpen: true
       }, el(RangeControl, {
@@ -771,6 +820,19 @@ __webpack_require__.r(__webpack_exports__);
         onChange: function (NewColumns) {
           props.setAttributes({
             Columns: NewColumns
+          });
+        }
+      }), el(RangeControl, {
+        key: 'wpmozp-product-carousel-slidestoscroll',
+        value: attributes.SlidesToScroll,
+        allowReset: false,
+        initialPosition: 4,
+        max: 8,
+        min: 1,
+        label: __('Slides To Scroll', 'wpmozo-product-carousel-for-woocommerce'),
+        onChange: function (NewSlidesToScroll) {
+          props.setAttributes({
+            SlidesToScroll: NewSlidesToScroll
           });
         }
       }), el(RangeControl, {
@@ -845,8 +907,103 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
       })), el(PanelBody, {
+        title: __('Carousel Responsive Settings', 'wpmozo-product-carousel-for-woocommerce'),
+        initialOpen: false
+      }, el(PanelBody, {
+        title: __('Mobile', 'wpmozo-product-carousel-for-woocommerce'),
+        initialOpen: false
+      }, el(RangeControl, {
+        key: 'wpmozp-product-carousel-columns',
+        value: attributes.Responsive.mobile.Columns,
+        allowReset: false,
+        initialPosition: attributes.Responsive.mobile.Columns,
+        max: 8,
+        min: 1,
+        label: __('Columns', 'wpmozo-product-carousel-for-woocommerce'),
+        onChange: function (NewColumns) {
+          let _Responsive = Object.assign({}, attributes.Responsive);
+          _Responsive.mobile.Columns = NewColumns;
+          props.setAttributes({
+            Responsive: _Responsive
+          });
+        }
+      }), el(RangeControl, {
+        key: 'wpmozp-product-carousel-slidestoscroll',
+        value: attributes.Responsive.mobile.SlidesToScroll,
+        allowReset: false,
+        initialPosition: attributes.Responsive.mobile.SlidesToScroll,
+        max: 8,
+        min: 1,
+        label: __('Slides To Scroll', 'wpmozo-product-carousel-for-woocommerce'),
+        onChange: function (NewSlidesToScroll) {
+          let _Responsive = Object.assign({}, attributes.Responsive);
+          _Responsive.mobile.SlidesToScroll = NewSlidesToScroll;
+          props.setAttributes({
+            Responsive: _Responsive
+          });
+        }
+      }), el(RangeControl, {
+        key: 'wpmozp-product-carousel-space-between',
+        value: attributes.Responsive.mobile.SpaceBetween,
+        allowReset: false,
+        initialPosition: attributes.Responsive.mobile.SpaceBetween,
+        label: __('Space Between', 'wpmozo-product-carousel-for-woocommerce'),
+        onChange: function (NewSpaceBetween) {
+          let _Responsive = Object.assign({}, attributes.Responsive);
+          _Responsive.mobile.SpaceBetween = NewSpaceBetween;
+          props.setAttributes({
+            Responsive: _Responsive
+          });
+        }
+      })), el(PanelBody, {
+        title: __('Tablet', 'wpmozo-product-carousel-for-woocommerce'),
+        initialOpen: false
+      }, el(RangeControl, {
+        key: 'wpmozp-product-carousel-columns',
+        value: attributes.Responsive.tablet.Columns,
+        allowReset: false,
+        initialPosition: attributes.Responsive.tablet.Columns,
+        max: 8,
+        min: 1,
+        label: __('Columns', 'wpmozo-product-carousel-for-woocommerce'),
+        onChange: function (NewColumns) {
+          let _Responsive = Object.assign({}, attributes.Responsive);
+          _Responsive.tablet.Columns = NewColumns;
+          props.setAttributes({
+            Responsive: _Responsive
+          });
+        }
+      }), el(RangeControl, {
+        key: 'wpmozp-product-carousel-slidestoscroll',
+        value: attributes.Responsive.tablet.SlidesToScroll,
+        allowReset: false,
+        initialPosition: attributes.Responsive.tablet.SlidesToScroll,
+        max: 8,
+        min: 1,
+        label: __('Slides To Scroll', 'wpmozo-product-carousel-for-woocommerce'),
+        onChange: function (NewSlidesToScroll) {
+          let _Responsive = Object.assign({}, attributes.Responsive);
+          _Responsive.tablet.SlidesToScroll = NewSlidesToScroll;
+          props.setAttributes({
+            Responsive: _Responsive
+          });
+        }
+      }), el(RangeControl, {
+        key: 'wpmozp-product-carousel-space-between',
+        value: attributes.Responsive.tablet.SpaceBetween,
+        allowReset: false,
+        initialPosition: attributes.Responsive.tablet.SpaceBetween,
+        label: __('Space Between', 'wpmozo-product-carousel-for-woocommerce'),
+        onChange: function (NewSpaceBetween) {
+          let _Responsive = Object.assign({}, attributes.Responsive);
+          _Responsive.tablet.SpaceBetween = NewSpaceBetween;
+          props.setAttributes({
+            Responsive: _Responsive
+          });
+        }
+      }))), el(PanelBody, {
         title: __('Query Settings', 'wpmozo-product-carousel-for-woocommerce'),
-        initialOpen: true
+        initialOpen: false
       }, el(SelectControl, {
         key: 'wpmozp-product-carousel-viewtype',
         label: __(' Product View Type', 'wpmozo-product-carousel-for-woocommerce'),
@@ -866,7 +1023,7 @@ __webpack_require__.r(__webpack_exports__);
             NumberOfProducts: NewNumberOfProducts
           });
         }
-      }), 'sale' !== attributes.ProductViewType && 'best_selling' !== attributes.ProductViewType && 'top_rated' !== attributes.ProductViewType && el(SelectControl, {
+      }), 'best_selling' !== attributes.ProductViewType && 'top_rated' !== attributes.ProductViewType && el(SelectControl, {
         key: 'wpmozp-product-carousel-orderby',
         label: __('Order By', 'wpmozo-product-carousel-for-woocommerce'),
         value: attributes.OrderBy,
@@ -876,7 +1033,7 @@ __webpack_require__.r(__webpack_exports__);
             OrderBy: NewOrderBy
           });
         }
-      }), 'sale' !== attributes.ProductViewType && 'best_selling' !== attributes.ProductViewType && 'top_rated' !== attributes.ProductViewType && el(SelectControl, {
+      }), 'best_selling' !== attributes.ProductViewType && 'top_rated' !== attributes.ProductViewType && el(SelectControl, {
         key: 'wpmozp-product-carousel-order',
         label: __('Order', 'wpmozo-product-carousel-for-woocommerce'),
         value: attributes.Order,
@@ -936,7 +1093,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       })), el(PanelBody, {
         title: __('Display Settings', 'wpmozo-product-carousel-for-woocommerce'),
-        initialOpen: true
+        initialOpen: false
       }, el(SelectControl, {
         key: 'wpmozp-product-carousel-layout',
         label: __('Layout', 'wpmozo-product-carousel-for-woocommerce'),
@@ -1008,10 +1165,10 @@ __webpack_require__.r(__webpack_exports__);
         allowedTypes: ["image"],
         accept: "image/*",
         value: attributes.QuickViewLinkImg,
-        render: _ref2 => {
+        render: _ref => {
           let {
             open
-          } = _ref2;
+          } = _ref;
           return el(Fragment, {}, el('div', {
             class: "components-base-control wpmozo-quvili-icon-wrap",
             children: [attributes.QuickViewLinkImg && el('img', {
@@ -1105,8 +1262,7 @@ __webpack_require__.r(__webpack_exports__);
       }, el(_src_components_wpmozo_dimensions_wpmozo_dimensions__WEBPACK_IMPORTED_MODULE_4__["default"], {
         DimensionKey: 'CarContStyle',
         DimensionsTypes: {
-          padding: true,
-          margin: true
+          padding: true
         },
         attributes: attributes,
         props: props
@@ -1188,11 +1344,7 @@ __webpack_require__.r(__webpack_exports__);
         TypographyKey: 'StockLabelStyle',
         attributes: attributes,
         props: props
-      })))), el(ServerSideRender, {
-        block: 'wpmozo/product-carousel',
-        attributes: attributes,
-        LoadingResponsePlaceholder: TriggerWhenLoadingFinished(attributes)
-      })];
+      })))];
     },
     save: function () {
       return null;

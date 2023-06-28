@@ -18,20 +18,14 @@
             'undefined' !== typeof options.padding.right || 
             'undefined' !== typeof options.padding.bottom || 
             'undefined' !== typeof options.padding.left ) ) {
-            style += 'padding: '+options.padding.top+' '+options.padding.right+' '+options.padding.bottom+' '+options.padding.left+';';
-        }
-        if ( 'undefined' !== typeof options.margin && '' !== options.margin && ( 
-            'undefined' !== typeof options.margin.top || 
-            'undefined' !== typeof options.margin.right || 
-            'undefined' !== typeof options.margin.bottom || 
-            'undefined' !== typeof options.margin.left ) ) {
-            style += 'margin: '+options.margin.top+' '+options.margin.right+' '+options.margin.bottom+' '+options.margin.left+';';
+            let spacing = convetVarStyle(options.padding);
+            style += 'padding: '+spacing.top+' '+spacing.right+' '+spacing.bottom+' '+spacing.left+';';
         }
         $this.attr('style', style);
+        let mobileSett = atts.Responsive.mobile;
+        let tabletSett = atts.Responsive.tablet;
 
 		var sw_obj = {
-			slidesPerView: atts.Columns,
-		  	spaceBetween: atts.SpaceBetween,
 			loop: atts.Loop,
 			on: {
                 beforeInit: function(swiper){
@@ -69,6 +63,23 @@
                 	$this.removeClass('loading');
 
                 }
+            },
+            breakpoints: {
+                0: {
+                  slidesPerView: mobileSett.Columns,
+                  spaceBetween: mobileSett.SpaceBetween,
+                  slidesPerGroup: mobileSett.SlidesToScroll,
+                },
+                480: {
+                  slidesPerView: tabletSett.Columns,
+                  spaceBetween: tabletSett.SpaceBetween,
+                  slidesPerGroup: tabletSett.SlidesToScroll,
+                },
+                1025: {
+                  slidesPerView: atts.Columns,
+                  spaceBetween: atts.SpaceBetween,
+                  slidesPerGroup: atts.SlidesToScroll,
+                },
             },
 		}
 
@@ -158,6 +169,20 @@
             }
             wraper.find(selector).attr('style', inlineStyle);
         }
+
+    }
+
+    function convetVarStyle( spacing ){
+
+        for (const type in spacing) {
+            let value = spacing[type];
+            if ( value.startsWith("var:") ) {
+                let str = value.replace('var:', 'var(--wp--').replace(/\|/g, '--') + ')';
+                spacing[type] = str;
+            }
+        }
+
+        return spacing;
 
     }
 

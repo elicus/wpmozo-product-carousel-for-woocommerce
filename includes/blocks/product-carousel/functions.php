@@ -89,12 +89,12 @@ function wpmozo_product_carousel_prepare_query_args( $args ){
         );
     }
     
-    if ( 'price' === $args['OrderBy'] ) {
+    if ( 'price' === $args['OrderBy'] && ! isset( $qu_args['orderby'] ) ) {
         $qu_args['orderby'] = 'meta_value_num';
         $qu_args['meta_key'] = '_price';
     }
 
-    if ( 'stock_status' === $args['OrderBy'] ) {
+    if ( 'stock_status' === $args['OrderBy'] && ! isset( $qu_args['orderby'] ) ) {
         $qu_args['orderby'] = 'meta_value';
         $qu_args['meta_key'] = '_stock_status';
     }
@@ -120,7 +120,7 @@ function wpmozo_product_carousel_prepare_query_args( $args ){
     if ( ! empty( $meta_query )  ) {
         $qu_args['meta_query'] = $meta_query;
     }
-
+    
     return $qu_args;
 
 }
@@ -350,12 +350,7 @@ function wpmozo_product_carousel_sale_badge( $html, $post, $product ){
             
             $max_percentage = max($percentages);
             $min_percentage = min($percentages);
-            $percentage = ( $max_percentage > $min_percentage ) ? sprintf( 
-                    '%s%% %s %s%%',
-                    $min_percentage,
-                    __('to', 'wpmozo-product-carousel-for-woocommerce'),
-                    $max_percentage
-                ) : $max_percentage . '%';
+            $percentage = sprintf( '%s%%', $max_percentage );
 
         }
 

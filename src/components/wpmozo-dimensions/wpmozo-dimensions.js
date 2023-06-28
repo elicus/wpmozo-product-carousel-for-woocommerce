@@ -3,6 +3,7 @@ const el = window.wp.element.createElement;
 const __ = wp.i18n.__;
 const { __experimentalSpacingSizesControl } = window.wp.blockEditor;
 const { __experimentalToolsPanel, __experimentalToolsPanelItem } = window.wp.components;
+const preAttributes = wpmozo_block_carousel_object.attributes;
 
 
 const WpmozoDimensions = function(args){
@@ -11,9 +12,12 @@ const WpmozoDimensions = function(args){
     const _dimensions = attributes[DimensionKey];
 
     const dimensionsSetValue = function( styleType, value = null ) {
-        let dimensions = Object.assign({}, _dimensions);
-        dimensions[styleType] = ( null !== value ) ? value : '';
-        props.setAttributes( {[DimensionKey]: dimensions} );
+        let _dimensions = Object.assign({}, attributes[DimensionKey]);
+        if ( null == value && 'undefined' !== typeof preAttributes[DimensionKey].default[styleType] ) {
+            value = preAttributes[DimensionKey].default[styleType];
+        }
+        _dimensions[styleType] = ( null !== value ) ? value : '';
+        props.setAttributes( {[DimensionKey]: _dimensions} );
     };
 
 	return [
@@ -21,9 +25,7 @@ const WpmozoDimensions = function(args){
             { 
                 label: __( 'Dimensions', 'wpmozo-product-carousel-for-woocommerce' ),
                 resetAll: () => {
-                    let dimensions = {
-                        text: '',
-                    }
+                    let dimensions = preAttributes[DimensionKey].default;
                     props.setAttributes( {[DimensionKey]: dimensions} );
                 }
             },
@@ -38,7 +40,7 @@ const WpmozoDimensions = function(args){
                     }, 
                     el(__experimentalSpacingSizesControl, {
                         label: 'Padding',
-                        values: attributes.CarContStyle.padding,
+                        values: attributes[DimensionKey].padding,
                         onChange: function( NewPadding ) {
                             dimensionsSetValue('padding', NewPadding);
                         },
@@ -55,7 +57,7 @@ const WpmozoDimensions = function(args){
                     }, 
                     el(__experimentalSpacingSizesControl, {
                         label: 'Margin',
-                        values: attributes.CarContStyle.margin,
+                        values: attributes[DimensionKey].margin,
                         onChange: function( NewMargin ) {
                             dimensionsSetValue('margin', NewMargin);
                         },

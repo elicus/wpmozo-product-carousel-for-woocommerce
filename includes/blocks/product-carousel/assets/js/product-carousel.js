@@ -11,9 +11,21 @@
 		var $this = $(this),
 		 	atts = $(this).data('atts');
 
+        let options = atts.CarContStyle;
+        let style = '';
+        if ( 'undefined' !== typeof options.padding && '' !== options.padding && ( 
+            'undefined' !== typeof options.padding.top || 
+            'undefined' !== typeof options.padding.right || 
+            'undefined' !== typeof options.padding.bottom || 
+            'undefined' !== typeof options.padding.left ) ) {
+            let spacing = convetVarStyle(options.padding);
+            style += 'padding: '+spacing.top+' '+spacing.right+' '+spacing.bottom+' '+spacing.left+';';
+        }
+        $this.attr('style', style);
+        let mobileSett = atts.Responsive.mobile;
+        let tabletSett = atts.Responsive.tablet;
+
 		var sw_obj = {
-			slidesPerView: atts.Columns,
-		  	spaceBetween: atts.SpaceBetween,
 			loop: atts.Loop,
 			on: {
                 beforeInit: function(swiper){
@@ -26,13 +38,13 @@
                     }
 
                     let styles = [
-                    	{attKey: 'TitleStyle', selector: '.woocommerce-loop-product__title'},
-                    	{attKey: 'PriceStyle', selector: '.price'},
-                    	{attKey: 'AddToCartStyle', selector: add_to_cart_selector},
-                    	{attKey: 'QuickViewStyle', selector: '.wpmozo-quick-view-button'},
-                    	{attKey: 'SaleLabelStyle', selector: '.onsale'},
-                    	{attKey: 'StockLabelStyle', selector: '.soldout-text'},
-                    	{attKey: 'TitleColor', type: 'color', selector: '.woocommerce-loop-product__title'},
+                        {attKey: 'TitleStyle', type: 'style', selector: '.woocommerce-loop-product__title'},
+                        {attKey: 'PriceStyle', type: 'style', selector: '.price'},
+                        {attKey: 'AddToCartStyle', type: 'style', selector: add_to_cart_selector},
+                        {attKey: 'QuickViewStyle', type: 'style', selector: '.wpmozo-quick-view-button'},
+                        {attKey: 'SaleLabelStyle', type: 'style', selector: '.onsale'},
+                        {attKey: 'StockLabelStyle', type: 'style', selector: '.soldout-text'},
+                        {attKey: 'TitleColor', type: 'color', selector: '.woocommerce-loop-product__title'},
                         {attKey: 'PriceColor', type: 'color', selector: '.price'},
                         {attKey: 'AddToCartColor', type: 'color', selector: add_to_cart_selector},
                         {attKey: 'QuickViewColor', type: 'color', selector: '.wpmozo-quick-view-button'},
@@ -51,6 +63,23 @@
                 	$this.removeClass('loading');
 
                 }
+            },
+            breakpoints: {
+                0: {
+                  slidesPerView: mobileSett.Columns,
+                  spaceBetween: mobileSett.SpaceBetween,
+                  slidesPerGroup: mobileSett.SlidesToScroll,
+                },
+                480: {
+                  slidesPerView: tabletSett.Columns,
+                  spaceBetween: tabletSett.SpaceBetween,
+                  slidesPerGroup: tabletSett.SlidesToScroll,
+                },
+                1025: {
+                  slidesPerView: atts.Columns,
+                  spaceBetween: atts.SpaceBetween,
+                  slidesPerGroup: atts.SlidesToScroll,
+                },
             },
 		}
 
@@ -140,6 +169,20 @@
             }
             wraper.find(selector).attr('style', inlineStyle);
         }
+
+    }
+
+    function convetVarStyle( spacing ){
+
+        for (const type in spacing) {
+            let value = spacing[type];
+            if ( value.startsWith("var:") ) {
+                let str = value.replace('var:', 'var(--wp--').replace(/\|/g, '--') + ')';
+                spacing[type] = str;
+            }
+        }
+
+        return spacing;
 
     }
 

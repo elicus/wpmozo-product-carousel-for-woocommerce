@@ -283,9 +283,13 @@ class Wpmozo_Init {
 			    'type' => 'integer',
 			    'default' => 4,
 			),
+			'SlidesToScroll' => array(
+			    'type' => 'integer',
+			    'default' => 4,
+			),
 			'SpaceBetween' => array(
 			    'type' => 'integer',
-			    'default' => 10,
+			    'default' => 20,
 			),
 			'AutoPlay' => array(
 			    'type' => 'boolean',
@@ -310,6 +314,28 @@ class Wpmozo_Init {
 			'PaginationType' => array(
 			    'type' => 'string',
 			    'default' => 'bullets',
+			),
+			// Responsive attributes
+			'Responsive' => array(
+			    'type' => 'object',
+			    'mobile' => array(
+			    	'type' => 'object',
+			    ),
+			    'tablet' => array(
+			    	'type' => 'object',
+			    ),
+			    'default' => array(
+			    	'mobile' => array(
+			    		'Columns' =>  1,
+						'SlidesToScroll' => 1,
+						'SpaceBetween' => 20,
+			    	),
+			    	'tablet' => array(
+			    		'Columns' => 2,
+						'SlidesToScroll' => 2,
+						'SpaceBetween' => 20,
+			    	),
+			    ),
 			),
 			// Query attributes
 			'ProductViewType' => array(
@@ -414,6 +440,20 @@ class Wpmozo_Init {
 			    'default' => '',
 			),
 			// Styles attributes
+			'CarContStyle' => array(
+				'type' => 'object',
+				'padding' => array(
+					'type' => 'object',
+				),
+				'default' => array(
+					'padding' => array(
+						'bottom' => '20px',
+						'left' => '20px',
+						'right' => '20px',
+						'top' => '20px',
+					),
+				),
+			),
 			'TitleStyle' => $typography_atts,
 			'PriceStyle' => $typography_atts,
 			'AddToCartStyle' => $typography_atts,
@@ -527,8 +567,8 @@ class Wpmozo_Init {
 				'value' => 'layout-1',
 			),
 			array(
-				'label' => __('Layout 3', 'wpmozo-product-carousel-for-woocommerce'),
-				'value' => 'layout-3',
+				'label' => __('Layout 2', 'wpmozo-product-carousel-for-woocommerce'),
+				'value' => 'layout-2',
 			),
 		);
 
@@ -565,6 +605,24 @@ class Wpmozo_Init {
 	}
 
 	/**
+	 * Add block category
+	 *
+	 * @param array $categories The block categories.
+	 * @return array The block categories.
+	 */
+	public function wpmozo_block_category( $categories ) {
+		return array_merge(
+			$categories,
+			array(
+				array(
+					'slug'  => 'wpmozo',
+					'title' => __( 'WPMozo', 'wpmozo-product-carousel-for-woocommerce' ),
+				),
+			)
+		);
+	}
+
+	/**
 	 * Add all hooks
 	 *
 	 * @since 1.0.0
@@ -573,6 +631,7 @@ class Wpmozo_Init {
 	 */
 	public function add_hooks( $loader, $instance ) {
 
+		$loader->add_filter( 'block_categories_all', $instance, 'wpmozo_block_category', 10, 2 );
 		$loader->add_action( 'init', $instance, 'wpmozo_register_blocks' );
 		$loader->add_action('enqueue_block_editor_assets', $instance, 'wpmozo_add_editor_style' );
 

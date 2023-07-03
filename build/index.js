@@ -777,6 +777,9 @@ __webpack_require__.r(__webpack_exports__);
       })]
     }));
   };
+  function wpmozoGetRand() {
+    return (Math.random() + 1).toString(36).substring(2);
+  }
   registerBlockType('wpmozo/product-carousel', {
     title: __('WPMozo Product Carousel', 'wpmozo-product-carousel-for-woocommerce'),
     icon: 'products',
@@ -791,6 +794,9 @@ __webpack_require__.r(__webpack_exports__);
       let attributes = props.attributes;
       attributes.clientId = props.clientId;
       let clientId = attributes.clientId;
+      if (!attributes.hasOwnProperty('UID')) {
+        attributes.UID = wpmozoGetRand();
+      }
       let product_cats = wp.data.select('core').getEntityRecords('taxonomy', 'product_cat');
       let product_cat_options = [];
       if (product_cats) {

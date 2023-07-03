@@ -298,6 +298,9 @@ class Wpmozo_Init {
 			'clientId' => array(
 			    'type' => 'string',
 			),
+			'UID' => array(
+			    'type' => 'string',
+			),
 		 	// Carousel attributes
 			'Columns' => array(
 			    'type' => 'integer',

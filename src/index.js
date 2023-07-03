@@ -243,6 +243,11 @@ import WpmozoDimensions from '../src/components/wpmozo-dimensions/wpmozo-dimensi
    
     }
 
+    function wpmozoGetRand(){
+
+        return (Math.random() + 1).toString(36).substring(2);
+
+    }
 
     registerBlockType( 'wpmozo/product-carousel', {
         title: __( 'WPMozo Product Carousel', 'wpmozo-product-carousel-for-woocommerce' ),
@@ -259,6 +264,10 @@ import WpmozoDimensions from '../src/components/wpmozo-dimensions/wpmozo-dimensi
             let attributes = props.attributes;
             attributes.clientId = props.clientId;
             let clientId = attributes.clientId;
+
+            if ( ! attributes.hasOwnProperty('UID') ) {
+                attributes.UID = wpmozoGetRand();
+            }
 
             let product_cats = wp.data.select('core').getEntityRecords( 'taxonomy', 'product_cat' );
             let product_cat_options = [];

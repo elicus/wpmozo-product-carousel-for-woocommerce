@@ -22,30 +22,14 @@ function wpmozo_product_carousel_render_callback( $args ){
 
     global $wpmozo_product_carousel_args;
     $wpmozo_product_carousel_args = $args;
-    $trkey = isset( $args['UID'] ) ? sprintf( 'wpmozo-%s', $args['UID'] ) : '';
     $qu_args = wpmozo_product_carousel_prepare_query_args( $args );
-
-    if ( ! empty( $trkey ) &&  
-        ( ! isset( $_GET['context'] ) || 'edit' !== $_GET['context'] ) ) {
-        $pro_query = get_transient( $trkey );
-    }else{
-        $pro_query = new WP_Query( $qu_args );
-    }
-
-    if ( empty( $pro_query ) ) {
-        $pro_query = new WP_Query( $qu_args );
-    }
+    $pro_query = new WP_Query( $qu_args );
     
     $admin_class = ' loading';
     $addi_classes = isset( $args['className'] ) ? ' '.$args['className'] : '';
     
 
     if ( isset( $_GET['context'] ) && 'edit' === $_GET['context'] ) {
-
-        if ( ! empty( $trkey ) ) {
-            set_transient( $trkey, $pro_query );    
-        }
-
         $admin_class = '';
         wpmozo_product_carousel_add_hooks_admin_preview( $args );
     }

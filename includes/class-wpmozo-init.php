@@ -19,6 +19,15 @@
  */
 class Wpmozo_Init {
 
+	/**
+	 * The array of styles for editor by woocommerce.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @var array $wpmozo_wc_styles array of style handles.
+	 */
+	public $wpmozo_wc_styles = array();
+
 
 	/**
 	 * Register the blocks.
@@ -26,7 +35,9 @@ class Wpmozo_Init {
 	 * @since 1.0.0
 	 */
 	public function wpmozo_register_blocks() {
-		
+
+		$this->wpmozo_set_wc_styles();
+
 		// register the swiper script.
 		wp_register_script( 'wpmozo-swiper-script', WPMOZO_ASSE_DIR_URL . 'frontend/swiper/js/swiper-bundle.min.js', array(), time(), true );
 		wp_register_style( 'wpmozo-swiper-style', WPMOZO_ASSE_DIR_URL . 'frontend/swiper/css/swiper-bundle.css', array(), time());
@@ -100,7 +111,7 @@ class Wpmozo_Init {
 
 		wp_localize_script( 'wpmozo-product-carousel-script', 'wpmozo_carousel_object', $wpmozo_carousel_object);
 
-		$wc_styles = WC_Frontend_Scripts::get_styles();
+		$wc_styles = $this->wpmozo_wc_styles;
 		$styles_handles = array(
 			'wpmozo-swiper-style',
 			'wpmozo-product-carousel-style',
@@ -112,7 +123,7 @@ class Wpmozo_Init {
 			$wc_styles_handles = array_keys( $wc_styles );
 			$styles_handles = array_merge($wc_styles_handles, $styles_handles);
 		}
-		
+
 		require_once WPMOZO_BLOCKS_DIR_PATH . 'product-carousel/block.php';
 		register_block_type( 'wpmozo/product-carousel', array(
 			'editor_script' => 'wpmozo-block-product-carousel-script',
@@ -142,56 +153,65 @@ class Wpmozo_Init {
 	 */
 	public function wpmozo_add_editor_style(){
 
-		if ( has_block( 'wpmozo/product-carousel' ) ) {
+		$wc_styles = $this->wpmozo_wc_styles;
+		if ( ! empty( $wc_styles ) ) {
+			foreach ( $wc_styles as $handle => $args ) {
+				if ( ! isset( $args['has_rtl'] ) ) {
+					$args['has_rtl'] = false;
+				}
+				wp_register_style( $handle, $args['src'], $args['deps'], $args['version'], $args['media'], $args['has_rtl'] );
+			}
+		}
 
-			global $wp_filter;
+	}
+
+	/**
+	 * Set array of styles handles by woocommerce.
+	 *
+	 * @since 1.0.0
+	 */
+	public function wpmozo_set_wc_styles(){
+
+		global $wp_filter;
+		$wc_styles = WC_Frontend_Scripts::get_styles();
+
+		if ( empty( $wc_styles ) ) {
+			
+			$all_hooks = $wp_filter['woocommerce_enqueue_styles'];
+			$all_callbacks = $all_hooks->callbacks;
+
+			// Remove all filter for enqueue style.
+			if ( ! empty( $all_callbacks ) ) {
+				foreach ($all_callbacks as $priority => $_callback) {
+					if ( is_array( $_callback ) ) {
+						foreach ($_callback as $funname => $__callback) {
+							remove_filter( 'woocommerce_enqueue_styles', $__callback['function'], $priority, $__callback['accepted_args'] );
+						}
+					}else{
+						remove_filter( 'woocommerce_enqueue_styles', $_callback['function'], $priority, $_callback['accepted_args'] );
+					}
+				}
+			}
+
 			$wc_styles = WC_Frontend_Scripts::get_styles();
 
-			if ( empty( $wc_styles ) ) {
-				
-				$all_hooks = $wp_filter['woocommerce_enqueue_styles'];
-				$all_callbacks = $all_hooks->callbacks;
-
-				// Remove all filter for enqueue style.
-				if ( ! empty( $all_callbacks ) ) {
-					foreach ($all_callbacks as $priority => $_callback) {
-						if ( is_array( $_callback ) ) {
-							foreach ($_callback as $funname => $__callback) {
-								remove_filter( 'woocommerce_enqueue_styles', $__callback['function'], $priority, $__callback['accepted_args'] );
-							}
-						}else{
-							remove_filter( 'woocommerce_enqueue_styles', $_callback['function'], $priority, $_callback['accepted_args'] );
+			// Add all filter for enqueue style.
+			if ( ! empty( $all_callbacks ) ) {
+				foreach ($all_callbacks as $priority => $_callback) {
+					if ( is_array( $_callback ) ) {
+						foreach ($_callback as $funname => $__callback) {
+							add_filter( 'woocommerce_enqueue_styles', $__callback['function'], $priority, $__callback['accepted_args'] );
 						}
+					}else{
+						add_filter( 'woocommerce_enqueue_styles', $_callback['function'], $priority, $_callback['accepted_args'] );
 					}
 				}
-
-				$wc_styles = WC_Frontend_Scripts::get_styles();
-				if ( $wc_styles ) {
-					foreach ( $wc_styles as $handle => $args ) {
-						if ( ! isset( $args['has_rtl'] ) ) {
-							$args['has_rtl'] = false;
-						}
-						wp_enqueue_style( $handle, $args['src'], $args['deps'], $args['version'], $args['media'], $args['has_rtl'] );
-					}
-				}
-
-				// Add all filter for enqueue style.
-				if ( ! empty( $all_callbacks ) ) {
-					foreach ($all_callbacks as $priority => $_callback) {
-						if ( is_array( $_callback ) ) {
-							foreach ($_callback as $funname => $__callback) {
-								add_filter( 'woocommerce_enqueue_styles', $__callback['function'], $priority, $__callback['accepted_args'] );
-							}
-						}else{
-							add_filter( 'woocommerce_enqueue_styles', $_callback['function'], $priority, $_callback['accepted_args'] );
-						}
-					}
-				}
-
 			}
 
 		}
-			
+
+		$this->wpmozo_wc_styles = $wc_styles;
+
 	}
 
 	/**

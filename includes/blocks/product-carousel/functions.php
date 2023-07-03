@@ -323,7 +323,11 @@ function wpmozo_product_carousel_sale_badge( $html, $post, $product ){
 
             foreach( $prices['price'] as $key => $price ){
                 if( $prices['regular_price'][$key] !== $price ){
-                    $percentages[] = round(100 - ($prices['sale_price'][$key] / $prices['regular_price'][$key] * 100));
+                    if ( $prices['sale_price'][$key] >= 0 ) {
+                        $percentages[] = round(100 - ($prices['sale_price'][$key] / $prices['regular_price'][$key] * 100));
+                    }else{
+                        $percentages[] = 100;
+                    }
                 }
             }
             
@@ -336,14 +340,22 @@ function wpmozo_product_carousel_sale_badge( $html, $post, $product ){
                     $regular_price = (float) $child->get_regular_price();
                     $sale_price    = (float) $child->get_sale_price();
 
-                    $percentages[]    = round(100 - ($sale_price / $regular_price * 100));
+                    if ( $sale_price >= 0 ) {
+                        $percentages[]    = round(100 - ($sale_price / $regular_price * 100));
+                    }else{
+                        $percentages[] = 100;
+                    }
                 }
             }
         } else {
             $regular_price = (float) $product->get_regular_price();
             $sale_price    = (float) $product->get_sale_price();
 
-            $percentage    = round(100 - ($sale_price / $regular_price * 100)) . '%';
+            if ( $sale_price >= 0 ) {
+                $percentage    = round(100 - ($sale_price / $regular_price * 100)) . '%';
+            }else{
+                $percentage = '100%';
+            }
         }
 
         if ( empty( $percentage ) && ! empty( $percentages ) ) {
@@ -401,15 +413,10 @@ function wpmozo_product_carousel_quick_view_button( $image, $product ){
     global $wpmozo_product_carousel_args;
     $pro_id = $product->get_id();
     $button_text = esc_html__( $wpmozo_product_carousel_args['QuickViewLinkText'], 'wpmozo-product-carousel-for-woocommerce' );
-    $icon = $inline = $has_icon = '';
+    $icon = $has_icon = '';
 
     if ( $wpmozo_product_carousel_args['QuickViewLinkIconEnabled'] ) {
         $icon = ( $wpmozo_product_carousel_args['QuickViewLinkCustomIcon'] ) ? $wpmozo_product_carousel_args['QuickViewLinkImg'] : $wpmozo_product_carousel_args['QuickViewLinkIcon'];
-    }
-    
-    if ( ! empty( $icon ) && $wpmozo_product_carousel_args['QuickViewLinkCustomIcon'] ) {
-        $has_icon = ' has-icon';
-        $inline = 'background-image: url('.$icon.');background-size: 0;';
     }
 
     $has_text = ! empty( $button_text ) ? ' has-text' : '';
@@ -420,9 +427,12 @@ function wpmozo_product_carousel_quick_view_button( $image, $product ){
         <?php if ( 'layout-2' !== $wpmozo_product_carousel_args['Layout'] ) { ?>
             <div class="wpmozo-product__overlay">
         <?php } ?>
-                <button class="button wpmozo-quick-view-button<?php echo esc_attr( $has_icon );echo esc_attr( $has_text ); ?>" data-pro-id="<?php echo esc_attr( $pro_id ); ?>" style="<?php echo esc_attr( $inline ); ?>">
+                <button class="button wp-element-button wpmozo-quick-view-button<?php echo esc_attr( $has_icon );echo esc_attr( $has_text ); ?>" data-pro-id="<?php echo esc_attr( $pro_id ); ?>">
                     <?php if ( ! empty( $icon ) && ! $wpmozo_product_carousel_args['QuickViewLinkCustomIcon'] ) { ?>
                         <i class="<?php echo esc_attr( $icon ); ?>"></i>
+                    <?php } ?>
+                    <?php if ( ! empty( $icon ) && $wpmozo_product_carousel_args['QuickViewLinkCustomIcon'] ) { ?>
+                        <img class="wpmozo-quick-view-img" src="<?php echo esc_attr( $icon ); ?>" />
                     <?php } ?>
                     <?php echo $button_text; ?>        
                 </button>

@@ -9,9 +9,6 @@
 .wpmozo-product-carousel-wrap a{
 	pointer-events: none;
 }
-.wpmozo-product-carousel-wrap ul li a.button{
-	white-space: inherit;
-}
 .wpmozo-typography-panel .components-tools-panel{
 	padding: 10px 0px;
 }

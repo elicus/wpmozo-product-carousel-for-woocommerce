@@ -17,11 +17,38 @@
 	margin-top: 0px !important;
 	margin-bottom: 0px !important;
 }
+.wpmozo-product-carousel-wrap.woocommerce .woocommerce-loop-product__title{
+	word-break: break-word;
+}
 .wpmozo-product-carousel-wrap .woocommerce-loop-product__link{
 	width: 100%;
 }
 .wpmozo-product-carousel-wrap .attachment-woocommerce_thumbnail{
 	width: 100%;
+}
+.wpmozo-product-carousel-wrap ul li a.button, 
+.wpmozo-product-carousel-wrap ul li button, 
+.wp-core-ui .button{
+	white-space: normal;
+}
+.wpmozo-product-carousel-wrap .swiper-navigation{
+	font-size: var(--swiper-navigation-size);
+}
+.wpmozo-product-carousel-wrap .swiper-navigation:after{
+	font-size: inherit;
+}
+.wpmozo-product-quick-view.woocommerce div.product>span.onsale{
+	width: min-content;
+}
+.wpmozo-product-carousel-wrap.equal-slide-height .swiper{
+ 	height: 100%;
+}
+.wpmozo-product-carousel-wrap.equal-slide-height .swiper-slide{
+	height: auto !important;
+	text-align: center;
+}
+.wpmozo-product-carousel-wrap.equal-slide-height .swiper-content{
+	height: 100% !important
 }
 
 /* Quick view style start  */
@@ -69,10 +96,11 @@
 	position: relative;
     width: 90%;
     margin: 0 auto;
-    padding: 10px;
+    padding: 32px 10px;
     max-width: 900px;
     box-sizing: border-box;
     background: #fff;
+    padding-bottom: 10px;
 }
 .wpmozo-product-quick-view > div.product {
 	display: inline-block;
@@ -84,6 +112,9 @@
 }
 .wpmozo-product-quick-view .mfp-close{
 	background: #000;
+	width: 32px !important;
+	height: 32px !important;
+	line-height: 32px !important;
 }
 /* Quick view style over  */
 
@@ -175,12 +206,24 @@
 	}
 	.wpmozo-product-bottom-price {
 	    width: 50%;
+	    text-align: left !important;
 	}
 	.wpmozo-product-bottom-price span.price{
 		margin: 0 !important;
 	}
 	.wpmozo-product-bottom-add-to-cart {
 	    width: 50%;
+	    text-align: right !important;
+	}
+	.wpmozo-product-bottom-add-to-cart .button{
+		text-align: center !important;
+	}
+	.wpmozo-product-carousel-wrap.layout-1 .woocommerce-LoopProduct-link{
+		text-align: center !important;
+	}
+	.wpmozo-product-carousel-wrap.layout-1 .woocommerce-LoopProduct-link > div{
+		margin-right: auto !important; 
+		margin-left: auto !important;
 	}
 }
 @media (max-width: 767px) {

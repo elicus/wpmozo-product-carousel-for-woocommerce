@@ -27,7 +27,7 @@ function wpmozo_product_carousel_render_callback( $args ){
     
     $admin_class = ' loading';
     $addi_classes = isset( $args['className'] ) ? ' '.$args['className'] : '';
-    
+    $equal_height = ( isset( $args['EqualSlideHeight'] ) && $args['EqualSlideHeight'] ) ? ' equal-slide-height' : '';
 
     if ( isset( $_GET['context'] ) && 'edit' === $_GET['context'] ) {
         $admin_class = '';
@@ -38,7 +38,7 @@ function wpmozo_product_carousel_render_callback( $args ){
     ?>
     <?php if ( $pro_query->have_posts() ) { ?>
         <?php wpmozo_product_carousel_before_hooks( $args ); ?>
-        <div class="wpmozo-product-carousel-wrap woocommerce swiper <?php echo esc_attr( $args['Layout'] ); ?><?php echo esc_attr( $admin_class ); ?><?php echo esc_attr( $addi_classes ); ?>" data-atts='<?php echo json_encode($args); ?>' id="wpmozo_<?php echo esc_attr( $args['clientId'] ); ?>">
+        <div class="wpmozo-product-carousel-wrap woocommerce swiper <?php echo esc_attr( $args['Layout'] ); ?><?php echo esc_attr( $admin_class ); ?><?php echo esc_attr( $addi_classes ); ?><?php echo esc_attr( $equal_height ); ?>" data-atts='<?php echo json_encode($args); ?>' id="wpmozo_<?php echo esc_attr( $args['clientId'] ); ?>">
             <?php if ( ! isset( $_GET['context'] ) ) { ?>
                 <div class="wpmozo-loader frontend">
                     <?php for ($i=0; $i < $args['Columns']; $i++) { ?>

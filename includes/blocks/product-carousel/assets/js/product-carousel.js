@@ -11,7 +11,7 @@
 		var $this = $(this),
 		 	atts = $(this).data('atts');
 
-        let options = atts.CarContStyle;
+        let options = atts.CarouContStyle;
         let style = '';
         if ( 'undefined' !== typeof options.padding && '' !== options.padding && ( 
             'undefined' !== typeof options.padding.top || 
@@ -50,6 +50,11 @@
                         {attKey: 'QuickViewColor', type: 'color', selector: '.wpmozo-quick-view-button'},
                         {attKey: 'SaleLabelColor', type: 'color', selector: '.onsale'},
                         {attKey: 'StockLabelColor', type: 'color', selector: '.soldout-text'},
+                        {attKey: 'CarouNavigation', type: 'navigation', selector: '.swiper-navigation'},
+                        {attKey: 'AddToCartBorder', type: 'border', selector: add_to_cart_selector},
+                        {attKey: 'QuickViewBorder', type: 'border', selector: '.wpmozo-quick-view-button'},
+                        {attKey: 'AddToCartDimensions', type: 'dimensions', selector: add_to_cart_selector},
+                        {attKey: 'QuickViewDimensions', type: 'dimensions', selector: '.wpmozo-quick-view-button'},
                     ];
 
                     styles.map(
@@ -58,6 +63,21 @@
 
                 },
                 afterInit: function(swiper){
+
+                    let PaginationSelector = ( 'fraction' !== atts.PaginationType ) ? '.swiper-pagination span' : '.swiper-pagination';
+
+                    let styles = [
+                        {attKey: 'CarouPagination', type: 'pagination', selector: PaginationSelector},
+                    ];
+
+                    if ( 'progressbar' === atts.PaginationType ) {
+                        let pagi = {attKey: 'CarouPagination', type: 'progressbar', selector: '.swiper-pagination'}
+                        styles.push(pagi);
+                    }
+
+                    styles.map(
+                        function(item) { appendInlineStyle(item, $this, atts); }
+                    );
 
                 	$this.find('.wpmozo-loader').remove();
                 	$this.removeClass('loading');
@@ -112,8 +132,9 @@
 	$('.wpmozo-quick-view-button').click(function(e){
 
         e.preventDefault();
-
-        var pro_id = $(this).data('pro-id');
+        var wraper = $(this).closest('.wpmozo-product-carousel-wrap'),
+            atts = wraper.data('atts'),
+            pro_id = $(this).data('pro-id');
 
 		$.magnificPopup.open({
 			items: {
@@ -150,6 +171,51 @@
 						jQuery( this ).trigger( 'wc-product-gallery-after-init', [ this, wc_single_product_params ] );
 
 					} );
+
+                    let $this = jQuery('.wpmozo-product-quick-view');
+                    let add_to_cart_selector = '.add_to_cart_button, .single_add_to_cart_button';
+                    if ( ProductTypes.length ) {
+                        jQuery.each(ProductTypes, function(key, type){
+                            add_to_cart_selector += ', .button.product_type_'+type;
+                        });
+                    }
+
+                    let styles = [];
+                    if ( atts.SameAsCarousel ) {
+                        styles = [
+                            {attKey: 'TitleStyle', type: 'style', selector: '.product_title'},
+                            {attKey: 'PriceStyle', type: 'style', selector: '.price'},
+                            {attKey: 'AddToCartStyle', type: 'style', selector: add_to_cart_selector},
+                            {attKey: 'SaleLabelStyle', type: 'style', selector: '.onsale'},
+                            {attKey: 'StockLabelStyle', type: 'style', selector: '.soldout-text'},
+                            {attKey: 'TitleColor', type: 'color', selector: '.product_title'},
+                            {attKey: 'PriceColor', type: 'color', selector: '.price'},
+                            {attKey: 'AddToCartColor', type: 'color', selector: add_to_cart_selector},
+                            {attKey: 'SaleLabelColor', type: 'color', selector: '.onsale'},
+                            {attKey: 'StockLabelColor', type: 'color', selector: '.soldout-text'},
+                            {attKey: 'AddToCartBorder', type: 'border', selector: add_to_cart_selector},
+                            {attKey: 'AddToCartDimensions', type: 'dimensions', selector: add_to_cart_selector},
+                        ];
+                    }else{
+                        styles = [
+                            {attKey: 'QuickViewTitleStyle', type: 'style', selector: '.product_title'},
+                            {attKey: 'QuickViewPriceStyle', type: 'style', selector: '.price'},
+                            {attKey: 'QuickViewAddToCartStyle', type: 'style', selector: add_to_cart_selector},
+                            {attKey: 'QuickViewSaleLabelStyle', type: 'style', selector: '.onsale'},
+                            {attKey: 'QuickViewStockLabelStyle', type: 'style', selector: '.soldout-text'},
+                            {attKey: 'QuickViewTitleColor', type: 'color', selector: '.product_title'},
+                            {attKey: 'QuickViewPriceColor', type: 'color', selector: '.price'},
+                            {attKey: 'QuickViewAddToCartColor', type: 'color', selector: add_to_cart_selector},
+                            {attKey: 'QuickViewSaleLabelColor', type: 'color', selector: '.onsale'},
+                            {attKey: 'QuickViewStockLabelColor', type: 'color', selector: '.soldout-text'},
+                            {attKey: 'QuickViewAddToCartBorder', type: 'border', selector: add_to_cart_selector},
+                            {attKey: 'QuickViewAddToCartDimensions', type: 'dimensions', selector: add_to_cart_selector},
+                        ];
+                    }
+
+                    styles.map(
+                        function(item) { appendInlineStyle(item, $this, atts); }
+                    );
                 }
             },
         });
@@ -161,7 +227,7 @@
         let attKey = item.attKey,
             selector = item.selector,
             type = item.type,
-            inlineStyle = convetInlineStyle( atts[attKey], type );
+            inlineStyle = convetInlineStyle( atts[attKey], type, atts );
         if ( '' !== inlineStyle ) {
             var defaultStyle = wraper.find(selector).attr('style');
             if ( '' !== defaultStyle && 'undefined' !== typeof defaultStyle ) {
@@ -186,7 +252,7 @@
 
     }
 
-	function convetInlineStyle( options, type ){
+	function convetInlineStyle( options, type, atts ){
 
         let style = '';
 
@@ -218,6 +284,96 @@
             if ( 'undefined' !== typeof options.background && '' !== options.background ) {
                 style += 'background: '+options.background+';';
             }
+        }
+
+        if ( 'navigation' === type || 'pagination' === type ) {
+            if ( 'undefined' !== typeof options.FontSize && '' !== options.FontSize ) {
+                style += 'font-size: '+options.FontSize+';';
+            }
+            if ( 'undefined' !== typeof options.Color && '' !== options.Color ) {
+                style += 'color: '+options.Color+';';
+            }
+            if ( 'undefined' !== typeof options.FontAppearance && 'undefined' !== typeof options.FontAppearance.fontWeight && '' !== options.FontAppearance.fontWeight ) {
+                style += 'font-weight: '+options.FontAppearance.fontWeight+';';
+            }
+        }
+
+        if ( 'pagination' === type ) {
+            if ( 'undefined' !== typeof options.background && '' !== options.background ) {
+                style += 'background: '+options.background+';';
+            }
+            if ( 'undefined' !== typeof options.width && '' !== options.width && 'progressbar' !== atts.PaginationType ) {
+                style += 'width: '+options.width+';';
+            }
+            if ( 'undefined' !== typeof options.height && '' !== options.height && 'progressbar' !== atts.PaginationType ) {
+                style += 'height: '+options.height+';';
+            }
+        }
+
+        if ( 'progressbar' === type ) {
+            if ( 'undefined' !== typeof options.width && '' !== options.width ) {
+                style += 'width: '+options.width+';';
+            }
+            if ( 'undefined' !== typeof options.height && '' !== options.height ) {
+                style += 'height: '+options.height+';';
+            }
+        }
+
+        if ( 'border' === type ) {
+            if ( 'undefined' !== typeof options.border.width && '' !== options.border.width ) {
+                let str = options.border.width;
+
+                if ( 'undefined' !== typeof options.border.style && '' !== options.border.style ) {
+                    str += ' '+options.border.style;
+                }else{
+                    str += ' solid';
+                }
+
+                if ( 'undefined' !== typeof options.border.color && '' !== options.border.color ) {
+                    str += ' '+options.border.color;
+                }
+                style += 'border: '+str+';';
+            }
+
+            if ( 'undefined' !== typeof options.border.top && '' !== options.border.top ) {
+                for (const border in options.border) {
+                    for (const borderItem in options.border[border]) {
+                        style += 'border-'+border+'-'+borderItem+': '+options.border[border][borderItem]+';';
+                    }
+                }
+            }
+
+            if ( 'undefined' !== typeof options.borderRadius && '' !== options.borderRadius ) {
+                if ( 'undefined' !== typeof options.borderRadius.topLeft && '' !== options.borderRadius.topLeft ) {
+                    style += 'border-top-left-radius: '+options.borderRadius.topLeft+';';
+                }
+                if ( 'undefined' !== typeof options.borderRadius.topRight && '' !== options.borderRadius.topRight ) {
+                    style += 'border-top-right-radius: '+options.borderRadius.topRight+';';
+                }
+                if ( 'undefined' !== typeof options.borderRadius.bottomLeft && '' !== options.borderRadius.bottomLeft ) {
+                    style += 'border-bottom-left-radius: '+options.borderRadius.bottomLeft+';';
+                }
+                if ( 'undefined' !== typeof options.borderRadius.bottomRight && '' !== options.borderRadius.bottomRight ) {
+                    style += 'border-bottom-right-radius: '+options.borderRadius.bottomRight+';';
+                }
+
+                if ( 'undefined' == typeof options.borderRadius.topLeft ) {
+                    style += 'border-radius: '+options.borderRadius+';';
+                }
+            }
+        }
+
+        if ( 'dimensions' === type ) {
+
+            if ( 'undefined' !== typeof options.padding && '' !== options.padding && ( 
+                'undefined' !== typeof options.padding.top || 
+                'undefined' !== typeof options.padding.right || 
+                'undefined' !== typeof options.padding.bottom || 
+                'undefined' !== typeof options.padding.left ) ) {
+                let spacing = convetVarStyle(options.padding);
+                style += 'padding: '+spacing.top+' '+spacing.right+' '+spacing.bottom+' '+spacing.left+';';
+            }
+
         }
 
         return style;

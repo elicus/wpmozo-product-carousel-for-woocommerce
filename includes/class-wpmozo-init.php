@@ -294,6 +294,31 @@ class Wpmozo_Init {
 			),
 		);
 
+		$border_atts = array(
+			'type' => 'object',
+			'borderRadius' => array(
+		    	'type' => 'string',
+		    	'default' => '',
+		    ),
+		    'border' => array(
+		    	'type' => 'object',
+		    ),
+		    'default' => array(
+		    	'borderRadius' => '',
+		    	'border' => array(),
+		    ),
+		);
+
+		$only_padding_atts = array(
+			'type' => 'object',
+			'padding' => array(
+				'type' => 'object',
+			),
+			'default' => array(
+				'padding' => '',
+			),
+		);
+
 		$attributes = array(
 			'clientId' => array(
 			    'type' => 'string',
@@ -330,6 +355,10 @@ class Wpmozo_Init {
 			'ShowPagination' => array(
 			    'type' => 'boolean',
 			    'default' => true,
+			),
+			'EqualSlideHeight' => array(
+			    'type' => 'boolean',
+			    'default' => false,
 			),
 			'PaginationType' => array(
 			    'type' => 'string',
@@ -460,7 +489,7 @@ class Wpmozo_Init {
 			    'default' => '',
 			),
 			// Styles attributes
-			'CarContStyle' => array(
+			'CarouContStyle' => array(
 				'type' => 'object',
 				'padding' => array(
 					'type' => 'object',
@@ -472,6 +501,57 @@ class Wpmozo_Init {
 						'right' => '20px',
 						'top' => '20px',
 					),
+				),
+			),
+			'CarouNavigation' => array(
+				'type' => 'object',
+				'FontSize' => array(
+					'type' => 'string',
+				),
+				'Color' => array(
+					'type' => 'string',
+				),
+				'FontAppearance' => array(
+			    	'type' => 'object',
+				    'fontWeight' => array(
+				    	'type' => 'string',
+				    	'default' => '',
+				    ),
+			    	'default' => array(
+			    		'fontWeight' => '',
+			    	),
+			    ),
+				'default' => array(
+					'FontSize' => '',
+					'Color' => '',
+					'FontAppearance' => array(
+			    		'fontWeight' => '',
+			    	),
+				),
+			),
+			'CarouPagination' => array(
+				'type' => 'object',
+				'FontSize' => array(
+					'type' => 'string',
+				),
+				'Color' => array(
+					'type' => 'string',
+				),
+				'background' => array(
+					'type' => 'string',
+				),
+				'width' => array(
+					'type' => 'string',
+				),
+				'height' => array(
+					'type' => 'string',
+				),
+				'default' => array(
+					'FontSize' => '',
+					'Color' => '',
+					'background' => '',
+					'width' => '',
+					'height' => '',
 				),
 			),
 			'TitleStyle' => $typography_atts,
@@ -486,6 +566,26 @@ class Wpmozo_Init {
 			'QuickViewColor' => $two_color_atts,
 			'SaleLabelColor' => $two_color_atts,
 			'StockLabelColor' => $text_color_atts,
+			'AddToCartBorder' => $border_atts,
+			'QuickViewBorder' => $border_atts,
+			'AddToCartDimensions' => $only_padding_atts,
+			'QuickViewDimensions' => $only_padding_atts,
+			'SameAsCarousel' => array(
+			    'type' => 'boolean',
+			    'default' => true,
+			),
+			'QuickViewTitleStyle' => $typography_atts,
+			'QuickViewPriceStyle' => $typography_atts,
+			'QuickViewAddToCartStyle' => $typography_atts,
+			'QuickViewSaleLabelStyle' => $typography_atts,
+			'QuickViewStockLabelStyle' => $typography_atts,
+			'QuickViewTitleColor' => $text_color_atts,
+			'QuickViewPriceColor' => $text_color_atts,
+			'QuickViewAddToCartColor' => $two_color_atts,
+			'QuickViewSaleLabelColor' => $two_color_atts,
+			'QuickViewStockLabelColor' => $text_color_atts,
+			'QuickViewAddToCartBorder' => $border_atts,
+			'QuickViewAddToCartDimensions' => $only_padding_atts,
 		);
 
 		$product_view_type_options = array(

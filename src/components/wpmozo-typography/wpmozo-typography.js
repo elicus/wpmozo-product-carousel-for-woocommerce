@@ -9,6 +9,11 @@ const { compose } = wp.compose;
 const WpmozoTypography = function(args){
 	
     const { TypographyKey, attributes, props } = args;
+    const TypoTypes = args.hasOwnProperty('TypoTypes') ? args.TypoTypes : null;
+    const hasFontStyles = ( args.hasOwnProperty('FontAppearance') && 
+        args.FontAppearance.hasOwnProperty('hasFontStyles') ) ? args.FontAppearance.hasFontStyles : true;
+    const hasFontWeights = ( args.hasOwnProperty('FontAppearance') && 
+        args.FontAppearance.hasOwnProperty('hasFontWeights') ) ? args.FontAppearance.hasFontWeights : true;
 
     const typoSetValue = function( styleType, value = null ) {
         let _Typography = Object.assign({}, attributes[TypographyKey]);
@@ -16,100 +21,120 @@ const WpmozoTypography = function(args){
         props.setAttributes( {[TypographyKey]: _Typography} );
     };
 
+    const _FontAppearanceValues = {};
+
+    if ( hasFontStyles ) {
+        _FontAppearanceValues['fontStyle'] = attributes[TypographyKey].FontAppearance.fontStyle;
+    }
+    if ( hasFontWeights ) {
+        _FontAppearanceValues['fontWeight'] = attributes[TypographyKey].FontAppearance.fontWeight;
+    }
+
 	return [
         el( __experimentalToolsPanel,
             { 
                 label: __( 'Typography', 'wpmozo-product-carousel-for-woocommerce' ),
                 resetAll: () => {
-                    let _Typography = {
-                        FontSize: '',
-                        LetterSpacing: '',
-                        Decoration: '',
-                        FontAppearance: {
-                            fontStyle: '',
-                            fontWeight: '',
+                    let _Typography = Object.assign({}, attributes[TypographyKey]);
+                    if ( null === TypoTypes ) {
+                        let TypographyTypes = {
+                            FontSize: '',
+                            LetterSpacing: '',
+                            Decoration: '',
+                            FontAppearance: {
+                                fontStyle: '',
+                                fontWeight: '',
+                            },
+                            LetterCase: '',
                         }
+                        Object.keys(TypographyTypes).map(type => _Typography[type] = '');
+                    }else{
+                        Object.keys(TypoTypes).map(type => _Typography[type] = '');
                     }
                     props.setAttributes( {[TypographyKey]: _Typography} );
                 }
             },
-            el( __experimentalToolsPanelItem, 
-                {
-                    label: __( 'Font Size', 'wpmozo-product-carousel-for-woocommerce' ),
-                    hasValue: () => true,
-                    isShownByDefault: true, 
-                    onDeselect: () => typoSetValue('FontSize'),                                    
-                }, 
-                el( FontSizePicker,
+            ( null == TypoTypes || TypoTypes.hasOwnProperty('FontSize') ) &&
+                el( __experimentalToolsPanelItem, 
                     {
-                        value: attributes[TypographyKey].FontSize,
-                        onChange: (NewFontSize) => { typoSetValue('FontSize', NewFontSize) },
-                        __nextHasNoMarginBottom: true,
-                    }
+                        label: __( 'Font Size', 'wpmozo-product-carousel-for-woocommerce' ),
+                        hasValue: () => true,
+                        isShownByDefault: true, 
+                        onDeselect: () => typoSetValue('FontSize'),                                    
+                    }, 
+                    el( FontSizePicker,
+                        {
+                            value: attributes[TypographyKey].FontSize,
+                            onChange: (NewFontSize) => { typoSetValue('FontSize', NewFontSize) },
+                            __nextHasNoMarginBottom: true,
+                        }
+                    ),
                 ),
-            ),
-            el( __experimentalToolsPanelItem, 
-                { 
-                    className: "single-column",
-                    label: __( 'Appearance', 'wpmozo-product-carousel-for-woocommerce' ),
-                    hasValue: () => true,
-                    isShownByDefault: true,
-                    onDeselect: () => typoSetValue('FontAppearance', {fontStyle: '', fontWeight: ''}),                                        
-                },
-                el( __experimentalFontAppearanceControl, 
-                    {
-                        key: 'wpmozp-product-carousel-titleapp',
-                        value: {
-                          fontStyle: attributes[TypographyKey].FontAppearance.fontStyle,
-                          fontWeight: attributes[TypographyKey].FontAppearance.fontWeight
-                        },
-                        onChange: (NewFontAppearance) => { typoSetValue('FontAppearance', NewFontAppearance) },
-                    } 
+            ( null == TypoTypes || TypoTypes.hasOwnProperty('FontAppearance') ) &&
+                el( __experimentalToolsPanelItem, 
+                    { 
+                        className: "single-column",
+                        label: __( 'Appearance', 'wpmozo-product-carousel-for-woocommerce' ),
+                        hasValue: () => true,
+                        isShownByDefault: true,
+                        onDeselect: () => typoSetValue('FontAppearance', {fontStyle: '', fontWeight: ''}),                                        
+                    },
+                    el( __experimentalFontAppearanceControl, 
+                        {
+                            key: 'wpmozp-product-carousel-titleapp',
+                            hasFontStyles: hasFontStyles,
+                            hasFontWeights: hasFontWeights,
+                            value: _FontAppearanceValues,
+                            onChange: (NewFontAppearance) => { typoSetValue('FontAppearance', NewFontAppearance) },
+                        } 
+                    ),
                 ),
-            ),
-            el( __experimentalToolsPanelItem, 
-                { 
-                    className: "single-column",
-                    label: __( 'Letter spacing', 'wpmozo-product-carousel-for-woocommerce' ),
-                    hasValue: () => true,
-                    isShownByDefault: true,
-                    onDeselect: () => typoSetValue('LetterSpacing'),                                       
-                },
-                el( __experimentalLetterSpacingControl, 
-                    {
-                        value: attributes[TypographyKey].LetterSpacing,
-                        onChange: (NewLetterSpacing) => { typoSetValue('LetterSpacing', NewLetterSpacing) },
-                    } 
+            ( null == TypoTypes || TypoTypes.hasOwnProperty('LetterSpacing') ) &&
+                el( __experimentalToolsPanelItem, 
+                    { 
+                        className: "single-column",
+                        label: __( 'Letter spacing', 'wpmozo-product-carousel-for-woocommerce' ),
+                        hasValue: () => true,
+                        isShownByDefault: true,
+                        onDeselect: () => typoSetValue('LetterSpacing'),                                       
+                    },
+                    el( __experimentalLetterSpacingControl, 
+                        {
+                            value: attributes[TypographyKey].LetterSpacing,
+                            onChange: (NewLetterSpacing) => { typoSetValue('LetterSpacing', NewLetterSpacing) },
+                        } 
+                    ),
                 ),
-            ),
-            el( __experimentalToolsPanelItem,
-                { 
-                    label: __( 'Decoration', 'wpmozo-product-carousel-for-woocommerce' ),
-                    hasValue: () => true,
-                    isShownByDefault: true,
-                    onDeselect: () => typoSetValue('Decoration'),                                    
-                }, 
-                el( __experimentalTextDecorationControl,
-                    {
-                        value: attributes[TypographyKey].Decoration,
-                        onChange: (NewDecoration) => { typoSetValue('Decoration', NewDecoration) },
-                    }
+            ( null == TypoTypes || TypoTypes.hasOwnProperty('Decoration') ) &&
+                el( __experimentalToolsPanelItem,
+                    { 
+                        label: __( 'Decoration', 'wpmozo-product-carousel-for-woocommerce' ),
+                        hasValue: () => true,
+                        isShownByDefault: true,
+                        onDeselect: () => typoSetValue('Decoration'),                                    
+                    }, 
+                    el( __experimentalTextDecorationControl,
+                        {
+                            value: attributes[TypographyKey].Decoration,
+                            onChange: (NewDecoration) => { typoSetValue('Decoration', NewDecoration) },
+                        }
+                    ),
                 ),
-            ),
-            el( __experimentalToolsPanelItem,
-                { 
-                    label: __( 'Letter case', 'wpmozo-product-carousel-for-woocommerce' ),
-                    hasValue: () => true,
-                    isShownByDefault: true,
-                    onDeselect: () => typoSetValue('LetterCase'),                                       
-                }, 
-                el( __experimentalTextTransformControl,
-                    {
-                        value: attributes[TypographyKey].LetterCase,
-                        onChange: (NewLetterCase) => { typoSetValue('LetterCase', NewLetterCase) },
-                    }
+            ( null == TypoTypes || TypoTypes.hasOwnProperty('LetterCase') ) &&
+                el( __experimentalToolsPanelItem,
+                    { 
+                        label: __( 'Letter case', 'wpmozo-product-carousel-for-woocommerce' ),
+                        hasValue: () => true,
+                        isShownByDefault: true,
+                        onDeselect: () => typoSetValue('LetterCase'),                                       
+                    }, 
+                    el( __experimentalTextTransformControl,
+                        {
+                            value: attributes[TypographyKey].LetterCase,
+                            onChange: (NewLetterCase) => { typoSetValue('LetterCase', NewLetterCase) },
+                        }
+                    ),
                 ),
-            ),
         ),
 	];
 

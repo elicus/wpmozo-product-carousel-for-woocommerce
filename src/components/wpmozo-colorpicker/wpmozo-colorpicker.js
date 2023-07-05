@@ -73,9 +73,8 @@ const WpmozoColorPicker = function(args){
             { 
                 label: __( 'Color', 'wpmozo-product-carousel-for-woocommerce' ),
                 resetAll: () => {
-                    let colors = {
-                        text: '',
-                    }
+                    let colors = Object.assign({}, attributes[ColorKey]);
+                    ColorTypes.map(type => colors[type.key] = '');
                     props.setAttributes( {[ColorKey]: colors} );
                 }
             },

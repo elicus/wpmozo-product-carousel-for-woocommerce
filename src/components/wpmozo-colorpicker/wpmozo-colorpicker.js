@@ -19,6 +19,10 @@ const WpmozoColorPicker = function(args){
 
     const colorDropdown = function( colorType, label ) {
 
+        if ( '' === _color[colorType] && args.hasOwnProperty('default') ) {
+            _color[colorType] = args.default[colorType];
+        }
+
         return el(Dropdown, {
             className: "wpmozo-color-dropdown-container",
             contentClassName: "wpmozo-color-popover-content",

@@ -10,10 +10,6 @@ const WpmozoTypography = function(args){
 	
     const { TypographyKey, attributes, props } = args;
     const TypoTypes = args.hasOwnProperty('TypoTypes') ? args.TypoTypes : null;
-    const hasFontStyles = ( args.hasOwnProperty('FontAppearance') && 
-        args.FontAppearance.hasOwnProperty('hasFontStyles') ) ? args.FontAppearance.hasFontStyles : true;
-    const hasFontWeights = ( args.hasOwnProperty('FontAppearance') && 
-        args.FontAppearance.hasOwnProperty('hasFontWeights') ) ? args.FontAppearance.hasFontWeights : true;
 
     const typoSetValue = function( styleType, value = null ) {
         let _Typography = Object.assign({}, attributes[TypographyKey]);
@@ -21,14 +17,23 @@ const WpmozoTypography = function(args){
         props.setAttributes( {[TypographyKey]: _Typography} );
     };
 
-    const _FontAppearanceValues = {};
+    if ( null == TypoTypes || TypoTypes.hasOwnProperty('FontAppearance') ) {
 
-    if ( hasFontStyles ) {
-        _FontAppearanceValues['fontStyle'] = attributes[TypographyKey].FontAppearance.fontStyle;
+        var hasFontStyles = ( args.hasOwnProperty('FontAppearance') && 
+        args.FontAppearance.hasOwnProperty('hasFontStyles') ) ? args.FontAppearance.hasFontStyles : true;
+        var hasFontWeights = ( args.hasOwnProperty('FontAppearance') && 
+        args.FontAppearance.hasOwnProperty('hasFontWeights') ) ? args.FontAppearance.hasFontWeights : true;
+
+        var _FontAppearanceValues = {};
+        if ( hasFontStyles ) {
+            _FontAppearanceValues['fontStyle'] = attributes[TypographyKey].FontAppearance.fontStyle;
+        }
+        if ( hasFontWeights ) {
+            _FontAppearanceValues['fontWeight'] = attributes[TypographyKey].FontAppearance.fontWeight;
+        }
+
     }
-    if ( hasFontWeights ) {
-        _FontAppearanceValues['fontWeight'] = attributes[TypographyKey].FontAppearance.fontWeight;
-    }
+    
 
 	return [
         el( __experimentalToolsPanel,

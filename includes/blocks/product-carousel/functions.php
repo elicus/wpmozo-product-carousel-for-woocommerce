@@ -179,6 +179,10 @@ function wpmozo_product_carousel_before_hooks( $args ){
         add_action( 'woocommerce_before_shop_loop_item_title', 'wpmozo_woocommerce_template_loop_product_thumbnail', 10 );
     }
 
+    if ( $args['EqualSlideHeight'] ) {
+        add_filter('woocommerce_loop_add_to_cart_link', 'wpmozo_add_wrap_for_addtocart', 999, 3);
+    }
+
     add_filter('woocommerce_post_class', 'wpmozo_product_carousel_add_class', 10, 2);
 
 }
@@ -220,6 +224,10 @@ function wpmozo_product_carousel_after_hooks( $args ){
     if ( 'layout-2' === $args['Layout'] && $args['ShowFeaturedImage'] && $args['ShowAddToCartButton'] ) {
         remove_action( 'woocommerce_before_shop_loop_item', 'wpmozo_add_div_to_top', 0 );
         remove_action( 'woocommerce_before_shop_loop_item_title', 'wpmozo_woocommerce_template_loop_product_thumbnail', 10 );
+    }
+
+    if ( $args['EqualSlideHeight'] ) {
+        remove_filter('woocommerce_loop_add_to_cart_link', 'wpmozo_add_wrap_for_addtocart', 999, 3);
     }
     
     remove_filter('woocommerce_post_class', 'wpmozo_product_carousel_add_class', 10, 2);
@@ -272,6 +280,10 @@ function wpmozo_product_carousel_add_hooks_admin_preview( $args ){
         add_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
         add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
         remove_action( 'woocommerce_before_shop_loop_item_title', 'wpmozo_woocommerce_template_loop_product_thumbnail', 10 );
+    }
+
+    if ( $args['EqualSlideHeight'] ) {
+        add_filter('woocommerce_loop_add_to_cart_link', 'wpmozo_add_wrap_for_addtocart', 999, 3);
     }
 
     add_filter('woocommerce_post_class', 'wpmozo_product_carousel_add_class', 10, 2);
@@ -675,5 +687,13 @@ function wpmozo_add_hooks(){
 
         wp_cache_delete('wpmozo_removed_hooks');
     }
+
+}
+
+function wpmozo_add_wrap_for_addtocart( $button, $product, $args ){
+
+    echo '<div class="wpmozo-add-to-cart-wrap">';
+    echo $button;
+    echo '</div>';
 
 }

@@ -43,14 +43,20 @@
                         {attKey: 'AddToCartStyle', type: 'style', selector: add_to_cart_selector},
                         {attKey: 'QuickViewStyle', type: 'style', selector: '.wpmozo-quick-view-button'},
                         {attKey: 'SaleLabelStyle', type: 'style', selector: '.onsale'},
-                        {attKey: 'StockLabelStyle', type: 'style', selector: '.soldout-text'},
+                        {attKey: 'StockLabelStyle', type: 'style', selector: '.stock.out-of-stock'},
                         {attKey: 'TitleColor', type: 'color', selector: '.woocommerce-loop-product__title'},
                         {attKey: 'PriceColor', type: 'color', selector: '.price'},
                         {attKey: 'AddToCartColor', type: 'color', selector: add_to_cart_selector},
                         {attKey: 'QuickViewColor', type: 'color', selector: '.wpmozo-quick-view-button'},
                         {attKey: 'SaleLabelColor', type: 'color', selector: '.onsale'},
-                        {attKey: 'StockLabelColor', type: 'color', selector: '.soldout-text'},
+                        {attKey: 'StockLabelColor', type: 'color', selector: '.stock.out-of-stock'},
+                        {attKey: 'StockLabelBorder', type: 'border', selector: '.stock.out-of-stock'},
+                        {attKey: 'StockLabelDimensions', type: 'dimensions', selector: '.stock.out-of-stock'},
                         {attKey: 'CarouNavigation', type: 'navigation', selector: '.swiper-navigation'},
+                        {attKey: 'CarouNavigation', type: 'color', selector: '.swiper-navigation'},
+                        {attKey: 'CarouNavigation', type: 'dimensions', selector: '.swiper-navigation'},
+                        {attKey: 'CarouNavigationLeft', type: 'dimensions', selector: '.swiper-button-prev'},
+                        {attKey: 'CarouNavigationRight', type: 'dimensions', selector: '.swiper-button-next'},
                         {attKey: 'AddToCartBorder', type: 'border', selector: add_to_cart_selector},
                         {attKey: 'QuickViewBorder', type: 'border', selector: '.wpmozo-quick-view-button'},
                         {attKey: 'AddToCartDimensions', type: 'dimensions', selector: add_to_cart_selector},
@@ -134,7 +140,8 @@
         e.preventDefault();
         var wraper = $(this).closest('.wpmozo-product-carousel-wrap'),
             atts = wraper.data('atts'),
-            pro_id = $(this).data('pro-id');
+            pro_id = $(this).data('pro-id'),
+            body = jQuery('body');
 
 		$.magnificPopup.open({
 			items: {
@@ -187,12 +194,14 @@
                             {attKey: 'PriceStyle', type: 'style', selector: '.price'},
                             {attKey: 'AddToCartStyle', type: 'style', selector: add_to_cart_selector},
                             {attKey: 'SaleLabelStyle', type: 'style', selector: '.onsale'},
-                            {attKey: 'StockLabelStyle', type: 'style', selector: '.soldout-text'},
+                            {attKey: 'StockLabelStyle', type: 'style', selector: '.stock.out-of-stock'},
+                            {attKey: 'StockLabelBorder', type: 'border', selector: '.stock.out-of-stock'},
+                            {attKey: 'StockLabelDimensions', type: 'dimensions', selector: '.stock.out-of-stock'},
                             {attKey: 'TitleColor', type: 'color', selector: '.product_title'},
                             {attKey: 'PriceColor', type: 'color', selector: '.price'},
                             {attKey: 'AddToCartColor', type: 'color', selector: add_to_cart_selector},
                             {attKey: 'SaleLabelColor', type: 'color', selector: '.onsale'},
-                            {attKey: 'StockLabelColor', type: 'color', selector: '.soldout-text'},
+                            {attKey: 'StockLabelColor', type: 'color', selector: '.stock.out-of-stock'},
                             {attKey: 'AddToCartBorder', type: 'border', selector: add_to_cart_selector},
                             {attKey: 'AddToCartDimensions', type: 'dimensions', selector: add_to_cart_selector},
                         ];
@@ -202,16 +211,32 @@
                             {attKey: 'QuickViewPriceStyle', type: 'style', selector: '.price'},
                             {attKey: 'QuickViewAddToCartStyle', type: 'style', selector: add_to_cart_selector},
                             {attKey: 'QuickViewSaleLabelStyle', type: 'style', selector: '.onsale'},
-                            {attKey: 'QuickViewStockLabelStyle', type: 'style', selector: '.soldout-text'},
+                            {attKey: 'QuickViewStockLabelStyle', type: 'style', selector: '.stock.out-of-stock'},
+                            {attKey: 'QuickViewStockLabelBorder', type: 'border', selector: '.stock.out-of-stock'},
+                            {attKey: 'QuickViewStockLabelDimensions', type: 'dimensions', selector: '.stock.out-of-stock'},
                             {attKey: 'QuickViewTitleColor', type: 'color', selector: '.product_title'},
                             {attKey: 'QuickViewPriceColor', type: 'color', selector: '.price'},
                             {attKey: 'QuickViewAddToCartColor', type: 'color', selector: add_to_cart_selector},
                             {attKey: 'QuickViewSaleLabelColor', type: 'color', selector: '.onsale'},
-                            {attKey: 'QuickViewStockLabelColor', type: 'color', selector: '.soldout-text'},
+                            {attKey: 'QuickViewStockLabelColor', type: 'color', selector: '.stock.out-of-stock'},
                             {attKey: 'QuickViewAddToCartBorder', type: 'border', selector: add_to_cart_selector},
                             {attKey: 'QuickViewAddToCartDimensions', type: 'dimensions', selector: add_to_cart_selector},
                         ];
                     }
+
+                    var popup_styles = [
+                        {attKey: 'QuickViewPopupBackground', type: 'color', selector: '.wpmozo-product-quick-view'},
+                        {attKey: 'QuickViewPopupDimensions', type: 'dimensions', selector: '.wpmozo-product-quick-view'},
+                        {attKey: 'QuickViewCloseStyle', type: 'style', selector: '.mfp-close'},
+                        {attKey: 'QuickViewCloseColor', type: 'color', selector: '.mfp-close'},
+                        {attKey: 'QuickViewCloseBorder', type: 'border', selector: '.mfp-close'},
+                        {attKey: 'QuickViewCloseDimensions', type: 'dimensions', selector: '.mfp-close'},
+                        {attKey: 'QuickViewCloseSize', type: 'size', selector: '.mfp-close'},
+                    ];
+
+                    popup_styles.map(
+                        function(item) { appendInlineStyle(item, body, atts); }
+                    );
 
                     styles.map(
                         function(item) { appendInlineStyle(item, $this, atts); }
@@ -310,7 +335,7 @@
             }
         }
 
-        if ( 'progressbar' === type ) {
+        if ( 'progressbar' === type || 'size' === type ) {
             if ( 'undefined' !== typeof options.width && '' !== options.width ) {
                 style += 'width: '+options.width+';';
             }
@@ -372,6 +397,26 @@
                 'undefined' !== typeof options.padding.left ) ) {
                 let spacing = convetVarStyle(options.padding);
                 style += 'padding: '+spacing.top+' '+spacing.right+' '+spacing.bottom+' '+spacing.left+';';
+            }
+
+            if ( 'undefined' !== typeof options.margin && '' !== options.margin && ( 
+                'undefined' !== typeof options.margin.top || 
+                'undefined' !== typeof options.margin.right || 
+                'undefined' !== typeof options.margin.bottom || 
+                'undefined' !== typeof options.margin.left ) ) {
+                let spacing = convetVarStyle(options.margin);
+                style += 'margin: '+spacing.top+' '+spacing.right+' '+spacing.bottom+' '+spacing.left+';';
+            }
+
+            if ( 'undefined' !== typeof options.position && '' !== options.position && ( 
+                'undefined' !== typeof options.position.top || 
+                'undefined' !== typeof options.position.right || 
+                'undefined' !== typeof options.position.bottom || 
+                'undefined' !== typeof options.position.left ) ) {
+                let spacing = convetVarStyle(options.position);
+                for (const position in options.position) {
+                    style += position+': '+spacing[position]+';';
+                }
             }
 
         }

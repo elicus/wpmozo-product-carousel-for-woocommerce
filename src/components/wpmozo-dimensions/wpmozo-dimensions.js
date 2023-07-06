@@ -8,8 +8,10 @@ const preAttributes = wpmozo_block_carousel_object.attributes;
 
 const WpmozoDimensions = function(args){
 	
-    const { DimensionKey, DimensionsTypes, attributes, props } = args;
+    const { DimensionKey, attributes, props } = args;
     const _dimensions = attributes[DimensionKey];
+    const DimensionsTypes = args.hasOwnProperty('DimensionsTypes') ? args.DimensionsTypes : null;
+    const label = ( args.hasOwnProperty('label') ) ? args.label : __( 'Dimensions', 'wpmozo-product-carousel-for-woocommerce' );
 
     const dimensionsSetValue = function( styleType, value = null ) {
         let _dimensions = Object.assign({}, attributes[DimensionKey]);
@@ -23,13 +25,13 @@ const WpmozoDimensions = function(args){
 	return [
         el( __experimentalToolsPanel,
             { 
-                label: __( 'Dimensions', 'wpmozo-product-carousel-for-woocommerce' ),
+                label: label,
                 resetAll: () => {
                     let dimensions = preAttributes[DimensionKey].default;
                     props.setAttributes( {[DimensionKey]: dimensions} );
                 }
             },
-            DimensionsTypes.padding &&
+            ( null == DimensionsTypes || DimensionsTypes.hasOwnProperty('padding') ) &&
                 el( __experimentalToolsPanelItem, 
                     {
                         label: __('Padding', 'wpmozo-product-carousel-for-woocommerce'),
@@ -46,7 +48,7 @@ const WpmozoDimensions = function(args){
                         },
                     }),
                 ),
-            DimensionsTypes.margin &&
+            ( null == DimensionsTypes || DimensionsTypes.hasOwnProperty('margin') ) &&
                 el( __experimentalToolsPanelItem, 
                     {
                         label: __('Margin', 'wpmozo-product-carousel-for-woocommerce'),
@@ -60,6 +62,23 @@ const WpmozoDimensions = function(args){
                         values: attributes[DimensionKey].margin,
                         onChange: function( NewMargin ) {
                             dimensionsSetValue('margin', NewMargin);
+                        },
+                    }),
+                ),
+            ( null == DimensionsTypes || DimensionsTypes.hasOwnProperty('position') ) &&
+                el( __experimentalToolsPanelItem, 
+                    {
+                        label: __('Position', 'wpmozo-product-carousel-for-woocommerce'),
+                        hasValue: () => true,
+                        isShownByDefault: true,
+                        className: 'tools-panel-item-spacing', 
+                        onDeselect: () => dimensionsSetValue('position'),                                    
+                    }, 
+                    el(__experimentalSpacingSizesControl, {
+                        label: 'Position',
+                        values: attributes[DimensionKey].position,
+                        onChange: function( NewPosition ) {
+                            dimensionsSetValue('position', NewPosition);
                         },
                     }),
                 ),

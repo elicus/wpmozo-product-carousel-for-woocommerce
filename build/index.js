@@ -121,6 +121,9 @@ const WpmozoColorPicker = function (args) {
     });
   };
   const colorDropdown = function (colorType, label) {
+    if ('' === _color[colorType] && args.hasOwnProperty('default')) {
+      _color[colorType] = args.default[colorType];
+    }
     return el(Dropdown, {
       className: "wpmozo-color-dropdown-container",
       contentClassName: "wpmozo-color-popover-content",
@@ -200,11 +203,12 @@ const preAttributes = wpmozo_block_carousel_object.attributes;
 const WpmozoDimensions = function (args) {
   const {
     DimensionKey,
-    DimensionsTypes,
     attributes,
     props
   } = args;
   const _dimensions = attributes[DimensionKey];
+  const DimensionsTypes = args.hasOwnProperty('DimensionsTypes') ? args.DimensionsTypes : null;
+  const label = args.hasOwnProperty('label') ? args.label : __('Dimensions', 'wpmozo-product-carousel-for-woocommerce');
   const dimensionsSetValue = function (styleType) {
     let value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
     let _dimensions = Object.assign({}, attributes[DimensionKey]);
@@ -217,14 +221,14 @@ const WpmozoDimensions = function (args) {
     });
   };
   return [el(__experimentalToolsPanel, {
-    label: __('Dimensions', 'wpmozo-product-carousel-for-woocommerce'),
+    label: label,
     resetAll: () => {
       let dimensions = preAttributes[DimensionKey].default;
       props.setAttributes({
         [DimensionKey]: dimensions
       });
     }
-  }, DimensionsTypes.padding && el(__experimentalToolsPanelItem, {
+  }, (null == DimensionsTypes || DimensionsTypes.hasOwnProperty('padding')) && el(__experimentalToolsPanelItem, {
     label: __('Padding', 'wpmozo-product-carousel-for-woocommerce'),
     hasValue: () => true,
     isShownByDefault: true,
@@ -236,7 +240,7 @@ const WpmozoDimensions = function (args) {
     onChange: function (NewPadding) {
       dimensionsSetValue('padding', NewPadding);
     }
-  })), DimensionsTypes.margin && el(__experimentalToolsPanelItem, {
+  })), (null == DimensionsTypes || DimensionsTypes.hasOwnProperty('margin')) && el(__experimentalToolsPanelItem, {
     label: __('Margin', 'wpmozo-product-carousel-for-woocommerce'),
     hasValue: () => true,
     isShownByDefault: true,
@@ -247,6 +251,18 @@ const WpmozoDimensions = function (args) {
     values: attributes[DimensionKey].margin,
     onChange: function (NewMargin) {
       dimensionsSetValue('margin', NewMargin);
+    }
+  })), (null == DimensionsTypes || DimensionsTypes.hasOwnProperty('position')) && el(__experimentalToolsPanelItem, {
+    label: __('Position', 'wpmozo-product-carousel-for-woocommerce'),
+    hasValue: () => true,
+    isShownByDefault: true,
+    className: 'tools-panel-item-spacing',
+    onDeselect: () => dimensionsSetValue('position')
+  }, el(__experimentalSpacingSizesControl, {
+    label: 'Position',
+    values: attributes[DimensionKey].position,
+    onChange: function (NewPosition) {
+      dimensionsSetValue('position', NewPosition);
     }
   })))];
 };
@@ -488,8 +504,6 @@ const WpmozoTypography = function (args) {
     props
   } = args;
   const TypoTypes = args.hasOwnProperty('TypoTypes') ? args.TypoTypes : null;
-  const hasFontStyles = args.hasOwnProperty('FontAppearance') && args.FontAppearance.hasOwnProperty('hasFontStyles') ? args.FontAppearance.hasFontStyles : true;
-  const hasFontWeights = args.hasOwnProperty('FontAppearance') && args.FontAppearance.hasOwnProperty('hasFontWeights') ? args.FontAppearance.hasFontWeights : true;
   const typoSetValue = function (styleType) {
     let value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
     let _Typography = Object.assign({}, attributes[TypographyKey]);
@@ -498,12 +512,16 @@ const WpmozoTypography = function (args) {
       [TypographyKey]: _Typography
     });
   };
-  const _FontAppearanceValues = {};
-  if (hasFontStyles) {
-    _FontAppearanceValues['fontStyle'] = attributes[TypographyKey].FontAppearance.fontStyle;
-  }
-  if (hasFontWeights) {
-    _FontAppearanceValues['fontWeight'] = attributes[TypographyKey].FontAppearance.fontWeight;
+  if (null == TypoTypes || TypoTypes.hasOwnProperty('FontAppearance')) {
+    var hasFontStyles = args.hasOwnProperty('FontAppearance') && args.FontAppearance.hasOwnProperty('hasFontStyles') ? args.FontAppearance.hasFontStyles : true;
+    var hasFontWeights = args.hasOwnProperty('FontAppearance') && args.FontAppearance.hasOwnProperty('hasFontWeights') ? args.FontAppearance.hasFontWeights : true;
+    var _FontAppearanceValues = {};
+    if (hasFontStyles) {
+      _FontAppearanceValues['fontStyle'] = attributes[TypographyKey].FontAppearance.fontStyle;
+    }
+    if (hasFontWeights) {
+      _FontAppearanceValues['fontWeight'] = attributes[TypographyKey].FontAppearance.fontWeight;
+    }
   }
   return [el(__experimentalToolsPanel, {
     label: __('Typography', 'wpmozo-product-carousel-for-woocommerce'),
@@ -737,6 +755,10 @@ __webpack_require__.r(__webpack_exports__);
     key: 'background',
     label: __('Background', 'wpmozo-product-carousel-for-woocommerce')
   }];
+  let backgroundColorObject = [{
+    key: 'background',
+    label: __('Background', 'wpmozo-product-carousel-for-woocommerce')
+  }];
   function convetInlineStyle(options, type, atts) {
     let style = '';
     if ('style' === type) {
@@ -840,6 +862,16 @@ __webpack_require__.r(__webpack_exports__);
         let spacing = convetVarStyle(options.padding);
         style += 'padding: ' + spacing.top + ' ' + spacing.right + ' ' + spacing.bottom + ' ' + spacing.left + ';';
       }
+      if ('undefined' !== typeof options.margin && '' !== options.margin && ('undefined' !== typeof options.margin.top || 'undefined' !== typeof options.margin.right || 'undefined' !== typeof options.margin.bottom || 'undefined' !== typeof options.margin.left)) {
+        let spacing = convetVarStyle(options.margin);
+        style += 'margin: ' + spacing.top + ' ' + spacing.right + ' ' + spacing.bottom + ' ' + spacing.left + ';';
+      }
+      if ('undefined' !== typeof options.position && '' !== options.position && ('undefined' !== typeof options.position.top || 'undefined' !== typeof options.position.right || 'undefined' !== typeof options.position.bottom || 'undefined' !== typeof options.position.left)) {
+        let spacing = convetVarStyle(options.position);
+        for (const position in options.position) {
+          style += position + ': ' + spacing[position] + ';';
+        }
+      }
     }
     return style;
   }
@@ -924,7 +956,7 @@ __webpack_require__.r(__webpack_exports__);
           }, {
             attKey: 'StockLabelStyle',
             type: 'style',
-            selector: '.soldout-text'
+            selector: '.stock.out-of-stock'
           }, {
             attKey: 'TitleColor',
             type: 'color',
@@ -948,11 +980,35 @@ __webpack_require__.r(__webpack_exports__);
           }, {
             attKey: 'StockLabelColor',
             type: 'color',
-            selector: '.soldout-text'
+            selector: '.stock.out-of-stock'
+          }, {
+            attKey: 'StockLabelBorder',
+            type: 'border',
+            selector: '.stock.out-of-stock'
+          }, {
+            attKey: 'StockLabelDimensions',
+            type: 'dimensions',
+            selector: '.stock.out-of-stock'
           }, {
             attKey: 'CarouNavigation',
             type: 'navigation',
             selector: '.swiper-navigation'
+          }, {
+            attKey: 'CarouNavigation',
+            type: 'color',
+            selector: '.swiper-navigation'
+          }, {
+            attKey: 'CarouNavigation',
+            type: 'dimensions',
+            selector: '.swiper-navigation'
+          }, {
+            attKey: 'CarouNavigationLeft',
+            type: 'dimensions',
+            selector: '.swiper-button-prev'
+          }, {
+            attKey: 'CarouNavigationRight',
+            type: 'dimensions',
+            selector: '.swiper-button-next'
           }, {
             attKey: 'AddToCartBorder',
             type: 'border',
@@ -1089,7 +1145,8 @@ __webpack_require__.r(__webpack_exports__);
       return [el('div', blockProps, el(ServerSideRender, {
         block: 'wpmozo/product-carousel',
         attributes: attributes,
-        LoadingResponsePlaceholder: TriggerWhenLoadingFinished
+        LoadingResponsePlaceholder: TriggerWhenLoadingFinished,
+        httpMethod: 'POST'
       })), el(InspectorControls, {}, el(PanelBody, {
         title: __('Carousel Settings', 'wpmozo-product-carousel-for-woocommerce'),
         initialOpen: true
@@ -1138,7 +1195,7 @@ __webpack_require__.r(__webpack_exports__);
             AutoPlay: NewAutoPlay
           });
         }
-      }), el(TextControl, {
+      }), attributes.AutoPlay && el(TextControl, {
         key: 'wpmozp-product-carousel-delay',
         value: attributes.Delay,
         label: __('Delay of Animation', 'wpmozo-product-carousel-for-woocommerce'),
@@ -1577,6 +1634,9 @@ __webpack_require__.r(__webpack_exports__);
         ColorTypes: [{
           key: 'Color',
           label: __('Icon Color', 'wpmozo-product-carousel-for-woocommerce')
+        }, {
+          key: 'background',
+          label: __('Background', 'wpmozo-product-carousel-for-woocommerce')
         }]
       }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'CarouNavigation',
@@ -1589,6 +1649,30 @@ __webpack_require__.r(__webpack_exports__);
         FontAppearance: {
           hasFontStyles: false
         }
+      }), el(_src_components_wpmozo_dimensions_wpmozo_dimensions__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        DimensionKey: 'CarouNavigation',
+        attributes: attributes,
+        DimensionsTypes: {
+          padding: true,
+          margin: true
+        },
+        props: props
+      }), el(_src_components_wpmozo_dimensions_wpmozo_dimensions__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        label: __('Previous Position', 'wpmozo-product-carousel-for-woocommerce'),
+        DimensionKey: 'CarouNavigationLeft',
+        attributes: attributes,
+        DimensionsTypes: {
+          position: true
+        },
+        props: props
+      }), el(_src_components_wpmozo_dimensions_wpmozo_dimensions__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        label: __('Next Position', 'wpmozo-product-carousel-for-woocommerce'),
+        DimensionKey: 'CarouNavigationRight',
+        attributes: attributes,
+        DimensionsTypes: {
+          position: true
+        },
+        props: props
       })), attributes.ShowPagination && el(PanelBody, {
         title: __('Carousel Pagination Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
@@ -1698,9 +1782,47 @@ __webpack_require__.r(__webpack_exports__);
         title: __('Quick View Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
         initialOpen: false
-      }, el(ToggleControl, {
+      }, el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        ColorKey: 'QuickViewPopupBackground',
+        attributes: attributes,
+        props: props,
+        ColorTypes: backgroundColorObject
+      }), el(_src_components_wpmozo_dimensions_wpmozo_dimensions__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        DimensionKey: 'QuickViewPopupDimensions',
+        attributes: attributes,
+        DimensionsTypes: {
+          padding: true
+        },
+        props: props
+      }), el(PanelBody, {
+        title: __('Close Button Style', 'wpmozo-product-carousel-for-woocommerce'),
+        className: "wpmozo-typography-panel",
+        initialOpen: false
+      }, el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        ColorKey: 'QuickViewCloseColor',
+        attributes: attributes,
+        props: props,
+        ColorTypes: twoColorObject
+      }), el(_src_components_wpmozo_size_wpmozo_size__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        SizeKey: 'QuickViewCloseSize',
+        attributes: attributes,
+        props: props
+      }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
+        TypographyKey: 'QuickViewCloseStyle',
+        attributes: attributes,
+        props: props
+      }), el(_src_components_wpmozo_dimensions_wpmozo_dimensions__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        DimensionKey: 'QuickViewCloseDimensions',
+        attributes: attributes,
+        props: props
+      }), el(_src_components_wpmozo_border_wpmozo_border__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        BorderKey: 'QuickViewCloseBorder',
+        attributes: attributes,
+        props: props
+      })), el(ToggleControl, {
         checked: attributes.SameAsCarousel,
-        label: __('Same As Carousel', 'wpmozo-product-carousel-for-woocommerce'),
+        className: 'wpmozo-same-as-carousel',
+        label: __('Inner Elements Style Same As Carousel', 'wpmozo-product-carousel-for-woocommerce'),
         onChange: function (NewSameAsCarousel) {
           props.setAttributes({
             SameAsCarousel: NewSameAsCarousel
@@ -1777,9 +1899,20 @@ __webpack_require__.r(__webpack_exports__);
         ColorKey: 'QuickViewStockLabelColor',
         attributes: attributes,
         props: props,
-        ColorTypes: textColorObject
+        ColorTypes: textColorObject,
+        default: {
+          text: '#ff0000'
+        }
       }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'QuickViewStockLabelStyle',
+        attributes: attributes,
+        props: props
+      }), el(_src_components_wpmozo_dimensions_wpmozo_dimensions__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        DimensionKey: 'QuickViewStockLabelDimensions',
+        attributes: attributes,
+        props: props
+      }), el(_src_components_wpmozo_border_wpmozo_border__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        BorderKey: 'QuickViewStockLabelBorder',
         attributes: attributes,
         props: props
       }))]), attributes.ShowSaleBadge && el(PanelBody, {
@@ -1803,9 +1936,20 @@ __webpack_require__.r(__webpack_exports__);
         ColorKey: 'StockLabelColor',
         attributes: attributes,
         props: props,
-        ColorTypes: textColorObject
+        ColorTypes: textColorObject,
+        default: {
+          text: '#ff0000'
+        }
       }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'StockLabelStyle',
+        attributes: attributes,
+        props: props
+      }), el(_src_components_wpmozo_dimensions_wpmozo_dimensions__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        DimensionKey: 'StockLabelDimensions',
+        attributes: attributes,
+        props: props
+      }), el(_src_components_wpmozo_border_wpmozo_border__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        BorderKey: 'StockLabelBorder',
         attributes: attributes,
         props: props
       })))];

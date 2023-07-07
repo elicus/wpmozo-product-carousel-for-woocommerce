@@ -21,7 +21,9 @@
 	word-break: break-word;
 }
 .wpmozo-product-carousel-wrap .woocommerce-loop-product__link{
-	width: 100%;
+	width: 100% !important;
+	position: relative !important;
+	display: block !important;
 }
 .wpmozo-product-carousel-wrap .attachment-woocommerce_thumbnail{
 	width: 100%;
@@ -62,6 +64,7 @@
 	width: 100%;
 	height: 100%;
 	transition: all 0.15s ease-in;
+	z-index: 9999;
 }
 .wpmozo-product-carousel-wrap li.product:hover .wpmozo-product__overlay,
 .wpmozo-product-carousel-wrap li.product:focus .wpmozo-product__overlay {
@@ -114,7 +117,7 @@
 .wpmozo-product-quick-view .mfp-close{
     background: transparent;
     color: #000;
-    font-size: 30px;
+    font-size: 25px;
     width: auto;
     height: auto;
     line-height: initial;

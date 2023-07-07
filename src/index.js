@@ -17,7 +17,6 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
     const { Fragment, useState, useEffect } = element;
     const { useSelect, useDispatch, dispatch } = wp.data;
     const { serverSideRender: ServerSideRender, hooks } = wp;
-    window.WpmozoSwipers = {};
 
     let textColorObject =  [
         {
@@ -48,64 +47,67 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
 
         if ( 'style' === type ) {
             if ( 'undefined' !== typeof options.FontSize && '' !== options.FontSize ) {
-                style += 'font-size: '+options.FontSize+';';
+                style += 'font-size: '+options.FontSize+' !important;';
             }
             if ( 'undefined' !== typeof options.FontAppearance.fontStyle && '' !== options.FontAppearance.fontStyle ) {
-                style += 'font-style: '+options.FontAppearance.fontStyle+';';
+                style += 'font-style: '+options.FontAppearance.fontStyle+' !important;';
             }
             if ( 'undefined' !== typeof options.FontAppearance.fontWeight && '' !== options.FontAppearance.fontWeight ) {
-                style += 'font-weight: '+options.FontAppearance.fontWeight+';';
+                style += 'font-weight: '+options.FontAppearance.fontWeight+' !important;';
             }
             if ( 'undefined' !== typeof options.LetterSpacing && '' !== options.LetterSpacing ) {
-                style += 'letter-spacing: '+options.LetterSpacing+';';
+                style += 'letter-spacing: '+options.LetterSpacing+' !important;';
             }
             if ( 'undefined' !== typeof options.Decoration && '' !== options.Decoration ) {
-                style += 'text-decoration: '+options.Decoration+';';
+                style += 'text-decoration: '+options.Decoration+' !important;';
             }
             if ( 'undefined' !== typeof options.LetterCase && '' !== options.LetterCase ) {
-                style += 'text-transform: '+options.LetterCase+';';
+                style += 'text-transform: '+options.LetterCase+' !important;';
+            }
+            if ( 'undefined' !== typeof options.LineHeight && '' !== options.LineHeight ) {
+                style += 'line-height: '+options.LineHeight+' !important;';
             }
         }
 
         if ( 'color' === type ) {
             if ( 'undefined' !== typeof options.text && '' !== options.text ) {
-                style += 'color: '+options.text+';';
+                style += 'color: '+options.text+' !important;';
             }
             if ( 'undefined' !== typeof options.background && '' !== options.background ) {
-                style += 'background: '+options.background+';';
+                style += 'background: '+options.background+' !important;';
             }
         }
 
         if ( 'navigation' === type || 'pagination' === type ) {
             if ( 'undefined' !== typeof options.FontSize && '' !== options.FontSize ) {
-                style += 'font-size: '+options.FontSize+';';
+                style += 'font-size: '+options.FontSize+' !important;';
             }
             if ( 'undefined' !== typeof options.Color && '' !== options.Color ) {
-                style += 'color: '+options.Color+';';
+                style += 'color: '+options.Color+' !important;';
             }
             if ( 'undefined' !== typeof options.FontAppearance && 'undefined' !== typeof options.FontAppearance.fontWeight && '' !== options.FontAppearance.fontWeight ) {
-                style += 'font-weight: '+options.FontAppearance.fontWeight+';';
+                style += 'font-weight: '+options.FontAppearance.fontWeight+' !important;';
             }
         }
 
         if ( 'pagination' === type ) {
             if ( 'undefined' !== typeof options.background && '' !== options.background ) {
-                style += 'background: '+options.background+';';
+                style += 'background: '+options.background+' !important;';
             }
             if ( 'undefined' !== typeof options.width && '' !== options.width && 'progressbar' !== atts.PaginationType ) {
-                style += 'width: '+options.width+';';
+                style += 'width: '+options.width+' !important;';
             }
             if ( 'undefined' !== typeof options.height && '' !== options.height && 'progressbar' !== atts.PaginationType ) {
-                style += 'height: '+options.height+';';
+                style += 'height: '+options.height+' !important;';
             }
         }
 
         if ( 'progressbar' === type ) {
             if ( 'undefined' !== typeof options.width && '' !== options.width ) {
-                style += 'width: '+options.width+';';
+                style += 'width: '+options.width+' !important;';
             }
             if ( 'undefined' !== typeof options.height && '' !== options.height ) {
-                style += 'height: '+options.height+';';
+                style += 'height: '+options.height+' !important;';
             }
         }
 
@@ -122,33 +124,33 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                 if ( 'undefined' !== typeof options.border.color && '' !== options.border.color ) {
                     str += ' '+options.border.color;
                 }
-                style += 'border: '+str+';';
+                style += 'border: '+str+' !important;';
             }
 
             if ( 'undefined' !== typeof options.border.top && '' !== options.border.top ) {
                 for (const border in options.border) {
                     for (const borderItem in options.border[border]) {
-                        style += 'border-'+border+'-'+borderItem+': '+options.border[border][borderItem]+';';
+                        style += 'border-'+border+'-'+borderItem+': '+options.border[border][borderItem]+' !important;';
                     }
                 }
             }
 
             if ( 'undefined' !== typeof options.borderRadius && '' !== options.borderRadius ) {
                 if ( 'undefined' !== typeof options.borderRadius.topLeft && '' !== options.borderRadius.topLeft ) {
-                    style += 'border-top-left-radius: '+options.borderRadius.topLeft+';';
+                    style += 'border-top-left-radius: '+options.borderRadius.topLeft+' !important;';
                 }
                 if ( 'undefined' !== typeof options.borderRadius.topRight && '' !== options.borderRadius.topRight ) {
-                    style += 'border-top-right-radius: '+options.borderRadius.topRight+';';
+                    style += 'border-top-right-radius: '+options.borderRadius.topRight+' !important;';
                 }
                 if ( 'undefined' !== typeof options.borderRadius.bottomLeft && '' !== options.borderRadius.bottomLeft ) {
-                    style += 'border-bottom-left-radius: '+options.borderRadius.bottomLeft+';';
+                    style += 'border-bottom-left-radius: '+options.borderRadius.bottomLeft+' !important;';
                 }
                 if ( 'undefined' !== typeof options.borderRadius.bottomRight && '' !== options.borderRadius.bottomRight ) {
-                    style += 'border-bottom-right-radius: '+options.borderRadius.bottomRight+';';
+                    style += 'border-bottom-right-radius: '+options.borderRadius.bottomRight+' !important;';
                 }
 
                 if ( 'undefined' == typeof options.borderRadius.topLeft ) {
-                    style += 'border-radius: '+options.borderRadius+';';
+                    style += 'border-radius: '+options.borderRadius+' !important;';
                 }
             }
         }
@@ -161,7 +163,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                 'undefined' !== typeof options.padding.bottom || 
                 'undefined' !== typeof options.padding.left ) ) {
                 let spacing = convetVarStyle(options.padding);
-                style += 'padding: '+spacing.top+' '+spacing.right+' '+spacing.bottom+' '+spacing.left+';';
+                style += 'padding: '+spacing.top+' '+spacing.right+' '+spacing.bottom+' '+spacing.left+' !important;';
             }
 
             if ( 'undefined' !== typeof options.margin && '' !== options.margin && ( 
@@ -170,7 +172,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                 'undefined' !== typeof options.margin.bottom || 
                 'undefined' !== typeof options.margin.left ) ) {
                 let spacing = convetVarStyle(options.margin);
-                style += 'margin: '+spacing.top+' '+spacing.right+' '+spacing.bottom+' '+spacing.left+';';
+                style += 'margin: '+spacing.top+' '+spacing.right+' '+spacing.bottom+' '+spacing.left+' !important;';
             }
 
             if ( 'undefined' !== typeof options.position && '' !== options.position && ( 
@@ -180,8 +182,9 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                 'undefined' !== typeof options.position.left ) ) {
                 let spacing = convetVarStyle(options.position);
                 for (const position in options.position) {
-                    style += position+': '+spacing[position]+';';
+                    style += position+': '+spacing[position]+' !important;';
                 }
+                style += 'position: absolute !important;';
             }
 
         }
@@ -243,7 +246,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
             'undefined' !== typeof options.padding.bottom || 
             'undefined' !== typeof options.padding.left ) ) {
             let spacing = convetVarStyle(options.padding);
-            style += 'padding: '+spacing.top+' '+spacing.right+' '+spacing.bottom+' '+spacing.left+';';
+            style += 'padding: '+spacing.top+' '+spacing.right+' '+spacing.bottom+' '+spacing.left+' !important;';
         }
         jQuery('#'+selector).attr('style', style);
         let mobileSett = attributes.Responsive.mobile;
@@ -356,7 +359,6 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
         }
 
         let _swiper = new Swiper('#'+selector, sw_obj);
-        window.WpmozoSwipers[clientId] = _swiper;
 
     };
 
@@ -390,6 +392,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
         );
    
     }
+
 
 
     registerBlockType( 'wpmozo/product-carousel', {
@@ -1396,9 +1399,6 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                                             attributes: attributes,
                                             props: props,
                                             ColorTypes: textColorObject,
-                                            default:{
-                                                text: '#ff0000',
-                                            }
                                         }),
                                         el( WpmozoTypography, {
                                             TypographyKey: 'QuickViewStockLabelStyle',
@@ -1450,9 +1450,6 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                                 attributes: attributes,
                                 props: props,
                                 ColorTypes: textColorObject,
-                                default:{
-                                    text: '#ff0000',
-                                }
                             }),
                             el( WpmozoTypography, {
                                 TypographyKey: 'StockLabelStyle',

@@ -255,6 +255,10 @@ class Wpmozo_Init {
 		    	'type' => 'string',
 		    	'default' => '',
 		    ),
+		    'LineHeight' => array(
+		    	'type' => 'string',
+		    	'default' => '',
+		    ),
 		    'default' => array(
 		    	'FontSize' => '',
 		    	'FontAppearance' => array(
@@ -264,6 +268,7 @@ class Wpmozo_Init {
 		    	'LetterSpacing' => '',
 		    	'Decoration' => '',
 		    	'LetterCase' => '',
+		    	'LineHeight' => '',
 		    ),
 		);
 
@@ -387,10 +392,10 @@ class Wpmozo_Init {
 
     	$quickpopup_dimensions_atts = $dimensions_atts;
     	$quickpopup_dimensions_atts['default']['padding'] = array(
-			'bottom' => '10px',
-			'left' => '10px',
-			'right' => '10px',
-			'top' => '10px',
+			'bottom' => '20px',
+			'left' => '20px',
+			'right' => '20px',
+			'top' => '20px',
 		);
 
 		$attributes = array(
@@ -827,7 +832,7 @@ class Wpmozo_Init {
 	}
 
 	/**
-	 * Get font awesome icons array
+	 * Get font awesome icons array.
 	 *
 	 * @since 1.0.0
 	 * @return array $icons All icons.
@@ -843,7 +848,7 @@ class Wpmozo_Init {
 	}
 
 	/**
-	 * Add block category
+	 * Add block category.
 	 *
 	 * @param array $categories The block categories.
 	 * @return array The block categories.
@@ -861,7 +866,7 @@ class Wpmozo_Init {
 	}
 
 	/**
-	 * Add all hooks
+	 * Add all hooks.
 	 *
 	 * @since 1.0.0
 	 * @param array $loader The instance of loader class.

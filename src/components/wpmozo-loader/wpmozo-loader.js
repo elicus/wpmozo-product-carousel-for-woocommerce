@@ -4,12 +4,6 @@ const { hooks } = wp;
 
 class WpmozoLoader extends Component{
 
-	componentDidMount(){
-		const { clientId } = this.props;
-		if ( window.WpmozoSwipers.hasOwnProperty(clientId) ) {
-			delete window.WpmozoSwipers[clientId]; 
-		}
-	}
 	render () {
 
 		const { column, margin } = this.props;

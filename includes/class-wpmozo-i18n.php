@@ -43,7 +43,7 @@ class Wpmozo_i18n {
 	}
 
 	/**
-	 * Add all hooks
+	 * Add all hooks.
 	 *
 	 * @since 1.0.0
 	 * @param array $loader The instance of loader class.

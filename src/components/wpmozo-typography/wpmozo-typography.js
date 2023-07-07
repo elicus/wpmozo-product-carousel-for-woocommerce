@@ -1,7 +1,7 @@
 
 const el = window.wp.element.createElement;
 const __ = wp.i18n.__;
-const { __experimentalFontAppearanceControl, FontSizePicker, __experimentalLetterSpacingControl, __experimentalTextTransformControl, __experimentalTextDecorationControl } = window.wp.blockEditor;
+const { __experimentalFontAppearanceControl, FontSizePicker, __experimentalLetterSpacingControl, __experimentalTextTransformControl, __experimentalTextDecorationControl, LineHeightControl } = window.wp.blockEditor;
 const { __experimentalToolsPanel, __experimentalToolsPanelItem } = window.wp.components;
 const { compose } = wp.compose;
 
@@ -51,6 +51,7 @@ const WpmozoTypography = function(args){
                                 fontWeight: '',
                             },
                             LetterCase: '',
+                            LineHeight: '',
                         }
                         Object.keys(TypographyTypes).map(type => _Typography[type] = '');
                     }else{
@@ -137,6 +138,23 @@ const WpmozoTypography = function(args){
                         {
                             value: attributes[TypographyKey].LetterCase,
                             onChange: (NewLetterCase) => { typoSetValue('LetterCase', NewLetterCase) },
+                        }
+                    ),
+                ),
+            ( null == TypoTypes || TypoTypes.hasOwnProperty('LineHeight') ) &&
+                el( __experimentalToolsPanelItem, 
+                    { 
+                        className: "single-column",
+                        label: __( 'Line Height', 'wpmozo-product-carousel-for-woocommerce' ),
+                        hasValue: () => true,
+                        isShownByDefault: true,
+                        onDeselect: () => typoSetValue('LineHeight'),                                       
+                    },
+                    el( LineHeightControl, 
+                        {
+                            value: attributes[TypographyKey].LineHeight,
+                            onChange: (NewLineHeight) => { typoSetValue('LineHeight', NewLineHeight) },
+                            __nextHasNoMarginBottom: true,
                         }
                     ),
                 ),

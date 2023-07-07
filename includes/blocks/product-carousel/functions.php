@@ -690,6 +690,11 @@ function wpmozo_add_hooks(){
 
 }
 
+/**
+ * Add wraper to add to cart button for equal height.
+ * 
+ * @since 1.0.0
+ */
 function wpmozo_add_wrap_for_addtocart( $button, $product, $args ){
 
     echo '<div class="wpmozo-add-to-cart-wrap">';

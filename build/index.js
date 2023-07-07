@@ -344,14 +344,6 @@ const {
   hooks
 } = wp;
 class WpmozoLoader extends Component {
-  componentDidMount() {
-    const {
-      clientId
-    } = this.props;
-    if (window.WpmozoSwipers.hasOwnProperty(clientId)) {
-      delete window.WpmozoSwipers[clientId];
-    }
-  }
   render() {
     const {
       column,
@@ -488,7 +480,8 @@ const {
   FontSizePicker,
   __experimentalLetterSpacingControl,
   __experimentalTextTransformControl,
-  __experimentalTextDecorationControl
+  __experimentalTextDecorationControl,
+  LineHeightControl
 } = window.wp.blockEditor;
 const {
   __experimentalToolsPanel,
@@ -536,7 +529,8 @@ const WpmozoTypography = function (args) {
             fontStyle: '',
             fontWeight: ''
           },
-          LetterCase: ''
+          LetterCase: '',
+          LineHeight: ''
         };
         Object.keys(TypographyTypes).map(type => _Typography[type] = '');
       } else {
@@ -605,6 +599,18 @@ const WpmozoTypography = function (args) {
     onChange: NewLetterCase => {
       typoSetValue('LetterCase', NewLetterCase);
     }
+  })), (null == TypoTypes || TypoTypes.hasOwnProperty('LineHeight')) && el(__experimentalToolsPanelItem, {
+    className: "single-column",
+    label: __('Line Height', 'wpmozo-product-carousel-for-woocommerce'),
+    hasValue: () => true,
+    isShownByDefault: true,
+    onDeselect: () => typoSetValue('LineHeight')
+  }, el(LineHeightControl, {
+    value: attributes[TypographyKey].LineHeight,
+    onChange: NewLineHeight => {
+      typoSetValue('LineHeight', NewLineHeight);
+    },
+    __nextHasNoMarginBottom: true
   })))];
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (compose()(WpmozoTypography));
@@ -743,7 +749,6 @@ __webpack_require__.r(__webpack_exports__);
     serverSideRender: ServerSideRender,
     hooks
   } = wp;
-  window.WpmozoSwipers = {};
   let textColorObject = [{
     key: 'text',
     label: __('Text', 'wpmozo-product-carousel-for-woocommerce')
@@ -763,60 +768,63 @@ __webpack_require__.r(__webpack_exports__);
     let style = '';
     if ('style' === type) {
       if ('undefined' !== typeof options.FontSize && '' !== options.FontSize) {
-        style += 'font-size: ' + options.FontSize + ';';
+        style += 'font-size: ' + options.FontSize + ' !important;';
       }
       if ('undefined' !== typeof options.FontAppearance.fontStyle && '' !== options.FontAppearance.fontStyle) {
-        style += 'font-style: ' + options.FontAppearance.fontStyle + ';';
+        style += 'font-style: ' + options.FontAppearance.fontStyle + ' !important;';
       }
       if ('undefined' !== typeof options.FontAppearance.fontWeight && '' !== options.FontAppearance.fontWeight) {
-        style += 'font-weight: ' + options.FontAppearance.fontWeight + ';';
+        style += 'font-weight: ' + options.FontAppearance.fontWeight + ' !important;';
       }
       if ('undefined' !== typeof options.LetterSpacing && '' !== options.LetterSpacing) {
-        style += 'letter-spacing: ' + options.LetterSpacing + ';';
+        style += 'letter-spacing: ' + options.LetterSpacing + ' !important;';
       }
       if ('undefined' !== typeof options.Decoration && '' !== options.Decoration) {
-        style += 'text-decoration: ' + options.Decoration + ';';
+        style += 'text-decoration: ' + options.Decoration + ' !important;';
       }
       if ('undefined' !== typeof options.LetterCase && '' !== options.LetterCase) {
-        style += 'text-transform: ' + options.LetterCase + ';';
+        style += 'text-transform: ' + options.LetterCase + ' !important;';
+      }
+      if ('undefined' !== typeof options.LineHeight && '' !== options.LineHeight) {
+        style += 'line-height: ' + options.LineHeight + ' !important;';
       }
     }
     if ('color' === type) {
       if ('undefined' !== typeof options.text && '' !== options.text) {
-        style += 'color: ' + options.text + ';';
+        style += 'color: ' + options.text + ' !important;';
       }
       if ('undefined' !== typeof options.background && '' !== options.background) {
-        style += 'background: ' + options.background + ';';
+        style += 'background: ' + options.background + ' !important;';
       }
     }
     if ('navigation' === type || 'pagination' === type) {
       if ('undefined' !== typeof options.FontSize && '' !== options.FontSize) {
-        style += 'font-size: ' + options.FontSize + ';';
+        style += 'font-size: ' + options.FontSize + ' !important;';
       }
       if ('undefined' !== typeof options.Color && '' !== options.Color) {
-        style += 'color: ' + options.Color + ';';
+        style += 'color: ' + options.Color + ' !important;';
       }
       if ('undefined' !== typeof options.FontAppearance && 'undefined' !== typeof options.FontAppearance.fontWeight && '' !== options.FontAppearance.fontWeight) {
-        style += 'font-weight: ' + options.FontAppearance.fontWeight + ';';
+        style += 'font-weight: ' + options.FontAppearance.fontWeight + ' !important;';
       }
     }
     if ('pagination' === type) {
       if ('undefined' !== typeof options.background && '' !== options.background) {
-        style += 'background: ' + options.background + ';';
+        style += 'background: ' + options.background + ' !important;';
       }
       if ('undefined' !== typeof options.width && '' !== options.width && 'progressbar' !== atts.PaginationType) {
-        style += 'width: ' + options.width + ';';
+        style += 'width: ' + options.width + ' !important;';
       }
       if ('undefined' !== typeof options.height && '' !== options.height && 'progressbar' !== atts.PaginationType) {
-        style += 'height: ' + options.height + ';';
+        style += 'height: ' + options.height + ' !important;';
       }
     }
     if ('progressbar' === type) {
       if ('undefined' !== typeof options.width && '' !== options.width) {
-        style += 'width: ' + options.width + ';';
+        style += 'width: ' + options.width + ' !important;';
       }
       if ('undefined' !== typeof options.height && '' !== options.height) {
-        style += 'height: ' + options.height + ';';
+        style += 'height: ' + options.height + ' !important;';
       }
     }
     if ('border' === type) {
@@ -830,47 +838,48 @@ __webpack_require__.r(__webpack_exports__);
         if ('undefined' !== typeof options.border.color && '' !== options.border.color) {
           str += ' ' + options.border.color;
         }
-        style += 'border: ' + str + ';';
+        style += 'border: ' + str + ' !important;';
       }
       if ('undefined' !== typeof options.border.top && '' !== options.border.top) {
         for (const border in options.border) {
           for (const borderItem in options.border[border]) {
-            style += 'border-' + border + '-' + borderItem + ': ' + options.border[border][borderItem] + ';';
+            style += 'border-' + border + '-' + borderItem + ': ' + options.border[border][borderItem] + ' !important;';
           }
         }
       }
       if ('undefined' !== typeof options.borderRadius && '' !== options.borderRadius) {
         if ('undefined' !== typeof options.borderRadius.topLeft && '' !== options.borderRadius.topLeft) {
-          style += 'border-top-left-radius: ' + options.borderRadius.topLeft + ';';
+          style += 'border-top-left-radius: ' + options.borderRadius.topLeft + ' !important;';
         }
         if ('undefined' !== typeof options.borderRadius.topRight && '' !== options.borderRadius.topRight) {
-          style += 'border-top-right-radius: ' + options.borderRadius.topRight + ';';
+          style += 'border-top-right-radius: ' + options.borderRadius.topRight + ' !important;';
         }
         if ('undefined' !== typeof options.borderRadius.bottomLeft && '' !== options.borderRadius.bottomLeft) {
-          style += 'border-bottom-left-radius: ' + options.borderRadius.bottomLeft + ';';
+          style += 'border-bottom-left-radius: ' + options.borderRadius.bottomLeft + ' !important;';
         }
         if ('undefined' !== typeof options.borderRadius.bottomRight && '' !== options.borderRadius.bottomRight) {
-          style += 'border-bottom-right-radius: ' + options.borderRadius.bottomRight + ';';
+          style += 'border-bottom-right-radius: ' + options.borderRadius.bottomRight + ' !important;';
         }
         if ('undefined' == typeof options.borderRadius.topLeft) {
-          style += 'border-radius: ' + options.borderRadius + ';';
+          style += 'border-radius: ' + options.borderRadius + ' !important;';
         }
       }
     }
     if ('dimensions' === type) {
       if ('undefined' !== typeof options.padding && '' !== options.padding && ('undefined' !== typeof options.padding.top || 'undefined' !== typeof options.padding.right || 'undefined' !== typeof options.padding.bottom || 'undefined' !== typeof options.padding.left)) {
         let spacing = convetVarStyle(options.padding);
-        style += 'padding: ' + spacing.top + ' ' + spacing.right + ' ' + spacing.bottom + ' ' + spacing.left + ';';
+        style += 'padding: ' + spacing.top + ' ' + spacing.right + ' ' + spacing.bottom + ' ' + spacing.left + ' !important;';
       }
       if ('undefined' !== typeof options.margin && '' !== options.margin && ('undefined' !== typeof options.margin.top || 'undefined' !== typeof options.margin.right || 'undefined' !== typeof options.margin.bottom || 'undefined' !== typeof options.margin.left)) {
         let spacing = convetVarStyle(options.margin);
-        style += 'margin: ' + spacing.top + ' ' + spacing.right + ' ' + spacing.bottom + ' ' + spacing.left + ';';
+        style += 'margin: ' + spacing.top + ' ' + spacing.right + ' ' + spacing.bottom + ' ' + spacing.left + ' !important;';
       }
       if ('undefined' !== typeof options.position && '' !== options.position && ('undefined' !== typeof options.position.top || 'undefined' !== typeof options.position.right || 'undefined' !== typeof options.position.bottom || 'undefined' !== typeof options.position.left)) {
         let spacing = convetVarStyle(options.position);
         for (const position in options.position) {
-          style += position + ': ' + spacing[position] + ';';
+          style += position + ': ' + spacing[position] + ' !important;';
         }
+        style += 'position: absolute !important;';
       }
     }
     return style;
@@ -913,7 +922,7 @@ __webpack_require__.r(__webpack_exports__);
     let style = '';
     if ('undefined' !== typeof options.padding && '' !== options.padding && ('undefined' !== typeof options.padding.top || 'undefined' !== typeof options.padding.right || 'undefined' !== typeof options.padding.bottom || 'undefined' !== typeof options.padding.left)) {
       let spacing = convetVarStyle(options.padding);
-      style += 'padding: ' + spacing.top + ' ' + spacing.right + ' ' + spacing.bottom + ' ' + spacing.left + ';';
+      style += 'padding: ' + spacing.top + ' ' + spacing.right + ' ' + spacing.bottom + ' ' + spacing.left + ' !important;';
     }
     jQuery('#' + selector).attr('style', style);
     let mobileSett = attributes.Responsive.mobile;
@@ -1087,7 +1096,6 @@ __webpack_require__.r(__webpack_exports__);
       };
     }
     let _swiper = new Swiper('#' + selector, sw_obj);
-    window.WpmozoSwipers[clientId] = _swiper;
   };
   hooks.addAction('server-side-loading-finished', 'function_name', initializeSwiper);
   const TriggerWhenLoadingFinished = args => {
@@ -1893,10 +1901,7 @@ __webpack_require__.r(__webpack_exports__);
         ColorKey: 'QuickViewStockLabelColor',
         attributes: attributes,
         props: props,
-        ColorTypes: textColorObject,
-        default: {
-          text: '#ff0000'
-        }
+        ColorTypes: textColorObject
       }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'QuickViewStockLabelStyle',
         attributes: attributes,
@@ -1930,10 +1935,7 @@ __webpack_require__.r(__webpack_exports__);
         ColorKey: 'StockLabelColor',
         attributes: attributes,
         props: props,
-        ColorTypes: textColorObject,
-        default: {
-          text: '#ff0000'
-        }
+        ColorTypes: textColorObject
       }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'StockLabelStyle',
         attributes: attributes,

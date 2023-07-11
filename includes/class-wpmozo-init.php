@@ -369,7 +369,6 @@ class Wpmozo_Init {
 
 		$stocklabel_color_atts = $text_color_atts;
 		$stocklabel_color_atts['text']['default'] = '#ff0000';
-		//$stocklabel_color_atts['default']['text'] = '#ff0000';
 
 		$stocklabel_style_atts = $typography_atts;
 		$stocklabel_style_atts['FontSize']['default'] = '14px';
@@ -409,13 +408,36 @@ class Wpmozo_Init {
 				'SameAsCarousel' => true,
 			),
     	);
-    	$TitleStyle = array_merge( $typography_atts, $text_color_atts);
-    	$TitleStyleDefault = array_merge( $typography_atts['default'], $text_color_atts['default']);
-    	$PriceStyle = array_merge( $typography_atts, $text_color_atts);
-    	$PriceStyleDefault = array_merge( $typography_atts['default'], $text_color_atts['default']);
-    	$SaleLabelStyle = array_merge( $typography_atts, $text_color_atts);
-    	$SaleLabelStyleDefault = array_merge( $typography_atts['default'], $text_color_atts['default']);
-    	$StockLabelStyle = array_merge( $stocklabel_style_atts, $stocklabel_color_atts, $stocklabel_border_atts, $stocklabel_dimensions_atts);
+    	$TitleStyle = array_merge( 
+    		$typography_atts, 
+    		$text_color_atts
+    	);
+    	$TitleStyleDefault = array_merge( 
+    		$typography_atts['default'], 
+    		$text_color_atts['default']
+    	);
+    	$PriceStyle = array_merge( 
+    		$typography_atts, 
+    		$text_color_atts
+    	);
+    	$PriceStyleDefault = array_merge( 
+    		$typography_atts['default'], 
+    		$text_color_atts['default']
+    	);
+    	$SaleLabelStyle = array_merge( 
+    		$typography_atts, 
+    		$text_color_atts
+    	);
+    	$SaleLabelStyleDefault = array_merge( 
+    		$typography_atts['default'], 
+    		$text_color_atts['default']
+    	);
+    	$StockLabelStyle = array_merge( 
+    		$stocklabel_style_atts, 
+    		$stocklabel_color_atts, 
+    		$stocklabel_border_atts, 
+    		$stocklabel_dimensions_atts
+    	);
     	$StockLabelStyleDefault = array(
     		'FontSize' => '14px',
     		'text' => '#ff0000',
@@ -436,14 +458,54 @@ class Wpmozo_Init {
 				'top' => '5px',
 			),
     	);
-		$AddToCartStyle = array_merge( $typography_atts, $two_color_atts, $border_atts, $only_padding_atts );
-		$AddToCartStyleDefault = array_merge( $typography_atts['default'], $two_color_atts['default'], $border_atts['default'], $only_padding_atts['default'] );
-		$QuickViewStyle = array_merge( $typography_atts, $two_color_atts, $border_atts, $dimensions_atts );
-		$QuickViewStyleDefault = array_merge( $typography_atts['default'], $two_color_atts['default'], $border_atts['default'], $dimensions_atts['default'] );
-		$QuickViewPopupStyle = array_merge($background_color_atts, $quickpopup_dimensions_atts, $SameAsCarousel);
-		$QuickViewPopupStyleDefalult = array_merge($background_color_atts['default'], $quickpopup_dimensions_atts['default'], $SameAsCarousel['default']);
-		$QuickViewCloseStyle = array_merge($typography_atts, $two_color_atts, $border_atts, $only_padding_atts, $size_atts);
-		$QuickViewCloseStyleDefault = array_merge($typography_atts['default'], $two_color_atts['default'], $border_atts['default'], $only_padding_atts['default'], $size_atts['default']);
+		$AddToCartStyle = array_merge( 
+			$typography_atts, $two_color_atts, 
+			$border_atts, $only_padding_atts 
+		);
+		$AddToCartStyleDefault = array_merge( 
+			$typography_atts['default'], 
+			$two_color_atts['default'], 
+			$border_atts['default'], 
+			$only_padding_atts['default'] 
+		);
+		$QuickViewStyle = array_merge( 
+			$typography_atts, 
+			$two_color_atts, 
+			$border_atts, 
+			$dimensions_atts 
+		);
+		$QuickViewStyleDefault = array_merge( 
+			$typography_atts['default'], 
+			$two_color_atts['default'], 
+			$border_atts['default'], 
+			$dimensions_atts['default'] 
+		);
+		$QuickViewPopupStyle = array_merge(
+			$background_color_atts, 
+			$quickpopup_dimensions_atts, 
+			$SameAsCarousel
+		);
+		$QuickViewPopupStyleDefalult = array_merge(
+			$background_color_atts['default'], 
+			array(
+				'padding' => $quickpopup_dimensions_atts['padding']['default']
+			), 
+			$SameAsCarousel['default']
+		);
+		$QuickViewCloseStyle = array_merge(
+			$typography_atts, 
+			$two_color_atts, 
+			$border_atts, 
+			$only_padding_atts, 
+			$size_atts
+		);
+		$QuickViewCloseStyleDefault = array_merge(
+			$typography_atts['default'], 
+			$two_color_atts['default'], 
+			$border_atts['default'], 
+			$only_padding_atts['default'], 
+			$size_atts['default']
+		);
 
 		$style_attrs = array(
 			'type' => 'object',

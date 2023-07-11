@@ -1199,14 +1199,7 @@ __webpack_require__.r(__webpack_exports__);
     edit: function (props) {
       let attributes = props.attributes;
       attributes.clientId = props.clientId;
-<<<<<<< HEAD
-      let clientId = attributes.clientId;
-      if (!attributes.hasOwnProperty('UID')) {
-        attributes.UID = wpmozoGetRand();
-      }
-      let product_cats = wp.data.select('core').getEntityRecords('taxonomy', 'product_cat');
-      let product_cat_options = [];
-=======
+
       let clientId = attributes.clientId,
         product_cats = wp.data.select('core').getEntityRecords('taxonomy', 'product_cat'),
         product_cat_options = [],
@@ -1219,7 +1212,7 @@ __webpack_require__.r(__webpack_exports__);
       const {
         setAttributes
       } = props;
->>>>>>> dev
+      
       if (product_cats) {
         product_cat_options = product_cats.map(value => value.name);
       }

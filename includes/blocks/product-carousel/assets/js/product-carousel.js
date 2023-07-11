@@ -367,6 +367,18 @@
             for (const position in options.position) {
                 style += position+': '+spacing[position]+' !important;';
             }
+            if ( 'undefined' !== typeof spacing['top'] && '' !== spacing.top && 'undefined' === typeof spacing['bottom'] ) {
+                style += 'bottom: auto !important;';
+            }
+            if ( 'undefined' !== typeof spacing['bottom'] && '' !== spacing.bottom && 'undefined' === typeof spacing['top'] ) {
+                style += 'top: auto !important;';
+            }
+            if ( 'undefined' !== typeof spacing['right'] && '' !== spacing.right && 'undefined' === typeof spacing['left'] ) {
+                style += 'left: auto !important;';
+            }
+            if ( 'undefined' !== typeof spacing['left'] && '' !== spacing.left && 'undefined' === typeof spacing['right'] ) {
+                style += 'right: auto !important;';
+            }
             style += 'position: absolute !important;';
         }
 

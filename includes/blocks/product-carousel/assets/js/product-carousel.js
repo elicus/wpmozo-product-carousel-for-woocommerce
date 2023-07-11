@@ -9,9 +9,10 @@
 	$('.wpmozo-product-carousel-wrap').each(function(){
 
 		var $this = $(this),
-		 	atts = $(this).data('atts');
+		 	atts = $(this).data('atts'),
+            StyleAtts = atts.StyleAtts;
 
-        let options = atts.CarouContStyle;
+        let options = StyleAtts.CarouContStyle;
         let style = '';
         if ( 'undefined' !== typeof options.padding && '' !== options.padding && ( 
             'undefined' !== typeof options.padding.top || 
@@ -37,52 +38,51 @@
                         });
                     }
 
+                     let main = Object.assign({}, StyleAtts.CarouNavigation, StyleAtts.CarouNavigationLeft, StyleAtts.CarouNavigationRight),
+                        left = Object.assign({}, StyleAtts.CarouNavigation, StyleAtts.CarouNavigationLeft),
+                        right = Object.assign({}, StyleAtts.CarouNavigation, StyleAtts.CarouNavigationRight);
+
+                    let wraper = jQuery($this);
                     let styles = [
-                        {attKey: 'TitleStyle', type: 'style', selector: '.woocommerce-loop-product__title'},
-                        {attKey: 'PriceStyle', type: 'style', selector: '.price'},
-                        {attKey: 'AddToCartStyle', type: 'style', selector: add_to_cart_selector},
-                        {attKey: 'QuickViewStyle', type: 'style', selector: '.wpmozo-quick-view-button'},
-                        {attKey: 'SaleLabelStyle', type: 'style', selector: '.onsale'},
-                        {attKey: 'StockLabelStyle', type: 'style', selector: '.stock.out-of-stock'},
-                        {attKey: 'TitleColor', type: 'color', selector: '.woocommerce-loop-product__title'},
-                        {attKey: 'PriceColor', type: 'color', selector: '.price'},
-                        {attKey: 'AddToCartColor', type: 'color', selector: add_to_cart_selector},
-                        {attKey: 'QuickViewColor', type: 'color', selector: '.wpmozo-quick-view-button'},
-                        {attKey: 'SaleLabelColor', type: 'color', selector: '.onsale'},
-                        {attKey: 'StockLabelColor', type: 'color', selector: '.stock.out-of-stock'},
-                        {attKey: 'StockLabelBorder', type: 'border', selector: '.stock.out-of-stock'},
-                        {attKey: 'StockLabelDimensions', type: 'dimensions', selector: '.stock.out-of-stock'},
-                        {attKey: 'CarouNavigation', type: 'navigation', selector: '.swiper-navigation'},
-                        {attKey: 'CarouNavigation', type: 'color', selector: '.swiper-navigation'},
-                        {attKey: 'CarouNavigation', type: 'dimensions', selector: '.swiper-navigation'},
-                        {attKey: 'CarouNavigationLeft', type: 'dimensions', selector: '.swiper-button-prev'},
-                        {attKey: 'CarouNavigationRight', type: 'dimensions', selector: '.swiper-button-next'},
-                        {attKey: 'AddToCartBorder', type: 'border', selector: add_to_cart_selector},
-                        {attKey: 'QuickViewBorder', type: 'border', selector: '.wpmozo-quick-view-button'},
-                        {attKey: 'AddToCartDimensions', type: 'dimensions', selector: add_to_cart_selector},
-                        {attKey: 'QuickViewDimensions', type: 'dimensions', selector: '.wpmozo-quick-view-button'},
+                        {attKey: 'TitleStyle', selector: '.woocommerce-loop-product__title'},
+                        {attKey: 'PriceStyle', selector: '.price'},
+                        {attKey: 'AddToCartStyle', selector: add_to_cart_selector},
+                        {attKey: 'QuickViewStyle', selector: '.wpmozo-quick-view-button'},
+                        {attKey: 'SaleLabelStyle', selector: '.onsale'},
+                        {attKey: 'StockLabelStyle', selector: '.stock.out-of-stock'},
+                        {attKey: 'CarouNavigation', selector: '.swiper-navigation', values: main},
+                        {attKey: 'CarouNavigationLeft', selector: '.swiper-button-prev', values: left},
+                        {attKey: 'CarouNavigationRight', selector: '.swiper-button-next', values: right},
                     ];
 
                     styles.map(
-					  	function(item) { appendInlineStyle(item, $this, atts); }
-					);
+                        function(item) { appendInlineStyle(item, wraper, false, StyleAtts); }
+                    );
 
                 },
                 afterInit: function(swiper){
 
-                    let PaginationSelector = ( 'fraction' !== atts.PaginationType ) ? '.swiper-pagination span' : '.swiper-pagination';
+                    let wraper = jQuery($this),
+                        PaginationSelector = ( 'fraction' === atts.PaginationType ) ? '.swiper-pagination' : '.swiper-pagination span';
 
                     let styles = [
-                        {attKey: 'CarouPagination', type: 'pagination', selector: PaginationSelector},
+                        {attKey: 'CarouPagination', selector: PaginationSelector},
                     ];
 
                     if ( 'progressbar' === atts.PaginationType ) {
-                        let pagi = {attKey: 'CarouPagination', type: 'progressbar', selector: '.swiper-pagination'}
-                        styles.push(pagi);
+                        let barAtts = { background: StyleAtts.CarouPagination.background},
+                            progAtts = {
+                                width: StyleAtts.CarouPagination.width,
+                                height: StyleAtts.CarouPagination.height,
+                            };
+                        styles = [
+                            {selector: PaginationSelector, values: barAtts},
+                            {selector: '.swiper-pagination', values: progAtts},
+                        ];
                     }
 
                     styles.map(
-                        function(item) { appendInlineStyle(item, $this, atts); }
+                        function(item) { appendInlineStyle(item, wraper, false, StyleAtts); }
                     );
 
                 	$this.find('.wpmozo-loader').remove();
@@ -138,8 +138,10 @@
 	$('.wpmozo-quick-view-button').click(function(e){
 
         e.preventDefault();
-        var wraper = $(this).closest('.wpmozo-product-carousel-wrap'),
-            atts = wraper.data('atts'),
+        var main = $(this).closest('.wpmozo-product-carousel-wrap'),
+            atts = main.data('atts'),
+            wraper = 'body .mfp-content',
+            StyleAtts = atts.StyleAtts,
             pro_id = $(this).data('pro-id'),
             body = jQuery('body');
 
@@ -186,60 +188,37 @@
                             add_to_cart_selector += ', .button.product_type_'+type;
                         });
                     }
-
+                    
                     let styles = [];
-                    if ( atts.SameAsCarousel ) {
+                    if ( StyleAtts.QuickViewPopupStyle.SameAsCarousel ) {
                         styles = [
-                            {attKey: 'TitleStyle', type: 'style', selector: '.product_title'},
-                            {attKey: 'PriceStyle', type: 'style', selector: '.price'},
-                            {attKey: 'AddToCartStyle', type: 'style', selector: add_to_cart_selector},
-                            {attKey: 'SaleLabelStyle', type: 'style', selector: '.onsale'},
-                            {attKey: 'StockLabelStyle', type: 'style', selector: '.stock.out-of-stock'},
-                            {attKey: 'StockLabelBorder', type: 'border', selector: '.stock.out-of-stock'},
-                            {attKey: 'StockLabelDimensions', type: 'dimensions', selector: '.stock.out-of-stock'},
-                            {attKey: 'TitleColor', type: 'color', selector: '.product_title'},
-                            {attKey: 'PriceColor', type: 'color', selector: '.price'},
-                            {attKey: 'AddToCartColor', type: 'color', selector: add_to_cart_selector},
-                            {attKey: 'SaleLabelColor', type: 'color', selector: '.onsale'},
-                            {attKey: 'StockLabelColor', type: 'color', selector: '.stock.out-of-stock'},
-                            {attKey: 'AddToCartBorder', type: 'border', selector: add_to_cart_selector},
-                            {attKey: 'AddToCartDimensions', type: 'dimensions', selector: add_to_cart_selector},
+                            {attKey: 'TitleStyle', selector: '.product_title'},
+                            {attKey: 'PriceStyle', selector: '.price'},
+                            {attKey: 'AddToCartStyle', selector: add_to_cart_selector},
+                            {attKey: 'SaleLabelStyle', selector: '.onsale'},
+                            {attKey: 'StockLabelStyle', selector: '.stock.out-of-stock'},
                         ];
                     }else{
                         styles = [
-                            {attKey: 'QuickViewTitleStyle', type: 'style', selector: '.product_title'},
-                            {attKey: 'QuickViewPriceStyle', type: 'style', selector: '.price'},
-                            {attKey: 'QuickViewAddToCartStyle', type: 'style', selector: add_to_cart_selector},
-                            {attKey: 'QuickViewSaleLabelStyle', type: 'style', selector: '.onsale'},
-                            {attKey: 'QuickViewStockLabelStyle', type: 'style', selector: '.stock.out-of-stock'},
-                            {attKey: 'QuickViewStockLabelBorder', type: 'border', selector: '.stock.out-of-stock'},
-                            {attKey: 'QuickViewStockLabelDimensions', type: 'dimensions', selector: '.stock.out-of-stock'},
-                            {attKey: 'QuickViewTitleColor', type: 'color', selector: '.product_title'},
-                            {attKey: 'QuickViewPriceColor', type: 'color', selector: '.price'},
-                            {attKey: 'QuickViewAddToCartColor', type: 'color', selector: add_to_cart_selector},
-                            {attKey: 'QuickViewSaleLabelColor', type: 'color', selector: '.onsale'},
-                            {attKey: 'QuickViewStockLabelColor', type: 'color', selector: '.stock.out-of-stock'},
-                            {attKey: 'QuickViewAddToCartBorder', type: 'border', selector: add_to_cart_selector},
-                            {attKey: 'QuickViewAddToCartDimensions', type: 'dimensions', selector: add_to_cart_selector},
+                            {attKey: 'QuickViewTitleStyle', selector: '.product_title'},
+                            {attKey: 'QuickViewPriceStyle', selector: '.price'},
+                            {attKey: 'QuickViewAddToCartStyle', selector: add_to_cart_selector},
+                            {attKey: 'QuickViewSaleLabelStyle', selector: '.onsale'},
+                            {attKey: 'QuickViewStockLabelStyle', selector: '.stock.out-of-stock'},
                         ];
                     }
 
                     var popup_styles = [
-                        {attKey: 'QuickViewPopupBackground', type: 'color', selector: '.wpmozo-product-quick-view'},
-                        {attKey: 'QuickViewPopupDimensions', type: 'dimensions', selector: '.wpmozo-product-quick-view'},
-                        {attKey: 'QuickViewCloseStyle', type: 'style', selector: '.mfp-close'},
-                        {attKey: 'QuickViewCloseColor', type: 'color', selector: '.mfp-close'},
-                        {attKey: 'QuickViewCloseBorder', type: 'border', selector: '.mfp-close'},
-                        {attKey: 'QuickViewCloseDimensions', type: 'dimensions', selector: '.mfp-close'},
-                        {attKey: 'QuickViewCloseSize', type: 'size', selector: '.mfp-close'},
+                        {attKey: 'QuickViewPopupStyle', selector: '.wpmozo-product-quick-view'},
+                        {attKey: 'QuickViewCloseStyle', selector: '.mfp-close'},
                     ];
 
-                    popup_styles.map(
-                        function(item) { appendInlineStyle(item, body, atts); }
-                    );
+                    popup_styles.map(function(item) {
+                        appendInlineStyle(item, wraper, false, StyleAtts); 
+                    });
 
                     styles.map(
-                        function(item) { appendInlineStyle(item, $this, atts); }
+                        function(item) { appendInlineStyle(item, wraper, false, StyleAtts); }
                     );
                 }
             },
@@ -247,19 +226,15 @@
 
 	});
 
-	function appendInlineStyle( item, wraper, atts ){
+	 function appendInlineStyle( item, wraper, values = false, atts = false ){
 
-        let attKey = item.attKey,
+        let attKey = ( values === false ) ? item.attKey : '',
             selector = item.selector,
-            type = item.type,
-            inlineStyle = convetInlineStyle( atts[attKey], type, atts );
-        if ( '' !== inlineStyle ) {
-            var defaultStyle = wraper.find(selector).attr('style');
-            if ( '' !== defaultStyle && 'undefined' !== typeof defaultStyle ) {
-                inlineStyle += defaultStyle;
-            }
-            wraper.find(selector).attr('style', inlineStyle);
-        }
+            _values = ( values === false ) ? atts[attKey] : values,
+            __values = ( item.hasOwnProperty('values') ) ? item.values : _values,
+            inlineStyle = convetInlineStyle( __values, atts );
+        
+        jQuery(wraper).find(selector).attr('style', inlineStyle);
 
     }
 
@@ -277,77 +252,51 @@
 
     }
 
-	function convetInlineStyle( options, type, atts ){
+	function convetInlineStyle( options, atts ){
 
         let style = '';
 
-        if ( 'style' === type ) {
-            if ( 'undefined' !== typeof options.FontSize && '' !== options.FontSize ) {
-                style += 'font-size: '+options.FontSize+' !important;';
-            }
+        if ( 'undefined' !== typeof options.FontSize && '' !== options.FontSize ) {
+            style += 'font-size: '+options.FontSize+' !important;';
+        }
+        if ( 'undefined' !== typeof options.FontAppearance ) {
             if ( 'undefined' !== typeof options.FontAppearance.fontStyle && '' !== options.FontAppearance.fontStyle ) {
                 style += 'font-style: '+options.FontAppearance.fontStyle+' !important;';
             }
             if ( 'undefined' !== typeof options.FontAppearance.fontWeight && '' !== options.FontAppearance.fontWeight ) {
                 style += 'font-weight: '+options.FontAppearance.fontWeight+' !important;';
             }
-            if ( 'undefined' !== typeof options.LetterSpacing && '' !== options.LetterSpacing ) {
-                style += 'letter-spacing: '+options.LetterSpacing+' !important;';
-            }
-            if ( 'undefined' !== typeof options.Decoration && '' !== options.Decoration ) {
-                style += 'text-decoration: '+options.Decoration+' !important;';
-            }
-            if ( 'undefined' !== typeof options.LetterCase && '' !== options.LetterCase ) {
-                style += 'text-transform: '+options.LetterCase+' !important;';
-            }
-            if ( 'undefined' !== typeof options.LineHeight && '' !== options.LineHeight ) {
-                style += 'line-height: '+options.LineHeight+' !important;';
-            }
+        }
+        if ( 'undefined' !== typeof options.LetterSpacing && '' !== options.LetterSpacing ) {
+            style += 'letter-spacing: '+options.LetterSpacing+' !important;';
+        }
+        if ( 'undefined' !== typeof options.Decoration && '' !== options.Decoration ) {
+            style += 'text-decoration: '+options.Decoration+' !important;';
+        }
+        if ( 'undefined' !== typeof options.LetterCase && '' !== options.LetterCase ) {
+            style += 'text-transform: '+options.LetterCase+' !important;';
+        }
+        if ( 'undefined' !== typeof options.LineHeight && '' !== options.LineHeight ) {
+            style += 'line-height: '+options.LineHeight+' !important;';
+        }
+    
+
+        if ( 'undefined' !== typeof options.text && '' !== options.text ) {
+            style += 'color: '+options.text+' !important;';
+        }
+        if ( 'undefined' !== typeof options.background && '' !== options.background ) {
+            style += 'background: '+options.background+' !important;';
         }
 
-        if ( 'color' === type ) {
-            if ( 'undefined' !== typeof options.text && '' !== options.text ) {
-                style += 'color: '+options.text+' !important;';
-            }
-            if ( 'undefined' !== typeof options.background && '' !== options.background ) {
-                style += 'background: '+options.background+' !important;';
-            }
+        if ( 'undefined' !== typeof options.width && '' !== options.width ) {
+            style += 'width: '+options.width+' !important;';
+        }
+        if ( 'undefined' !== typeof options.height && '' !== options.height ) {
+            style += 'height: '+options.height+' !important;';
         }
 
-        if ( 'navigation' === type || 'pagination' === type ) {
-            if ( 'undefined' !== typeof options.FontSize && '' !== options.FontSize ) {
-                style += 'font-size: '+options.FontSize+' !important;';
-            }
-            if ( 'undefined' !== typeof options.Color && '' !== options.Color ) {
-                style += 'color: '+options.Color+' !important;';
-            }
-            if ( 'undefined' !== typeof options.FontAppearance && 'undefined' !== typeof options.FontAppearance.fontWeight && '' !== options.FontAppearance.fontWeight ) {
-                style += 'font-weight: '+options.FontAppearance.fontWeight+' !important;';
-            }
-        }
 
-        if ( 'pagination' === type ) {
-            if ( 'undefined' !== typeof options.background && '' !== options.background ) {
-                style += 'background: '+options.background+' !important;';
-            }
-            if ( 'undefined' !== typeof options.width && '' !== options.width && 'progressbar' !== atts.PaginationType ) {
-                style += 'width: '+options.width+' !important;';
-            }
-            if ( 'undefined' !== typeof options.height && '' !== options.height && 'progressbar' !== atts.PaginationType ) {
-                style += 'height: '+options.height+' !important;';
-            }
-        }
-
-        if ( 'progressbar' === type || 'size' === type ) {
-            if ( 'undefined' !== typeof options.width && '' !== options.width ) {
-                style += 'width: '+options.width+' !important;';
-            }
-            if ( 'undefined' !== typeof options.height && '' !== options.height ) {
-                style += 'height: '+options.height+' !important;';
-            }
-        }
-
-        if ( 'border' === type ) {
+        if ( 'undefined' !== typeof options.border ) {
             if ( 'undefined' !== typeof options.border.width && '' !== options.border.width ) {
                 let str = options.border.width;
 
@@ -370,59 +319,55 @@
                     }
                 }
             }
+        }
 
-            if ( 'undefined' !== typeof options.borderRadius && '' !== options.borderRadius ) {
-                if ( 'undefined' !== typeof options.borderRadius.topLeft && '' !== options.borderRadius.topLeft ) {
-                    style += 'border-top-left-radius: '+options.borderRadius.topLeft+' !important;';
-                }
-                if ( 'undefined' !== typeof options.borderRadius.topRight && '' !== options.borderRadius.topRight ) {
-                    style += 'border-top-right-radius: '+options.borderRadius.topRight+' !important;';
-                }
-                if ( 'undefined' !== typeof options.borderRadius.bottomLeft && '' !== options.borderRadius.bottomLeft ) {
-                    style += 'border-bottom-left-radius: '+options.borderRadius.bottomLeft+' !important;';
-                }
-                if ( 'undefined' !== typeof options.borderRadius.bottomRight && '' !== options.borderRadius.bottomRight ) {
-                    style += 'border-bottom-right-radius: '+options.borderRadius.bottomRight+' !important;';
-                }
 
-                if ( 'undefined' == typeof options.borderRadius.topLeft ) {
-                    style += 'border-radius: '+options.borderRadius+' !important;';
-                }
+        if ( 'undefined' !== typeof options.borderRadius && '' !== options.borderRadius ) {
+            if ( 'undefined' !== typeof options.borderRadius.topLeft && '' !== options.borderRadius.topLeft ) {
+                style += 'border-top-left-radius: '+options.borderRadius.topLeft+' !important;';
+            }
+            if ( 'undefined' !== typeof options.borderRadius.topRight && '' !== options.borderRadius.topRight ) {
+                style += 'border-top-right-radius: '+options.borderRadius.topRight+' !important;';
+            }
+            if ( 'undefined' !== typeof options.borderRadius.bottomLeft && '' !== options.borderRadius.bottomLeft ) {
+                style += 'border-bottom-left-radius: '+options.borderRadius.bottomLeft+' !important;';
+            }
+            if ( 'undefined' !== typeof options.borderRadius.bottomRight && '' !== options.borderRadius.bottomRight ) {
+                style += 'border-bottom-right-radius: '+options.borderRadius.bottomRight+' !important;';
+            }
+
+            if ( 'undefined' == typeof options.borderRadius.topLeft ) {
+                style += 'border-radius: '+options.borderRadius+' !important;';
             }
         }
 
-        if ( 'dimensions' === type ) {
 
-            if ( 'undefined' !== typeof options.padding && '' !== options.padding && ( 
-                'undefined' !== typeof options.padding.top || 
-                'undefined' !== typeof options.padding.right || 
-                'undefined' !== typeof options.padding.bottom || 
-                'undefined' !== typeof options.padding.left ) ) {
-                let spacing = convetVarStyle(options.padding);
-                style += 'padding: '+spacing.top+' '+spacing.right+' '+spacing.bottom+' '+spacing.left+' !important;';
+        if ( 'undefined' !== typeof options.padding && '' !== options.padding && ( 
+            'undefined' !== typeof options.padding.top || 
+            'undefined' !== typeof options.padding.right || 
+            'undefined' !== typeof options.padding.bottom || 
+            'undefined' !== typeof options.padding.left ) ) {
+            let spacing = convetVarStyle(options.padding);
+            style += 'padding: '+spacing.top+' '+spacing.right+' '+spacing.bottom+' '+spacing.left+' !important;';
+        }
+        if ( 'undefined' !== typeof options.margin && '' !== options.margin && ( 
+            'undefined' !== typeof options.margin.top || 
+            'undefined' !== typeof options.margin.right || 
+            'undefined' !== typeof options.margin.bottom || 
+            'undefined' !== typeof options.margin.left ) ) {
+            let spacing = convetVarStyle(options.margin);
+            style += 'margin: '+spacing.top+' '+spacing.right+' '+spacing.bottom+' '+spacing.left+' !important;';
+        }
+        if ( 'undefined' !== typeof options.position && '' !== options.position && ( 
+            'undefined' !== typeof options.position.top || 
+            'undefined' !== typeof options.position.right || 
+            'undefined' !== typeof options.position.bottom || 
+            'undefined' !== typeof options.position.left ) ) {
+            let spacing = convetVarStyle(options.position);
+            for (const position in options.position) {
+                style += position+': '+spacing[position]+' !important;';
             }
-
-            if ( 'undefined' !== typeof options.margin && '' !== options.margin && ( 
-                'undefined' !== typeof options.margin.top || 
-                'undefined' !== typeof options.margin.right || 
-                'undefined' !== typeof options.margin.bottom || 
-                'undefined' !== typeof options.margin.left ) ) {
-                let spacing = convetVarStyle(options.margin);
-                style += 'margin: '+spacing.top+' '+spacing.right+' '+spacing.bottom+' '+spacing.left+' !important;';
-            }
-
-            if ( 'undefined' !== typeof options.position && '' !== options.position && ( 
-                'undefined' !== typeof options.position.top || 
-                'undefined' !== typeof options.position.right || 
-                'undefined' !== typeof options.position.bottom || 
-                'undefined' !== typeof options.position.left ) ) {
-                let spacing = convetVarStyle(options.position);
-                for (const position in options.position) {
-                    style += position+': '+spacing[position]+' !important;';
-                }
-                style += 'position: absolute !important;';
-            }
-
+            style += 'position: absolute !important;';
         }
 
         return style;

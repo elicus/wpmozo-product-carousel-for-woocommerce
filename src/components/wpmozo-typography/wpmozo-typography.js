@@ -4,18 +4,57 @@ const __ = wp.i18n.__;
 const { __experimentalFontAppearanceControl, FontSizePicker, __experimentalLetterSpacingControl, __experimentalTextTransformControl, __experimentalTextDecorationControl, LineHeightControl } = window.wp.blockEditor;
 const { __experimentalToolsPanel, __experimentalToolsPanelItem } = window.wp.components;
 const { compose } = wp.compose;
+const preAttributes = wpmozo_block_carousel_object.attributes;
 
 
 const WpmozoTypography = function(args){
 	
-    const { TypographyKey, attributes, props } = args;
-    const TypoTypes = args.hasOwnProperty('TypoTypes') ? args.TypoTypes : null;
+    const { TypographyKey, props, values } = args;
+    let TypoTypes = args.hasOwnProperty('TypoTypes') ? args.TypoTypes : null;
+    let depth = args.hasOwnProperty('depth') ? args.depth : [],
+        AttrKey = args.hasOwnProperty('AttrKey') ? args.AttrKey : 'StyleAtts',
+        theAtts = Object.assign({}, props.attributes[AttrKey]);
 
     const typoSetValue = function( styleType, value = null ) {
-        let _Typography = Object.assign({}, attributes[TypographyKey]);
-        _Typography[styleType] = ( null !== value ) ? value : '';
-        props.setAttributes( {[TypographyKey]: _Typography} );
+       
+        let _typo = setValue(styleType, value);
+        props.setAttributes( {[AttrKey]: theAtts} );
+
+        if ( args.hasOwnProperty('afterOnChange') ) {
+            args.afterOnChange( props );
+        }
+
     };
+
+    const setValue = function(styleType, value){
+
+        let _typo = null;
+        if ( null === value && depth.length < 1 && 'undefined' !== typeof preAttributes[AttrKey][TypographyKey][styleType].default ) {
+            value = preAttributes[AttrKey][TypographyKey][styleType].default;
+        }
+
+        if ( Array.isArray(depth) && depth.length ) {
+            let lastEl = null,
+                lastPreEl = null;
+            for (var i = 0; i < depth.length; i++) {
+                lastEl = theAtts[depth[i]];
+                lastPreEl = preAttributes[AttrKey][depth[i]];
+            }
+            _typo = lastEl[TypographyKey];
+            if ( null == value && 'undefined' !== typeof lastPreEl[TypographyKey][styleType] ) {
+                value = lastPreEl[TypographyKey][styleType].default;
+            }
+            _typo[styleType] = ( null !== value ) ? value : '';
+        }else{
+            _typo = theAtts[TypographyKey];
+            _typo[styleType] = ( null !== value ) ? value : '';
+        }
+
+        return _typo;
+
+    }
+
+    const onChange = args.hasOwnProperty('onChange') ? args.onChange : typoSetValue;
 
     if ( null == TypoTypes || TypoTypes.hasOwnProperty('FontAppearance') ) {
 
@@ -26,10 +65,10 @@ const WpmozoTypography = function(args){
 
         var _FontAppearanceValues = {};
         if ( hasFontStyles ) {
-            _FontAppearanceValues['fontStyle'] = attributes[TypographyKey].FontAppearance.fontStyle;
+            _FontAppearanceValues['fontStyle'] = values.FontAppearance.fontStyle;
         }
         if ( hasFontWeights ) {
-            _FontAppearanceValues['fontWeight'] = attributes[TypographyKey].FontAppearance.fontWeight;
+            _FontAppearanceValues['fontWeight'] = values.FontAppearance.fontWeight;
         }
 
     }
@@ -40,24 +79,28 @@ const WpmozoTypography = function(args){
             { 
                 label: __( 'Typography', 'wpmozo-product-carousel-for-woocommerce' ),
                 resetAll: () => {
-                    let _Typography = Object.assign({}, attributes[TypographyKey]);
+                    let theAtts = Object.assign({}, props.attributes[AttrKey]);
                     if ( null === TypoTypes ) {
-                        let TypographyTypes = {
-                            FontSize: '',
-                            LetterSpacing: '',
-                            Decoration: '',
-                            FontAppearance: {
-                                fontStyle: '',
-                                fontWeight: '',
+                        TypoTypes = {
+                            'FontSize': '',
+                            'LetterSpacing': '',
+                            'Decoration': '',
+                            'FontAppearance': {
+                                'fontStyle': '',
+                                'fontWeight': '',
                             },
-                            LetterCase: '',
-                            LineHeight: '',
-                        }
-                        Object.keys(TypographyTypes).map(type => _Typography[type] = '');
-                    }else{
-                        Object.keys(TypoTypes).map(type => _Typography[type] = '');
+                            'LetterCase': '',
+                            'LineHeight': '',
+                        };
                     }
-                    props.setAttributes( {[TypographyKey]: _Typography} );
+                    for (const type in TypoTypes) {
+
+                        let _typo = setValue(type, null);
+                    }
+                    props.setAttributes( {[AttrKey]: theAtts} );
+                    if ( args.hasOwnProperty('afterOnChange') ) {
+                        args.afterOnChange( props );
+                    }
                 }
             },
             ( null == TypoTypes || TypoTypes.hasOwnProperty('FontSize') ) &&
@@ -70,8 +113,8 @@ const WpmozoTypography = function(args){
                     }, 
                     el( FontSizePicker,
                         {
-                            value: attributes[TypographyKey].FontSize,
-                            onChange: (NewFontSize) => { typoSetValue('FontSize', NewFontSize) },
+                            value: values.FontSize,
+                            onChange: (NewFontSize) => onChange('FontSize', NewFontSize),
                             __nextHasNoMarginBottom: true,
                         }
                     ),
@@ -91,7 +134,7 @@ const WpmozoTypography = function(args){
                             hasFontStyles: hasFontStyles,
                             hasFontWeights: hasFontWeights,
                             value: _FontAppearanceValues,
-                            onChange: (NewFontAppearance) => { typoSetValue('FontAppearance', NewFontAppearance) },
+                            onChange: (NewFontAppearance) => onChange('FontAppearance', NewFontAppearance),
                         } 
                     ),
                 ),
@@ -106,8 +149,8 @@ const WpmozoTypography = function(args){
                     },
                     el( __experimentalLetterSpacingControl, 
                         {
-                            value: attributes[TypographyKey].LetterSpacing,
-                            onChange: (NewLetterSpacing) => { typoSetValue('LetterSpacing', NewLetterSpacing) },
+                            value: values.LetterSpacing,
+                            onChange: (NewLetterSpacing) => onChange('LetterSpacing', NewLetterSpacing),
                         } 
                     ),
                 ),
@@ -121,8 +164,8 @@ const WpmozoTypography = function(args){
                     }, 
                     el( __experimentalTextDecorationControl,
                         {
-                            value: attributes[TypographyKey].Decoration,
-                            onChange: (NewDecoration) => { typoSetValue('Decoration', NewDecoration) },
+                            value: values.Decoration,
+                            onChange: (NewDecoration) => onChange('Decoration', NewDecoration),
                         }
                     ),
                 ),
@@ -136,8 +179,8 @@ const WpmozoTypography = function(args){
                     }, 
                     el( __experimentalTextTransformControl,
                         {
-                            value: attributes[TypographyKey].LetterCase,
-                            onChange: (NewLetterCase) => { typoSetValue('LetterCase', NewLetterCase) },
+                            value: values.LetterCase,
+                            onChange: (NewLetterCase) => onChange('LetterCase', NewLetterCase),
                         }
                     ),
                 ),
@@ -152,8 +195,8 @@ const WpmozoTypography = function(args){
                     },
                     el( LineHeightControl, 
                         {
-                            value: attributes[TypographyKey].LineHeight,
-                            onChange: (NewLineHeight) => { typoSetValue('LineHeight', NewLineHeight) },
+                            value: values.LineHeight,
+                            onChange: (NewLineHeight) => onChange('LineHeight', NewLineHeight),
                             __nextHasNoMarginBottom: true,
                         }
                     ),

@@ -3,33 +3,79 @@ const el = window.wp.element.createElement;
 const __ = wp.i18n.__;
 const { __experimentalBorderRadiusControl } = window.wp.blockEditor;
 const { __experimentalToolsPanel, __experimentalToolsPanelItem, __experimentalBorderBoxControl } = window.wp.components;
-
+const preAttributes = wpmozo_block_carousel_object.attributes;
 
 const WpmozoBorder = function(args){
 	
-    const { BorderKey, attributes, props } = args;
-    const _border = attributes[BorderKey];
-    const BorderTypes = args.hasOwnProperty('BorderTypes') ? args.BorderTypes : null;
+    const { BorderKey, values, props } = args;
+    let BorderTypes = args.hasOwnProperty('BorderTypes') ? args.BorderTypes : null;
 
-    const borderSetValue = function( Type, value = null ) {
-        let _border = Object.assign({}, attributes[BorderKey]);
-        _border[Type] = ( null !== value ) ? value : '';
-        props.setAttributes( {[BorderKey]: _border} );
+    let depth = args.hasOwnProperty('depth') ? args.depth : [],
+        AttrKey = args.hasOwnProperty('AttrKey') ? args.AttrKey : 'StyleAtts',
+        theAtts = Object.assign({}, props.attributes[AttrKey]);
+
+    const borderSetValue = function( styleType, value = null ) {
+       
+        let _border = setValue(styleType, value);
+        props.setAttributes( {[AttrKey]: theAtts} );
+
+        if ( args.hasOwnProperty('afterOnChange') ) {
+            args.afterOnChange( props );
+        }
+
     };
+
+    const setValue = function(styleType, value){
+
+        let _border = null;
+        if ( null === value && depth.length < 1 && 'undefined' !== typeof preAttributes[AttrKey][BorderKey][styleType].default ) {
+            value = preAttributes[AttrKey][BorderKey][styleType].default;
+        }
+
+        if ( Array.isArray(depth) && depth.length ) {
+            let lastEl = null,
+                lastPreEl = null;
+            for (var i = 0; i < depth.length; i++) {
+                lastEl = theAtts[depth[i]];
+                lastPreEl = preAttributes[AttrKey][depth[i]];
+            }
+            _border = lastEl[BorderKey];
+            if ( null == value && 'undefined' !== typeof lastPreEl[BorderKey][styleType] ) {
+                value = lastPreEl[BorderKey][styleType].default;
+            }
+            _border[styleType] = ( null !== value ) ? value : '';
+        }else{
+            _border = theAtts[BorderKey];
+            _border[styleType] = ( null !== value ) ? value : '';
+        }
+
+        return _border;
+
+    }
+
+    const onChange = args.hasOwnProperty('onChange') ? args.onChange : borderSetValue;
 
 	return [
         el( __experimentalToolsPanel,
             { 
                 label: __( 'Border', 'wpmozo-product-carousel-for-woocommerce' ),
                 resetAll: () => {
-                    let _Border = Object.assign({}, attributes[BorderKey]);
+                    
                     if ( null === BorderTypes ) {
-                        _Border.border = '';
-                        _Border.borderRadius = '';
-                    }else{
-                        Object.keys(BorderTypes).map(type => _Border[type] = '');
+                        BorderTypes = {
+                            'border': '',
+                            'borderRadius': '',
+                        }
                     }
-                    props.setAttributes( {[BorderKey]: _Border} );
+                    for (const type in BorderTypes) {
+                        setValue(type, null);
+                    }
+                    props.setAttributes( {[AttrKey]: theAtts} );
+
+                    if ( args.hasOwnProperty('afterOnChange') ) {
+                        args.afterOnChange( props );
+                    }
+
                 }
             },
             ( null == BorderTypes || BorderTypes.hasOwnProperty('border') ) &&
@@ -42,10 +88,8 @@ const WpmozoBorder = function(args){
                     }, 
                     el(__experimentalBorderBoxControl, {
                         label: 'Border',
-                        value: attributes[BorderKey].border,
-                        onChange: function( NewBorder ) {
-                            borderSetValue('border', NewBorder);
-                        },
+                        value: values.border,
+                        onChange: ( NewBorder ) => onChange('border', NewBorder),
                     }),
                 ),
             ( null == BorderTypes || BorderTypes.hasOwnProperty('radius') ) &&
@@ -58,10 +102,8 @@ const WpmozoBorder = function(args){
                     }, 
                     el(__experimentalBorderRadiusControl, {
                         label: 'Radius',
-                        values: attributes[BorderKey].borderRadius,
-                        onChange: function( NewRadius ) {
-                            borderSetValue('borderRadius', NewRadius);
-                        },
+                        values: values.borderRadius,
+                        onChange: ( NewRadius ) => onChange('borderRadius', NewRadius),
                     }),
                 ),
         ),

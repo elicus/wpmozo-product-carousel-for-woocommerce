@@ -368,22 +368,24 @@ class Wpmozo_Init {
 		);
 
 		$stocklabel_color_atts = $text_color_atts;
-		$stocklabel_color_atts['default']['text'] = '#ff0000';
+		$stocklabel_color_atts['text']['default'] = '#ff0000';
+		//$stocklabel_color_atts['default']['text'] = '#ff0000';
 
 		$stocklabel_style_atts = $typography_atts;
-		$stocklabel_style_atts['default']['FontSize'] = '14px';
-		$stocklabel_style_atts['default']['FontAppearance']['fontWeight'] = '500';
+		$stocklabel_style_atts['FontSize']['default'] = '14px';
+		$stocklabel_style_atts['FontAppearance']['default']['fontWeight'] = '500';
+		$stocklabel_style_atts['FontAppearance']['default']['fontStyle'] = 'normal';
 
 		$stocklabel_border_atts = $border_atts;
-		$stocklabel_border_atts['default']['border'] = array(
+		$stocklabel_border_atts['border']['default'] = array(
     		'width' => '1px',
     		'style' => 'solid',
-    		'color' => 'red',
+    		'color' => '#ff0000',
     	);
-    	$stocklabel_border_atts['default']['borderRadius'] = '3px';
+    	$stocklabel_border_atts['borderRadius']['default'] = '3px';
 
     	$stocklabel_dimensions_atts = $dimensions_atts; 
-    	$stocklabel_dimensions_atts['default']['padding'] = array(
+    	$stocklabel_dimensions_atts['padding']['default'] = array(
 			'bottom' => '5px',
 			'left' => '12px',
 			'right' => '12px',
@@ -391,11 +393,198 @@ class Wpmozo_Init {
 		);
 
     	$quickpopup_dimensions_atts = $dimensions_atts;
-    	$quickpopup_dimensions_atts['default']['padding'] = array(
+    	$quickpopup_dimensions_atts['padding']['default'] = array(
 			'bottom' => '20px',
 			'left' => '20px',
 			'right' => '20px',
 			'top' => '20px',
+		);
+
+    	$SameAsCarousel = array(
+    		'type' => 'object',
+    		'SameAsCarousel' => array(
+			    'type' => 'boolean',
+			),
+			'default' => array(
+				'SameAsCarousel' => true,
+			),
+    	);
+    	$TitleStyle = array_merge( $typography_atts, $text_color_atts);
+    	$TitleStyleDefault = array_merge( $typography_atts['default'], $text_color_atts['default']);
+    	$PriceStyle = array_merge( $typography_atts, $text_color_atts);
+    	$PriceStyleDefault = array_merge( $typography_atts['default'], $text_color_atts['default']);
+    	$SaleLabelStyle = array_merge( $typography_atts, $text_color_atts);
+    	$SaleLabelStyleDefault = array_merge( $typography_atts['default'], $text_color_atts['default']);
+    	$StockLabelStyle = array_merge( $stocklabel_style_atts, $stocklabel_color_atts, $stocklabel_border_atts, $stocklabel_dimensions_atts);
+    	$StockLabelStyleDefault = array(
+    		'FontSize' => '14px',
+    		'text' => '#ff0000',
+    		'FontAppearance' => array(
+    			'fontWeight' => '500',
+    			'fontStyle' => 'normal',
+    		),
+    		'border' => array(
+	    		'width' => '1px',
+	    		'style' => 'solid',
+	    		'color' => '#ff0000',
+	    	),
+	    	'borderRadius' => '3px',
+	    	'padding' => array(
+				'bottom' => '5px',
+				'left' => '12px',
+				'right' => '12px',
+				'top' => '5px',
+			),
+    	);
+		$AddToCartStyle = array_merge( $typography_atts, $two_color_atts, $border_atts, $only_padding_atts );
+		$AddToCartStyleDefault = array_merge( $typography_atts['default'], $two_color_atts['default'], $border_atts['default'], $only_padding_atts['default'] );
+		$QuickViewStyle = array_merge( $typography_atts, $two_color_atts, $border_atts, $dimensions_atts );
+		$QuickViewStyleDefault = array_merge( $typography_atts['default'], $two_color_atts['default'], $border_atts['default'], $dimensions_atts['default'] );
+		$QuickViewPopupStyle = array_merge($background_color_atts, $quickpopup_dimensions_atts, $SameAsCarousel);
+		$QuickViewPopupStyleDefalult = array_merge($background_color_atts['default'], $quickpopup_dimensions_atts['default'], $SameAsCarousel['default']);
+		$QuickViewCloseStyle = array_merge($typography_atts, $two_color_atts, $border_atts, $only_padding_atts, $size_atts);
+		$QuickViewCloseStyleDefault = array_merge($typography_atts['default'], $two_color_atts['default'], $border_atts['default'], $only_padding_atts['default'], $size_atts['default']);
+
+		$style_attrs = array(
+			'type' => 'object',
+			'CarouContStyle' => array(
+				'type' => 'object',
+				'padding' => array(
+					'type' => 'object',
+					'default' => array(
+						'bottom' => '20px',
+						'left' => '20px',
+						'right' => '20px',
+						'top' => '20px',
+					),
+				),
+			),
+			'CarouNavigation' => array(
+				'type' => 'object',
+				'FontSize' => array(
+					'type' => 'string',
+				),
+				'text' => array(
+					'type' => 'string',
+				),
+				'background' => array(
+					'type' => 'string',
+				),
+				'FontAppearance' => array(
+			    	'type' => 'object',
+				    'fontWeight' => array(
+				    	'type' => 'string',
+				    	'default' => '',
+				    ),
+			    	'default' => array(
+			    		'fontWeight' => '',
+			    	),
+			    ),
+			    'padding' => array(
+					'type' => 'object',
+				),
+				'margin' => array(
+					'type' => 'object',
+				),
+				'position' => array(
+					'type' => 'object',
+				),
+			),
+			'CarouNavigationLeft' => array(
+				'type' => 'object',
+				'position' => array(
+					'type' => 'object',
+				),
+				'default' => array(
+					'position' => '',
+				),
+			),
+			'CarouNavigationRight' => array(
+				'type' => 'object',
+				'position' => array(
+					'type' => 'object',
+				),
+				'default' => array(
+					'position' => '',
+				),
+			),
+			'CarouPagination' => array(
+				'type' => 'object',
+				'FontSize' => array(
+					'type' => 'string',
+				),
+				'text' => array(
+					'type' => 'string',
+				),
+				'background' => array(
+					'type' => 'string',
+				),
+				'width' => array(
+					'type' => 'string',
+				),
+				'height' => array(
+					'type' => 'string',
+				),
+			),
+			'TitleStyle' => $TitleStyle,
+			'PriceStyle' => $PriceStyle,
+			'SaleLabelStyle' => $SaleLabelStyle,
+			'StockLabelStyle' => $StockLabelStyle,
+			'AddToCartStyle' => $AddToCartStyle,
+			'QuickViewStyle' => $QuickViewStyle,
+			'QuickViewPopupStyle' => $QuickViewPopupStyle,
+			'QuickViewTitleStyle' => $TitleStyle,
+			'QuickViewPriceStyle' => $PriceStyle,
+			'QuickViewSaleLabelStyle' => $SaleLabelStyle,
+			'QuickViewStockLabelStyle' => $StockLabelStyle,
+			'QuickViewAddToCartStyle' => $AddToCartStyle,
+			'QuickViewCloseStyle' => $QuickViewCloseStyle,
+			'default' => array(
+				'CarouContStyle' => array(
+					'padding' => array(
+						'bottom' => '20px',
+						'left' => '20px',
+						'right' => '20px',
+						'top' => '20px',
+					),
+				),
+				'CarouPagination' => array(
+					'FontSize' => '',
+					'text' => '',
+					'background' => '',
+					'width' => '',
+					'height' => '',
+				),
+				'CarouNavigation' => array(
+					'FontSize' => '',
+					'text' => '',
+					'background' => '',
+					'FontAppearance' => array(
+			    		'fontWeight' => '',
+			    	),
+			    	'padding' => '',
+			    	'margin' => '',
+				),
+				'CarouNavigationLeft' => array(
+					'position' => '',
+				),
+				'CarouNavigationRight' => array(
+					'position' => '',
+				),
+				'TitleStyle' => $TitleStyleDefault,
+				'PriceStyle' => $PriceStyleDefault,
+				'SaleLabelStyle' => $SaleLabelStyleDefault,
+				'StockLabelStyle' => $StockLabelStyleDefault,
+				'AddToCartStyle' => $AddToCartStyleDefault,
+				'QuickViewStyle' => $QuickViewStyleDefault,
+				'QuickViewPopupStyle' => $QuickViewPopupStyleDefalult,
+				'QuickViewTitleStyle' => $TitleStyleDefault,
+				'QuickViewPriceStyle' => $PriceStyleDefault,
+				'QuickViewSaleLabelStyle' => $SaleLabelStyleDefault,
+				'QuickViewStockLabelStyle' => $StockLabelStyleDefault,
+				'QuickViewAddToCartStyle' => $AddToCartStyleDefault,
+				'QuickViewCloseStyle' => $QuickViewCloseStyleDefault,
+			),
 		);
 
 		$attributes = array(
@@ -568,147 +757,7 @@ class Wpmozo_Init {
 			    'default' => '',
 			),
 			// Styles attributes
-			'CarouContStyle' => array(
-				'type' => 'object',
-				'padding' => array(
-					'type' => 'object',
-				),
-				'default' => array(
-					'padding' => array(
-						'bottom' => '20px',
-						'left' => '20px',
-						'right' => '20px',
-						'top' => '20px',
-					),
-				),
-			),
-			'CarouNavigation' => array(
-				'type' => 'object',
-				'FontSize' => array(
-					'type' => 'string',
-				),
-				'Color' => array(
-					'type' => 'string',
-				),
-				'background' => array(
-					'type' => 'string',
-				),
-				'FontAppearance' => array(
-			    	'type' => 'object',
-				    'fontWeight' => array(
-				    	'type' => 'string',
-				    	'default' => '',
-				    ),
-			    	'default' => array(
-			    		'fontWeight' => '',
-			    	),
-			    ),
-			    'padding' => array(
-					'type' => 'object',
-				),
-				'margin' => array(
-					'type' => 'object',
-				),
-				'position' => array(
-					'type' => 'object',
-				),
-				'default' => array(
-					'FontSize' => '',
-					'Color' => '',
-					'background' => '',
-					'FontAppearance' => array(
-			    		'fontWeight' => '',
-			    	),
-			    	'padding' => '',
-			    	'margin' => '',
-				),
-			),
-			'CarouNavigationLeft' => array(
-				'type' => 'object',
-				'position' => array(
-					'type' => 'object',
-				),
-				'default' => array(
-					'position' => '',
-				),
-			),
-			'CarouNavigationRight' => array(
-				'type' => 'object',
-				'position' => array(
-					'type' => 'object',
-				),
-				'default' => array(
-					'position' => '',
-				),
-			),
-			'CarouPagination' => array(
-				'type' => 'object',
-				'FontSize' => array(
-					'type' => 'string',
-				),
-				'Color' => array(
-					'type' => 'string',
-				),
-				'background' => array(
-					'type' => 'string',
-				),
-				'width' => array(
-					'type' => 'string',
-				),
-				'height' => array(
-					'type' => 'string',
-				),
-				'default' => array(
-					'FontSize' => '',
-					'Color' => '',
-					'background' => '',
-					'width' => '',
-					'height' => '',
-				),
-			),
-			'TitleStyle' => $typography_atts,
-			'PriceStyle' => $typography_atts,
-			'AddToCartStyle' => $typography_atts,
-			'QuickViewStyle' => $typography_atts,
-			'SaleLabelStyle' => $typography_atts,
-			'StockLabelStyle' => $stocklabel_style_atts,
-			'TitleColor' => $text_color_atts,
-			'PriceColor' => $text_color_atts,
-			'AddToCartColor' => $two_color_atts,
-			'QuickViewColor' => $two_color_atts,
-			'SaleLabelColor' => $two_color_atts,
-			'StockLabelColor' => $stocklabel_color_atts,
-			'AddToCartBorder' => $border_atts,
-			'QuickViewBorder' => $border_atts,
-			'AddToCartDimensions' => $only_padding_atts,
-			'QuickViewDimensions' => $only_padding_atts,
-			'SameAsCarousel' => array(
-			    'type' => 'boolean',
-			    'default' => true,
-			),
-			'QuickViewPopupBackground' => $background_color_atts,
-			'QuickViewPopupDimensions' => $quickpopup_dimensions_atts,
-			'QuickViewTitleStyle' => $typography_atts,
-			'QuickViewPriceStyle' => $typography_atts,
-			'QuickViewAddToCartStyle' => $typography_atts,
-			'QuickViewSaleLabelStyle' => $typography_atts,
-			'QuickViewStockLabelStyle' => $stocklabel_style_atts,
-			'QuickViewTitleColor' => $text_color_atts,
-			'QuickViewPriceColor' => $text_color_atts,
-			'QuickViewAddToCartColor' => $two_color_atts,
-			'QuickViewSaleLabelColor' => $two_color_atts,
-			'QuickViewStockLabelColor' => $stocklabel_color_atts,
-			'QuickViewAddToCartBorder' => $border_atts,
-			'QuickViewAddToCartDimensions' => $only_padding_atts,
-			'StockLabelBorder' => $stocklabel_border_atts,
-			'StockLabelDimensions' => $stocklabel_dimensions_atts,
-			'QuickViewStockLabelBorder' => $stocklabel_border_atts,
-			'QuickViewStockLabelDimensions' => $stocklabel_dimensions_atts,
-			'QuickViewCloseStyle' =>  $typography_atts,
-			'QuickViewCloseColor' => $two_color_atts,
-			'QuickViewCloseBorder' => $border_atts,
-			'QuickViewCloseDimensions' => $only_padding_atts,
-			'QuickViewCloseSize' => $size_atts,
+			'StyleAtts' => $style_attrs,
 		);
 
 		$product_view_type_options = array(

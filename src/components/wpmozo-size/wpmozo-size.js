@@ -2,33 +2,78 @@
 const el = window.wp.element.createElement;
 const __ = wp.i18n.__;
 const { __experimentalToolsPanel, __experimentalToolsPanelItem, __experimentalUnitControl } = window.wp.components;
-
+const preAttributes = wpmozo_block_carousel_object.attributes;
 
 const WpmozoSize = function(args){
 	
-    const { SizeKey, attributes, props } = args;
-    const _size = attributes[SizeKey];
-    const SizeTypes = args.hasOwnProperty('SizeTypes') ? args.SizeTypes : null;
+    const { SizeKey, values, props } = args;
+    let SizeTypes = args.hasOwnProperty('SizeTypes') ? args.SizeTypes : null;
 
-    const sizeSetValue = function( Type, value = null ) {
-        let _size = Object.assign({}, attributes[SizeKey]);
-        _size[Type] = ( null !== value ) ? value : '';
-        props.setAttributes( {[SizeKey]: _size} );
+    let depth = args.hasOwnProperty('depth') ? args.depth : [],
+        AttrKey = args.hasOwnProperty('AttrKey') ? args.AttrKey : 'StyleAtts',
+        theAtts = Object.assign({}, props.attributes[AttrKey]);
+
+    const sizeSetValue = function( styleType, value = null ) {
+       
+        let _size = setValue(styleType, value);
+        props.setAttributes( {[AttrKey]: theAtts} );
+
+        if ( args.hasOwnProperty('afterOnChange') ) {
+            args.afterOnChange( props );
+        }
+
     };
+
+    const setValue = function(styleType, value){
+
+        let _size = null;
+        if ( null === value && depth.length < 1 && 'undefined' !== typeof preAttributes[AttrKey][SizeKey][styleType].default ) {
+            value = preAttributes[AttrKey][SizeKey][styleType].default;
+        }
+
+        if ( Array.isArray(depth) && depth.length ) {
+            let lastEl = null,
+                lastPreEl = null;
+            for (var i = 0; i < depth.length; i++) {
+                lastEl = theAtts[depth[i]];
+                lastPreEl = preAttributes[AttrKey][depth[i]];
+            }
+            _size = lastEl[SizeKey];
+            if ( null == value && 'undefined' !== typeof lastPreEl[SizeKey][styleType] ) {
+                value = lastPreEl[SizeKey][styleType].default;
+            }
+            _size[styleType] = ( null !== value ) ? value : '';
+        }else{
+            _size = theAtts[SizeKey];
+            _size[styleType] = ( null !== value ) ? value : '';
+        }
+
+        return _size;
+
+    }
+
+    const onChange = args.hasOwnProperty('onChange') ? args.onChange : sizeSetValue;
 
 	return [
         el( __experimentalToolsPanel,
             { 
                 label: __( 'Size', 'wpmozo-product-carousel-for-woocommerce' ),
                 resetAll: () => {
-                    let _Size = Object.assign({}, attributes[SizeKey]);
+                    
                     if ( null === SizeTypes ) {
-                        _Size.width = '';
-                        _Size.height = '';
-                    }else{
-                        Object.keys(SizeTypes).map(type => _Size[type] = '');
+                        SizeTypes = {
+                            'width': '',
+                            'height': '',
+                        }
                     }
-                    props.setAttributes( {[SizeKey]: _Size} );
+                    for (const type in SizeTypes) {
+                        setValue(type, null);
+                    }
+                    props.setAttributes( {[AttrKey]: theAtts} );
+
+                    if ( args.hasOwnProperty('afterOnChange') ) {
+                        args.afterOnChange( props );
+                    }
                 }
             },
             ( null == SizeTypes || SizeTypes.hasOwnProperty('width') ) &&
@@ -42,10 +87,8 @@ const WpmozoSize = function(args){
                     el(__experimentalUnitControl, {
                         label: 'Width',
                         labelPosition: 'side',
-                        value: attributes[SizeKey].width,
-                        onChange: function( NewWidth ) {
-                            sizeSetValue('width', NewWidth);
-                        },
+                        value: values.width,
+                        onChange: ( NewWidth ) => onChange('width', NewWidth),
                     }),
                 ),
             ( null == SizeTypes || SizeTypes.hasOwnProperty('height') ) &&
@@ -59,10 +102,8 @@ const WpmozoSize = function(args){
                     el(__experimentalUnitControl, {
                         label: 'Height',
                         labelPosition: 'side',
-                        value: attributes[SizeKey].height,
-                        onChange: function( NewHeight ) {
-                            sizeSetValue('height', NewHeight);
-                        },
+                        value: values.height,
+                        onChange: ( NewHeight ) => onChange('height', NewHeight),
                     }),
                 ),
         ),

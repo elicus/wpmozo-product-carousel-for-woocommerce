@@ -35,6 +35,7 @@
 }
 .wpmozo-product-carousel-wrap .swiper-navigation{
 	font-size: var(--swiper-navigation-size);
+	margin: unset;
 }
 .wpmozo-product-carousel-wrap .swiper-navigation:after{
 	font-size: inherit;
@@ -106,6 +107,9 @@
     background: #fff;
     padding-bottom: 10px;
 }
+.wpmozo-product-quick-view .summary.entry-summary{
+	margin-top: 5px;
+}
 .wpmozo-product-quick-view > div.product {
 	display: inline-block;
 	position: relative;
@@ -117,11 +121,11 @@
 .wpmozo-product-quick-view .mfp-close{
     background: transparent;
     color: #000;
-    font-size: 25px;
+    font-size: 18px;
     width: auto;
     height: auto;
     line-height: initial;
-    padding: 0px 8px;
+    padding: 0px 6px;
 }
 .wpmozo-product-quick-view .mfp-close-btn-in .mfp-close{
 	color: #fff;
@@ -135,7 +139,7 @@
 /* Layout 1 style start  */
 .wpmozo-product-bottom{
 	width: 100%;
-	margin-top: 1rem;
+	margin-top: auto;
 }
 .wpmozo-product-bottom-add-to-cart a.button{
 	margin-top: 0px !important;
@@ -178,6 +182,9 @@
 	.wpmozo-product-carousel-wrap.layout-2 ul.products li.product a.button{
 		max-width: -moz-available;
 	}
+}
+.wpmozo-product-carousel-wrap.layout-2.equal-slide-height a.woocommerce-LoopProduct-link.woocommerce-loop-product__link{
+	margin-top: auto;
 }
 /* Layout 2 style over */
 

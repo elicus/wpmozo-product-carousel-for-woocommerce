@@ -39,36 +39,36 @@ class Wpmozo_Init {
 		$this->wpmozo_set_wc_styles();
 
 		// register the swiper script.
-		wp_register_script( 'wpmozo-swiper-script', WPMOZO_ASSE_DIR_URL . 'frontend/swiper/js/swiper-bundle.min.js', array(), time(), true );
-		wp_register_style( 'wpmozo-swiper-style', WPMOZO_ASSE_DIR_URL . 'frontend/swiper/css/swiper-bundle.css', array(), time());
+		wp_register_script( 'wpmozo-swiper-script', WPMOZO_ASSE_DIR_URL . 'frontend/swiper/js/swiper-bundle.min.js', array(), WPMOZO_VERSION, true );
+		wp_register_style( 'wpmozo-swiper-style', WPMOZO_ASSE_DIR_URL . 'frontend/swiper/css/swiper-bundle.css', array(), WPMOZO_VERSION);
 		// rgister fontawesome style.
-		wp_register_style( 'wpmozo-fontawesome-style', WPMOZO_ASSE_DIR_URL . 'frontend/fontawesome/all.min.css', array(), time());
+		wp_register_style( 'wpmozo-fontawesome-style', WPMOZO_ASSE_DIR_URL . 'frontend/fontawesome/all.min.css', array(), WPMOZO_VERSION);
 
 		// register the swiper scripts.
 		wp_register_script( 
 			'wpmozo-product-carousel-script',
 			WPMOZO_BLOCKS_DIR_URL . 'product-carousel/assets/js/product-carousel.js',
 			array('jquery','wpmozo-swiper-script','wpmozo-magnific-script'),
-			time(),
+			WPMOZO_VERSION,
 			true
 		);
 		wp_register_style( 
 			'wpmozo-block-product-carousel-style',
 			WPMOZO_BLOCKS_DIR_URL . 'product-carousel/assets/css/product-carousel-editor.css',
 			array('wp-edit-blocks'),
-			time(),
+			WPMOZO_VERSION,
 		);
 		wp_register_style( 
 			'wpmozo-product-carousel-style',
 			WPMOZO_BLOCKS_DIR_URL . 'product-carousel/assets/css/product-carousel.css',
 			array(),
-			time(),
+			WPMOZO_VERSION,
 		);
 
 		wp_register_style( 'wpmozo-product-carousel-placeholder', 
 			WPMOZO_ASSE_DIR_URL . 'placeholder-loading.css',
 			array(),
-			time()
+			WPMOZO_VERSION
 		);
 
 		// register the magnific popup scripts.
@@ -76,21 +76,21 @@ class Wpmozo_Init {
 			'wpmozo-magnific-script',
 			WPMOZO_ASSE_DIR_URL . 'frontend/magnific/js/jquery.magnific-popup.min.js',
 			array('jquery'),
-			time(),
+			WPMOZO_VERSION,
 			true
 		);
 		wp_register_style( 
 			'wpmozo-magnific-style',
 			WPMOZO_ASSE_DIR_URL . 'frontend/magnific/css/magnific-popup.css',
 			array(),
-			time(),
+			WPMOZO_VERSION,
 		);
 
 		// register product carousel block script.
 		wp_register_script( 'wpmozo-block-product-carousel-script',
 			WPMOZO_PLUGIN_DIR_URL . 'build/index.js',
 			array( 'wp-blocks', 'wp-editor', 'wp-element', 'wp-components', 'wp-i18n', 'jquery' ),
-			time()
+			WPMOZO_VERSION
 		);
 
 		$all_options = $this->wpmozo_get_all_settings_options();

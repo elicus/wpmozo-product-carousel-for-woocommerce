@@ -114,11 +114,13 @@ class Wpmozo_Init {
 		$wc_styles = $this->wpmozo_wc_styles;
 		$styles_handles = array(
 			'wpmozo-swiper-style',
-			'wpmozo-magnific-style',
 			'wpmozo-product-carousel-placeholder',
 			'wpmozo-fontawesome-style',
 			'wpmozo-product-carousel-style',
 		);
+		if ( ! is_admin() ) {
+			$styles_handles[] = 'wpmozo-magnific-style';
+		}
 		if ( ! empty( $wc_styles ) ) {
 			$wc_styles_handles = array_keys( $wc_styles );
 			$styles_handles = array_merge($wc_styles_handles, $styles_handles);
@@ -126,9 +128,12 @@ class Wpmozo_Init {
 
 		require_once WPMOZO_BLOCKS_DIR_PATH . 'product-carousel/block.php';
 		register_block_type( 'wpmozo/product-carousel', array(
-			'editor_script' => 'wpmozo-block-product-carousel-script',
 			'editor_style' => 'wpmozo-block-product-carousel-style',
-			'script_handles' => array(
+			'editor_script_handles' => array(
+				'wpmozo-swiper-script',
+				'wpmozo-block-product-carousel-script'
+			),
+			'view_script_handles' => array(
 				'wpmozo-swiper-script',
 				'wpmozo-product-carousel-script',
 				'wpmozo-magnific-script',

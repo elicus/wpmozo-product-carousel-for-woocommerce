@@ -188,7 +188,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
             hasAlign = item.hasOwnProperty('hasAlign') ? item.hasAlign : true;
 
         if ( attributes.hasOwnProperty('CAlign') ) {
-            CarouAlign = attributes.CarouAlign;
+            CarouAlign = attributes.CAlign;
         }
         
         if ( hasAlign && '' !== CarouAlign && 'undefined' !== typeof CarouAlign && null !== CarouAlign ) {

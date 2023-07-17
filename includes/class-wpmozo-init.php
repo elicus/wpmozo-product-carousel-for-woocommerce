@@ -801,6 +801,10 @@ class Wpmozo_Init {
 			    'type' => 'string',
 			    'default' => '',
 			),
+			'ShowTitle' => array(
+			    'type' => 'boolean',
+			    'default' => true,
+			),
 			'ShowFeaturedImage' => array(
 			    'type' => 'boolean',
 			    'default' => true,

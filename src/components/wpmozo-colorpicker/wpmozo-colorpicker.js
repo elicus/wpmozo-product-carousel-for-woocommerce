@@ -34,11 +34,23 @@ const WpmozoColorPicker = function(args){
         }
 
         if ( Array.isArray(depth) && depth.length ) {
-            let lastEl = null,
+           var lastEl = null,
                 lastPreEl = null;
             for (var i = 0; i < depth.length; i++) {
-                lastEl = theAtts[depth[i]];
-                lastPreEl = preAttributes[AttrKey][depth[i]];
+                if ( null === lastEl ) {
+                    lastEl = theAtts[depth[i]];
+                }else{
+                    if ( lastEl.hasOwnProperty(depth[i]) ) {
+                        lastEl = lastEl[depth[i]];
+                    }
+                }
+                if ( null === lastPreEl ) {
+                    lastPreEl = preAttributes[AttrKey][depth[i]];
+                }else{
+                    if ( lastPreEl.hasOwnProperty(depth[i]) ) {
+                        lastPreEl = lastPreEl[depth[i]];
+                    }
+                }
             }
             _color = lastEl[ColorKey];
             if ( null == value && 'undefined' !== typeof lastPreEl[ColorKey][styleType] ) {

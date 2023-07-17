@@ -49,11 +49,23 @@ const WpmozoBorder = function (args) {
       value = preAttributes[AttrKey][BorderKey][styleType].default;
     }
     if (Array.isArray(depth) && depth.length) {
-      let lastEl = null,
+      var lastEl = null,
         lastPreEl = null;
       for (var i = 0; i < depth.length; i++) {
-        lastEl = theAtts[depth[i]];
-        lastPreEl = preAttributes[AttrKey][depth[i]];
+        if (null === lastEl) {
+          lastEl = theAtts[depth[i]];
+        } else {
+          if (lastEl.hasOwnProperty(depth[i])) {
+            lastEl = lastEl[depth[i]];
+          }
+        }
+        if (null === lastPreEl) {
+          lastPreEl = preAttributes[AttrKey][depth[i]];
+        } else {
+          if (lastPreEl.hasOwnProperty(depth[i])) {
+            lastPreEl = lastPreEl[depth[i]];
+          }
+        }
       }
       _border = lastEl[BorderKey];
       if (null == value && 'undefined' !== typeof lastPreEl[BorderKey][styleType]) {
@@ -162,11 +174,23 @@ const WpmozoColorPicker = function (args) {
       value = preAttributes[AttrKey][ColorKey][styleType].default;
     }
     if (Array.isArray(depth) && depth.length) {
-      let lastEl = null,
+      var lastEl = null,
         lastPreEl = null;
       for (var i = 0; i < depth.length; i++) {
-        lastEl = theAtts[depth[i]];
-        lastPreEl = preAttributes[AttrKey][depth[i]];
+        if (null === lastEl) {
+          lastEl = theAtts[depth[i]];
+        } else {
+          if (lastEl.hasOwnProperty(depth[i])) {
+            lastEl = lastEl[depth[i]];
+          }
+        }
+        if (null === lastPreEl) {
+          lastPreEl = preAttributes[AttrKey][depth[i]];
+        } else {
+          if (lastPreEl.hasOwnProperty(depth[i])) {
+            lastPreEl = lastPreEl[depth[i]];
+          }
+        }
       }
       _color = lastEl[ColorKey];
       if (null == value && 'undefined' !== typeof lastPreEl[ColorKey][styleType]) {
@@ -287,11 +311,23 @@ const WpmozoDimensions = function (args) {
       value = preAttributes[AttrKey][DimensionKey][styleType].default;
     }
     if (Array.isArray(depth) && depth.length) {
-      let lastEl = null,
+      var lastEl = null,
         lastPreEl = null;
       for (var i = 0; i < depth.length; i++) {
-        lastEl = theAtts[depth[i]];
-        lastPreEl = preAttributes[AttrKey][depth[i]];
+        if (null === lastEl) {
+          lastEl = theAtts[depth[i]];
+        } else {
+          if (lastEl.hasOwnProperty(depth[i])) {
+            lastEl = lastEl[depth[i]];
+          }
+        }
+        if (null === lastPreEl) {
+          lastPreEl = preAttributes[AttrKey][depth[i]];
+        } else {
+          if (lastPreEl.hasOwnProperty(depth[i])) {
+            lastPreEl = lastPreEl[depth[i]];
+          }
+        }
       }
       _dimensions = lastEl[DimensionKey];
       if (null == value && 'undefined' !== typeof lastPreEl[DimensionKey][styleType]) {
@@ -522,11 +558,23 @@ const WpmozoSize = function (args) {
       value = preAttributes[AttrKey][SizeKey][styleType].default;
     }
     if (Array.isArray(depth) && depth.length) {
-      let lastEl = null,
+      var lastEl = null,
         lastPreEl = null;
       for (var i = 0; i < depth.length; i++) {
-        lastEl = theAtts[depth[i]];
-        lastPreEl = preAttributes[AttrKey][depth[i]];
+        if (null === lastEl) {
+          lastEl = theAtts[depth[i]];
+        } else {
+          if (lastEl.hasOwnProperty(depth[i])) {
+            lastEl = lastEl[depth[i]];
+          }
+        }
+        if (null === lastPreEl) {
+          lastPreEl = preAttributes[AttrKey][depth[i]];
+        } else {
+          if (lastPreEl.hasOwnProperty(depth[i])) {
+            lastPreEl = lastPreEl[depth[i]];
+          }
+        }
       }
       _size = lastEl[SizeKey];
       if (null == value && 'undefined' !== typeof lastPreEl[SizeKey][styleType]) {
@@ -639,11 +687,23 @@ const WpmozoTypography = function (args) {
       value = preAttributes[AttrKey][TypographyKey][styleType].default;
     }
     if (Array.isArray(depth) && depth.length) {
-      let lastEl = null,
+      var lastEl = null,
         lastPreEl = null;
       for (var i = 0; i < depth.length; i++) {
-        lastEl = theAtts[depth[i]];
-        lastPreEl = preAttributes[AttrKey][depth[i]];
+        if (null === lastEl) {
+          lastEl = theAtts[depth[i]];
+        } else {
+          if (lastEl.hasOwnProperty(depth[i])) {
+            lastEl = lastEl[depth[i]];
+          }
+        }
+        if (null === lastPreEl) {
+          lastPreEl = preAttributes[AttrKey][depth[i]];
+        } else {
+          if (lastPreEl.hasOwnProperty(depth[i])) {
+            lastPreEl = lastPreEl[depth[i]];
+          }
+        }
       }
       _typo = lastEl[TypographyKey];
       if (null == value && 'undefined' !== typeof lastPreEl[TypographyKey][styleType]) {

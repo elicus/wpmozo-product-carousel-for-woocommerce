@@ -1779,6 +1779,14 @@ __webpack_require__.r(__webpack_exports__);
           }));
         }
       })), el(ToggleControl, {
+        checked: attributes.ShowTitle,
+        label: __('Show Title', 'wpmozo-product-carousel-for-woocommerce'),
+        onChange: function (NewShowTitle) {
+          setAttributes({
+            ShowTitle: NewShowTitle
+          });
+        }
+      }), el(ToggleControl, {
         checked: attributes.ShowFeaturedImage,
         label: __('Show Featured Image', 'wpmozo-product-carousel-for-woocommerce'),
         onChange: function (NewShowFeaturedImage) {
@@ -1979,7 +1987,7 @@ __webpack_require__.r(__webpack_exports__);
             selector: '.swiper-pagination'
           }, wraper, props.attributes.StyleAtts.CarouPagination, props.attributes);
         }
-      })]), el(PanelBody, {
+      })]), attributes.ShowTitle && el(PanelBody, {
         title: __('Title Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
         initialOpen: false

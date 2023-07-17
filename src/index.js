@@ -999,6 +999,16 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                         el(
                             ToggleControl,
                             {
+                                checked: attributes.ShowTitle, 
+                                label: __( 'Show Title', 'wpmozo-product-carousel-for-woocommerce' ),
+                                onChange: function( NewShowTitle ) {
+                                    setAttributes( { ShowTitle: NewShowTitle } );
+                                },
+                            }
+                        ),
+                        el(
+                            ToggleControl,
+                            {
                                 checked: attributes.ShowFeaturedImage, 
                                 label: __( 'Show Featured Image', 'wpmozo-product-carousel-for-woocommerce' ),
                                 onChange: function( NewShowFeaturedImage ) {
@@ -1260,26 +1270,27 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                                 } )
                             ],
                         ),
-                    el( PanelBody, 
-                        { 
-                            title: __( 'Title Style', 'wpmozo-product-carousel-for-woocommerce' ),
-                            className: "wpmozo-typography-panel",
-                            initialOpen: false,
-                        },
-                        el( WpmozoColorPicker, {
-                            ColorKey: 'TitleStyle',
-                            values: styleAtts.TitleStyle,
-                            props: props,
-                            ColorTypes: textColorObject,
-                            afterOnChange: ( props ) => afterOnChange('.woocommerce-loop-product__title', props.attributes.StyleAtts.TitleStyle, props.attributes),
-                        }),
-                        el( WpmozoTypography, {
-                            TypographyKey: 'TitleStyle',
-                            values: styleAtts.TitleStyle,
-                            props: props,
-                            afterOnChange: ( props ) => afterOnChange('.woocommerce-loop-product__title', props.attributes.StyleAtts.TitleStyle, props.attributes),
-                        } ),
-                    ),
+                    attributes.ShowTitle && 
+                        el( PanelBody, 
+                            { 
+                                title: __( 'Title Style', 'wpmozo-product-carousel-for-woocommerce' ),
+                                className: "wpmozo-typography-panel",
+                                initialOpen: false,
+                            },
+                            el( WpmozoColorPicker, {
+                                ColorKey: 'TitleStyle',
+                                values: styleAtts.TitleStyle,
+                                props: props,
+                                ColorTypes: textColorObject,
+                                afterOnChange: ( props ) => afterOnChange('.woocommerce-loop-product__title', props.attributes.StyleAtts.TitleStyle, props.attributes),
+                            }),
+                            el( WpmozoTypography, {
+                                TypographyKey: 'TitleStyle',
+                                values: styleAtts.TitleStyle,
+                                props: props,
+                                afterOnChange: ( props ) => afterOnChange('.woocommerce-loop-product__title', props.attributes.StyleAtts.TitleStyle, props.attributes),
+                            } ),
+                        ),
                     attributes.ShowPrice &&
                         el( PanelBody, 
                             { 

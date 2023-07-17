@@ -127,7 +127,8 @@ class Wpmozo_Init {
 		}
 
 		require_once WPMOZO_BLOCKS_DIR_PATH . 'product-carousel/block.php';
-		register_block_type( 'wpmozo/product-carousel', array(
+
+		$default_args = array(
 			'editor_style' => 'wpmozo-block-product-carousel-style',
 			'editor_script_handles' => array(
 				'wpmozo-swiper-script',
@@ -146,7 +147,13 @@ class Wpmozo_Init {
 			'style_handles' => $styles_handles,
 			'attributes' => $attributes,
 			'render_callback' => 'wpmozo_product_carousel_render_callback',
-		));
+		);
+
+		$args = apply_filters( 'wpmozo_product_carousel_block_args', $default_args);
+
+		do_action('wpmozo_before_product_carousel_block_register', $args);
+
+		register_block_type( 'wpmozo/product-carousel', $args);
 
 
 	}
@@ -936,7 +943,7 @@ class Wpmozo_Init {
 
 		$icons = $this->wpmozo_get_icons();
 
-		$all_options = array( 
+		$defalut_all_options = array( 
 			'attributes' => $attributes,
 			'order_by_options' => $order_by_options,
 			'product_view_type_options' => $product_view_type_options,
@@ -946,6 +953,8 @@ class Wpmozo_Init {
 			'all_layouts' => $all_layouts,
 			'icons' => $icons,
 		);
+
+		$all_options = apply_filters( 'wpmozo_product_carousel_block_all_options', $defalut_all_options);
 
 		return $all_options;
 	}
@@ -962,7 +971,8 @@ class Wpmozo_Init {
 		if ( empty( $json ) ) {
 			return array();
 		}
-		$icons = json_decode( $json );
+		$default_icons = json_decode( $json );
+		$icons = apply_filters( 'wpmozo_product_carousel_block_icons', $default_icons);
 		return $icons;
 	}
 

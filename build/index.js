@@ -867,7 +867,9 @@ __webpack_require__.r(__webpack_exports__);
     InspectorControls,
     MediaUpload,
     MediaUploadCheck,
-    useBlockProps
+    useBlockProps,
+    BlockControls,
+    AlignmentControl
   } = editor;
   const {
     PanelBody,
@@ -880,12 +882,9 @@ __webpack_require__.r(__webpack_exports__);
   } = components;
   const {
     Fragment,
-    useState,
     useEffect
   } = element;
   const {
-    useSelect,
-    useDispatch,
     dispatch
   } = wp.data;
   const {
@@ -893,20 +892,20 @@ __webpack_require__.r(__webpack_exports__);
     hooks
   } = wp;
   let textColorObject = [{
-    key: 'text',
-    label: __('Text', 'wpmozo-product-carousel-for-woocommerce')
-  }];
-  let twoColorObject = [{
-    key: 'text',
-    label: __('Text', 'wpmozo-product-carousel-for-woocommerce')
-  }, {
-    key: 'background',
-    label: __('Background', 'wpmozo-product-carousel-for-woocommerce')
-  }];
-  let backgroundColorObject = [{
-    key: 'background',
-    label: __('Background', 'wpmozo-product-carousel-for-woocommerce')
-  }];
+      key: 'text',
+      label: __('Text', 'wpmozo-product-carousel-for-woocommerce')
+    }],
+    twoColorObject = [{
+      key: 'text',
+      label: __('Text', 'wpmozo-product-carousel-for-woocommerce')
+    }, {
+      key: 'background',
+      label: __('Background', 'wpmozo-product-carousel-for-woocommerce')
+    }],
+    backgroundColorObject = [{
+      key: 'background',
+      label: __('Background', 'wpmozo-product-carousel-for-woocommerce')
+    }];
   function convetInlineStyle(options, atts) {
     let style = '';
     if ('undefined' !== typeof options.FontSize && '' !== options.FontSize) {
@@ -1015,13 +1014,52 @@ __webpack_require__.r(__webpack_exports__);
   }
   function appendInlineStyle(item, wraper) {
     let values = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-    let atts = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+    let attributes = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
     let attKey = values === false ? item.attKey : '',
       selector = item.selector,
-      _values = values === false ? atts[attKey] : values,
+      _values = values === false ? attributes[attKey] : values,
       __values = item.hasOwnProperty('values') ? item.values : _values,
-      inlineStyle = convetInlineStyle(__values, atts);
+      inlineStyle = convetInlineStyle(__values, attributes),
+      CarouAlign = '',
+      hasAlign = item.hasOwnProperty('hasAlign') ? item.hasAlign : true;
+    if (attributes.hasOwnProperty('CAlign')) {
+      CarouAlign = attributes.CarouAlign;
+    }
+    if (hasAlign && '' !== CarouAlign && 'undefined' !== typeof CarouAlign && null !== CarouAlign) {
+      let {
+          Nstyle,
+          NNstyle
+        } = getAlignStyle(CarouAlign),
+        parent = jQuery(wraper).find(selector).parent();
+      if (parent.hasClass('product')) {
+        inlineStyle = inlineStyle += NNstyle;
+      }
+      if (parent.hasClass('woocommerce-LoopProduct-link')) {
+        inlineStyle = inlineStyle += Nstyle;
+      }
+    }
     jQuery(wraper).find(selector).attr('style', inlineStyle);
+  }
+  function getAlignStyle(Align) {
+    let style = '',
+      Nstyle = '';
+    style += 'text-align: ' + Align + ' !important;';
+    if ('left' === Align) {
+      Nstyle += 'margin-right: auto !important;';
+      Nstyle += 'margin-left: 0px !important;';
+    } else if ('right' === Align) {
+      Nstyle += 'margin-right: 0px !important;';
+      Nstyle += 'margin-left: auto !important;';
+    } else if ('center' === Align) {
+      Nstyle += 'margin-right: auto !important;';
+      Nstyle += 'margin-left: auto !important;';
+    }
+    let NNstyle = Nstyle += 'text-align: ' + Align + ' !important;';
+    return {
+      style: style,
+      Nstyle: Nstyle,
+      NNstyle: NNstyle
+    };
   }
   function convetVarStyle(options) {
     let spacing = Object.assign({}, options);
@@ -1065,6 +1103,20 @@ __webpack_require__.r(__webpack_exports__);
           dispatch('core/block-editor').selectBlock(clientId);
         },
         beforeInit: function (swiper) {
+          let {
+            style,
+            Nstyle,
+            NNstyle
+          } = getAlignStyle(attributes.CAlign);
+          jQuery('#' + selector).find('ul.products li.product').attr('style', style);
+          let liChilds = jQuery('#' + selector).find('ul.products li.product').children();
+          let proLinkChilds = jQuery('#' + selector).find('ul.products li.product a.woocommerce-LoopProduct-link').children();
+          liChilds.each(function (key, value) {
+            jQuery(this).attr('style', NNstyle);
+          });
+          proLinkChilds.each(function (key, value) {
+            jQuery(this).attr('style', Nstyle);
+          });
           let add_to_cart_selector = '.add_to_cart_button';
           if (ProductTypes.length) {
             jQuery.each(ProductTypes, function (key, type) {
@@ -1076,46 +1128,49 @@ __webpack_require__.r(__webpack_exports__);
             right = Object.assign({}, StyleAtts.CarouNavigation, StyleAtts.CarouNavigationRight);
           let wraper = jQuery('#' + selector);
           let styles = [{
-            attKey: 'TitleStyle',
-            selector: '.woocommerce-loop-product__title'
+            selector: '.woocommerce-loop-product__title',
+            values: StyleAtts.TitleStyle
           }, {
-            attKey: 'PriceStyle',
-            selector: '.price'
+            selector: '.price',
+            values: StyleAtts.PriceStyle
           }, {
-            attKey: 'AddToCartStyle',
-            selector: add_to_cart_selector
+            selector: add_to_cart_selector,
+            values: StyleAtts.AddToCartStyle
           }, {
-            attKey: 'QuickViewStyle',
-            selector: '.wpmozo-quick-view-button'
+            hasAlign: false,
+            selector: '.wpmozo-quick-view-button',
+            values: StyleAtts.QuickViewStyle
           }, {
-            attKey: 'SaleLabelStyle',
-            selector: '.onsale'
+            hasAlign: false,
+            selector: '.onsale',
+            values: StyleAtts.SaleLabelStyle
           }, {
-            attKey: 'StockLabelStyle',
-            selector: '.stock.out-of-stock'
+            selector: '.stock.out-of-stock',
+            values: StyleAtts.StockLabelStyle
           }, {
-            attKey: 'CarouNavigation',
+            hasAlign: false,
             selector: '.swiper-navigation',
             values: main
           }, {
-            attKey: 'CarouNavigationLeft',
+            hasAlign: false,
             selector: '.swiper-button-prev',
             values: left
           }, {
-            attKey: 'CarouNavigationRight',
+            hasAlign: false,
             selector: '.swiper-button-next',
             values: right
           }];
           styles.map(function (item) {
-            appendInlineStyle(item, wraper, false, StyleAtts);
+            appendInlineStyle(item, wraper, item.values, attributes);
           });
         },
         afterInit: function (swiper) {
           let wraper = jQuery('#' + selector),
             PaginationSelector = 'fraction' === attributes.PaginationType ? '.swiper-pagination' : '.swiper-pagination span';
           let styles = [{
-            attKey: 'CarouPagination',
-            selector: PaginationSelector
+            hasAlign: false,
+            selector: PaginationSelector,
+            values: StyleAtts.CarouPagination
           }];
           if ('progressbar' === attributes.PaginationType) {
             let barAtts = {
@@ -1126,15 +1181,17 @@ __webpack_require__.r(__webpack_exports__);
                 height: StyleAtts.CarouPagination.height
               };
             styles = [{
+              hasAlign: false,
               selector: PaginationSelector,
               values: barAtts
             }, {
+              hasAlign: false,
               selector: '.swiper-pagination',
               values: progAtts
             }];
           }
           styles.map(function (item) {
-            appendInlineStyle(item, wraper, false, StyleAtts);
+            appendInlineStyle(item, wraper, item.values, attributes);
           });
         }
       },
@@ -1241,24 +1298,32 @@ __webpack_require__.r(__webpack_exports__);
           right = Object.assign({}, StyleAtts.CarouNavigation, StyleAtts.CarouNavigationRight);
         appendInlineStyle({
           selector: '.swiper-navigation'
-        }, wraper, main);
+        }, wraper, main, attributes);
         appendInlineStyle({
           selector: '.swiper-button-prev'
-        }, wraper, left);
+        }, wraper, left, attributes);
         appendInlineStyle({
           selector: '.swiper-button-next'
-        }, wraper, right);
+        }, wraper, right, attributes);
       };
-      const afterOnChange = function (selector, Atts) {
+      const afterOnChange = function (selector, Atts, attributes) {
         appendInlineStyle({
           selector: selector
-        }, wraper, Atts);
+        }, wraper, Atts, attributes);
       };
       return [el('div', blockProps, el(ServerSideRender, {
         block: 'wpmozo/product-carousel',
         attributes: attributes,
         LoadingResponsePlaceholder: TriggerWhenLoadingFinished,
         httpMethod: 'POST'
+      })), el(BlockControls, {}, el(AlignmentControl, {
+        value: attributes.CAlign,
+        label: __('Alignment', 'wpmozo-product-carousel-for-woocommerce'),
+        onChange: function (NewAlign) {
+          setAttributes({
+            CAlign: NewAlign
+          });
+        }
       })), el(InspectorControls, {}, el(PanelBody, {
         title: __('Carousel Settings', 'wpmozo-product-carousel-for-woocommerce'),
         initialOpen: true
@@ -1817,7 +1882,7 @@ __webpack_require__.r(__webpack_exports__);
         afterOnChange: props => {
           appendInlineStyle({
             selector: '.swiper-pagination span'
-          }, wraper, props.attributes.StyleAtts.CarouPagination);
+          }, wraper, props.attributes.StyleAtts.CarouPagination, props.attributes);
         }
       }), el(_src_components_wpmozo_size_wpmozo_size__WEBPACK_IMPORTED_MODULE_5__["default"], {
         SizeKey: 'CarouPagination',
@@ -1827,7 +1892,7 @@ __webpack_require__.r(__webpack_exports__);
           let selector = 'progressbar' === attributes.PaginationType ? '.swiper-pagination' : '.swiper-pagination span';
           appendInlineStyle({
             selector: selector
-          }, wraper, props.attributes.StyleAtts.CarouPagination);
+          }, wraper, props.attributes.StyleAtts.CarouPagination, props.attributes);
         }
       })], 'fraction' === attributes.PaginationType && [el(_src_components_wpmozo_colorpicker_wpmozo_colorpicker__WEBPACK_IMPORTED_MODULE_3__["default"], {
         ColorKey: 'CarouPagination',
@@ -1840,7 +1905,7 @@ __webpack_require__.r(__webpack_exports__);
         afterOnChange: props => {
           appendInlineStyle({
             selector: '.swiper-pagination'
-          }, wraper, props.attributes.StyleAtts.CarouPagination);
+          }, wraper, props.attributes.StyleAtts.CarouPagination, props.attributes);
         }
       }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'CarouPagination',
@@ -1852,7 +1917,7 @@ __webpack_require__.r(__webpack_exports__);
         afterOnChange: props => {
           appendInlineStyle({
             selector: '.swiper-pagination'
-          }, wraper, props.attributes.StyleAtts.CarouPagination);
+          }, wraper, props.attributes.StyleAtts.CarouPagination, props.attributes);
         }
       })]), el(PanelBody, {
         title: __('Title Style', 'wpmozo-product-carousel-for-woocommerce'),
@@ -1863,12 +1928,12 @@ __webpack_require__.r(__webpack_exports__);
         values: styleAtts.TitleStyle,
         props: props,
         ColorTypes: textColorObject,
-        afterOnChange: props => afterOnChange('.woocommerce-loop-product__title', props.attributes.StyleAtts.TitleStyle)
+        afterOnChange: props => afterOnChange('.woocommerce-loop-product__title', props.attributes.StyleAtts.TitleStyle, props.attributes)
       }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'TitleStyle',
         values: styleAtts.TitleStyle,
         props: props,
-        afterOnChange: props => afterOnChange('.woocommerce-loop-product__title', props.attributes.StyleAtts.TitleStyle)
+        afterOnChange: props => afterOnChange('.woocommerce-loop-product__title', props.attributes.StyleAtts.TitleStyle, props.attributes)
       })), attributes.ShowPrice && el(PanelBody, {
         title: __('Price Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
@@ -1878,12 +1943,12 @@ __webpack_require__.r(__webpack_exports__);
         values: styleAtts.PriceStyle,
         props: props,
         ColorTypes: textColorObject,
-        afterOnChange: props => afterOnChange('.price', props.attributes.StyleAtts.PriceStyle)
+        afterOnChange: props => afterOnChange('.price', props.attributes.StyleAtts.PriceStyle, props.attributes)
       }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'PriceStyle',
         values: styleAtts.PriceStyle,
         props: props,
-        afterOnChange: props => afterOnChange('.price', props.attributes.StyleAtts.PriceStyle)
+        afterOnChange: props => afterOnChange('.price', props.attributes.StyleAtts.PriceStyle, props.attributes)
       })), attributes.ShowAddToCartButton && el(PanelBody, {
         title: __('Add to Cart Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
@@ -1893,12 +1958,12 @@ __webpack_require__.r(__webpack_exports__);
         values: styleAtts.AddToCartStyle,
         props: props,
         ColorTypes: twoColorObject,
-        afterOnChange: props => afterOnChange(add_to_cart_selector, props.attributes.StyleAtts.AddToCartStyle)
+        afterOnChange: props => afterOnChange(add_to_cart_selector, props.attributes.StyleAtts.AddToCartStyle, props.attributes)
       }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'AddToCartStyle',
         values: styleAtts.AddToCartStyle,
         props: props,
-        afterOnChange: props => afterOnChange(add_to_cart_selector, props.attributes.StyleAtts.AddToCartStyle)
+        afterOnChange: props => afterOnChange(add_to_cart_selector, props.attributes.StyleAtts.AddToCartStyle, props.attributes)
       }), el(_src_components_wpmozo_dimensions_wpmozo_dimensions__WEBPACK_IMPORTED_MODULE_4__["default"], {
         DimensionKey: 'AddToCartStyle',
         DimensionsTypes: {
@@ -1906,12 +1971,12 @@ __webpack_require__.r(__webpack_exports__);
         },
         values: styleAtts.AddToCartStyle,
         props: props,
-        afterOnChange: props => afterOnChange(add_to_cart_selector, props.attributes.StyleAtts.AddToCartStyle)
+        afterOnChange: props => afterOnChange(add_to_cart_selector, props.attributes.StyleAtts.AddToCartStyle, props.attributes)
       }), el(_src_components_wpmozo_border_wpmozo_border__WEBPACK_IMPORTED_MODULE_6__["default"], {
         BorderKey: 'AddToCartStyle',
         values: styleAtts.AddToCartStyle,
         props: props,
-        afterOnChange: props => afterOnChange(add_to_cart_selector, props.attributes.StyleAtts.AddToCartStyle)
+        afterOnChange: props => afterOnChange(add_to_cart_selector, props.attributes.StyleAtts.AddToCartStyle, props.attributes)
       })), attributes.EnableQuickViewLink && el(PanelBody, {
         title: __('Quick View Button Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
@@ -1921,12 +1986,12 @@ __webpack_require__.r(__webpack_exports__);
         values: styleAtts.QuickViewStyle,
         props: props,
         ColorTypes: twoColorObject,
-        afterOnChange: props => afterOnChange('.wpmozo-quick-view-button', props.attributes.StyleAtts.QuickViewStyle)
+        afterOnChange: props => afterOnChange('.wpmozo-quick-view-button', props.attributes.StyleAtts.QuickViewStyle, props.attributes)
       }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'QuickViewStyle',
         values: styleAtts.QuickViewStyle,
         props: props,
-        afterOnChange: props => afterOnChange('.wpmozo-quick-view-button', props.attributes.StyleAtts.QuickViewStyle)
+        afterOnChange: props => afterOnChange('.wpmozo-quick-view-button', props.attributes.StyleAtts.QuickViewStyle, props.attributes)
       }), el(_src_components_wpmozo_dimensions_wpmozo_dimensions__WEBPACK_IMPORTED_MODULE_4__["default"], {
         DimensionKey: 'QuickViewStyle',
         DimensionsTypes: {
@@ -1934,12 +1999,12 @@ __webpack_require__.r(__webpack_exports__);
         },
         values: styleAtts.QuickViewStyle,
         props: props,
-        afterOnChange: props => afterOnChange('.wpmozo-quick-view-button', props.attributes.StyleAtts.QuickViewStyle)
+        afterOnChange: props => afterOnChange('.wpmozo-quick-view-button', props.attributes.StyleAtts.QuickViewStyle, props.attributes)
       }), el(_src_components_wpmozo_border_wpmozo_border__WEBPACK_IMPORTED_MODULE_6__["default"], {
         BorderKey: 'QuickViewStyle',
         values: styleAtts.QuickViewStyle,
         props: props,
-        afterOnChange: props => afterOnChange('.wpmozo-quick-view-button', props.attributes.StyleAtts.QuickViewStyle)
+        afterOnChange: props => afterOnChange('.wpmozo-quick-view-button', props.attributes.StyleAtts.QuickViewStyle, props.attributes)
       })), attributes.EnableQuickViewLink && el(PanelBody, {
         title: __('Quick View Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
@@ -2085,12 +2150,12 @@ __webpack_require__.r(__webpack_exports__);
         values: styleAtts.SaleLabelStyle,
         props: props,
         ColorTypes: twoColorObject,
-        afterOnChange: props => afterOnChange('.onsale', props.attributes.StyleAtts.SaleLabelStyle)
+        afterOnChange: props => afterOnChange('.onsale', props.attributes.StyleAtts.SaleLabelStyle, props.attributes)
       }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'SaleLabelStyle',
         values: styleAtts.SaleLabelStyle,
         props: props,
-        afterOnChange: props => afterOnChange('.onsale', props.attributes.StyleAtts.SaleLabelStyle)
+        afterOnChange: props => afterOnChange('.onsale', props.attributes.StyleAtts.SaleLabelStyle, props.attributes)
       })), !attributes.OutOfStock && attributes.DisplayOutOfStockLabel && el(PanelBody, {
         title: __('Out Of Stock Label Style', 'wpmozo-product-carousel-for-woocommerce'),
         className: "wpmozo-typography-panel",
@@ -2100,22 +2165,22 @@ __webpack_require__.r(__webpack_exports__);
         values: styleAtts.StockLabelStyle,
         props: props,
         ColorTypes: textColorObject,
-        afterOnChange: props => afterOnChange('.stock.out-of-stock', props.attributes.StyleAtts.StockLabelStyle)
+        afterOnChange: props => afterOnChange('.stock.out-of-stock', props.attributes.StyleAtts.StockLabelStyle, props.attributes)
       }), el(_src_components_wpmozo_typography_wpmozo_typography__WEBPACK_IMPORTED_MODULE_0__["default"], {
         TypographyKey: 'StockLabelStyle',
         values: styleAtts.StockLabelStyle,
         props: props,
-        afterOnChange: props => afterOnChange('.stock.out-of-stock', props.attributes.StyleAtts.StockLabelStyle)
+        afterOnChange: props => afterOnChange('.stock.out-of-stock', props.attributes.StyleAtts.StockLabelStyle, props.attributes)
       }), el(_src_components_wpmozo_dimensions_wpmozo_dimensions__WEBPACK_IMPORTED_MODULE_4__["default"], {
         DimensionKey: 'StockLabelStyle',
         values: styleAtts.StockLabelStyle,
         props: props,
-        afterOnChange: props => afterOnChange('.stock.out-of-stock', props.attributes.StyleAtts.StockLabelStyle)
+        afterOnChange: props => afterOnChange('.stock.out-of-stock', props.attributes.StyleAtts.StockLabelStyle, props.attributes)
       }), el(_src_components_wpmozo_border_wpmozo_border__WEBPACK_IMPORTED_MODULE_6__["default"], {
         BorderKey: 'StockLabelStyle',
         values: styleAtts.StockLabelStyle,
         props: props,
-        afterOnChange: props => afterOnChange('.stock.out-of-stock', props.attributes.StyleAtts.StockLabelStyle)
+        afterOnChange: props => afterOnChange('.stock.out-of-stock', props.attributes.StyleAtts.StockLabelStyle, props.attributes)
       })))];
     },
     save: function () {

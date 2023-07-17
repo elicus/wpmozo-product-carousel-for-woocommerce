@@ -37,7 +37,10 @@ function wpmozo_product_carousel_render_callback( $args ){
     ob_start();
     ?>
     <?php if ( $pro_query->have_posts() ) { ?>
+
         <?php wpmozo_product_carousel_before_hooks( $args ); ?>
+        <?php do_action( 'wpmozo_product_carousel_before_wraper', $args ); ?>
+
         <div class="wpmozo-product-carousel-wrap woocommerce swiper <?php echo esc_attr( $args['Layout'] ); ?><?php echo esc_attr( $admin_class ); ?><?php echo esc_attr( $addi_classes ); ?><?php echo esc_attr( $equal_height ); ?>" data-atts='<?php echo json_encode($args); ?>' id="wpmozo_<?php echo esc_attr( $args['clientId'] ); ?>">
             <?php if ( ! isset( $_GET['context'] ) ) { ?>
                 <div class="wpmozo-loader frontend">
@@ -58,32 +61,43 @@ function wpmozo_product_carousel_render_callback( $args ){
                         </div>
                     <?php } ?>
                 </div>  
-            <?php } ?>   
-            <ul class="products swiper-wrapper">
-                <?php while ( $pro_query->have_posts() ) { ?>
-                    <?php
-                    $pro_query->the_post();
-                    $product = wc_get_product( get_the_ID() );
-                    $visibility = $product->get_catalog_visibility();
-                    ?>
-                    <?php if ( 'hidden' !== $visibility ) { ?>
-                        <?php wc_get_template_part( 'content', 'product' ); ?>
+            <?php } ?>
+            <?php do_action( 'wpmozo_product_carousel_before_ul', $args ); ?>
+                <ul class="products swiper-wrapper">
+                    <?php while ( $pro_query->have_posts() ) { ?>
+                        <?php
+                        $pro_query->the_post();
+                        $product = wc_get_product( get_the_ID() );
+                        $visibility = $product->get_catalog_visibility();
+                        ?>
+                        <?php if ( 'hidden' !== $visibility ) { ?>
+                            <?php wc_get_template_part( 'content', 'product' ); ?>
+                        <?php } ?>
                     <?php } ?>
-                <?php } ?>
-            </ul>
+                </ul>
+            <?php do_action( 'wpmozo_product_carousel_after_ul', $args ); ?>
             <?php if ( $args['ShowNavigation'] ) { ?>
-                <div class="swiper-navigation swiper-button-next"></div>
-                <div class="swiper-navigation swiper-button-prev"></div>
+                <?php do_action( 'wpmozo_product_carousel_before_navigation', $args ); ?>
+                    <div class="swiper-navigation swiper-button-next"></div>
+                    <div class="swiper-navigation swiper-button-prev"></div>
+                <?php do_action( 'wpmozo_product_carousel_after_navigation', $args ); ?>
             <?php } ?>
             <?php if ( $args['ShowPagination'] ) { ?>
-                <div class="swiper-pagination"></div>
+                <?php do_action( 'wpmozo_product_carousel_before_pagination', $args ); ?>
+                    <div class="swiper-pagination"></div>
+                <?php do_action( 'wpmozo_product_carousel_after_pagination', $args ); ?>
             <?php } ?>
         </div>
+        
         <?php wpmozo_product_carousel_after_hooks( $args ); ?>
+        <?php do_action( 'wpmozo_product_carousel_after_wraper', $args ); ?>
+
     <?php }else{ ?>
-        <div class="wpmozo-product-carousel-nofound-wrap">
-            <p class="wpmozo-product-carousel-nofound"><?php echo esc_html__('No products found.', 'wpmozo-product-carousel-for-woocommerce'); ?></p>
-        </div>
+        <?php do_action( 'wpmozo_product_carousel_before_nofound', $args ); ?>
+            <div class="wpmozo-product-carousel-nofound-wrap">
+                <p class="wpmozo-product-carousel-nofound"><?php echo apply_filters( 'wpmozo_product_carousel_nofound_text', esc_html__('No products found.', 'wpmozo-product-carousel-for-woocommerce')); ?></p>
+            </div>
+        <?php do_action( 'wpmozo_product_carousel_after_nofound', $args ); ?>
     <?php } ?>
     <?php 
 

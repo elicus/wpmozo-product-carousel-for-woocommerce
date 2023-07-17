@@ -121,6 +121,7 @@ function wpmozo_product_carousel_prepare_query_args( $args ){
         $qu_args['meta_query'] = $meta_query;
     }
     
+    $qu_args = apply_filters( 'wpmozo_product_carousel_query_args', $qu_args, $args);
     return $qu_args;
 
 }
@@ -298,7 +299,7 @@ function wpmozo_product_carousel_add_hooks_admin_preview( $args ){
  * @return boolean Is woocommerce.
  */
 function wpmozo_product_carousel_set_is_woocommerce( $return ){
-    return true;
+    return apply_filters( 'wpmozo_product_carousel_is_woocommerce', true);
 }
 
 /**
@@ -384,6 +385,8 @@ function wpmozo_product_carousel_sale_badge( $html, $post, $product ){
         $html = str_replace($sale_text, $new_text, $html);
     }
 
+    $html = apply_filters( 'wpmozo_product_carousel_sale_badge', $html, $post, $product, $wpmozo_product_carousel_args);
+
     return $html;
 
 }
@@ -410,6 +413,7 @@ function wpmozo_product_carousel_outofstock_badge(){
             
         $html = sprintf('<p class="soldout-text stock %s">%s</p>', $class, $out_text);
         $finalhtml = apply_filters( 'woocommerce_get_stock_html', $html, $product );
+        $finalhtml = apply_filters( 'wpmozo_product_carousel_outofstock_badge', $finalhtml, $product, $wpmozo_product_carousel_args);
         echo $finalhtml;
     }
 
@@ -419,6 +423,9 @@ function wpmozo_product_carousel_outofstock_badge(){
  * Display quick view link.
  *
  * @since 1.0.0
+ * @param string $size (default: 'woocommerce_thumbnail').
+ * @param object $product The product object.
+ * @return string The html markup of image.
  */
 function wpmozo_product_carousel_quick_view_button( $image, $product ){
 
@@ -436,24 +443,31 @@ function wpmozo_product_carousel_quick_view_button( $image, $product ){
     ob_start();
     ?>
     <?php if ( ! empty( $button_text ) || ! empty( $icon ) ) { ?>
+        <?php do_action( 'wpmozo_product_carousel_before_quick_view_button_wraper', $image, $product, $wpmozo_product_carousel_args ); ?>
         <?php if ( 'layout-2' !== $wpmozo_product_carousel_args['Layout'] ) { ?>
             <div class="wpmozo-product__overlay">
         <?php } ?>
+            <?php do_action( 'wpmozo_product_carousel_before_quick_view_button', $image, $product, $wpmozo_product_carousel_args ); ?>
                 <button class="button wp-element-button wpmozo-quick-view-button<?php echo esc_attr( $has_icon );echo esc_attr( $has_text ); ?>" data-pro-id="<?php echo esc_attr( $pro_id ); ?>">
+                    <?php do_action( 'wpmozo_product_carousel_before_quick_view_icon', $image, $product, $wpmozo_product_carousel_args ); ?>
                     <?php if ( ! empty( $icon ) && ! $wpmozo_product_carousel_args['QuickViewLinkCustomIcon'] ) { ?>
                         <i class="<?php echo esc_attr( $icon ); ?>"></i>
                     <?php } ?>
                     <?php if ( ! empty( $icon ) && $wpmozo_product_carousel_args['QuickViewLinkCustomIcon'] ) { ?>
                         <img class="wpmozo-quick-view-img" src="<?php echo esc_attr( $icon ); ?>" />
                     <?php } ?>
-                    <?php echo $button_text; ?>        
+                    <?php echo $button_text; ?>
+                    <?php do_action( 'wpmozo_product_carousel_after_quick_view_icon', $image, $product, $wpmozo_product_carousel_args ); ?>       
                 </button>
+            <?php do_action( 'wpmozo_product_carousel_after_quick_view_button', $image, $product, $wpmozo_product_carousel_args ); ?>
         <?php if ( 'layout-2' !== $wpmozo_product_carousel_args['Layout'] ) { ?>
             </div>
         <?php } ?>
+        <?php do_action( 'wpmozo_product_carousel_after_quick_view_button_wraper', $image, $product, $wpmozo_product_carousel_args ); ?>
     <?php } ?>
     <?php
     $html = ob_get_clean();
+    $html = apply_filters( 'wpmozo_product_carousel_quick_view_button', $html, $image, $product, $wpmozo_product_carousel_args);
 
     $image .= $html;
     return $image;
@@ -481,7 +495,9 @@ function wpmozo_quick_view_content(){
         $product = wc_get_product( $pro_id );
 
         ?>
+        <?php do_action( 'wpmozo_product_carousel_before_quick_view_popup', $product ); ?>
         <div class="wpmozo-product-quick-view woocommerce single-product">
+            <?php do_action( 'wpmozo_product_carousel_before_quick_view_product', $product ); ?>
             <div id="product-<?php echo $pro_id; ?>" <?php wc_product_class( '', $product ); ?>>
 
                 <?php
@@ -513,7 +529,9 @@ function wpmozo_quick_view_content(){
                 </div>
 
             </div>
+            <?php do_action( 'wpmozo_product_carousel_after_quick_view_product', $product ); ?>
         </div>
+        <?php do_action( 'wpmozo_product_carousel_after_quick_view_popup', $product ); ?>
         <?php
         wp_reset_postdata();
     }
@@ -531,14 +549,18 @@ add_action('wp_ajax_nopriv_wpmozo_quick_view_content', 'wpmozo_quick_view_conten
 function wpmozo_product_carousel_layout_1_bottom(){
 
     ?>
+    <?php do_action( 'wpmozo_product_carousel_before_layout_1_bottom'); ?>
     <span class="wpmozo-product-bottom">
+        <?php do_action( 'wpmozo_product_carousel_before_layout_1_bottom_price'); ?>
         <span class="wpmozo-product-bottom-price">
             <?php woocommerce_template_loop_price(); ?>
         </span>
         <span class="wpmozo-product-bottom-add-to-cart">
             <?php woocommerce_template_loop_add_to_cart(); ?>
         </span>
+        <?php do_action( 'wpmozo_product_carousel_after_layout_1_bottom_addtocart'); ?>
     </span>
+    <?php do_action( 'wpmozo_product_carousel_after_layout_1_bottom'); ?>
     <?php
 
 }
@@ -547,6 +569,9 @@ function wpmozo_product_carousel_layout_1_bottom(){
  * Remove unnecessary class of product loop.
  *
  * @since 1.0.0
+ * @param array $classes Array of CSS classes.
+ * @param WC_Product $product Product object.
+ * @return array $classes Array of CSS classes.
  */
 function wpmozo_product_carousel_add_class( $classes, $product ){
 
@@ -570,9 +595,13 @@ function wpmozo_product_carousel_add_class( $classes, $product ){
  */
 function wpmozo_woocommerce_template_loop_product_thumbnail(){
 
+    do_action( 'wpmozo_product_carousel_before_layout_2_closing_a');
     echo '</a>';
-    woocommerce_template_loop_add_to_cart();
+    do_action( 'wpmozo_product_carousel_before_layout_2_addtocart');
+        woocommerce_template_loop_add_to_cart();
+    do_action( 'wpmozo_product_carousel_after_layout_2_addtocart');
     echo '</span>';
+    do_action( 'wpmozo_product_carousel_after_layout_2_closing_span');
     woocommerce_template_loop_product_link_open();
 
 }
@@ -584,7 +613,9 @@ function wpmozo_woocommerce_template_loop_product_thumbnail(){
  */
 function wpmozo_add_div_to_top(){
 
+    do_action( 'wpmozo_product_carousel_before_layout_2_top');
     echo '<span class="wpmozo-layout-wraper">';
+    do_action( 'wpmozo_product_carousel_after_layout_2_top');
 
 }
 
@@ -694,11 +725,18 @@ function wpmozo_add_hooks(){
  * Add wraper to add to cart button for equal height.
  * 
  * @since 1.0.0
+ * @param string $button The html markup of add to cart button.
+ * @param object $product The product object.
+ * @param array $args The add to cart button arguments.
  */
 function wpmozo_add_wrap_for_addtocart( $button, $product, $args ){
 
+    do_action( 'wpmozo_product_carousel_before_euheight_addtocart_wrap');
     echo '<div class="wpmozo-add-to-cart-wrap">';
-    echo $button;
+        do_action( 'wpmozo_product_carousel_before_euheight_addtocart');
+            echo $button;
+        do_action( 'wpmozo_product_carousel_after_euheight_addtocart');
     echo '</div>';
+    do_action( 'wpmozo_product_carousel_after_euheight_addtocart_wrap');
 
 }

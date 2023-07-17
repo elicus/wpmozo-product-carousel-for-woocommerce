@@ -4,7 +4,8 @@
 
 	var ProductTypes = wpmozo_carousel_object.products_types;
 
-	var swiper = [];
+	var swiper = [],
+        CarouAlign = '';
 
 	$('.wpmozo-product-carousel-wrap').each(function(){
 
@@ -12,7 +13,11 @@
 		 	atts = $(this).data('atts'),
             StyleAtts = atts.StyleAtts;
 
-        let options = StyleAtts.CarouContStyle;
+        if ( atts.hasOwnProperty('CAlign') ) {
+            CarouAlign = atts.CAlign;
+        }
+
+        var options = StyleAtts.CarouContStyle;
         let style = '';
         if ( 'undefined' !== typeof options.padding && '' !== options.padding && ( 
             'undefined' !== typeof options.padding.top || 
@@ -31,6 +36,32 @@
 			on: {
                 beforeInit: function(swiper){
 
+                    let style = '',
+                        Nstyle = '',
+                        Align = atts.CAlign;
+                    style += 'text-align: '+Align+' !important;';
+                    $this.find('ul.products li.product').attr('style', style);
+
+                    if ( 'left' === Align ) {
+                        Nstyle += 'margin-right: auto !important;';
+                        Nstyle += 'margin-left: 0px !important;';
+                    }else if ( 'right' === Align ) {
+                        Nstyle += 'margin-right: 0px !important;';
+                        Nstyle += 'margin-left: auto !important;';
+                    }else if ( 'center' === Align ) {
+                        Nstyle += 'margin-right: auto !important;';
+                        Nstyle += 'margin-left: auto !important;';
+                    }
+                    let NNstyle = Nstyle += 'text-align: '+Align+' !important;';
+                    let liChilds = $this.find('ul.products li.product').children();
+                    let proLinkChilds = $this.find('ul.products li.product a.woocommerce-LoopProduct-link').children();
+                    liChilds.each(function(key, value) {
+                        jQuery(this).attr('style', NNstyle);
+                    });
+                    proLinkChilds.each(function(key, value) {
+                        jQuery(this).attr('style', Nstyle);
+                    });
+
                 	let add_to_cart_selector = '.add_to_cart_button';
                     if ( ProductTypes.length ) {
                         jQuery.each(ProductTypes, function(key, type){
@@ -48,11 +79,11 @@
                         {attKey: 'PriceStyle', selector: '.price'},
                         {attKey: 'AddToCartStyle', selector: add_to_cart_selector},
                         {attKey: 'QuickViewStyle', selector: '.wpmozo-quick-view-button'},
-                        {attKey: 'SaleLabelStyle', selector: '.onsale'},
+                        {attKey: 'SaleLabelStyle', selector: '.onsale',hasAlign: false},
                         {attKey: 'StockLabelStyle', selector: '.stock.out-of-stock'},
-                        {attKey: 'CarouNavigation', selector: '.swiper-navigation', values: main},
-                        {attKey: 'CarouNavigationLeft', selector: '.swiper-button-prev', values: left},
-                        {attKey: 'CarouNavigationRight', selector: '.swiper-button-next', values: right},
+                        {attKey: 'CarouNavigation', selector: '.swiper-navigation', values: main,hasAlign: false},
+                        {attKey: 'CarouNavigationLeft', selector: '.swiper-button-prev', values: left,hasAlign: false},
+                        {attKey: 'CarouNavigationRight', selector: '.swiper-button-next', values: right,hasAlign: false},
                     ];
 
                     styles.map(
@@ -66,7 +97,7 @@
                         PaginationSelector = ( 'fraction' === atts.PaginationType ) ? '.swiper-pagination' : '.swiper-pagination span';
 
                     let styles = [
-                        {attKey: 'CarouPagination', selector: PaginationSelector},
+                        {attKey: 'CarouPagination', selector: PaginationSelector,hasAlign: false},
                     ];
 
                     if ( 'progressbar' === atts.PaginationType ) {
@@ -76,14 +107,16 @@
                                 height: StyleAtts.CarouPagination.height,
                             };
                         styles = [
-                            {selector: PaginationSelector, values: barAtts},
-                            {selector: '.swiper-pagination', values: progAtts},
+                            {selector: PaginationSelector, values: barAtts,hasAlign: false},
+                            {selector: '.swiper-pagination', values: progAtts,hasAlign: false},
                         ];
                     }
 
                     styles.map(
                         function(item) { appendInlineStyle(item, wraper, false, StyleAtts); }
                     );
+
+                    CarouAlign = null;
 
                 	$this.find('.wpmozo-loader').remove();
                 	$this.removeClass('loading');
@@ -232,9 +265,44 @@
             selector = item.selector,
             _values = ( values === false ) ? atts[attKey] : values,
             __values = ( item.hasOwnProperty('values') ) ? item.values : _values,
-            inlineStyle = convetInlineStyle( __values, atts );
+            inlineStyle = convetInlineStyle( __values, atts ),
+            hasAlign = item.hasOwnProperty('hasAlign') ? item.hasAlign : true;
+
+        if ( hasAlign && '' !== CarouAlign && 'undefined' !== typeof CarouAlign && null !== CarouAlign ) {
+
+            let { Nstyle, NNstyle } = getAlignStyle(CarouAlign),
+                parent = jQuery(wraper).find(selector).parent();
+
+            if ( parent.hasClass('product') ) {
+                inlineStyle = inlineStyle += NNstyle;
+            }
+            if ( parent.hasClass('woocommerce-LoopProduct-link') ) {
+                inlineStyle = inlineStyle += Nstyle;
+            }
+        }
         
         jQuery(wraper).find(selector).attr('style', inlineStyle);
+
+    }
+
+    function getAlignStyle( Align ){
+
+        let style = '',
+            Nstyle = '';
+        style += 'text-align: '+Align+' !important;';
+        if ( 'left' === Align ) {
+            Nstyle += 'margin-right: auto !important;';
+            Nstyle += 'margin-left: 0px !important;';
+        }else if ( 'right' === Align ) {
+            Nstyle += 'margin-right: 0px !important;';
+            Nstyle += 'margin-left: auto !important;';
+        }else if ( 'center' === Align ) {
+            Nstyle += 'margin-right: auto !important;';
+            Nstyle += 'margin-left: auto !important;';
+        }
+        let NNstyle = Nstyle += 'text-align: '+Align+' !important;';
+
+        return {style: style, Nstyle: Nstyle, NNstyle: NNstyle};
 
     }
 

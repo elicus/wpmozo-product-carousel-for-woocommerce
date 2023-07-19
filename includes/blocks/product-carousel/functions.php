@@ -745,3 +745,64 @@ function wpmozo_add_wrap_for_addtocart( $button, $product, $args ){
     do_action( 'wpmozo_product_carousel_after_euheight_addtocart_wrap');
 
 }
+
+/**
+ * Check if display products or not.
+ *
+ * @since 1.0.0
+ * @param array $args The arguments of products.
+ * @return boolean $show_products Display products or not.
+ */
+function wpmozo_product_carousel_is_display_products( $args ){
+
+    $show_products = false;
+
+    if (  
+        $args['ShowTitle'] === true ||
+        $args['ShowFeaturedImage'] === true ||
+        $args['ShowRating'] === true ||
+        $args['ShowPrice'] === true ||
+        $args['ShowAddToCartButton'] === true ||
+        $args['ShowSaleBadge'] === true
+    ) {
+        $show_products = true;
+    }
+
+    return $show_products;
+
+}
+
+/**
+ * Display loader to the fornt side.
+ *
+ * @since 1.0.0
+ * @param array $args The arguments of products.
+ */
+function wpmozo_product_carousel_display_loader( $args ){   
+
+    $Columns = intval( $args['Columns'] );
+    $SpaceBetween = $args['SpaceBetween'];
+    ?>
+    <?php if ( ! isset( $_GET['context'] ) ) { ?>
+        <div class="wpmozo-loader frontend">
+            <?php for ($i=0; $i < $Columns; $i++) { ?>
+                <div class="ph-item" style="margin-right: <?php echo esc_attr( $SpaceBetween ); ?>px;">
+                    <div class="ph-col-12">
+                        <div class="ph-picture"></div>
+                        <div class="ph-row">
+                            <div class="ph-col-8"></div>
+                            <div class="ph-col-4 empty"></div>
+                            <div class="ph-col-4"></div>
+                            <div class="ph-col-8 empty"></div>
+                            <div class="ph-col-12 empty"></div>
+                            <div class="ph-col-6 big"></div>
+                            <div class="ph-col-6 empty"></div>
+                        </div>
+                    </div>
+                </div>
+            <?php } ?>
+        </div>  
+    <?php } ?>
+    <?php
+
+}

@@ -55,3 +55,9 @@
 .wpmozo-same-as-carousel{
 	margin-top: 10px;
 }
+.wpmozo-typography-panel .wpmozo-color-tools-panel{
+	gap: calc(5px) calc(8px);
+}
+.wpmozo-typography-panel .wpmozo-color-tools-panel .components-tools-panel-header{
+	margin-bottom: 10px;
+}

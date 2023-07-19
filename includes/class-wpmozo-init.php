@@ -65,7 +65,7 @@ class Wpmozo_Init {
 			WPMOZO_VERSION,
 		);
 
-		wp_register_style( 'wpmozo-product-carousel-placeholder', 
+		wp_register_style( 'wpmozo-placeholder', 
 			WPMOZO_ASSE_DIR_URL . 'placeholder-loading.css',
 			array(),
 			WPMOZO_VERSION
@@ -114,7 +114,7 @@ class Wpmozo_Init {
 		$wc_styles = $this->wpmozo_wc_styles;
 		$styles_handles = array(
 			'wpmozo-swiper-style',
-			'wpmozo-product-carousel-placeholder',
+			'wpmozo-placeholder',
 			'wpmozo-fontawesome-style',
 			'wpmozo-product-carousel-style',
 		);
@@ -987,6 +987,13 @@ class Wpmozo_Init {
 	 * @return array The block categories.
 	 */
 	public function wpmozo_block_category( $categories ) {
+
+		$found = array_search('wpmozo', array_column($categories, 'slug'));
+		
+		if ( $found !== false ) {
+			return $categories;
+		}	
+
 		return array_merge(
 			$categories,
 			array(

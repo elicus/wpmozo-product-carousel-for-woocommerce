@@ -65,7 +65,7 @@ class Wpmozo_Init {
 			time(),
 		);
 
-		wp_register_style( 'wpmozo-product-carousel-placeholder', 
+		wp_register_style( 'wpmozo-placeholder', 
 			WPMOZO_ASSE_DIR_URL . 'placeholder-loading.css',
 			array(),
 			time()
@@ -114,7 +114,7 @@ class Wpmozo_Init {
 		$wc_styles = $this->wpmozo_wc_styles;
 		$styles_handles = array(
 			'wpmozo-swiper-style',
-			'wpmozo-product-carousel-placeholder',
+			'wpmozo-placeholder',
 			'wpmozo-fontawesome-style',
 			'wpmozo-product-carousel-style',
 		);

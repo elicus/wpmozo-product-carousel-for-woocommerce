@@ -502,6 +502,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             block: 'wpmozo/product-carousel',
                             attributes: attributes,
                             LoadingResponsePlaceholder: TriggerWhenLoadingFinished,
+                            EmptyResponsePlaceholder: TriggerWhenLoadingFinished,
                             httpMethod: 'POST',
                         },
                     ),

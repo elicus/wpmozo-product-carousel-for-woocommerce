@@ -249,6 +249,7 @@ const WpmozoColorPicker = function (args) {
   }
   return [el(__experimentalToolsPanel, {
     label: __('Color', 'wpmozo-product-carousel-for-woocommerce'),
+    className: 'wpmozo-color-tools-panel',
     resetAll: () => {
       ColorTypes.map(type => setValue(type.key, null));
       props.setAttributes({
@@ -1375,6 +1376,7 @@ __webpack_require__.r(__webpack_exports__);
         block: 'wpmozo/product-carousel',
         attributes: attributes,
         LoadingResponsePlaceholder: TriggerWhenLoadingFinished,
+        EmptyResponsePlaceholder: TriggerWhenLoadingFinished,
         httpMethod: 'POST'
       })), el(BlockControls, {}, el(AlignmentControl, {
         value: attributes.CAlign,

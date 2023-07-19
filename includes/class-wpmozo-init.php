@@ -987,6 +987,13 @@ class Wpmozo_Init {
 	 * @return array The block categories.
 	 */
 	public function wpmozo_block_category( $categories ) {
+
+		$found = array_search('wpmozo', array_column($categories, 'slug'));
+		
+		if ( $found !== false ) {
+			return $categories;
+		}	
+
 		return array_merge(
 			$categories,
 			array(

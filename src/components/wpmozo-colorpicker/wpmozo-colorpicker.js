@@ -125,6 +125,7 @@ const WpmozoColorPicker = function(args){
         el( __experimentalToolsPanel,
             { 
                 label: __( 'Color', 'wpmozo-product-carousel-for-woocommerce' ),
+                className: 'wpmozo-color-tools-panel',
                 resetAll: () => {
                     ColorTypes.map(type => setValue(type.key, null));
                     props.setAttributes( {[AttrKey]: theAtts} );

@@ -27,8 +27,25 @@ function wpmozo_product_carousel_render_callback( $args ){
     $admin_class = ' loading';
     $addi_classes = isset( $args['className'] ) ? ' '.$args['className'] : '';
     $equal_height = ( isset( $args['EqualSlideHeight'] ) && $args['EqualSlideHeight'] ) ? ' equal-slide-height' : ''; 
+    $is_display_products = wpmozo_product_carousel_is_display_products( $args );
+    $wpmozo_product_carousel_is_admin = ( isset( $_GET['context'] ) && 'edit' === $_GET['context'] ) 
+    ? true : false;
 
-    if ( isset( $_GET['context'] ) && 'edit' === $_GET['context'] ) {
+    if ( ! $is_display_products ) {
+        ob_start();
+        ?>
+        <?php if ( $wpmozo_product_carousel_is_admin ) { ?>
+            <?php do_action( 'wpmozo_product_carousel_before_noelements', $args ); ?>
+                <div class="wpmozo-products-wrap wpmozo-products-noelements-wrap">
+                    <p class="wpmozo-products-noelements"><?php echo apply_filters( 'wpmozo_product_carousel_noelements_text', esc_html__('All product components have been deactivated through the display settings.', 'wpmozo-products-for-woocommerce')); ?></p>
+                </div>
+            <?php do_action( 'wpmozo_product_carousel_after_noelements', $args ); ?>
+        <?php } ?>
+        <?php
+        return ob_get_clean();
+    }
+
+    if ( $wpmozo_product_carousel_is_admin ) {
         $admin_class = '';
         wpmozo_product_carousel_add_hooks_admin_preview( $args );
     }
@@ -41,26 +58,9 @@ function wpmozo_product_carousel_render_callback( $args ){
         <?php do_action( 'wpmozo_product_carousel_before_wraper', $args ); ?>
 
         <div class="wpmozo-product-carousel-wrap woocommerce swiper <?php echo esc_attr( $args['Layout'] ); ?><?php echo esc_attr( $admin_class ); ?><?php echo esc_attr( $addi_classes ); ?><?php echo esc_attr( $equal_height ); ?>" data-atts='<?php echo json_encode($args); ?>' id="wpmozo_<?php echo esc_attr( $args['clientId'] ); ?>">
-            <?php if ( ! isset( $_GET['context'] ) ) { ?>
-                <div class="wpmozo-loader frontend">
-                    <?php for ($i=0; $i < $args['Columns']; $i++) { ?>
-                        <div class="ph-item" style="margin-right: <?php echo esc_attr( $args['SpaceBetween'] ); ?>px;">
-                            <div class="ph-col-12">
-                                <div class="ph-picture"></div>
-                                <div class="ph-row">
-                                    <div class="ph-col-8"></div>
-                                    <div class="ph-col-4 empty"></div>
-                                    <div class="ph-col-4"></div>
-                                    <div class="ph-col-8 empty"></div>
-                                    <div class="ph-col-12 empty"></div>
-                                    <div class="ph-col-6 big"></div>
-                                    <div class="ph-col-6 empty"></div>
-                                </div>
-                            </div>
-                        </div>
-                    <?php } ?>
-                </div>  
-            <?php } ?>
+
+            <?php wpmozo_product_carousel_display_loader( $args ); ?>
+
             <?php do_action( 'wpmozo_product_carousel_before_ul', $args ); ?>
                 <ul class="products swiper-wrapper">
                     <?php while ( $pro_query->have_posts() ) { ?>
@@ -69,9 +69,11 @@ function wpmozo_product_carousel_render_callback( $args ){
                         $product = wc_get_product( get_the_ID() );
                         $visibility = $product->get_catalog_visibility();
                         ?>
+                        <?php do_action( 'wpmozo_product_carousel_before_li', $args ); ?>
                         <?php if ( 'hidden' !== $visibility ) { ?>
                             <?php wc_get_template_part( 'content', 'product' ); ?>
                         <?php } ?>
+                        <?php do_action( 'wpmozo_product_carousel_after_li', $args ); ?>
                     <?php } ?>
                 </ul>
             <?php do_action( 'wpmozo_product_carousel_after_ul', $args ); ?>
@@ -100,7 +102,8 @@ function wpmozo_product_carousel_render_callback( $args ){
     <?php } ?>
     <?php 
 
-    wp_reset_postdata();
+    wc_reset_loop();
+    wp_reset_query();
 
     return ob_get_clean();
 

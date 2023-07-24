@@ -10,7 +10,7 @@
  *
  * @link              https://elicus.com
  * @since             1.0.0
- * @package           Wpmozo_Product_Carousel_For_Woocommerce
+ * @package           WPMozo_Product_Carousel_For_Woocommerce
  *
  * @wordpress-plugin
  * Plugin Name:       WPMozo Product Carousel For WooCommerce
@@ -31,31 +31,31 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Current plugin version.
-define( 'WPMOZO_VERSION', '1.0.0' );
+define( 'WPMOZO_PRODUCT_CAROUSEL_VERSION', '1.0.0' );
 
 // Plugin main file.
-define( 'WPMOZO_FILE', __FILE__ );
+define( 'WPMOZO_PRODUCT_CAROUSEL_FILE', __FILE__ );
 
 // Plugin dir path.
-define( 'WPMOZO_PLUGIN_DIR_PATH', plugin_dir_path( __FILE__ ) );
+define( 'WPMOZO_PRODUCT_CAROUSEL_PLUGIN_DIR_PATH', plugin_dir_path( __FILE__ ) );
 
 // Plugin dir url
-define( 'WPMOZO_PLUGIN_DIR_URL', plugin_dir_url( __FILE__ ) );
+define( 'WPMOZO_PRODUCT_CAROUSEL_PLUGIN_DIR_URL', plugin_dir_url( __FILE__ ) );
 
 // Includes dir path.
-define( 'WPMOZO_INC_DIR_PATH', WPMOZO_PLUGIN_DIR_PATH . 'includes/' );
+define( 'WPMOZO_PRODUCT_CAROUSEL_INC_DIR_PATH', WPMOZO_PRODUCT_CAROUSEL_PLUGIN_DIR_PATH . 'includes/' );
 
 // Includes dir url.
-define( 'WPMOZO_INC_DIR_URL', WPMOZO_PLUGIN_DIR_URL . 'includes/' );
+define( 'WPMOZO_PRODUCT_CAROUSEL_INC_DIR_URL', WPMOZO_PRODUCT_CAROUSEL_PLUGIN_DIR_URL . 'includes/' );
 
 // Blocks dir path.
-define( 'WPMOZO_BLOCKS_DIR_PATH', WPMOZO_INC_DIR_PATH . 'blocks/' );
+define( 'WPMOZO_PRODUCT_CAROUSEL_BLOCKS_DIR_PATH', WPMOZO_PRODUCT_CAROUSEL_INC_DIR_PATH . 'blocks/' );
 
 // Blocks dir url.
-define( 'WPMOZO_BLOCKS_DIR_URL', WPMOZO_INC_DIR_URL . 'blocks/' );
+define( 'WPMOZO_PRODUCT_CAROUSEL_BLOCKS_DIR_URL', WPMOZO_PRODUCT_CAROUSEL_INC_DIR_URL . 'blocks/' );
 
 // Assets dir url.
-define( 'WPMOZO_ASSE_DIR_URL', WPMOZO_PLUGIN_DIR_URL . 'assets/' );
+define( 'WPMOZO_PRODUCT_CAROUSEL_ASSE_DIR_URL', WPMOZO_PRODUCT_CAROUSEL_PLUGIN_DIR_URL . 'assets/' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -74,7 +74,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-wpmozo-product-carousel-fo
  */
 function run_wpmozo_product_carousel_for_woocommerce() {
 
-	$wpmozo = new Wpmozo_Product_Carousel_For_Woocommerce();
+	$wpmozo = new WPMozo_Product_Carousel_For_Woocommerce();
     if ( ! class_exists( 'WooCommerce' ) ) {
         $wpmozo->deactivate();
     } else {

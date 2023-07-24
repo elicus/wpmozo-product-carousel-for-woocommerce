@@ -6,8 +6,8 @@
  * @link       https://elicus.com
  * @since      1.0.0
  *
- * @package    Wpmozo_Product_Carousel_For_Woocommerce
- * @subpackage Wpmozo_Product_Carousel_For_Woocommerce/includes
+ * @package    WPMozo_Product_Carousel_For_Woocommerce
+ * @subpackage WPMozo_Product_Carousel_For_Woocommerce/includes
  */
 
 /**
@@ -17,11 +17,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Wpmozo_Product_Carousel_For_Woocommerce
- * @subpackage Wpmozo_Product_Carousel_For_Woocommerce/includes
+ * @package    WPMozo_Product_Carousel_For_Woocommerce
+ * @subpackage WPMozo_Product_Carousel_For_Woocommerce/includes
  * @author     Elicus <hello@elicus.com>
  */
-class Wpmozo_Loader {
+class WPMozo_Product_Carousel_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

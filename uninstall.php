@@ -22,7 +22,7 @@
  * @link       https://elicus.com
  * @since      1.0.0
  *
- * @package    Wpmozo_Product_Carousel_For_Woocommerce
+ * @package    WPMozo_Product_Carousel_For_Woocommerce
  */
 
 // If uninstall not called from WordPress, then exit.

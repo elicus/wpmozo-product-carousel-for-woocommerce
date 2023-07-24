@@ -5,8 +5,8 @@
  * @link       https://elicus.com
  * @since      1.0.0
  *
- * @package    Wpmozo_Product_Carousel_For_Woocommerce
- * @subpackage Wpmozo_Product_Carousel_For_Woocommerce/includes/blocks/product-carousel
+ * @package    WPMozo_Product_Carousel_For_Woocommerce
+ * @subpackage WPMozo_Product_Carousel_For_Woocommerce/includes/blocks/product-carousel
  */
 
 /**

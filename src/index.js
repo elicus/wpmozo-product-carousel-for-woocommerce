@@ -915,7 +915,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             ToggleControl,
                             {
                                 checked: attributes.EnableQuickViewLink, 
-                                label: __( 'Enable Quick View Link', 'wpmozo-product-carousel-for-woocommerce' ),
+                                label: __( 'Enable Quick View', 'wpmozo-product-carousel-for-woocommerce' ),
                                 onChange: function( NewEnableQuickViewLink ) {
                                     setAttributes( { EnableQuickViewLink: NewEnableQuickViewLink } );
                                 },
@@ -927,7 +927,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                                 {
                                     key: 'wpmozp-product-carousel-quickviewlinktext',
                                     value: attributes.QuickViewLinkText,
-                                    label: __( 'Quickview link text', 'wpmozo-product-carousel-for-woocommerce' ),
+                                    label: __( 'Quickview Button text', 'wpmozo-product-carousel-for-woocommerce' ),
                                     onChange: function( NewQuickViewLinkText ) {
                                         setAttributes( { QuickViewLinkText: NewQuickViewLinkText } );
                                     },

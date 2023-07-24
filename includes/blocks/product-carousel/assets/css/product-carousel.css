@@ -205,6 +205,9 @@
     grid-auto-flow: column;
     background: #fff;
 }
+.wpmozo-product-carousel-wrap.default.equal-slide-height .wpmozo-add-to-cart-wrap{
+	width: 100%;
+}
 
 @media (min-width: 767px) {
 	.wpmozo-loader.backend{

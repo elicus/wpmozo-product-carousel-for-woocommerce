@@ -9,8 +9,8 @@
  * @link       https://elicus.com
  * @since      1.0.0
  *
- * @package    Wpmozo_Product_Carousel_For_Woocommerce
- * @subpackage Wpmozo_Product_Carousel_For_Woocommerce/includes
+ * @package    WPMozo_Product_Carousel_For_Woocommerce
+ * @subpackage WPMozo_Product_Carousel_For_Woocommerce/includes
  */
 
 /**
@@ -23,11 +23,11 @@
  * version of the plugin.
  *
  * @since      1.0.0
- * @package    Wpmozo_Product_Carousel_For_Woocommerce
- * @subpackage Wpmozo_Product_Carousel_For_Woocommerce/includes
+ * @package    WPMozo_Product_Carousel_For_Woocommerce
+ * @subpackage WPMozo_Product_Carousel_For_Woocommerce/includes
  * @author     Elicus <hello@elicus.com>
  */
-class Wpmozo_Product_Carousel_For_Woocommerce {
+class WPMozo_Product_Carousel_For_Woocommerce {
 
 	/**
 	 * The instances of classes.
@@ -44,7 +44,7 @@ class Wpmozo_Product_Carousel_For_Woocommerce {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Wpmozo_Product_Carousel_For_Woocommerce_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      WPMozo_Product_Carousel_For_Woocommerce_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -76,8 +76,8 @@ class Wpmozo_Product_Carousel_For_Woocommerce {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'WPMOZO_VERSION' ) ) {
-			$this->version = WPMOZO_VERSION;
+		if ( defined( 'WPMOZO_PRODUCT_CAROUSEL_VERSION' ) ) {
+			$this->version = WPMOZO_PRODUCT_CAROUSEL_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
@@ -90,8 +90,9 @@ class Wpmozo_Product_Carousel_For_Woocommerce {
 	 *
 	 * Include the following files that make up the plugin:
 	 *
-	 * - Wpmozo_Loader. Orchestrates the hooks of the plugin.
-	 * - Wpmozo_i18n. Defines internationalization functionality.
+	 * - WPMozo_Product_Carousel_Loader. Orchestrates the hooks of the plugin.
+	 * - WPMozo_Product_Carousel_i18n. Defines internationalization functionality.
+	 * - WPMozo_Product_Carousel_Init. Define the hooks for WP initialization.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
@@ -105,22 +106,22 @@ class Wpmozo_Product_Carousel_For_Woocommerce {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once WPMOZO_INC_DIR_PATH . 'class-wpmozo-loader.php';
-		$this->loader = new Wpmozo_Loader();
+		require_once WPMOZO_PRODUCT_CAROUSEL_INC_DIR_PATH . 'class-wpmozo-product-carousel-loader.php';
+		$this->loader = new WPMozo_Product_Carousel_Loader();
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once WPMOZO_INC_DIR_PATH . 'class-wpmozo-i18n.php';
+		require_once WPMOZO_PRODUCT_CAROUSEL_INC_DIR_PATH . 'class-wpmozo-product-carousel-i18n.php';
 		
 		/**
 		 * The class responsible for defining all actions for WP initialization of the plugin.
 		 */
-		include_once WPMOZO_INC_DIR_PATH . 'class-wpmozo-init.php';
+		include_once WPMOZO_PRODUCT_CAROUSEL_INC_DIR_PATH . 'class-wpmozo-product-carousel-init.php';
 
-		$wpmozo_i18n = new Wpmozo_I18n();
-		$wpmozo_init = new Wpmozo_Init();
+		$wpmozo_i18n = new WPMozo_Product_Carousel_I18n();
+		$wpmozo_init = new WPMozo_Product_Carousel_Init();
 
 		$this->classes['i18n'] = $wpmozo_i18n;
 		$this->classes['init'] = $wpmozo_init;
@@ -175,7 +176,7 @@ class Wpmozo_Product_Carousel_For_Woocommerce {
 			$_GET['deactivate'] = true;
 		}
 		add_action('admin_notices', array( $this, 'deactivation_notice' ) );
-		deactivate_plugins( WPMOZO_FILE );
+		deactivate_plugins( WPMOZO_PRODUCT_CAROUSEL_FILE );
 
 	}
 
@@ -221,7 +222,7 @@ class Wpmozo_Product_Carousel_For_Woocommerce {
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @since     1.0.0
-	 * @return    Wpmozo_Product_Carousel_For_Woocommerce_Loader    Orchestrates the hooks of the plugin.
+	 * @return    WPMozo_Product_Carousel_For_Woocommerce_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
 		return $this->loader;

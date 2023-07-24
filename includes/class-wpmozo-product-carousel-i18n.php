@@ -9,8 +9,8 @@
  * @link       https://elicus.com
  * @since      1.0.0
  *
- * @package    Wpmozo_Product_Carousel_For_Woocommerce
- * @subpackage Wpmozo_Product_Carousel_For_Woocommerce/includes
+ * @package    WPMozo_Product_Carousel_For_Woocommerce
+ * @subpackage WPMozo_Product_Carousel_For_Woocommerce/includes
  */
 
 /**
@@ -20,11 +20,11 @@
  * so that it is ready for translation.
  *
  * @since      1.0.0
- * @package    Wpmozo_Product_Carousel_For_Woocommerce
- * @subpackage Wpmozo_Product_Carousel_For_Woocommerce/includes
+ * @package    WPMozo_Product_Carousel_For_Woocommerce
+ * @subpackage WPMozo_Product_Carousel_For_Woocommerce/includes
  * @author     Elicus <hello@elicus.com>
  */
-class Wpmozo_i18n {
+class WPMozo_Product_Carousel_I18n {
 
 
 	/**

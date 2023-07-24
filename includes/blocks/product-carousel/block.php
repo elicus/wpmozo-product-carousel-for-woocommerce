@@ -5,12 +5,12 @@
  * @link       https://elicus.com
  * @since      1.0.0
  *
- * @package    Wpmozo_Product_Carousel_For_Woocommerce
- * @subpackage Wpmozo_Product_Carousel_For_Woocommerce/includes/blocks/product-carousel
+ * @package    WPMozo_Product_Carousel_For_Woocommerce
+ * @subpackage WPMozo_Product_Carousel_For_Woocommerce/includes/blocks/product-carousel
  */
 
 global $wpmozo_product_carousel_args;
-require_once WPMOZO_BLOCKS_DIR_PATH . 'product-carousel/functions.php';
+require_once WPMOZO_PRODUCT_CAROUSEL_BLOCKS_DIR_PATH . 'product-carousel/functions.php';
 
 /**
  * Render product carousel markup.

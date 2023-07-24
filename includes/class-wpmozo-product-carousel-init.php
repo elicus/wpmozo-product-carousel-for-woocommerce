@@ -5,19 +5,19 @@
  * @link       https://elicus.com
  * @since      1.0.0
  *
- * @package    Wpmozo_Product_Carousel_For_Woocommerce
- * @subpackage Wpmozo_Product_Carousel_For_Woocommerce/includes
+ * @package    WPMozo_Product_Carousel_For_Woocommerce
+ * @subpackage WPMozo_Product_Carousel_For_Woocommerce/includes
  */
 
 /**
  * This class responsible for defining all actions for WP initialization of the plugin.
  *
  * @since      1.0.0
- * @package    Wpmozo_Product_Carousel_For_Woocommerce
- * @subpackage Wpmozo_Product_Carousel_For_Woocommerce/includes
+ * @package    WPMozo_Product_Carousel_For_Woocommerce
+ * @subpackage WPMozo_Product_Carousel_For_Woocommerce/includes
  * @author     Elicus <hello@elicus.com>
  */
-class Wpmozo_Init {
+class WPMozo_Product_Carousel_Init {
 
 	/**
 	 * The array of styles for editor by woocommerce.
@@ -39,34 +39,34 @@ class Wpmozo_Init {
 		$this->wpmozo_set_wc_styles();
 
 		// register the swiper script.
-		wp_register_script( 'wpmozo-swiper-script', WPMOZO_ASSE_DIR_URL . 'frontend/swiper/js/swiper-bundle.min.js', array(), WPMOZO_VERSION, true );
-		wp_register_style( 'wpmozo-swiper-style', WPMOZO_ASSE_DIR_URL . 'frontend/swiper/css/swiper-bundle.css', array(), WPMOZO_VERSION);
+		wp_register_script( 'wpmozo-swiper-script', WPMOZO_PRODUCT_CAROUSEL_ASSE_DIR_URL . 'frontend/swiper/js/swiper-bundle.min.js', array(), time(), true );
+		wp_register_style( 'wpmozo-swiper-style', WPMOZO_PRODUCT_CAROUSEL_ASSE_DIR_URL . 'frontend/swiper/css/swiper-bundle.css', array(), time());
 		// rgister fontawesome style.
-		wp_register_style( 'wpmozo-fontawesome-style', WPMOZO_ASSE_DIR_URL . 'frontend/fontawesome/all.min.css', array(), WPMOZO_VERSION);
+		wp_register_style( 'wpmozo-fontawesome-style', WPMOZO_PRODUCT_CAROUSEL_ASSE_DIR_URL . 'frontend/fontawesome/all.min.css', array(), time());
 
 		// register the swiper scripts.
 		wp_register_script( 
 			'wpmozo-product-carousel-script',
-			WPMOZO_BLOCKS_DIR_URL . 'product-carousel/assets/js/product-carousel.js',
+			WPMOZO_PRODUCT_CAROUSEL_BLOCKS_DIR_URL . 'product-carousel/assets/js/product-carousel.js',
 			array('jquery','wpmozo-swiper-script','wpmozo-magnific-script'),
 			WPMOZO_VERSION,
 			true
 		);
 		wp_register_style( 
 			'wpmozo-block-product-carousel-style',
-			WPMOZO_BLOCKS_DIR_URL . 'product-carousel/assets/css/product-carousel-editor.css',
+			WPMOZO_PRODUCT_CAROUSEL_BLOCKS_DIR_URL . 'product-carousel/assets/css/product-carousel-editor.css',
 			array('wp-edit-blocks'),
 			WPMOZO_VERSION,
 		);
 		wp_register_style( 
 			'wpmozo-product-carousel-style',
-			WPMOZO_BLOCKS_DIR_URL . 'product-carousel/assets/css/product-carousel.css',
+			WPMOZO_PRODUCT_CAROUSEL_BLOCKS_DIR_URL . 'product-carousel/assets/css/product-carousel.css',
 			array(),
 			WPMOZO_VERSION,
 		);
 
 		wp_register_style( 'wpmozo-placeholder', 
-			WPMOZO_ASSE_DIR_URL . 'placeholder-loading.css',
+			WPMOZO_PRODUCT_CAROUSEL_ASSE_DIR_URL . 'placeholder-loading.css',
 			array(),
 			WPMOZO_VERSION
 		);
@@ -74,21 +74,21 @@ class Wpmozo_Init {
 		// register the magnific popup scripts.
 		wp_register_script( 
 			'wpmozo-magnific-script',
-			WPMOZO_ASSE_DIR_URL . 'frontend/magnific/js/jquery.magnific-popup.min.js',
+			WPMOZO_PRODUCT_CAROUSEL_ASSE_DIR_URL . 'frontend/magnific/js/jquery.magnific-popup.min.js',
 			array('jquery'),
 			WPMOZO_VERSION,
 			true
 		);
 		wp_register_style( 
 			'wpmozo-magnific-style',
-			WPMOZO_ASSE_DIR_URL . 'frontend/magnific/css/magnific-popup.css',
+			WPMOZO_PRODUCT_CAROUSEL_ASSE_DIR_URL . 'frontend/magnific/css/magnific-popup.css',
 			array(),
 			WPMOZO_VERSION,
 		);
 
 		// register product carousel block script.
 		wp_register_script( 'wpmozo-block-product-carousel-script',
-			WPMOZO_PLUGIN_DIR_URL . 'build/index.js',
+			WPMOZO_PRODUCT_CAROUSEL_PLUGIN_DIR_URL . 'build/index.js',
 			array( 'wp-blocks', 'wp-editor', 'wp-element', 'wp-components', 'wp-i18n', 'jquery' ),
 			WPMOZO_VERSION
 		);
@@ -126,7 +126,7 @@ class Wpmozo_Init {
 			$styles_handles = array_merge($wc_styles_handles, $styles_handles);
 		}
 
-		require_once WPMOZO_BLOCKS_DIR_PATH . 'product-carousel/block.php';
+		require_once WPMOZO_PRODUCT_CAROUSEL_BLOCKS_DIR_PATH . 'product-carousel/block.php';
 
 		$default_args = array(
 			'editor_style' => 'wpmozo-block-product-carousel-style',
@@ -971,7 +971,7 @@ class Wpmozo_Init {
 	 */
 	public function wpmozo_get_icons(){
 
-		$json = file_get_contents(WPMOZO_PLUGIN_DIR_PATH . 'assets/frontend/fontawesome/fonts.json');
+		$json = file_get_contents(WPMOZO_PRODUCT_CAROUSEL_PLUGIN_DIR_PATH . 'assets/frontend/fontawesome/fonts.json');
 		if ( empty( $json ) ) {
 			return array();
 		}

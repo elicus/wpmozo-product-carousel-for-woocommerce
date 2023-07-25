@@ -18,15 +18,7 @@
         }
 
         var options = StyleAtts.CarouContStyle;
-        let style = '';
-        if ( 'undefined' !== typeof options.padding && '' !== options.padding && ( 
-            'undefined' !== typeof options.padding.top || 
-            'undefined' !== typeof options.padding.right || 
-            'undefined' !== typeof options.padding.bottom || 
-            'undefined' !== typeof options.padding.left ) ) {
-            let spacing = convetVarStyle(options.padding);
-            style += 'padding: '+spacing.top+' '+spacing.right+' '+spacing.bottom+' '+spacing.left+' !important;';
-        }
+        let style = convetInlineStyle( options, atts )
         $this.attr('style', style);
         let mobileSett = atts.Responsive.mobile;
         let tabletSett = atts.Responsive.tablet;
@@ -416,7 +408,11 @@
             'undefined' !== typeof options.padding.bottom || 
             'undefined' !== typeof options.padding.left ) ) {
             let spacing = convetVarStyle(options.padding);
-            style += 'padding: '+spacing.top+' '+spacing.right+' '+spacing.bottom+' '+spacing.left+' !important;';
+            for (const padding in options.padding) {
+                if ( 'undefined' !== typeof spacing[padding] && '' !== spacing[padding] ) {
+                    style += 'padding-'+padding+': '+spacing[padding]+' !important;';
+                }
+            }
         }
         if ( 'undefined' !== typeof options.margin && '' !== options.margin && ( 
             'undefined' !== typeof options.margin.top || 
@@ -424,7 +420,11 @@
             'undefined' !== typeof options.margin.bottom || 
             'undefined' !== typeof options.margin.left ) ) {
             let spacing = convetVarStyle(options.margin);
-            style += 'margin: '+spacing.top+' '+spacing.right+' '+spacing.bottom+' '+spacing.left+' !important;';
+            for (const margin in options.margin) {
+                if ( 'undefined' !== typeof spacing[margin] && '' !== spacing[margin] ) {
+                    style += 'margin-'+margin+': '+spacing[margin]+' !important;';
+                }
+            }
         }
         if ( 'undefined' !== typeof options.position && '' !== options.position && ( 
             'undefined' !== typeof options.position.top || 

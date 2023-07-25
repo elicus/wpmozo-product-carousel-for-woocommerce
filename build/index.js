@@ -1044,11 +1044,19 @@ __webpack_require__.r(__webpack_exports__);
     }
     if ('undefined' !== typeof options.padding && '' !== options.padding && ('undefined' !== typeof options.padding.top || 'undefined' !== typeof options.padding.right || 'undefined' !== typeof options.padding.bottom || 'undefined' !== typeof options.padding.left)) {
       let spacing = convetVarStyle(options.padding);
-      style += 'padding: ' + spacing.top + ' ' + spacing.right + ' ' + spacing.bottom + ' ' + spacing.left + ' !important;';
+      for (const padding in options.padding) {
+        if ('undefined' !== typeof spacing[padding] && '' !== spacing[padding]) {
+          style += 'padding-' + padding + ': ' + spacing[padding] + ' !important;';
+        }
+      }
     }
     if ('undefined' !== typeof options.margin && '' !== options.margin && ('undefined' !== typeof options.margin.top || 'undefined' !== typeof options.margin.right || 'undefined' !== typeof options.margin.bottom || 'undefined' !== typeof options.margin.left)) {
       let spacing = convetVarStyle(options.margin);
-      style += 'margin: ' + spacing.top + ' ' + spacing.right + ' ' + spacing.bottom + ' ' + spacing.left + ' !important;';
+      for (const margin in options.margin) {
+        if ('undefined' !== typeof spacing[margin] && '' !== spacing[margin]) {
+          style += 'margin-' + margin + ': ' + spacing[margin] + ' !important;';
+        }
+      }
     }
     if ('undefined' !== typeof options.position && '' !== options.position && ('undefined' !== typeof options.position.top || 'undefined' !== typeof options.position.right || 'undefined' !== typeof options.position.bottom || 'undefined' !== typeof options.position.left)) {
       let spacing = convetVarStyle(options.position);
@@ -1149,11 +1157,6 @@ __webpack_require__.r(__webpack_exports__);
     let _dimensions = StyleAtts.CarouContStyle,
       inlineStyle = convetInlineStyle(_dimensions);
     if ('' !== inlineStyle) {
-      jQuery('#' + selector).css('padding', '');
-      var defaultStyle = jQuery('#' + selector).attr('style');
-      if ('' !== defaultStyle && 'undefined' !== typeof defaultStyle) {
-        inlineStyle += defaultStyle;
-      }
       jQuery('#' + selector).attr('style', inlineStyle);
     }
     var sw_obj = {

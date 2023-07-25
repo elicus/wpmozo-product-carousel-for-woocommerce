@@ -137,7 +137,11 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
             'undefined' !== typeof options.padding.bottom || 
             'undefined' !== typeof options.padding.left ) ) {
             let spacing = convetVarStyle(options.padding);
-            style += 'padding: '+spacing.top+' '+spacing.right+' '+spacing.bottom+' '+spacing.left+' !important;';
+            for (const padding in options.padding) {
+                if ( 'undefined' !== typeof spacing[padding] && '' !== spacing[padding] ) {
+                    style += 'padding-'+padding+': '+spacing[padding]+' !important;';
+                }
+            }
         }
         if ( 'undefined' !== typeof options.margin && '' !== options.margin && ( 
             'undefined' !== typeof options.margin.top || 
@@ -145,7 +149,11 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
             'undefined' !== typeof options.margin.bottom || 
             'undefined' !== typeof options.margin.left ) ) {
             let spacing = convetVarStyle(options.margin);
-            style += 'margin: '+spacing.top+' '+spacing.right+' '+spacing.bottom+' '+spacing.left+' !important;';
+            for (const margin in options.margin) {
+                if ( 'undefined' !== typeof spacing[margin] && '' !== spacing[margin] ) {
+                    style += 'margin-'+margin+': '+spacing[margin]+' !important;';
+                }
+            }
         }
         if ( 'undefined' !== typeof options.position && '' !== options.position && ( 
             'undefined' !== typeof options.position.top || 
@@ -263,11 +271,6 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
         let _dimensions = StyleAtts.CarouContStyle,
             inlineStyle = convetInlineStyle( _dimensions );
         if ( '' !== inlineStyle ) {
-            jQuery('#'+selector).css('padding', '');
-            var defaultStyle = jQuery('#'+selector).attr('style');
-            if ( '' !== defaultStyle && 'undefined' !== typeof defaultStyle ) {
-                inlineStyle += defaultStyle;
-            }
             jQuery('#'+selector).attr('style', inlineStyle);
         }
 

@@ -40,14 +40,14 @@ class WPMozo_Product_Carousel_Init {
 
 		// register the swiper script.
 		wp_register_script( 'wpmozo-swiper-script', WPMOZO_PRODUCT_CAROUSEL_ASSE_DIR_URL . 'frontend/swiper/js/swiper-bundle.min.js', array(), time(), true );
-		wp_register_style( 'wpmozo-swiper-style', WPMOZO_PRODUCT_CAROUSEL_ASSE_DIR_URL . 'frontend/swiper/css/swiper-bundle.css', array(), time());
+		wp_register_style( 'wpmozo-swiper-style', WPMOZO_PRODUCT_CAROUSEL_ASSE_DIR_URL . 'frontend/swiper/css/swiper-bundle.min.css', array(), time());
 		// rgister fontawesome style.
 		wp_register_style( 'wpmozo-fontawesome-style', WPMOZO_PRODUCT_CAROUSEL_ASSE_DIR_URL . 'frontend/fontawesome/all.min.css', array(), time());
 
 		// register the swiper scripts.
 		wp_register_script( 
 			'wpmozo-product-carousel-script',
-			WPMOZO_PRODUCT_CAROUSEL_BLOCKS_DIR_URL . 'product-carousel/assets/js/product-carousel.js',
+			WPMOZO_PRODUCT_CAROUSEL_BLOCKS_DIR_URL . 'product-carousel/assets/js/product-carousel.min.js',
 			array('jquery','wpmozo-swiper-script','wpmozo-magnific-script'),
 			WPMOZO_PRODUCT_CAROUSEL_VERSION,
 			true
@@ -88,7 +88,7 @@ class WPMozo_Product_Carousel_Init {
 
 		// register product carousel block script.
 		wp_register_script( 'wpmozo-block-product-carousel-script',
-			WPMOZO_PRODUCT_CAROUSEL_PLUGIN_DIR_URL . 'build/index.js',
+			WPMOZO_PRODUCT_CAROUSEL_PLUGIN_DIR_URL . 'build/index.min.js',
 			array( 'wp-blocks', 'wp-editor', 'wp-element', 'wp-components', 'wp-i18n', 'jquery' ),
 			WPMOZO_PRODUCT_CAROUSEL_VERSION
 		);

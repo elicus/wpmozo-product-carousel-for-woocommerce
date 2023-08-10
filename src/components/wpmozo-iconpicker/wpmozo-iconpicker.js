@@ -19,6 +19,7 @@ const WpmozoIconpicker = function(args){
                 {
                     label: label,
                     value: attributes.QuickViewLinkIcon,
+                    allowReset: false,
                     onChange: function(icon){
                         props.setAttributes({
                             QuickViewLinkIcon: icon

@@ -416,7 +416,7 @@ function wpmozo_product_carousel_outofstock_badge(){
             $out_text = $all_status_text['outofstock'];
         }
             
-        $html = sprintf('<p class="soldout-text stock %s">%s</p>', $class, $out_text);
+        $html = sprintf('<div class="wpmozo-products-soldout-wrap"><span class="soldout-text stock %s">%s</span></div>', $class, $out_text);
         $finalhtml = apply_filters( 'woocommerce_get_stock_html', $html, $product );
         $finalhtml = apply_filters( 'wpmozo_product_carousel_outofstock_badge', $finalhtml, $product, $wpmozo_product_carousel_args);
         echo $finalhtml;

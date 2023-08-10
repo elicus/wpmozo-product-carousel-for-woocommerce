@@ -138,11 +138,11 @@ const WpmozoTypography = function(args){
                         label: __( 'Appearance', 'wpmozo-product-carousel-for-woocommerce' ),
                         hasValue: () => true,
                         isShownByDefault: true,
-                        onDeselect: () => typoSetValue('FontAppearance', {fontStyle: '', fontWeight: ''}),                                        
+                        onDeselect: () => typoSetValue('FontAppearance'),                                        
                     },
                     el( __experimentalFontAppearanceControl, 
                         {
-                            key: 'wpmozp-product-carousel-titleapp',
+                            key: 'wpmozo-product-carousel-titleapp',
                             hasFontStyles: hasFontStyles,
                             hasFontWeights: hasFontWeights,
                             value: _FontAppearanceValues,

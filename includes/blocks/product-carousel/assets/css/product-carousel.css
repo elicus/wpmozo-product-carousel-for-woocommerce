@@ -140,6 +140,8 @@
 .wpmozo-product-bottom{
 	width: 100%;
 	margin-top: auto;
+	padding-top: 10px;
+	overflow-wrap: anywhere;
 }
 .wpmozo-product-bottom-add-to-cart a.button{
 	margin-top: 0px !important;
@@ -216,16 +218,16 @@
 	.wpmozo-product-bottom{
 		display: flex;
 	    align-items: center;
+	    justify-content: space-between;
+    	column-gap: 15px;
 	}
 	.wpmozo-product-bottom-price {
-	    width: 50%;
 	    text-align: left !important;
 	}
 	.wpmozo-product-bottom-price span.price{
 		margin: 0 !important;
 	}
 	.wpmozo-product-bottom-add-to-cart {
-	    width: 50%;
 	    text-align: right !important;
 	}
 	.wpmozo-product-bottom-add-to-cart .button{

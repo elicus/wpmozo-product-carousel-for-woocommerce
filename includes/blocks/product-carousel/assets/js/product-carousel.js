@@ -68,7 +68,7 @@
                     let wraper = jQuery($this);
                     let styles = [
                         {attKey: 'TitleStyle', selector: '.woocommerce-loop-product__title'},
-                        {attKey: 'PriceStyle', selector: '.price'},
+                        {attKey: 'PriceStyle', selector: '.price, .price > ins'},
                         {attKey: 'AddToCartStyle', selector: add_to_cart_selector},
                         {attKey: 'QuickViewStyle', selector: '.wpmozo-quick-view-button'},
                         {attKey: 'SaleLabelStyle', selector: '.onsale',hasAlign: false},
@@ -218,7 +218,7 @@
                     if ( StyleAtts.QuickViewPopupStyle.SameAsCarousel ) {
                         styles = [
                             {attKey: 'TitleStyle', selector: '.product_title'},
-                            {attKey: 'PriceStyle', selector: '.price'},
+                            {attKey: 'PriceStyle', selector: '.price, .price > ins'},
                             {attKey: 'AddToCartStyle', selector: add_to_cart_selector},
                             {attKey: 'SaleLabelStyle', selector: '.onsale'},
                             {attKey: 'StockLabelStyle', selector: '.stock.out-of-stock'},
@@ -226,7 +226,7 @@
                     }else{
                         styles = [
                             {attKey: 'QuickViewTitleStyle', selector: '.product_title'},
-                            {attKey: 'QuickViewPriceStyle', selector: '.price'},
+                            {attKey: 'QuickViewPriceStyle', selector: '.price, .price > ins'},
                             {attKey: 'QuickViewAddToCartStyle', selector: add_to_cart_selector},
                             {attKey: 'QuickViewSaleLabelStyle', selector: '.onsale'},
                             {attKey: 'QuickViewStockLabelStyle', selector: '.stock.out-of-stock'},

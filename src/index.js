@@ -308,7 +308,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                     let wraper = jQuery('#'+selector);
                     let styles = [
                         {selector: '.woocommerce-loop-product__title', values: StyleAtts.TitleStyle},
-                        {selector: '.price', values: StyleAtts.PriceStyle},
+                        {selector: '.price, .price > ins', values: StyleAtts.PriceStyle},
                         {selector: add_to_cart_selector, values: StyleAtts.AddToCartStyle},
                         {hasAlign: false,selector: '.wpmozo-quick-view-button', values: StyleAtts.QuickViewStyle},
                         {hasAlign: false,selector: '.onsale', values: StyleAtts.SaleLabelStyle},
@@ -398,6 +398,16 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
     const TriggerWhenLoadingFinished = (args) => {
 
         let attributes = args.attributes;
+        if( 'undefined' === typeof attributes.Columns ){
+            attributes.Columns = parseInt(GetAttributes.Columns.default);
+        }
+        if( 'undefined' === typeof attributes.SpaceBetween ){
+            attributes.SpaceBetween = parseInt(GetAttributes.SpaceBetween.default);
+        }
+        if( 'undefined' === typeof attributes.SlidesToScroll ){
+            attributes.SlidesToScroll = parseInt(GetAttributes.SlidesToScroll.default);
+        }
+
         useEffect(() => {
             return () => {
                 hooks.doAction("server-side-loading-finished", attributes);
@@ -465,6 +475,57 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                 });
             }
 
+            const setValue = function(args, value){
+
+                let depth = args.hasOwnProperty('depth') ? args.depth : [],
+                    AttrKey = args.hasOwnProperty('AttrKey') ? args.AttrKey : 'StyleAtts',
+                    itemKey = args.itemKey,
+                    itemType = args.itemType,
+                    theAtts = Object.assign({}, props.attributes[AttrKey]),
+                    _theAtts = null, 
+                    preAttributes = GetAttributes;
+
+                if ( null === value && depth.length < 1 && 'undefined' !== typeof preAttributes[AttrKey][itemKey][itemType].default ) {
+                    value = preAttributes[AttrKey][itemKey][itemType].default;
+                }
+
+                if ( Array.isArray(depth) && depth.length ) {
+                    var lastEl = null,
+                        lastPreEl = null;
+                    for (var i = 0; i < depth.length; i++) {
+                        if ( null === lastEl ) {
+                            lastEl = theAtts[depth[i]];
+                        }else{
+                            if ( lastEl.hasOwnProperty(depth[i]) ) {
+                                lastEl = lastEl[depth[i]];
+                            }
+                        }
+                        if ( null === lastPreEl ) {
+                            lastPreEl = preAttributes[AttrKey][depth[i]];
+                        }else{
+                            if ( lastPreEl.hasOwnProperty(depth[i]) ) {
+                                lastPreEl = lastPreEl[depth[i]];
+                            }
+                        }
+                    }
+                    _theAtts = lastEl[itemKey];
+                    if ( null == value && 'undefined' !== typeof lastPreEl[itemKey][itemType].default ) {
+                        value = lastPreEl[itemKey][itemType].default;
+                    }
+                    _theAtts[itemType] = ( null !== value ) ? value : '';
+                }else{
+                    _theAtts = theAtts;
+                    _theAtts[itemKey][itemType] = ( null !== value ) ? value : '';
+                }
+
+                if ( args.hasOwnProperty('setState') ) {
+                    args['setState']();
+                }
+
+                setAttributes( { [AttrKey]: _theAtts } );
+
+            }
+
             const afterOnChangeNavigation = function( props ){
                 let StyleAtts = props.attributes.StyleAtts,
                     main = Object.assign({}, StyleAtts.CarouNavigation, StyleAtts.CarouNavigationLeft, StyleAtts.CarouNavigationRight),
@@ -524,10 +585,10 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                         el(
                             RangeControl,
                             {
-                                key: 'wpmozp-product-carousel-columns',
+                                key: 'wpmozo-product-carousel-columns',
                                 value: attributes.Columns,
-                                allowReset: false,
-                                initialPosition: 4,
+                                allowReset: true,
+                                initialPosition: parseInt(GetAttributes.Columns.default),
                                 max: 8,
                                 min: 1,
                                 label: __( 'Columns', 'wpmozo-product-carousel-for-woocommerce' ),
@@ -539,10 +600,10 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                         el(
                             RangeControl,
                             {
-                                key: 'wpmozp-product-carousel-slidestoscroll',
+                                key: 'wpmozo-product-carousel-slidestoscroll',
                                 value: attributes.SlidesToScroll,
-                                allowReset: false,
-                                initialPosition: 4,
+                                allowReset: true,
+                                initialPosition: parseInt(GetAttributes.SlidesToScroll.default),
                                 max: 8,
                                 min: 1,
                                 label: __( 'Slides To Scroll', 'wpmozo-product-carousel-for-woocommerce' ),
@@ -554,10 +615,10 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                         el(
                             RangeControl,
                             {
-                                key: 'wpmozp-product-carousel-space-between',
+                                key: 'wpmozo-product-carousel-space-between',
                                 value: attributes.SpaceBetween,
-                                allowReset: false,
-                                initialPosition: 10,
+                                allowReset: true,
+                                initialPosition: parseInt(GetAttributes.SpaceBetween.default),
                                 label: __( 'Space Between', 'wpmozo-product-carousel-for-woocommerce' ),
                                 onChange: function( NewSpaceBetween ) {
                                     setAttributes( { SpaceBetween: NewSpaceBetween } );
@@ -578,7 +639,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             el(
                                 TextControl,
                                 {
-                                    key: 'wpmozp-product-carousel-delay',
+                                    key: 'wpmozo-product-carousel-delay',
                                     value: attributes.Delay,
                                     label: __( 'Delay of Animation', 'wpmozo-product-carousel-for-woocommerce' ),
                                     onChange: function( NewDelay ) {
@@ -630,20 +691,20 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             el(
                                 SelectControl,
                                 {
-                                    key: 'wpmozp-product-carousel-paginationtype',
-                                    label: __('Pagination Type', 'wpmozo-product-carousel-for-woocommerce'),
+                                    key: 'wpmozo-product-carousel-paginationtype',
+                                    label: __( 'Pagination Type', 'wpmozo-product-carousel-for-woocommerce'),
                                     value: attributes.PaginationType,
                                     options: [
                                         {
-                                            label: __('Bullets', 'wpmozo-product-carousel-for-woocommerce'),
+                                            label: __( 'Bullets', 'wpmozo-product-carousel-for-woocommerce'),
                                             value: 'bullets'
                                         }, 
                                         {
-                                            label: __('Fraction', 'wpmozo-product-carousel-for-woocommerce'),
+                                            label: __( 'Fraction', 'wpmozo-product-carousel-for-woocommerce'),
                                             value: 'fraction'
                                         },
                                         {
-                                            label: __('Progressbar', 'wpmozo-product-carousel-for-woocommerce'),
+                                            label: __( 'Progressbar', 'wpmozo-product-carousel-for-woocommerce'),
                                             value: 'progressbar'
                                         }
                                     ],
@@ -666,10 +727,10 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             el(
                                 RangeControl,
                                 {
-                                    key: 'wpmozp-product-carousel-columns',
+                                    key: 'wpmozo-product-carousel-columns',
                                     value: attributes.Responsive.mobile.Columns,
-                                    allowReset: false,
-                                    initialPosition: attributes.Responsive.mobile.Columns,
+                                    allowReset: true,
+                                    initialPosition: parseInt(GetAttributes.Responsive.mobile.Columns.default),
                                     max: 8,
                                     min: 1,
                                     label: __( 'Columns', 'wpmozo-product-carousel-for-woocommerce' ),
@@ -683,10 +744,10 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             el(
                                 RangeControl,
                                 {
-                                    key: 'wpmozp-product-carousel-slidestoscroll',
+                                    key: 'wpmozo-product-carousel-slidestoscroll',
                                     value: attributes.Responsive.mobile.SlidesToScroll,
-                                    allowReset: false,
-                                    initialPosition: attributes.Responsive.mobile.SlidesToScroll,
+                                    allowReset: true,
+                                    initialPosition: parseInt(GetAttributes.Responsive.mobile.SlidesToScroll.default),
                                     max: 8,
                                     min: 1,
                                     label: __( 'Slides To Scroll', 'wpmozo-product-carousel-for-woocommerce' ),
@@ -700,10 +761,10 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             el(
                                 RangeControl,
                                 {
-                                    key: 'wpmozp-product-carousel-space-between',
+                                    key: 'wpmozo-product-carousel-space-between',
                                     value: attributes.Responsive.mobile.SpaceBetween,
-                                    allowReset: false,
-                                    initialPosition: attributes.Responsive.mobile.SpaceBetween,
+                                    allowReset: true,
+                                    initialPosition: parseInt(GetAttributes.Responsive.mobile.SpaceBetween.default),
                                     label: __( 'Space Between', 'wpmozo-product-carousel-for-woocommerce' ),
                                     onChange: function( NewSpaceBetween ) {
                                         let _Responsive = Object.assign({}, attributes.Responsive);
@@ -717,10 +778,10 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             el(
                                 RangeControl,
                                 {
-                                    key: 'wpmozp-product-carousel-columns',
+                                    key: 'wpmozo-product-carousel-columns',
                                     value: attributes.Responsive.tablet.Columns,
-                                    allowReset: false,
-                                    initialPosition: attributes.Responsive.tablet.Columns,
+                                    allowReset: true,
+                                    initialPosition: parseInt(GetAttributes.Responsive.tablet.Columns.default),
                                     max: 8,
                                     min: 1,
                                     label: __( 'Columns', 'wpmozo-product-carousel-for-woocommerce' ),
@@ -734,10 +795,10 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             el(
                                 RangeControl,
                                 {
-                                    key: 'wpmozp-product-carousel-slidestoscroll',
+                                    key: 'wpmozo-product-carousel-slidestoscroll',
                                     value: attributes.Responsive.tablet.SlidesToScroll,
-                                    allowReset: false,
-                                    initialPosition: attributes.Responsive.tablet.SlidesToScroll,
+                                    allowReset: true,
+                                    initialPosition: parseInt(GetAttributes.Responsive.tablet.SlidesToScroll.default),
                                     max: 8,
                                     min: 1,
                                     label: __( 'Slides To Scroll', 'wpmozo-product-carousel-for-woocommerce' ),
@@ -751,10 +812,10 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             el(
                                 RangeControl,
                                 {
-                                    key: 'wpmozp-product-carousel-space-between',
+                                    key: 'wpmozo-product-carousel-space-between',
                                     value: attributes.Responsive.tablet.SpaceBetween,
-                                    allowReset: false,
-                                    initialPosition: attributes.Responsive.tablet.SpaceBetween,
+                                    allowReset: true,
+                                    initialPosition: parseInt(GetAttributes.Responsive.tablet.SpaceBetween.default),
                                     label: __( 'Space Between', 'wpmozo-product-carousel-for-woocommerce' ),
                                     onChange: function( NewSpaceBetween ) {
                                         let _Responsive = Object.assign({}, attributes.Responsive);
@@ -769,8 +830,8 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                         el(
                             SelectControl,
                             {
-                                key: 'wpmozp-product-carousel-viewtype',
-                                label: __(' Product View Type', 'wpmozo-product-carousel-for-woocommerce'),
+                                key: 'wpmozo-product-carousel-viewtype',
+                                label: __( 'Product View Type', 'wpmozo-product-carousel-for-woocommerce'),
                                 value: attributes.ProductViewType,
                                 options: GetProductViewTypeOptions,
                                 onChange: function( NewProductViewType ) {
@@ -781,20 +842,21 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                         el(
                             TextControl,
                             {
-                                key: 'wpmozp-product-carousel-products',
+                                key: 'wpmozo-product-carousel-products',
                                 value: attributes.NumberOfProducts,
                                 label: __( 'Number of Porducts', 'wpmozo-product-carousel-for-woocommerce' ),
                                 onChange: function( NewNumberOfProducts ) {
                                     setAttributes( { NumberOfProducts: NewNumberOfProducts } );
                                 },
+                                help: __( 'Enter -1 to show a list of all products.', 'wpmozo-product-carousel-for-woocommerce' ),
                             }
                         ),
                        'best_selling' !== attributes.ProductViewType && 'top_rated' !== attributes.ProductViewType &&
                             el(
                                 SelectControl,
                                 {
-                                    key: 'wpmozp-product-carousel-orderby',
-                                    label: __('Order By', 'wpmozo-product-carousel-for-woocommerce'),
+                                    key: 'wpmozo-product-carousel-orderby',
+                                    label: __( 'Order By', 'wpmozo-product-carousel-for-woocommerce'),
                                     value: attributes.OrderBy,
                                     options: GetOrderByOptions,
                                     onChange: function( NewOrderBy ) {
@@ -806,16 +868,16 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             el(
                                 SelectControl,
                                 {
-                                    key: 'wpmozp-product-carousel-order',
-                                    label: __('Order', 'wpmozo-product-carousel-for-woocommerce'),
+                                    key: 'wpmozo-product-carousel-order',
+                                    label: __( 'Order', 'wpmozo-product-carousel-for-woocommerce'),
                                     value: attributes.Order,
                                     options: [
                                         {
-                                            label: __('Ascending', 'wpmozo-product-carousel-for-woocommerce'),
+                                            label: __( 'Ascending', 'wpmozo-product-carousel-for-woocommerce'),
                                             value: 'ASC'
                                         }, 
                                         {
-                                            label: __('Descending', 'wpmozo-product-carousel-for-woocommerce'),
+                                            label: __( 'Descending', 'wpmozo-product-carousel-for-woocommerce'),
                                             value: 'DESC'
                                         }
                                     ],
@@ -849,16 +911,16 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                         el(
                             SelectControl,
                             {
-                                key: 'wpmozp-product-carousel-tax-relation',
-                                label: __('Taxonomies Relation', 'wpmozo-product-carousel-for-woocommerce'),
+                                key: 'wpmozo-product-carousel-tax-relation',
+                                label: __( 'Taxonomies Relation', 'wpmozo-product-carousel-for-woocommerce'),
                                 value: attributes.TaxonomiesRelation,
                                 options: [
                                     {
-                                        label: __('OR', 'wpmozo-product-carousel-for-woocommerce'),
+                                        label: __( 'OR', 'wpmozo-product-carousel-for-woocommerce'),
                                         value: 'OR'
                                     }, 
                                     {
-                                        label: __('AND', 'wpmozo-product-carousel-for-woocommerce'),
+                                        label: __( 'AND', 'wpmozo-product-carousel-for-woocommerce'),
                                         value: 'AND'
                                     }
                                 ],
@@ -882,12 +944,17 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                         el(
                             SelectControl,
                             {
-                                key: 'wpmozp-product-carousel-layout',
-                                label: __('Layout', 'wpmozo-product-carousel-for-woocommerce'),
+                                key: 'wpmozo-product-carousel-layout',
+                                label: __( 'Layout', 'wpmozo-product-carousel-for-woocommerce'),
                                 value: attributes.Layout,
                                 options: AllLayouts,
                                 onChange: function( NewLayout ) {
                                     setAttributes( { Layout: NewLayout } );
+                                    if ( 'layout-2' === NewLayout ) {
+                                        setValue({itemKey: 'AddToCartStyle', itemType: 'borderRadius'}, '0px');
+                                    }else{
+                                        setValue({itemKey: 'AddToCartStyle', itemType: 'borderRadius'}, null);
+                                    }
                                 },
                             },
                         ),
@@ -906,7 +973,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             el(
                                 TextControl,
                                 {
-                                    key: 'wpmozp-product-outofstock-label',
+                                    key: 'wpmozo-product-outofstock-label',
                                     value: attributes.OutOfStockLabel,
                                     label: __( 'Out Of Stock Label', 'wpmozo-product-carousel-for-woocommerce' ),
                                     onChange: function( NewOutOfStockLabel ) {
@@ -928,7 +995,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             el(
                                 TextControl,
                                 {
-                                    key: 'wpmozp-product-carousel-quickviewlinktext',
+                                    key: 'wpmozo-product-carousel-quickviewlinktext',
                                     value: attributes.QuickViewLinkText,
                                     label: __( 'Quickview Button text', 'wpmozo-product-carousel-for-woocommerce' ),
                                     onChange: function( NewQuickViewLinkText ) {
@@ -949,7 +1016,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             ),
                         attributes.EnableQuickViewLink && attributes.QuickViewLinkIconEnabled && ! attributes.QuickViewLinkCustomIcon &&
                             el( WpmozoIconpicker, { 
-                                label: __('Quickview Icon', 'wpmozo-product-carousel-for-woocommerce'),
+                                label: __( 'Quickview Icon', 'wpmozo-product-carousel-for-woocommerce'),
                                 props: props,
                                 attributes: attributes
                             } ),
@@ -958,7 +1025,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                                 ToggleControl,
                                 {
                                     checked: attributes.QuickViewLinkCustomIcon, 
-                                    label: __( 'Quickview custom icon', 'wpmozo-product-carousel-for-woocommerce' ),
+                                    label: __( 'Quickview Custom Icon', 'wpmozo-product-carousel-for-woocommerce' ),
                                     onChange: function( NewQuickViewLinkCustomIcon ) {
                                         setAttributes( { QuickViewLinkCustomIcon: NewQuickViewLinkCustomIcon } );
                                     },
@@ -1024,8 +1091,8 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             el(
                                 SelectControl,
                                 {
-                                    key: 'wpmozp-product-carousel-featimasize',
-                                    label: __('Featured Image Size', 'wpmozo-product-carousel-for-woocommerce'),
+                                    key: 'wpmozo-product-carousel-featimasize',
+                                    label: __( 'Featured Image Size', 'wpmozo-product-carousel-for-woocommerce'),
                                     value: attributes.FeaturedImageSize,
                                     options: AllSizes,
                                     onChange: function( NewFeaturedImageSize ) {
@@ -1077,8 +1144,8 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             el(
                                 SelectControl,
                                 {
-                                    key: 'wpmozp-product-carousel-salebadgetype',
-                                    label: __('Sale Badge Type', 'wpmozo-product-carousel-for-woocommerce'),
+                                    key: 'wpmozo-product-carousel-salebadgetype',
+                                    label: __( 'Sale Badge Type', 'wpmozo-product-carousel-for-woocommerce'),
                                     value: attributes.SaleBadgeType,
                                     options: AllBadgeTypes,
                                     onChange: function( NewSaleBadgeType ) {
@@ -1090,7 +1157,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             el(
                                 TextControl,
                                 {
-                                    key: 'wpmozp-product-salebadge-label',
+                                    key: 'wpmozo-product-salebadge-label',
                                     value: attributes.SaleLabelText,
                                     label: __( 'Sale Label Text', 'wpmozo-product-carousel-for-woocommerce' ),
                                     onChange: function( NewSaleLabelText ) {
@@ -1177,7 +1244,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                                 afterOnChange: ( props ) => afterOnChangeNavigation(props),
                             } ),
                             el( WpmozoDimensions, {
-                                label: __('Previous Position', 'wpmozo-product-carousel-for-woocommerce'),
+                                label: __( 'Previous Position', 'wpmozo-product-carousel-for-woocommerce'),
                                 DimensionKey: 'CarouNavigationLeft',
                                 values: styleAtts.CarouNavigationLeft,
                                 DimensionsTypes: {
@@ -1187,7 +1254,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                                 afterOnChange: ( props ) => afterOnChangeNavigation(props),
                             } ),
                             el( WpmozoDimensions, {
-                                label: __('Next Position', 'wpmozo-product-carousel-for-woocommerce'),
+                                label: __( 'Next Position', 'wpmozo-product-carousel-for-woocommerce'),
                                 DimensionKey: 'CarouNavigationRight',
                                 values: styleAtts.CarouNavigationRight,
                                 DimensionsTypes: {
@@ -1307,13 +1374,20 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                                 values: styleAtts.PriceStyle,
                                 props: props,
                                 ColorTypes: textColorObject,
-                                afterOnChange: ( props ) => afterOnChange('.price', props.attributes.StyleAtts.PriceStyle, props.attributes),
+                                afterOnChange: ( props ) => afterOnChange('.price, .price > ins', props.attributes.StyleAtts.PriceStyle, props.attributes),
                             }),
                             el( WpmozoTypography, {
                                 TypographyKey: 'PriceStyle',
                                 values: styleAtts.PriceStyle,
                                 props: props,
-                                afterOnChange: ( props ) => afterOnChange('.price', props.attributes.StyleAtts.PriceStyle, props.attributes),
+                                TypoTypes: {
+                                    FontSize: true,
+                                    LetterSpacing: true,
+                                    Decoration: true,
+                                    FontAppearance: true,
+                                    LineHeight: true,
+                                },
+                                afterOnChange: ( props ) => afterOnChange('.price, .price > ins', props.attributes.StyleAtts.PriceStyle, props.attributes),
                             } ),
                         ),
                     attributes.ShowAddToCartButton &&
@@ -1488,6 +1562,13 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                                             TypographyKey: 'QuickViewPriceStyle',
                                             values: styleAtts.QuickViewPriceStyle,
                                             props: props,
+                                            TypoTypes: {
+                                                FontSize: true,
+                                                LetterSpacing: true,
+                                                Decoration: true,
+                                                FontAppearance: true,
+                                                LineHeight: true,
+                                            },
                                         } ),
                                     ),
                                 attributes.ShowAddToCartButton &&

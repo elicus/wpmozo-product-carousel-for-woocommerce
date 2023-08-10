@@ -1,6 +1,5 @@
 const { Component } = wp.element;
 const { compose } = wp.compose;
-const { hooks } = wp;
 
 class WpmozoLoader extends Component{
 

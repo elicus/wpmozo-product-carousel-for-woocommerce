@@ -438,11 +438,11 @@ class WPMozo_Product_Carousel_Init {
     	);
     	$SaleLabelStyle = array_merge( 
     		$typography_atts, 
-    		$text_color_atts
+    		$two_color_atts
     	);
     	$SaleLabelStyleDefault = array_merge( 
     		$typography_atts['default'], 
-    		$text_color_atts['default']
+    		$two_color_atts['default']
     	);
     	$StockLabelStyle = array_merge( 
     		$stocklabel_style_atts, 
@@ -508,14 +508,14 @@ class WPMozo_Product_Carousel_Init {
 			$typography_atts, 
 			$two_color_atts, 
 			$border_atts, 
-			$only_padding_atts, 
+			$dimensions_atts, 
 			$size_atts
 		);
 		$QuickViewCloseStyleDefault = array_merge(
 			$typography_atts['default'], 
 			$two_color_atts['default'], 
 			$border_atts['default'], 
-			$only_padding_atts['default'], 
+			$dimensions_atts['default'], 
 			$size_atts['default']
 		);
 
@@ -714,9 +714,33 @@ class WPMozo_Product_Carousel_Init {
 			    'type' => 'object',
 			    'mobile' => array(
 			    	'type' => 'object',
+			    	'Columns' => array(
+					    'type' => 'integer',
+					    'default' => 1,
+					),
+					'SlidesToScroll' => array(
+					    'type' => 'integer',
+					    'default' => 1,
+					),
+					'SpaceBetween' => array(
+					    'type' => 'integer',
+					    'default' => 20,
+					),
 			    ),
 			    'tablet' => array(
 			    	'type' => 'object',
+			    	'Columns' => array(
+					    'type' => 'integer',
+					    'default' => 2,
+					),
+					'SlidesToScroll' => array(
+					    'type' => 'integer',
+					    'default' => 2,
+					),
+					'SpaceBetween' => array(
+					    'type' => 'integer',
+					    'default' => 20,
+					),
 			    ),
 			    'default' => array(
 			    	'mobile' => array(
@@ -783,7 +807,7 @@ class WPMozo_Product_Carousel_Init {
 			),
 			'QuickViewLinkText' => array(
 			    'type' => 'string',
-			    'default' => '',
+			    'default' => __( 'Quick View', 'wpmozo-product-carousel-for-woocommerce' ),
 			),
 			'QuickViewLinkIconEnabled' => array(
 			    'type' => 'boolean',

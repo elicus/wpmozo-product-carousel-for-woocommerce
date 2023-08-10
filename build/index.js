@@ -1447,6 +1447,7 @@ __webpack_require__.r(__webpack_exports__);
         value: attributes.Columns,
         allowReset: true,
         initialPosition: parseInt(GetAttributes.Columns.default),
+        resetFallbackValue: parseInt(GetAttributes.Columns.default),
         max: 8,
         min: 1,
         label: __('Columns', 'wpmozo-product-carousel-for-woocommerce'),
@@ -1460,6 +1461,7 @@ __webpack_require__.r(__webpack_exports__);
         value: attributes.SlidesToScroll,
         allowReset: true,
         initialPosition: parseInt(GetAttributes.SlidesToScroll.default),
+        resetFallbackValue: parseInt(GetAttributes.SlidesToScroll.default),
         max: 8,
         min: 1,
         label: __('Slides To Scroll', 'wpmozo-product-carousel-for-woocommerce'),
@@ -1473,6 +1475,7 @@ __webpack_require__.r(__webpack_exports__);
         value: attributes.SpaceBetween,
         allowReset: true,
         initialPosition: parseInt(GetAttributes.SpaceBetween.default),
+        resetFallbackValue: parseInt(GetAttributes.SpaceBetween.default),
         label: __('Space Between', 'wpmozo-product-carousel-for-woocommerce'),
         onChange: function (NewSpaceBetween) {
           setAttributes({
@@ -1566,6 +1569,7 @@ __webpack_require__.r(__webpack_exports__);
         value: attributes.Responsive.mobile.Columns,
         allowReset: true,
         initialPosition: parseInt(GetAttributes.Responsive.mobile.Columns.default),
+        resetFallbackValue: parseInt(GetAttributes.Responsive.mobile.Columns.default),
         max: 8,
         min: 1,
         label: __('Columns', 'wpmozo-product-carousel-for-woocommerce'),
@@ -1581,6 +1585,7 @@ __webpack_require__.r(__webpack_exports__);
         value: attributes.Responsive.mobile.SlidesToScroll,
         allowReset: true,
         initialPosition: parseInt(GetAttributes.Responsive.mobile.SlidesToScroll.default),
+        resetFallbackValue: parseInt(GetAttributes.Responsive.mobile.SlidesToScroll.default),
         max: 8,
         min: 1,
         label: __('Slides To Scroll', 'wpmozo-product-carousel-for-woocommerce'),
@@ -1596,6 +1601,7 @@ __webpack_require__.r(__webpack_exports__);
         value: attributes.Responsive.mobile.SpaceBetween,
         allowReset: true,
         initialPosition: parseInt(GetAttributes.Responsive.mobile.SpaceBetween.default),
+        resetFallbackValue: parseInt(GetAttributes.Responsive.mobile.SpaceBetween.default),
         label: __('Space Between', 'wpmozo-product-carousel-for-woocommerce'),
         onChange: function (NewSpaceBetween) {
           let _Responsive = Object.assign({}, attributes.Responsive);
@@ -1612,6 +1618,7 @@ __webpack_require__.r(__webpack_exports__);
         value: attributes.Responsive.tablet.Columns,
         allowReset: true,
         initialPosition: parseInt(GetAttributes.Responsive.tablet.Columns.default),
+        resetFallbackValue: parseInt(GetAttributes.Responsive.tablet.Columns.default),
         max: 8,
         min: 1,
         label: __('Columns', 'wpmozo-product-carousel-for-woocommerce'),
@@ -1627,6 +1634,7 @@ __webpack_require__.r(__webpack_exports__);
         value: attributes.Responsive.tablet.SlidesToScroll,
         allowReset: true,
         initialPosition: parseInt(GetAttributes.Responsive.tablet.SlidesToScroll.default),
+        resetFallbackValue: parseInt(GetAttributes.Responsive.tablet.SlidesToScroll.default),
         max: 8,
         min: 1,
         label: __('Slides To Scroll', 'wpmozo-product-carousel-for-woocommerce'),
@@ -1642,6 +1650,7 @@ __webpack_require__.r(__webpack_exports__);
         value: attributes.Responsive.tablet.SpaceBetween,
         allowReset: true,
         initialPosition: parseInt(GetAttributes.Responsive.tablet.SpaceBetween.default),
+        resetFallbackValue: parseInt(GetAttributes.Responsive.tablet.SpaceBetween.default),
         label: __('Space Between', 'wpmozo-product-carousel-for-woocommerce'),
         onChange: function (NewSpaceBetween) {
           let _Responsive = Object.assign({}, attributes.Responsive);

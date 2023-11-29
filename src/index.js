@@ -416,10 +416,10 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
 
         return el( Fragment, {}, 
             el("div", {
-                class: "wpmozo-loader backend",
+                className: "wpmozo-loader backend",
                 style: {
                     "display": "grid",
-                    "grid-auto-flow": "column",
+                    "gridAutoFlow": "column",
                 },
                 children: [
                     el(WpmozoLoader, {
@@ -730,7 +730,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             el(
                                 RangeControl,
                                 {
-                                    key: 'wpmozo-product-carousel-columns',
+                                    key: 'wpmozo-product-carousel-responsive-columns',
                                     value: attributes.Responsive.mobile.Columns,
                                     allowReset: true,
                                     initialPosition: parseInt(GetAttributes.Responsive.mobile.Columns.default),
@@ -748,7 +748,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             el(
                                 RangeControl,
                                 {
-                                    key: 'wpmozo-product-carousel-slidestoscroll',
+                                    key: 'wpmozo-product-carousel-responsive-slidestoscroll',
                                     value: attributes.Responsive.mobile.SlidesToScroll,
                                     allowReset: true,
                                     initialPosition: parseInt(GetAttributes.Responsive.mobile.SlidesToScroll.default),
@@ -766,7 +766,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             el(
                                 RangeControl,
                                 {
-                                    key: 'wpmozo-product-carousel-space-between',
+                                    key: 'wpmozo-product-carousel-responsive-space-between',
                                     value: attributes.Responsive.mobile.SpaceBetween,
                                     allowReset: true,
                                     initialPosition: parseInt(GetAttributes.Responsive.mobile.SpaceBetween.default),
@@ -784,7 +784,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             el(
                                 RangeControl,
                                 {
-                                    key: 'wpmozo-product-carousel-columns',
+                                    key: 'wpmozo-product-carousel-tablet-columns',
                                     value: attributes.Responsive.tablet.Columns,
                                     allowReset: true,
                                     initialPosition: parseInt(GetAttributes.Responsive.tablet.Columns.default),
@@ -802,7 +802,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             el(
                                 RangeControl,
                                 {
-                                    key: 'wpmozo-product-carousel-slidestoscroll',
+                                    key: 'wpmozo-product-carousel-tablet-slidestoscroll',
                                     value: attributes.Responsive.tablet.SlidesToScroll,
                                     allowReset: true,
                                     initialPosition: parseInt(GetAttributes.Responsive.tablet.SlidesToScroll.default),
@@ -820,7 +820,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             el(
                                 RangeControl,
                                 {
-                                    key: 'wpmozo-product-carousel-space-between',
+                                    key: 'wpmozo-product-carousel-tablet-space-between',
                                     value: attributes.Responsive.tablet.SpaceBetween,
                                     allowReset: true,
                                     initialPosition: parseInt(GetAttributes.Responsive.tablet.SpaceBetween.default),

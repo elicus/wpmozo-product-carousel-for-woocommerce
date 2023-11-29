@@ -3,8 +3,8 @@
 }
 .wpmozo-quvili-icon{
 	width: 80px;
-    margin: 0px 20px;
-    vertical-align: middle;
+	margin: 0px 20px;
+	vertical-align: middle;
 }
 .wpmozo-product-carousel-wrap a{
 	pointer-events: none;
@@ -16,7 +16,7 @@
 	width: 100%;
 }
 .wpmozo-typography-panel .single-column{
-    grid-column: span 1;
+	grid-column: span 1;
 }
 .wpmozo-typography-panel .components-font-size-picker__controls{
 	margin-bottom: 0px;
@@ -33,21 +33,21 @@
 }
 .wpmozo-icon-picker .wpmozo-icon-wraper{
 	width: 15%;
-    position: absolute;
-    top: 23px;
-    right: 0;
-    border: solid 1px;
-    border-radius: 2px;
-    padding: 9px;
-    text-align: center;
-    font-size: 18px;
+	position: absolute;
+	top: 23px;
+	right: 0;
+	border: solid 1px;
+	border-radius: 2px;
+	padding: 9px;
+	text-align: center;
+	font-size: 18px;
 }
 .wpmozo-color-dropdown-container{
 	width: 100%;
 }
 .wpmozo-color-dropdown-container .components-button{
 	width: 100%;
-    border: 1px solid rgb(0 0 0 / 57%);
+	border: 1px solid rgb(0 0 0 / 57%);
 }
 .wpmozo-color-dropdown-container .components-button .component-color-indicator{
 	margin-right: 8px;

@@ -1,4 +1,3 @@
-
 const el = window.wp.element.createElement;
 const __ = wp.i18n.__;
 const { __experimentalUseMultipleOriginColorsAndGradients} = window.wp.blockEditor;
@@ -6,137 +5,151 @@ const { __experimentalToolsPanel, __experimentalToolsPanelItem, Dropdown, Button
 const preAttributes = wpmozo_block_carousel_object.attributes;
 
 const WpmozoColorPicker = function(args){
-	
-    const { ColorKey, ColorTypes, values, props } = args;
-    const AllColors = __experimentalUseMultipleOriginColorsAndGradients();
-    let _color = values;
 
-    let depth = args.hasOwnProperty('depth') ? args.depth : [],
-        AttrKey = args.hasOwnProperty('AttrKey') ? args.AttrKey : 'StyleAtts',
-        theAtts = Object.assign({}, props.attributes[AttrKey]);
+	const { ColorKey, ColorTypes, values, props } = args;
+	const AllColors                               = __experimentalUseMultipleOriginColorsAndGradients();
+	let _color                                    = values;
 
-    const colorSetValue = function( styleType, value = null ) {
-       
-        let _color = setValue(styleType, value);
-        props.setAttributes( {[AttrKey]: theAtts} );
+	let depth   = args.hasOwnProperty( 'depth' ) ? args.depth : [],
+		AttrKey = args.hasOwnProperty( 'AttrKey' ) ? args.AttrKey : 'StyleAtts',
+		theAtts = Object.assign( {}, props.attributes[AttrKey] );
 
-        if ( args.hasOwnProperty('afterOnChange') ) {
-            args.afterOnChange( props );
-        }
+	const colorSetValue = function( styleType, value = null ) {
 
-    };
+		let _color = setValue( styleType, value );
+		props.setAttributes( {[AttrKey]: theAtts} );
 
-    const setValue = function(styleType, value){
+		if ( args.hasOwnProperty( 'afterOnChange' ) ) {
+			args.afterOnChange( props );
+		}
 
-        let _color = null;
-        if ( null === value && depth.length < 1 && 'undefined' !== typeof preAttributes[AttrKey][ColorKey][styleType].default ) {
-            value = preAttributes[AttrKey][ColorKey][styleType].default;
-        }
+	};
 
-        if ( Array.isArray(depth) && depth.length ) {
-           var lastEl = null,
-                lastPreEl = null;
-            for (var i = 0; i < depth.length; i++) {
-                if ( null === lastEl ) {
-                    lastEl = theAtts[depth[i]];
-                }else{
-                    if ( lastEl.hasOwnProperty(depth[i]) ) {
-                        lastEl = lastEl[depth[i]];
-                    }
-                }
-                if ( null === lastPreEl ) {
-                    lastPreEl = preAttributes[AttrKey][depth[i]];
-                }else{
-                    if ( lastPreEl.hasOwnProperty(depth[i]) ) {
-                        lastPreEl = lastPreEl[depth[i]];
-                    }
-                }
-            }
-            _color = lastEl[ColorKey];
-            if ( null == value && 'undefined' !== typeof lastPreEl[ColorKey][styleType] ) {
-                value = lastPreEl[ColorKey][styleType].default;
-            }
-            _color[styleType] = ( null !== value ) ? value : '';
-        }else{
-            _color = theAtts[ColorKey];
-            _color[styleType] = ( null !== value ) ? value : '';
-        }
+	const setValue = function(styleType, value){
 
-        return _color;
+		let _color = null;
+		if ( null === value && depth.length < 1 && 'undefined' !== typeof preAttributes[AttrKey][ColorKey][styleType].default ) {
+			value = preAttributes[AttrKey][ColorKey][styleType].default;
+		}
 
-    }
+		if ( Array.isArray( depth ) && depth.length ) {
+			var lastEl    = null,
+				lastPreEl = null;
+			for (var i = 0; i < depth.length; i++) {
+				if ( null === lastEl ) {
+					lastEl = theAtts[depth[i]];
+				} else {
+					if ( lastEl.hasOwnProperty( depth[i] ) ) {
+						lastEl = lastEl[depth[i]];
+					}
+				}
+				if ( null === lastPreEl ) {
+					lastPreEl = preAttributes[AttrKey][depth[i]];
+				} else {
+					if ( lastPreEl.hasOwnProperty( depth[i] ) ) {
+						lastPreEl = lastPreEl[depth[i]];
+					}
+				}
+			}
+			_color = lastEl[ColorKey];
+			if ( null == value && 'undefined' !== typeof lastPreEl[ColorKey][styleType] ) {
+				value = lastPreEl[ColorKey][styleType].default;
+			}
+			_color[styleType] = ( null !== value ) ? value : '';
+		} else {
+			_color            = theAtts[ColorKey];
+			_color[styleType] = ( null !== value ) ? value : '';
+		}
 
-    const onChange = args.hasOwnProperty('onChange') ? args.onChange : colorSetValue;
+		return _color;
 
-    const colorDropdown = function( colorType, label ) {
+	}
 
-        if ( '' === _color[colorType] && args.hasOwnProperty('default') ) {
-            _color[colorType] = args.default[colorType];
-        }
+	const onChange = args.hasOwnProperty( 'onChange' ) ? args.onChange : colorSetValue;
 
-        return el(Dropdown, {
-            className: "wpmozo-color-dropdown-container",
-            contentClassName: "wpmozo-color-popover-content",
-            popoverProps: {
-                placement: 'left-start',
-                offset: 36,
-                shift: true
-            },
-            renderToggle: ({ isOpen, onToggle }) =>
-                el(Button, {
-                    onClick: onToggle,
-                    "aria-expanded": isOpen,
-                    children: [
-                        el(ColorIndicator, {
-                            colorValue: _color[colorType],
-                        }),
-                        label
-                    ],
-                }),
-            renderContent: () =>
-                el( ColorPalette, { 
-                    colors: AllColors.colors,
-                    value: values[colorType],
-                    onChange: (NewColor) => onChange(colorType, NewColor), 
-                } ),
-        });
+	const colorDropdown = function( colorType, label ) {
 
-    }
+		if ( '' === _color[colorType] && args.hasOwnProperty( 'default' ) ) {
+			_color[colorType] = args.default[colorType];
+		}
 
-    const Panels = [];
-    for (var i = 0; i < ColorTypes.length; i++) {
-        let ct = ColorTypes[i];
-        let Panel = el( __experimentalToolsPanelItem, 
-            {
-                label: ct.label,
-                hasValue: () => true,
-                isShownByDefault: true, 
-                onDeselect: () => colorSetValue(ct.key),                                    
-            }, 
-            colorDropdown(
-                ct.key,
-                ct.label
-            ),
-        );
-        Panels.push(Panel);
-    }
+		return el(
+			Dropdown,
+			{
+				className: "wpmozo-color-dropdown-container",
+				contentClassName: "wpmozo-color-popover-content",
+				popoverProps: {
+					placement: 'left-start',
+					offset: 36,
+					shift: true
+				},
+				renderToggle: ({ isOpen, onToggle }) =>
+				el(
+					Button,
+					{
+						onClick: onToggle,
+						"aria-expanded": isOpen,
+						children: [
+						el(
+							ColorIndicator,
+							{
+								colorValue: _color[colorType],
+							}
+						),
+						label
+					],
+					}
+				),
+			renderContent: () =>
+				el(
+					ColorPalette,
+					{
+						colors: AllColors.colors,
+						value: values[colorType],
+						onChange: (NewColor) => onChange( colorType, NewColor ),
+					}
+				),
+			}
+		);
+
+	}
+
+	const Panels = [];
+	for (var i = 0; i < ColorTypes.length; i++) {
+		let ct    = ColorTypes[i];
+		let Panel = el(
+			__experimentalToolsPanelItem,
+			{
+				label: ct.label,
+				hasValue: () => true,
+				isShownByDefault: true,
+				onDeselect: () => colorSetValue( ct.key ),
+			},
+			colorDropdown(
+				ct.key,
+				ct.label
+			),
+		);
+		Panels.push( Panel );
+	}
 
 	return [
-        el( __experimentalToolsPanel,
-            { 
-                label: __( 'Color', 'wpmozo-product-carousel-for-woocommerce' ),
-                className: 'wpmozo-color-tools-panel',
-                resetAll: () => {
-                    ColorTypes.map(type => setValue(type.key, null));
-                    props.setAttributes( {[AttrKey]: theAtts} );
+		el(
+			__experimentalToolsPanel,
+			{
+				label: __( 'Color', 'wpmozo-product-carousel-for-woocommerce' ),
+				className: 'wpmozo-color-tools-panel',
+				resetAll: () => {
+					ColorTypes.map( type => setValue( type.key, null ) );
+					props.setAttributes( {[AttrKey]: theAtts} );
 
-                    if ( args.hasOwnProperty('afterOnChange') ) {
-                        args.afterOnChange( props );
-                    }
-                }
-            },
-            Panels,
-        ),
+					if ( args.hasOwnProperty( 'afterOnChange' ) ) {
+						args.afterOnChange( props );
+					}
+				}
+			},
+			Panels,
+		),
 	];
 
 }

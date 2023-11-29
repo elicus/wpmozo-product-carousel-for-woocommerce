@@ -485,23 +485,23 @@ class WpmozoLoader extends Component {
         className: "ph-col-12"
       }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-picture"
-      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      }, " "), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-row"
       }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-col-8"
-      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      }, " "), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-col-4 empty"
-      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      }, " "), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-col-4"
-      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      }, " "), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-col-8 empty"
-      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      }, " "), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-col-12 empty"
-      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      }, " "), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-col-6 big"
-      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      }, " "), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-col-6 empty"
-      })))),
+      }, " ")))),
       html = [];
     for (var i = 0; i < column; i++) {
       html.push(loader);
@@ -1309,10 +1309,10 @@ __webpack_require__.r(__webpack_exports__);
       };
     });
     return el(Fragment, {}, el("div", {
-      class: "wpmozo-loader backend",
+      className: "wpmozo-loader backend",
       style: {
         "display": "grid",
-        "grid-auto-flow": "column"
+        "gridAutoFlow": "column"
       },
       children: [el(_src_components_wpmozo_loader_wpmozo_loader__WEBPACK_IMPORTED_MODULE_1__["default"], {
         attributes: attributes,
@@ -1565,7 +1565,7 @@ __webpack_require__.r(__webpack_exports__);
         title: __('Mobile', 'wpmozo-product-carousel-for-woocommerce'),
         initialOpen: false
       }, el(RangeControl, {
-        key: 'wpmozo-product-carousel-columns',
+        key: 'wpmozo-product-carousel-responsive-columns',
         value: attributes.Responsive.mobile.Columns,
         allowReset: true,
         initialPosition: parseInt(GetAttributes.Responsive.mobile.Columns.default),
@@ -1581,7 +1581,7 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
       }), el(RangeControl, {
-        key: 'wpmozo-product-carousel-slidestoscroll',
+        key: 'wpmozo-product-carousel-responsive-slidestoscroll',
         value: attributes.Responsive.mobile.SlidesToScroll,
         allowReset: true,
         initialPosition: parseInt(GetAttributes.Responsive.mobile.SlidesToScroll.default),
@@ -1597,7 +1597,7 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
       }), el(RangeControl, {
-        key: 'wpmozo-product-carousel-space-between',
+        key: 'wpmozo-product-carousel-responsive-space-between',
         value: attributes.Responsive.mobile.SpaceBetween,
         allowReset: true,
         initialPosition: parseInt(GetAttributes.Responsive.mobile.SpaceBetween.default),
@@ -1614,7 +1614,7 @@ __webpack_require__.r(__webpack_exports__);
         title: __('Tablet', 'wpmozo-product-carousel-for-woocommerce'),
         initialOpen: false
       }, el(RangeControl, {
-        key: 'wpmozo-product-carousel-columns',
+        key: 'wpmozo-product-carousel-tablet-columns',
         value: attributes.Responsive.tablet.Columns,
         allowReset: true,
         initialPosition: parseInt(GetAttributes.Responsive.tablet.Columns.default),
@@ -1630,7 +1630,7 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
       }), el(RangeControl, {
-        key: 'wpmozo-product-carousel-slidestoscroll',
+        key: 'wpmozo-product-carousel-tablet-slidestoscroll',
         value: attributes.Responsive.tablet.SlidesToScroll,
         allowReset: true,
         initialPosition: parseInt(GetAttributes.Responsive.tablet.SlidesToScroll.default),
@@ -1646,7 +1646,7 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
       }), el(RangeControl, {
-        key: 'wpmozo-product-carousel-space-between',
+        key: 'wpmozo-product-carousel-tablet-space-between',
         value: attributes.Responsive.tablet.SpaceBetween,
         allowReset: true,
         initialPosition: parseInt(GetAttributes.Responsive.tablet.SpaceBetween.default),

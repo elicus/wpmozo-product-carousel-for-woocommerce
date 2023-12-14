@@ -1101,12 +1101,7 @@ class WPMozo_Product_Carousel_Init {
 			'QuickViewCloseStyleheight' => array (
 			    'type' => 'string',
 			),
-			)
-
-echo "<pre>";
-var_export($attributes);
-echo "</pre>";
-die();
+		);
 
 
 		$product_view_type_options = array(

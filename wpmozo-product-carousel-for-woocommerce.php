@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The plugin bootstrap file
  *
@@ -39,7 +38,7 @@ define( 'WPMOZO_PRODUCT_CAROUSEL_FILE', __FILE__ );
 // Plugin dir path.
 define( 'WPMOZO_PRODUCT_CAROUSEL_PLUGIN_DIR_PATH', plugin_dir_path( __FILE__ ) );
 
-// Plugin dir url
+// Plugin dir url.
 define( 'WPMOZO_PRODUCT_CAROUSEL_PLUGIN_DIR_URL', plugin_dir_url( __FILE__ ) );
 
 // Includes dir path.
@@ -75,11 +74,11 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-wpmozo-product-carousel-fo
 function run_wpmozo_product_carousel_for_woocommerce() {
 
 	$wpmozo = new WPMozo_Product_Carousel_For_Woocommerce();
-    if ( ! class_exists( 'WooCommerce' ) ) {
-        $wpmozo->deactivate();
-    } else {
-        $wpmozo->run();
-    }
+	if ( ! class_exists( 'WooCommerce' ) ) {
+		$wpmozo->deactivate();
+	} else {
+		$wpmozo->run();
+	}
 
 }
 add_action( 'plugins_loaded', 'run_wpmozo_product_carousel_for_woocommerce' );

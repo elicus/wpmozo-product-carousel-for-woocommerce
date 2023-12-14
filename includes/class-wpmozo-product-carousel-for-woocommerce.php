@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The file that defines the core plugin class
  *
@@ -114,7 +113,7 @@ class WPMozo_Product_Carousel_For_Woocommerce {
 		 * of the plugin.
 		 */
 		require_once WPMOZO_PRODUCT_CAROUSEL_INC_DIR_PATH . 'class-wpmozo-product-carousel-i18n.php';
-		
+
 		/**
 		 * The class responsible for defining all actions for WP initialization of the plugin.
 		 */
@@ -139,7 +138,7 @@ class WPMozo_Product_Carousel_For_Woocommerce {
 		if ( ! empty( $this->classes ) ) {
 			foreach ( $this->classes as $key => $instance ) {
 				if ( method_exists( $instance, 'add_hooks' ) ) {
-					// Call method for register all hooks of plugin
+					// Call method for register all hooks of plugin.
 					$instance->add_hooks( $this->loader, $instance );
 				}
 			}
@@ -171,11 +170,11 @@ class WPMozo_Product_Carousel_For_Woocommerce {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
-		if ( isset( $_GET['activate'] ) ) {
-			unset( $_GET['activate'] );
+		if ( isset( $_GET['activate'] ) ) { // phpcs:ignore 
+			unset( $_GET['activate'] ); // phpcs:ignore 
 			$_GET['deactivate'] = true;
 		}
-		add_action('admin_notices', array( $this, 'deactivation_notice' ) );
+		add_action( 'admin_notices', array( $this, 'deactivation_notice' ) );
 		deactivate_plugins( WPMOZO_PRODUCT_CAROUSEL_FILE );
 
 	}
@@ -194,15 +193,15 @@ class WPMozo_Product_Carousel_For_Woocommerce {
 		?>
 		<div class="error notice is-dismissible">
 			<p>
-			<?php 
-			echo wp_kses( 
-				$notice, 
-			 	array(
-		        	'strong' => array(),
-		    	)
+			<?php
+			echo wp_kses(
+				$notice,
+				array(
+					'strong' => array(),
+				)
 			);
-    		?>
-    		</p>
+			?>
+			</p>
 		</div>
 		<?php
 	}

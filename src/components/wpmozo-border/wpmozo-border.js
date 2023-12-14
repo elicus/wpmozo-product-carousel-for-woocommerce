@@ -6,17 +6,13 @@ const preAttributes = wpmozo_block_carousel_object.attributes;
 
 const WpmozoBorder = function(args){
 
-	const { BorderKey, values, props } = args;
+	const { BorderKey, props } = args;
 	let BorderTypes                    = args.hasOwnProperty( 'BorderTypes' ) ? args.BorderTypes : null;
 
-	let depth   = args.hasOwnProperty( 'depth' ) ? args.depth : [],
-		AttrKey = args.hasOwnProperty( 'AttrKey' ) ? args.AttrKey : 'StyleAtts',
-		theAtts = Object.assign( {}, props.attributes[AttrKey] );
+	const borderSetValue = function( styleType, value = '' ) {
 
-	const borderSetValue = function( styleType, value = null ) {
-
-		let _border = setValue( styleType, value );
-		props.setAttributes( {[AttrKey]: theAtts} );
+		value = setValue( styleType, value );
+		props.setAttributes( {[ BorderKey+styleType ]: value} );
 
 		if ( args.hasOwnProperty( 'afterOnChange' ) ) {
 			args.afterOnChange( props );
@@ -26,41 +22,12 @@ const WpmozoBorder = function(args){
 
 	const setValue = function(styleType, value){
 
-		let _border = null;
-		if ( null === value && depth.length < 1 && 'undefined' !== typeof preAttributes[AttrKey][BorderKey][styleType].default ) {
-			value = preAttributes[AttrKey][BorderKey][styleType].default;
+		if ( null === value && 'undefined' !== typeof preAttributes[ BorderKey+styleType ].default ) {
+			value = preAttributes[ BorderKey+styleType ].default;
 		}
+		value = ( null !== value ) ? value : '';
 
-		if ( Array.isArray( depth ) && depth.length ) {
-			var lastEl    = null,
-				lastPreEl = null;
-			for (var i = 0; i < depth.length; i++) {
-				if ( null === lastEl ) {
-					lastEl = theAtts[depth[i]];
-				} else {
-					if ( lastEl.hasOwnProperty( depth[i] ) ) {
-						lastEl = lastEl[depth[i]];
-					}
-				}
-				if ( null === lastPreEl ) {
-					lastPreEl = preAttributes[AttrKey][depth[i]];
-				} else {
-					if ( lastPreEl.hasOwnProperty( depth[i] ) ) {
-						lastPreEl = lastPreEl[depth[i]];
-					}
-				}
-			}
-			_border = lastEl[BorderKey];
-			if ( null == value && 'undefined' !== typeof lastPreEl[BorderKey][styleType] ) {
-				value = lastPreEl[BorderKey][styleType].default;
-			}
-			_border[styleType] = ( null !== value ) ? value : '';
-		} else {
-			_border            = theAtts[BorderKey];
-			_border[styleType] = ( null !== value ) ? value : '';
-		}
-
-		return _border;
+		return value;
 
 	}
 
@@ -80,9 +47,9 @@ const WpmozoBorder = function(args){
 						}
 					}
 					for (const type in BorderTypes) {
-						setValue( type, null );
+						let value = setValue( type, null );
+						props.setAttributes( {[ BorderKey+type ]: value} );
 					}
-					props.setAttributes( {[AttrKey]: theAtts} );
 
 					if ( args.hasOwnProperty( 'afterOnChange' ) ) {
 						args.afterOnChange( props );
@@ -103,7 +70,7 @@ const WpmozoBorder = function(args){
 						__experimentalBorderBoxControl,
 						{
 							label: 'Border',
-							value: values.border,
+							value: props.attributes[ BorderKey+'border' ],
 							onChange: ( NewBorder ) => onChange( 'border', NewBorder ),
 						}
 					),
@@ -121,7 +88,7 @@ const WpmozoBorder = function(args){
 						__experimentalBorderRadiusControl,
 						{
 							label: 'Radius',
-							values: values.borderRadius,
+							values: props.attributes[ BorderKey+'borderRadius' ],
 							onChange: ( NewRadius ) => onChange( 'borderRadius', NewRadius ),
 						}
 					),

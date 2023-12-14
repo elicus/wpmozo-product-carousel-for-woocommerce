@@ -234,638 +234,307 @@ class WPMozo_Product_Carousel_Init {
 	 */
 	public function wpmozo_get_all_settings_options() {
 
-		$typography_atts = array(
-			'type'           => 'object',
-			'FontSize'       => array(
-				'type'    => 'string',
-				'default' => '',
-			),
-			'FontAppearance' => array(
-				'type'       => 'object',
-				'fontStyle'  => array(
-					'type'    => 'string',
-					'default' => '',
-				),
-				'fontWeight' => array(
-					'type'    => 'string',
-					'default' => '',
-				),
-				'default'    => array(
-					'fontStyle'  => '',
-					'fontWeight' => '',
-				),
-			),
-			'LetterSpacing'  => array(
-				'type'    => 'string',
-				'default' => '',
-			),
-			'Decoration'     => array(
-				'type'    => 'string',
-				'default' => '',
-			),
-			'LetterCase'     => array(
-				'type'    => 'string',
-				'default' => '',
-			),
-			'LineHeight'     => array(
-				'type'    => 'string',
-				'default' => '',
-			),
-			'default'        => array(
-				'FontSize'       => '',
-				'FontAppearance' => array(
-					'fontStyle'  => '',
-					'fontWeight' => '',
-				),
-				'LetterSpacing'  => '',
-				'Decoration'     => '',
-				'LetterCase'     => '',
-				'LineHeight'     => '',
-			),
-		);
-
-		$text_color_atts = array(
-			'type'    => 'object',
-			'text'    => array(
-				'type'    => 'string',
-				'default' => '',
-			),
-			'default' => array(
-				'text' => '',
-			),
-		);
-
-		$two_color_atts = array(
-			'type'       => 'object',
-			'text'       => array(
-				'type'    => 'string',
-				'default' => '',
-			),
-			'background' => array(
-				'type'    => 'string',
-				'default' => '',
-			),
-			'default'    => array(
-				'text'       => '',
-				'background' => '',
-			),
-		);
-
-		$background_color_atts = array(
-			'type'       => 'object',
-			'background' => array(
-				'type'    => 'string',
-				'default' => '',
-			),
-			'default'    => array(
-				'background' => '',
-			),
-		);
-
-		$border_atts = array(
-			'type'         => 'object',
-			'borderRadius' => array(
-				'type'    => 'string',
-				'default' => '',
-			),
-			'border'       => array(
-				'type' => 'object',
-			),
-			'default'      => array(
-				'borderRadius' => '',
-				'border'       => array(),
-			),
-		);
-
-		$dimensions_atts = array(
-			'type'     => 'object',
-			'padding'  => array(
-				'type' => 'object',
-			),
-			'margin'   => array(
-				'type' => 'object',
-			),
-			'position' => array(
-				'type' => 'object',
-			),
-			'default'  => array(
-				'padding'  => '',
-				'margin'   => '',
-				'position' => '',
-			),
-		);
-
-		$only_padding_atts = array(
-			'type'    => 'object',
-			'padding' => array(
-				'type' => 'object',
-			),
-			'default' => array(
-				'padding' => '',
-			),
-		);
-
-		$size_atts = array(
-			'type'    => 'object',
-			'width'   => array(
-				'type' => 'string',
-			),
-			'height'  => array(
-				'type' => 'string',
-			),
-			'default' => array(
-				'width'  => '',
-				'height' => '',
-			),
-		);
-
-		$stocklabel_color_atts                    = $text_color_atts;
-		$stocklabel_color_atts['text']['default'] = '#ff0000';
-
-		$stocklabel_style_atts                        = $typography_atts;
-		$stocklabel_style_atts['FontSize']['default'] = '14px';
-		$stocklabel_style_atts['FontAppearance']['default']['fontWeight'] = '500';
-		$stocklabel_style_atts['FontAppearance']['default']['fontStyle']  = 'normal';
-
-		$stocklabel_border_atts                            = $border_atts;
-		$stocklabel_border_atts['border']['default']       = array(
-			'width' => '1px',
-			'style' => 'solid',
-			'color' => '#ff0000',
-		);
-		$stocklabel_border_atts['borderRadius']['default'] = '3px';
-
-		$stocklabel_dimensions_atts                       = $dimensions_atts;
-		$stocklabel_dimensions_atts['padding']['default'] = array(
-			'bottom' => '5px',
-			'left'   => '12px',
-			'right'  => '12px',
-			'top'    => '5px',
-		);
-
-		$quickpopup_dimensions_atts                       = $dimensions_atts;
-		$quickpopup_dimensions_atts['padding']['default'] = array(
-			'bottom' => '20px',
-			'left'   => '20px',
-			'right'  => '20px',
-			'top'    => '20px',
-		);
-
-		$same_as_carousel                = array(
-			'type'           => 'object',
-			'SameAsCarousel' => array(
-				'type' => 'boolean',
-			),
-			'default'        => array(
-				'SameAsCarousel' => true,
-			),
-		);
-		$title_style                     = array_merge(
-			$typography_atts,
-			$text_color_atts
-		);
-		$title_style_default             = array_merge(
-			$typography_atts['default'],
-			$text_color_atts['default']
-		);
-		$price_style                     = array_merge(
-			$typography_atts,
-			$text_color_atts
-		);
-		$price_style_default             = array_merge(
-			$typography_atts['default'],
-			$text_color_atts['default']
-		);
-		$sale_label_style                = array_merge(
-			$typography_atts,
-			$two_color_atts
-		);
-		$sale_label_style_default        = array_merge(
-			$typography_atts['default'],
-			$two_color_atts['default']
-		);
-		$stock_label_style               = array_merge(
-			$stocklabel_style_atts,
-			$stocklabel_color_atts,
-			$stocklabel_border_atts,
-			$stocklabel_dimensions_atts
-		);
-		$stock_label_style_default       = array(
-			'FontSize'       => '14px',
-			'text'           => '#ff0000',
-			'FontAppearance' => array(
-				'fontWeight' => '500',
-				'fontStyle'  => 'normal',
-			),
-			'border'         => array(
-				'width' => '1px',
-				'style' => 'solid',
-				'color' => '#ff0000',
-			),
-			'borderRadius'   => '3px',
-			'padding'        => array(
-				'bottom' => '5px',
-				'left'   => '12px',
-				'right'  => '12px',
-				'top'    => '5px',
-			),
-		);
-		$add_to_cart_style               = array_merge(
-			$typography_atts,
-			$two_color_atts,
-			$border_atts,
-			$only_padding_atts
-		);
-		$add_to_cart_style_default       = array_merge(
-			$typography_atts['default'],
-			$two_color_atts['default'],
-			$border_atts['default'],
-			$only_padding_atts['default']
-		);
-		$quick_view_style                = array_merge(
-			$typography_atts,
-			$two_color_atts,
-			$border_atts,
-			$dimensions_atts
-		);
-		$quick_view_style_default        = array_merge(
-			$typography_atts['default'],
-			$two_color_atts['default'],
-			$border_atts['default'],
-			$dimensions_atts['default']
-		);
-		$quick_view_popup_style          = array_merge(
-			$background_color_atts,
-			$quickpopup_dimensions_atts,
-			$same_as_carousel
-		);
-		$quick_view_popup_style_defalult = array_merge(
-			$background_color_atts['default'],
-			array(
-				'padding' => $quickpopup_dimensions_atts['padding']['default'],
-			),
-			$same_as_carousel['default']
-		);
-		$quick_view_close_style          = array_merge(
-			$typography_atts,
-			$two_color_atts,
-			$border_atts,
-			$dimensions_atts,
-			$size_atts
-		);
-		$quick_view_close_style_default  = array_merge(
-			$typography_atts['default'],
-			$two_color_atts['default'],
-			$border_atts['default'],
-			$dimensions_atts['default'],
-			$size_atts['default']
-		);
-
-		$style_attrs = array(
-			'type'                     => 'object',
-			'CarouContStyle'           => array(
-				'type'    => 'object',
-				'padding' => array(
-					'type'    => 'object',
-					'default' => array(
-						'bottom' => '20px',
-						'left'   => '20px',
-						'right'  => '20px',
-						'top'    => '20px',
-					),
-				),
-			),
-			'CarouNavigation'          => array(
-				'type'           => 'object',
-				'FontSize'       => array(
-					'type' => 'string',
-				),
-				'text'           => array(
-					'type' => 'string',
-				),
-				'background'     => array(
-					'type' => 'string',
-				),
-				'FontAppearance' => array(
-					'type'       => 'object',
-					'fontWeight' => array(
-						'type'    => 'string',
-						'default' => '',
-					),
-					'default'    => array(
-						'fontWeight' => '',
-					),
-				),
-				'padding'        => array(
-					'type' => 'object',
-				),
-				'margin'         => array(
-					'type' => 'object',
-				),
-				'position'       => array(
-					'type' => 'object',
-				),
-			),
-			'CarouNavigationLeft'      => array(
-				'type'     => 'object',
-				'position' => array(
-					'type' => 'object',
-				),
-				'default'  => array(
-					'position' => '',
-				),
-			),
-			'CarouNavigationRight'     => array(
-				'type'     => 'object',
-				'position' => array(
-					'type' => 'object',
-				),
-				'default'  => array(
-					'position' => '',
-				),
-			),
-			'CarouPagination'          => array(
-				'type'       => 'object',
-				'FontSize'   => array(
-					'type' => 'string',
-				),
-				'text'       => array(
-					'type' => 'string',
-				),
-				'background' => array(
-					'type' => 'string',
-				),
-				'width'      => array(
-					'type' => 'string',
-				),
-				'height'     => array(
-					'type' => 'string',
-				),
-			),
-			'TitleStyle'               => $title_style,
-			'PriceStyle'               => $price_style,
-			'SaleLabelStyle'           => $sale_label_style,
-			'StockLabelStyle'          => $stock_label_style,
-			'AddToCartStyle'           => $add_to_cart_style,
-			'QuickViewStyle'           => $quick_view_style,
-			'QuickViewPopupStyle'      => $quick_view_popup_style,
-			'QuickViewTitleStyle'      => $title_style,
-			'QuickViewPriceStyle'      => $price_style,
-			'QuickViewSaleLabelStyle'  => $sale_label_style,
-			'QuickViewStockLabelStyle' => $stock_label_style,
-			'QuickViewAddToCartStyle'  => $add_to_cart_style,
-			'QuickViewCloseStyle'      => $quick_view_close_style,
-			'default'                  => array(
-				'CarouContStyle'           => array(
-					'padding' => array(
-						'bottom' => '20px',
-						'left'   => '20px',
-						'right'  => '20px',
-						'top'    => '20px',
-					),
-				),
-				'CarouPagination'          => array(
-					'FontSize'   => '',
-					'text'       => '',
-					'background' => '',
-					'width'      => '',
-					'height'     => '',
-				),
-				'CarouNavigation'          => array(
-					'FontSize'       => '',
-					'text'           => '',
-					'background'     => '',
-					'FontAppearance' => array(
-						'fontWeight' => '',
-					),
-					'padding'        => '',
-					'margin'         => '',
-				),
-				'CarouNavigationLeft'      => array(
-					'position' => '',
-				),
-				'CarouNavigationRight'     => array(
-					'position' => '',
-				),
-				'TitleStyle'               => $title_style_default,
-				'PriceStyle'               => $price_style_default,
-				'SaleLabelStyle'           => $sale_label_style_default,
-				'StockLabelStyle'          => $stock_label_style_default,
-				'AddToCartStyle'           => $add_to_cart_style_default,
-				'QuickViewStyle'           => $quick_view_style_default,
-				'QuickViewPopupStyle'      => $quick_view_popup_style_defalult,
-				'QuickViewTitleStyle'      => $title_style_default,
-				'QuickViewPriceStyle'      => $price_style_default,
-				'QuickViewSaleLabelStyle'  => $sale_label_style_default,
-				'QuickViewStockLabelStyle' => $stock_label_style_default,
-				'QuickViewAddToCartStyle'  => $add_to_cart_style_default,
-				'QuickViewCloseStyle'      => $quick_view_close_style_default,
-			),
-		);
-
-		$attributes = array(
-			'clientId'                 => array(
-				'type' => 'string',
-			),
-			'CAlign'                   => array(
-				'type' => 'string',
-			),
-			// Carousel attributes.
-			'Columns'                  => array(
-				'type'    => 'integer',
-				'default' => 4,
-			),
-			'SlidesToScroll'           => array(
-				'type'    => 'integer',
-				'default' => 4,
-			),
-			'SpaceBetween'             => array(
-				'type'    => 'integer',
-				'default' => 20,
-			),
-			'AutoPlay'                 => array(
-				'type'    => 'boolean',
-				'default' => false,
-			),
-			'Delay'                    => array(
-				'type'    => 'integer',
-				'default' => 3000,
-			),
-			'Loop'                     => array(
-				'type'    => 'boolean',
-				'default' => false,
-			),
-			'ShowNavigation'           => array(
-				'type'    => 'boolean',
-				'default' => true,
-			),
-			'ShowPagination'           => array(
-				'type'    => 'boolean',
-				'default' => true,
-			),
-			'EqualSlideHeight'         => array(
-				'type'    => 'boolean',
-				'default' => false,
-			),
-			'PaginationType'           => array(
-				'type'    => 'string',
-				'default' => 'bullets',
-			),
-			// Responsive attributes.
-			'Responsive'               => array(
-				'type'    => 'object',
-				'mobile'  => array(
-					'type'           => 'object',
-					'Columns'        => array(
-						'type'    => 'integer',
-						'default' => 1,
-					),
-					'SlidesToScroll' => array(
-						'type'    => 'integer',
-						'default' => 1,
-					),
-					'SpaceBetween'   => array(
-						'type'    => 'integer',
-						'default' => 20,
-					),
-				),
-				'tablet'  => array(
-					'type'           => 'object',
-					'Columns'        => array(
-						'type'    => 'integer',
-						'default' => 2,
-					),
-					'SlidesToScroll' => array(
-						'type'    => 'integer',
-						'default' => 2,
-					),
-					'SpaceBetween'   => array(
-						'type'    => 'integer',
-						'default' => 20,
-					),
-				),
-				'default' => array(
-					'mobile' => array(
-						'Columns'        => 1,
-						'SlidesToScroll' => 1,
-						'SpaceBetween'   => 20,
-					),
-					'tablet' => array(
-						'Columns'        => 2,
-						'SlidesToScroll' => 2,
-						'SpaceBetween'   => 20,
-					),
-				),
-			),
-			// Query attributes.
-			'ProductViewType'          => array(
-				'type'    => 'string',
-				'default' => 'default',
-			),
-			'NumberOfProducts'         => array(
-				'type'    => 'string',
-				'default' => '10',
-			),
-			'Offset'                   => array(
-				'type' => 'string',
-			),
-			'OrderBy'                  => array(
-				'type'    => 'string',
-				'default' => 'date',
-			),
-			'Order'                    => array(
-				'type'    => 'string',
-				'default' => 'DESC',
-			),
-			'IncludeCategories'        => array(
-				'type' => 'array',
-			),
-			'IncludeTags'              => array(
-				'type' => 'array',
-			),
-			'TaxonomiesRelation'       => array(
-				'type'    => 'string',
-				'default' => 'AND',
-			),
-			'OutOfStock'               => array(
-				'type'    => 'boolean',
-				'default' => false,
-			),
-			// Display attributes.
-			'Layout'                   => array(
-				'type'    => 'string',
-				'default' => 'default',
-			),
-			'DisplayOutOfStockLabel'   => array(
-				'type'    => 'boolean',
-				'default' => false,
-			),
-			'OutOfStockLabel'          => array(
-				'type' => 'string',
-			),
-			'EnableQuickViewLink'      => array(
-				'type'    => 'boolean',
-				'default' => false,
-			),
-			'QuickViewLinkText'        => array(
-				'type'    => 'string',
-				'default' => __( 'Quick View', 'wpmozo-product-carousel-for-woocommerce' ),
-			),
-			'QuickViewLinkIconEnabled' => array(
-				'type'    => 'boolean',
-				'default' => false,
-			),
-			'QuickViewLinkIcon'        => array(
-				'type'    => 'string',
-				'default' => 'fas fa-eye',
-			),
-			'QuickViewLinkCustomIcon'  => array(
-				'type'    => 'boolean',
-				'default' => false,
-			),
-			'QuickViewLinkImg'         => array(
-				'type'    => 'string',
-				'default' => '',
-			),
-			'ShowTitle'                => array(
-				'type'    => 'boolean',
-				'default' => true,
-			),
-			'ShowFeaturedImage'        => array(
-				'type'    => 'boolean',
-				'default' => true,
-			),
-			'FeaturedImageSize'        => array(
-				'type'    => 'string',
-				'default' => 'woocommerce_thumbnail',
-			),
-			'ShowRating'               => array(
-				'type'    => 'boolean',
-				'default' => true,
-			),
-			'ShowPrice'                => array(
-				'type'    => 'boolean',
-				'default' => true,
-			),
-			'ShowAddToCartButton'      => array(
-				'type'    => 'boolean',
-				'default' => true,
-			),
-			'ShowSaleBadge'            => array(
-				'type'    => 'boolean',
-				'default' => true,
-			),
-			'SaleBadgeType'            => array(
-				'type'    => 'string',
-				'default' => 'sale_label',
-			),
-			'SaleLabelText'            => array(
-				'type'    => 'string',
-				'default' => '',
-			),
-			// Styles attributes.
-			'StyleAtts'                => $style_attrs,
-		);
+		$attributes = [
+    "clientId" => ["type" => "string"],
+    "CAlign" => ["type" => "string"],
+    "Columns" => ["type" => "integer", "default" => 4],
+    "SlidesToScroll" => ["type" => "integer", "default" => 4],
+    "SpaceBetween" => ["type" => "integer", "default" => 20],
+    "AutoPlay" => ["type" => "boolean", "default" => false],
+    "Delay" => ["type" => "integer", "default" => 3000],
+    "Loop" => ["type" => "boolean", "default" => false],
+    "ShowNavigation" => ["type" => "boolean", "default" => true],
+    "ShowPagination" => ["type" => "boolean", "default" => true],
+    "EqualSlideHeight" => ["type" => "boolean", "default" => false],
+    "PaginationType" => ["type" => "string", "default" => "bullets"],
+    "mobileColumns" => ["type" => "integer", "default" => 1],
+    "mobileSlidesToScroll" => ["type" => "integer", "default" => 1],
+    "mobileSpaceBetween" => ["type" => "integer", "default" => 20],
+    "tabletColumns" => ["type" => "integer", "default" => 2],
+    "tabletSlidesToScroll" => ["type" => "integer", "default" => 2],
+    "tabletSpaceBetween" => ["type" => "integer", "default" => 20],
+    "ProductViewType" => ["type" => "string", "default" => "default"],
+    "NumberOfProducts" => ["type" => "string", "default" => "10"],
+    "Offset" => ["type" => "string"],
+    "OrderBy" => ["type" => "string", "default" => "date"],
+    "Order" => ["type" => "string", "default" => "DESC"],
+    "IncludeCategories" => ["type" => "array"],
+    "IncludeTags" => ["type" => "array"],
+    "TaxonomiesRelation" => ["type" => "string", "default" => "AND"],
+    "OutOfStock" => ["type" => "boolean", "default" => false],
+    "Layout" => ["type" => "string", "default" => "default"],
+    "DisplayOutOfStockLabel" => ["type" => "boolean", "default" => false],
+    "OutOfStockLabel" => ["type" => "string"],
+    "EnableQuickViewLink" => ["type" => "boolean", "default" => false],
+    "QuickViewLinkText" => ["type" => "string", "default" => "Quick View"],
+    "QuickViewLinkIconEnabled" => ["type" => "boolean", "default" => false],
+    "QuickViewLinkIcon" => ["type" => "string", "default" => "fas fa-eye"],
+    "QuickViewLinkCustomIcon" => ["type" => "boolean", "default" => false],
+    "QuickViewLinkImg" => ["type" => "string", "default" => ""],
+    "ShowTitle" => ["type" => "boolean", "default" => true],
+    "ShowFeaturedImage" => ["type" => "boolean", "default" => true],
+    "FeaturedImageSize" => [
+        "type" => "string",
+        "default" => "woocommerce_thumbnail",
+    ],
+    "ShowRating" => ["type" => "boolean", "default" => true],
+    "ShowPrice" => ["type" => "boolean", "default" => true],
+    "ShowAddToCartButton" => ["type" => "boolean", "default" => true],
+    "ShowSaleBadge" => ["type" => "boolean", "default" => true],
+    "SaleBadgeType" => ["type" => "string", "default" => "sale_label"],
+    "SaleLabelText" => ["type" => "string", "default" => ""],
+    "CarouContStylepadding" => [
+        "type" => "object",
+        "default" => [
+            "bottom" => "20px",
+            "left" => "20px",
+            "right" => "20px",
+            "top" => "20px",
+        ],
+    ],
+    "CarouNavigationStyleFontSize" => ["type" => "string"],
+    "CarouNavigationStyletext" => ["type" => "string"],
+    "CarouNavigationStylebackground" => ["type" => "string"],
+    "CarouNavigationStyleFontAppearance" => [
+        "type" => "object",
+        "fontWeight" => ["type" => "string", "default" => ""],
+        "default" => ["fontWeight" => ""],
+    ],
+    "CarouNavigationStylepadding" => ["type" => "object"],
+    "CarouNavigationStylemargin" => ["type" => "object"],
+    "CarouNavigationStyleposition" => ["type" => "object"],
+    "CarouNavigationLeftposition" => ["type" => "object"],
+    "CarouNavigationRightposition" => ["type" => "object"],
+    "CarouPaginationFontSize" => ["type" => "string"],
+    "CarouPaginationtext" => ["type" => "string"],
+    "CarouPaginationbackground" => ["type" => "string"],
+    "CarouPaginationwidth" => ["type" => "string"],
+    "CarouPaginationheight" => ["type" => "string"],
+    "TitleStyleFontSize" => ["type" => "string", "default" => ""],
+    "TitleStyleFontAppearance" => [
+        "type" => "object",
+        "fontStyle" => ["type" => "string", "default" => ""],
+        "fontWeight" => ["type" => "string", "default" => ""],
+        "default" => ["fontStyle" => "", "fontWeight" => ""],
+    ],
+    "TitleStyleLetterSpacing" => ["type" => "string", "default" => ""],
+    "TitleStyleDecoration" => ["type" => "string", "default" => ""],
+    "TitleStyleLetterCase" => ["type" => "string", "default" => ""],
+    "TitleStyleLineHeight" => ["type" => "string", "default" => ""],
+    "TitleStyletext" => ["type" => "string", "default" => ""],
+    "PriceStyleFontSize" => ["type" => "string", "default" => ""],
+    "PriceStyleFontAppearance" => [
+        "type" => "object",
+        "fontStyle" => ["type" => "string", "default" => ""],
+        "fontWeight" => ["type" => "string", "default" => ""],
+        "default" => ["fontStyle" => "", "fontWeight" => ""],
+    ],
+    "PriceStyleLetterSpacing" => ["type" => "string", "default" => ""],
+    "PriceStyleDecoration" => ["type" => "string", "default" => ""],
+    "PriceStyleLetterCase" => ["type" => "string", "default" => ""],
+    "PriceStyleLineHeight" => ["type" => "string", "default" => ""],
+    "PriceStyletext" => ["type" => "string", "default" => ""],
+    "SaleLabelStyleFontSize" => ["type" => "string", "default" => ""],
+    "SaleLabelStyleFontAppearance" => [
+        "type" => "object",
+        "fontStyle" => ["type" => "string", "default" => ""],
+        "fontWeight" => ["type" => "string", "default" => ""],
+        "default" => ["fontStyle" => "", "fontWeight" => ""],
+    ],
+    "SaleLabelStyleLetterSpacing" => ["type" => "string", "default" => ""],
+    "SaleLabelStyleDecoration" => ["type" => "string", "default" => ""],
+    "SaleLabelStyleLetterCase" => ["type" => "string", "default" => ""],
+    "SaleLabelStyleLineHeight" => ["type" => "string", "default" => ""],
+    "SaleLabelStyletext" => ["type" => "string", "default" => ""],
+    "SaleLabelStylebackground" => ["type" => "string", "default" => ""],
+    "StockLabelStyleFontSize" => ["type" => "string", "default" => "14px"],
+    "StockLabelStyleFontAppearance" => [
+        "type" => "object",
+        "fontStyle" => ["type" => "string", "default" => ""],
+        "fontWeight" => ["type" => "string", "default" => ""],
+        "default" => ["fontStyle" => "normal", "fontWeight" => "500"],
+    ],
+    "StockLabelStyleLetterSpacing" => ["type" => "string", "default" => ""],
+    "StockLabelStyleDecoration" => ["type" => "string", "default" => ""],
+    "StockLabelStyleLetterCase" => ["type" => "string", "default" => ""],
+    "StockLabelStyleLineHeight" => ["type" => "string", "default" => ""],
+    "StockLabelStyledefault" => ["padding" => "", "margin" => "", "position" => ""],
+    "StockLabelStyletext" => ["type" => "string", "default" => "#ff0000"],
+    "StockLabelStyleborderRadius" => ["type" => "", "default" => "3px"],
+    "StockLabelStyleborder" => [
+        "type" => "object",
+        "default" => [
+            "width" => "1px",
+            "style" => "solid",
+            "color" => "#ff0000",
+        ],
+    ],
+    "StockLabelStylepadding" => [
+        "type" => "object",
+        "default" => [
+            "bottom" => "5px",
+            "left" => "12px",
+            "right" => "12px",
+            "top" => "5px",
+        ],
+    ],
+    "StockLabelStylemargin" => ["type" => "object"],
+    "StockLabelStyleposition" => ["type" => "object"],
+    "AddToCartStyleFontSize" => ["type" => "string", "default" => ""],
+    "AddToCartStyleFontAppearance" => [
+        "type" => "object",
+        "fontStyle" => ["type" => "string", "default" => ""],
+        "fontWeight" => ["type" => "string", "default" => ""],
+        "default" => ["fontStyle" => "", "fontWeight" => ""],
+    ],
+    "AddToCartStyleLetterSpacing" => ["type" => "string", "default" => ""],
+    "AddToCartStyleDecoration" => ["type" => "string", "default" => ""],
+    "AddToCartStyleLetterCase" => ["type" => "string", "default" => ""],
+    "AddToCartStyleLineHeight" => ["type" => "string", "default" => ""],
+    "default" => ["padding" => ""],
+    "AddToCartStyletext" => ["type" => "string", "default" => ""],
+    "AddToCartStylebackground" => ["type" => "string", "default" => ""],
+    "AddToCartStyleborderRadius" => ["type" => "", "default" => ""],
+    "AddToCartStyleborder" => ["type" => "object"],
+    "AddToCartStylepadding" => ["type" => "object"],
+    "QuickViewStyleFontSize" => ["type" => "string", "default" => ""],
+    "QuickViewStyleFontAppearance" => [
+        "type" => "object",
+        "fontStyle" => ["type" => "string", "default" => ""],
+        "fontWeight" => ["type" => "string", "default" => ""],
+        "default" => ["fontStyle" => "", "fontWeight" => ""],
+    ],
+    "QuickViewStyleLetterSpacing" => ["type" => "string", "default" => ""],
+    "QuickViewStyleDecoration" => ["type" => "string", "default" => ""],
+    "QuickViewStyleLetterCase" => ["type" => "string", "default" => ""],
+    "QuickViewStyleLineHeight" => ["type" => "string", "default" => ""],
+    "QuickViewStyletext" => ["type" => "string", "default" => ""],
+    "QuickViewStylebackground" => ["type" => "string", "default" => ""],
+    "QuickViewStyleborderRadius" => ["type" => "", "default" => ""],
+    "QuickViewStyleborder" => ["type" => "object"],
+    "QuickViewStylepadding" => ["type" => "object"],
+    "QuickViewStylemargin" => ["type" => "object"],
+    "QuickViewStyleposition" => ["type" => "object"],
+    "QuickViewPopupStylebackground" => ["type" => "string", "default" => ""],
+    "default" => ["SameAsCarousel" => true],
+    "QuickViewPopupStylepadding" => [
+        "type" => "object",
+        "default" => [
+            "bottom" => "20px",
+            "left" => "20px",
+            "right" => "20px",
+            "top" => "20px",
+        ],
+    ],
+    "QuickViewPopupStylemargin" => ["type" => "object"],
+    "QuickViewPopupStyleposition" => ["type" => "object"],
+    "QuickViewPopupStyleSameAsCarousel" => ["type" => "boolean"],
+    "QuickViewTitleStyleFontSize" => ["type" => "string", "default" => ""],
+    "QuickViewTitleStyleFontAppearance" => [
+        "type" => "object",
+        "fontStyle" => ["type" => "string", "default" => ""],
+        "fontWeight" => ["type" => "string", "default" => ""],
+        "default" => ["fontStyle" => "", "fontWeight" => ""],
+    ],
+    "QuickViewTitleStyleLetterSpacing" => ["type" => "string", "default" => ""],
+    "QuickViewTitleStyleDecoration" => ["type" => "string", "default" => ""],
+    "QuickViewTitleStyleLetterCase" => ["type" => "string", "default" => ""],
+    "QuickViewTitleStyleLineHeight" => ["type" => "string", "default" => ""],
+    "QuickViewTitleStyletext" => ["type" => "string", "default" => ""],
+    "QuickViewPriceStyleFontSize" => ["type" => "string", "default" => ""],
+    "QuickViewPriceStyleFontAppearance" => [
+        "type" => "object",
+        "fontStyle" => ["type" => "string", "default" => ""],
+        "fontWeight" => ["type" => "string", "default" => ""],
+        "default" => ["fontStyle" => "", "fontWeight" => ""],
+    ],
+    "QuickViewPriceStyleLetterSpacing" => ["type" => "string", "default" => ""],
+    "QuickViewPriceStyleDecoration" => ["type" => "string", "default" => ""],
+    "QuickViewPriceStyleLetterCase" => ["type" => "string", "default" => ""],
+    "QuickViewPriceStyleLineHeight" => ["type" => "string", "default" => ""],
+    "QuickViewPriceStyledefault" => ["text" => ""],
+    "QuickViewSaleLabelStyleFontSize" => ["type" => "string", "default" => ""],
+    "QuickViewSaleLabelStyleFontAppearance" => [
+        "type" => "object",
+        "fontStyle" => ["type" => "string", "default" => ""],
+        "fontWeight" => ["type" => "string", "default" => ""],
+        "default" => ["fontStyle" => "", "fontWeight" => ""],
+    ],
+    "QuickViewSaleLabelStyleLetterSpacing" => ["type" => "string", "default" => ""],
+    "QuickViewSaleLabelStyleDecoration" => ["type" => "string", "default" => ""],
+    "QuickViewSaleLabelStyleLetterCase" => ["type" => "string", "default" => ""],
+    "QuickViewSaleLabelStyleLineHeight" => ["type" => "string", "default" => ""],
+    "QuickViewSaleLabelStyletext" => ["type" => "string", "default" => ""],
+    "QuickViewSaleLabelStylebackground" => ["type" => "string", "default" => ""],
+    "QuickViewStockLabelStyleFontSize" => ["type" => "string", "default" => "14px"],
+    "QuickViewStockLabelStyleFontAppearance" => [
+        "type" => "object",
+        "fontStyle" => ["type" => "string", "default" => ""],
+        "fontWeight" => ["type" => "string", "default" => ""],
+        "default" => ["fontStyle" => "normal", "fontWeight" => "500"],
+    ],
+    "QuickViewStockLabelStyleLetterSpacing" => ["type" => "string", "default" => ""],
+    "QuickViewStockLabelStyleDecoration" => ["type" => "string", "default" => ""],
+    "QuickViewStockLabelStyleLetterCase" => ["type" => "string", "default" => ""],
+    "QuickViewStockLabelStyleLineHeight" => ["type" => "string", "default" => ""],
+    "QuickViewStockLabelStyletext" => ["type" => "string", "default" => "#ff0000"],
+    "QuickViewStockLabelStyleborderRadius" => ["type" => "", "default" => "3px"],
+    "QuickViewStockLabelStyleborder" => [
+        "type" => "object",
+        "default" => [
+            "width" => "1px",
+            "style" => "solid",
+            "color" => "#ff0000",
+        ],
+    ],
+    "QuickViewStockLabelStylepadding" => [
+        "type" => "object",
+        "default" => [
+            "bottom" => "5px",
+            "left" => "12px",
+            "right" => "12px",
+            "top" => "5px",
+        ],
+    ],
+    "QuickViewStockLabelStylemargin" => ["type" => "object"],
+    "QuickViewStockLabelStyleposition" => ["type" => "object"],
+    "QuickViewAddToCartStyleFontSize" => ["type" => "string", "default" => ""],
+    "QuickViewAddToCartStyleFontAppearance" => [
+        "type" => "object",
+        "fontStyle" => ["type" => "string", "default" => ""],
+        "fontWeight" => ["type" => "string", "default" => ""],
+        "default" => ["fontStyle" => "", "fontWeight" => ""],
+    ],
+    "QuickViewAddToCartStyleLetterSpacing" => ["type" => "string", "default" => ""],
+    "QuickViewAddToCartStyleDecoration" => ["type" => "string", "default" => ""],
+    "QuickViewAddToCartStyleLetterCase" => ["type" => "string", "default" => ""],
+    "QuickViewAddToCartStyleLineHeight" => ["type" => "string", "default" => ""],
+    "QuickViewAddToCartStyletext" => ["type" => "string", "default" => ""],
+    "QuickViewAddToCartStylebackground" => ["type" => "string", "default" => ""],
+    "QuickViewAddToCartStyleborderRadius" => ["type" => "", "default" => ""],
+    "QuickViewAddToCartStyleborder" => ["type" => "object"],
+    "QuickViewAddToCartStylepadding" => ["type" => "object"],
+    "QuickViewCloseStyleFontSize" => ["type" => "string", "default" => ""],
+    "QuickViewCloseStyleFontAppearance" => [
+        "type" => "object",
+        "fontStyle" => ["type" => "string", "default" => ""],
+        "fontWeight" => ["type" => "string", "default" => ""],
+        "default" => ["fontStyle" => "", "fontWeight" => ""],
+    ],
+    "QuickViewCloseStyleLetterSpacing" => ["type" => "string", "default" => ""],
+    "QuickViewCloseStyleDecoration" => ["type" => "string", "default" => ""],
+    "QuickViewCloseStyleLetterCase" => ["type" => "string", "default" => ""],
+    "QuickViewCloseStyleLineHeight" => ["type" => "string", "default" => ""],
+    "QuickViewCloseStyletext" => ["type" => "string", "default" => ""],
+    "QuickViewCloseStylebackground" => ["type" => "string", "default" => ""],
+    "QuickViewCloseStyleborderRadius" => ["type" => "", "default" => ""],
+    "QuickViewCloseStyleborder" => ["type" => "object"],
+    "QuickViewCloseStylepadding" => ["type" => "object"],
+    "QuickViewCloseStylemargin" => ["type" => "object"],
+    "QuickViewCloseStyleposition" => ["type" => "object"],
+    "QuickViewCloseStylewidth" => ["type" => "string"],
+    "QuickViewCloseStyleheight" => ["type" => "string"],
+];
 
 		$product_view_type_options = array(
 			array(

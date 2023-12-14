@@ -8,16 +8,13 @@ const preAttributes = wpmozo_block_carousel_object.attributes;
 
 const WpmozoTypography = function(args){
 
-	const { TypographyKey, props, values } = args;
+	const { TypographyKey, props } = args;
 	let TypoTypes                          = args.hasOwnProperty( 'TypoTypes' ) ? args.TypoTypes : null;
-	let depth                              = args.hasOwnProperty( 'depth' ) ? args.depth : [],
-		AttrKey                            = args.hasOwnProperty( 'AttrKey' ) ? args.AttrKey : 'StyleAtts',
-		theAtts                            = Object.assign( {}, props.attributes[AttrKey] );
 
 	const typoSetValue = function( styleType, value = null ) {
 
-		let _typo = setValue( styleType, value );
-		props.setAttributes( {[AttrKey]: theAtts} );
+		value = setValue( styleType, value );
+		props.setAttributes( {[ TypographyKey+styleType ]: value} );
 
 		if ( args.hasOwnProperty( 'afterOnChange' ) ) {
 			args.afterOnChange( props );
@@ -27,41 +24,12 @@ const WpmozoTypography = function(args){
 
 	const setValue = function(styleType, value){
 
-		let _typo = null;
-		if ( null === value && depth.length < 1 && 'undefined' !== typeof preAttributes[AttrKey][TypographyKey][styleType].default ) {
-			value = preAttributes[AttrKey][TypographyKey][styleType].default;
+		if ( null === value && 'undefined' !== typeof preAttributes[ TypographyKey+styleType ].default ) {
+			value = preAttributes[ TypographyKey+styleType ].default;
 		}
+		value = ( null !== value ) ? value : '';
 
-		if ( Array.isArray( depth ) && depth.length ) {
-			var lastEl    = null,
-				lastPreEl = null;
-			for (var i = 0; i < depth.length; i++) {
-				if ( null === lastEl ) {
-					lastEl = theAtts[depth[i]];
-				} else {
-					if ( lastEl.hasOwnProperty( depth[i] ) ) {
-						lastEl = lastEl[depth[i]];
-					}
-				}
-				if ( null === lastPreEl ) {
-					lastPreEl = preAttributes[AttrKey][depth[i]];
-				} else {
-					if ( lastPreEl.hasOwnProperty( depth[i] ) ) {
-						lastPreEl = lastPreEl[depth[i]];
-					}
-				}
-			}
-			_typo = lastEl[TypographyKey];
-			if ( null == value && 'undefined' !== typeof lastPreEl[TypographyKey][styleType] ) {
-				value = lastPreEl[TypographyKey][styleType].default;
-			}
-			_typo[styleType] = ( null !== value ) ? value : '';
-		} else {
-			_typo            = theAtts[TypographyKey];
-			_typo[styleType] = ( null !== value ) ? value : '';
-		}
-
-		return _typo;
+		return value;
 
 	}
 
@@ -76,10 +44,10 @@ const WpmozoTypography = function(args){
 
 		var _FontAppearanceValues = {};
 		if ( hasFontStyles ) {
-			_FontAppearanceValues['fontStyle'] = values.FontAppearance.fontStyle;
+			_FontAppearanceValues['fontStyle'] = props.attributes[ TypographyKey+'FontAppearance' ].fontStyle;
 		}
 		if ( hasFontWeights ) {
-			_FontAppearanceValues['fontWeight'] = values.FontAppearance.fontWeight;
+			_FontAppearanceValues['fontWeight'] = props.attributes[ TypographyKey+'FontAppearance' ].fontWeight;
 		}
 
 	}
@@ -90,7 +58,7 @@ const WpmozoTypography = function(args){
 			{
 				label: __( 'Typography', 'wpmozo-product-carousel-for-woocommerce' ),
 				resetAll: () => {
-					let theAtts = Object.assign( {}, props.attributes[AttrKey] );
+					
 					if ( null === TypoTypes ) {
 						TypoTypes = {
 							'FontSize': '',
@@ -107,8 +75,9 @@ const WpmozoTypography = function(args){
 					for (const type in TypoTypes) {
 
 						let _typo = setValue( type, null );
+						props.setAttributes( {[ TypographyKey+type ]: _typo} );
 					}
-					props.setAttributes( {[AttrKey]: theAtts} );
+					
 					if ( args.hasOwnProperty( 'afterOnChange' ) ) {
 						args.afterOnChange( props );
 					}
@@ -126,7 +95,7 @@ const WpmozoTypography = function(args){
 					el(
 						FontSizePicker,
 						{
-							value: values.FontSize,
+							value: props.attributes[ TypographyKey+'FontSize' ],
 							onChange: (NewFontSize) => onChange( 'FontSize', NewFontSize ),
 							__nextHasNoMarginBottom: true,
 						}
@@ -166,7 +135,7 @@ const WpmozoTypography = function(args){
 					el(
 						__experimentalLetterSpacingControl,
 						{
-							value: values.LetterSpacing,
+							value: props.attributes[ TypographyKey+'LetterSpacing' ],
 							onChange: (NewLetterSpacing) => onChange( 'LetterSpacing', NewLetterSpacing ),
 						}
 					),
@@ -183,7 +152,7 @@ const WpmozoTypography = function(args){
 					el(
 						__experimentalTextDecorationControl,
 						{
-							value: values.Decoration,
+							value: props.attributes[ TypographyKey+'Decoration' ],
 							onChange: (NewDecoration) => onChange( 'Decoration', NewDecoration ),
 						}
 					),
@@ -200,7 +169,7 @@ const WpmozoTypography = function(args){
 					el(
 						__experimentalTextTransformControl,
 						{
-							value: values.LetterCase,
+							value: props.attributes[ TypographyKey+'LetterCase' ],
 							onChange: (NewLetterCase) => onChange( 'LetterCase', NewLetterCase ),
 						}
 					),
@@ -218,7 +187,7 @@ const WpmozoTypography = function(args){
 					el(
 						LineHeightControl,
 						{
-							value: values.LineHeight,
+							value: props.attributes[ TypographyKey+'LineHeight' ],
 							onChange: (NewLineHeight) => onChange( 'LineHeight', NewLineHeight ),
 							__nextHasNoMarginBottom: true,
 						}

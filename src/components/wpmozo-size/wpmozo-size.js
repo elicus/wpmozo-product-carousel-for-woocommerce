@@ -5,17 +5,13 @@ const preAttributes = wpmozo_block_carousel_object.attributes;
 
 const WpmozoSize = function(args){
 
-	const { SizeKey, values, props } = args;
+	const { SizeKey, props } = args;
 	let SizeTypes                    = args.hasOwnProperty( 'SizeTypes' ) ? args.SizeTypes : null;
 
-	let depth   = args.hasOwnProperty( 'depth' ) ? args.depth : [],
-		AttrKey = args.hasOwnProperty( 'AttrKey' ) ? args.AttrKey : 'StyleAtts',
-		theAtts = Object.assign( {}, props.attributes[AttrKey] );
+	const sizeSetValue = function( styleType, value = '' ) {
 
-	const sizeSetValue = function( styleType, value = null ) {
-
-		let _size = setValue( styleType, value );
-		props.setAttributes( {[AttrKey]: theAtts} );
+		value = setValue( styleType, value );
+		props.setAttributes( {[ SizeKey+styleType ]: value} );
 
 		if ( args.hasOwnProperty( 'afterOnChange' ) ) {
 			args.afterOnChange( props );
@@ -25,41 +21,12 @@ const WpmozoSize = function(args){
 
 	const setValue = function(styleType, value){
 
-		let _size = null;
-		if ( null === value && depth.length < 1 && 'undefined' !== typeof preAttributes[AttrKey][SizeKey][styleType].default ) {
-			value = preAttributes[AttrKey][SizeKey][styleType].default;
+		if ( null === value && 'undefined' !== typeof preAttributes[ SizeKey+styleType ].default ) {
+			value = preAttributes[ SizeKey+styleType ].default;
 		}
+		value = ( null !== value ) ? value : '';
 
-		if ( Array.isArray( depth ) && depth.length ) {
-			var lastEl    = null,
-				lastPreEl = null;
-			for (var i = 0; i < depth.length; i++) {
-				if ( null === lastEl ) {
-					lastEl = theAtts[depth[i]];
-				} else {
-					if ( lastEl.hasOwnProperty( depth[i] ) ) {
-						lastEl = lastEl[depth[i]];
-					}
-				}
-				if ( null === lastPreEl ) {
-					lastPreEl = preAttributes[AttrKey][depth[i]];
-				} else {
-					if ( lastPreEl.hasOwnProperty( depth[i] ) ) {
-						lastPreEl = lastPreEl[depth[i]];
-					}
-				}
-			}
-			_size = lastEl[SizeKey];
-			if ( null == value && 'undefined' !== typeof lastPreEl[SizeKey][styleType] ) {
-				value = lastPreEl[SizeKey][styleType].default;
-			}
-			_size[styleType] = ( null !== value ) ? value : '';
-		} else {
-			_size            = theAtts[SizeKey];
-			_size[styleType] = ( null !== value ) ? value : '';
-		}
-
-		return _size;
+		return value;
 
 	}
 
@@ -79,9 +46,10 @@ const WpmozoSize = function(args){
 						}
 					}
 					for (const type in SizeTypes) {
-						setValue( type, null );
+						let value = setValue( type, null );
+						props.setAttributes( {[ SizeKey+type ]: value} );
 					}
-					props.setAttributes( {[AttrKey]: theAtts} );
+					
 
 					if ( args.hasOwnProperty( 'afterOnChange' ) ) {
 						args.afterOnChange( props );
@@ -102,7 +70,7 @@ const WpmozoSize = function(args){
 						{
 							label: 'Width',
 							labelPosition: 'side',
-							value: values.width,
+							value: props.attributes[ SizeKey+'width' ],
 							onChange: ( NewWidth ) => onChange( 'width', NewWidth ),
 						}
 					),
@@ -121,7 +89,7 @@ const WpmozoSize = function(args){
 						{
 							label: 'Height',
 							labelPosition: 'side',
-							value: values.height,
+							value: props.attributes[ SizeKey+'height' ],
 							onChange: ( NewHeight ) => onChange( 'height', NewHeight ),
 						}
 					),

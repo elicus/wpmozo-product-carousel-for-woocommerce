@@ -6,18 +6,13 @@ const preAttributes = wpmozo_block_carousel_object.attributes;
 
 const WpmozoColorPicker = function(args){
 
-	const { ColorKey, ColorTypes, values, props } = args;
+	const { ColorKey, ColorTypes, props } = args;
 	const AllColors                               = __experimentalUseMultipleOriginColorsAndGradients();
-	let _color                                    = values;
 
-	let depth   = args.hasOwnProperty( 'depth' ) ? args.depth : [],
-		AttrKey = args.hasOwnProperty( 'AttrKey' ) ? args.AttrKey : 'StyleAtts',
-		theAtts = Object.assign( {}, props.attributes[AttrKey] );
+	const colorSetValue = function( styleType, value = '' ) {
 
-	const colorSetValue = function( styleType, value = null ) {
-
-		let _color = setValue( styleType, value );
-		props.setAttributes( {[AttrKey]: theAtts} );
+		value = setValue( styleType, value );
+		props.setAttributes( {[ ColorKey+styleType ]: value} );
 
 		if ( args.hasOwnProperty( 'afterOnChange' ) ) {
 			args.afterOnChange( props );
@@ -27,41 +22,12 @@ const WpmozoColorPicker = function(args){
 
 	const setValue = function(styleType, value){
 
-		let _color = null;
-		if ( null === value && depth.length < 1 && 'undefined' !== typeof preAttributes[AttrKey][ColorKey][styleType].default ) {
-			value = preAttributes[AttrKey][ColorKey][styleType].default;
+		if ( null === value && 'undefined' !== typeof preAttributes[ ColorKey+styleType ].default ) {
+			value = preAttributes[ ColorKey+styleType ].default;
 		}
+		value = ( null !== value ) ? value : '';
 
-		if ( Array.isArray( depth ) && depth.length ) {
-			var lastEl    = null,
-				lastPreEl = null;
-			for (var i = 0; i < depth.length; i++) {
-				if ( null === lastEl ) {
-					lastEl = theAtts[depth[i]];
-				} else {
-					if ( lastEl.hasOwnProperty( depth[i] ) ) {
-						lastEl = lastEl[depth[i]];
-					}
-				}
-				if ( null === lastPreEl ) {
-					lastPreEl = preAttributes[AttrKey][depth[i]];
-				} else {
-					if ( lastPreEl.hasOwnProperty( depth[i] ) ) {
-						lastPreEl = lastPreEl[depth[i]];
-					}
-				}
-			}
-			_color = lastEl[ColorKey];
-			if ( null == value && 'undefined' !== typeof lastPreEl[ColorKey][styleType] ) {
-				value = lastPreEl[ColorKey][styleType].default;
-			}
-			_color[styleType] = ( null !== value ) ? value : '';
-		} else {
-			_color            = theAtts[ColorKey];
-			_color[styleType] = ( null !== value ) ? value : '';
-		}
-
-		return _color;
+		return value;
 
 	}
 
@@ -69,8 +35,10 @@ const WpmozoColorPicker = function(args){
 
 	const colorDropdown = function( colorType, label ) {
 
-		if ( '' === _color[colorType] && args.hasOwnProperty( 'default' ) ) {
-			_color[colorType] = args.default[colorType];
+		let _color = props.attributes[ ColorKey+colorType ]
+
+		if ( '' === _color && args.hasOwnProperty( 'default' ) ) {
+			_color = args.default[colorType];
 		}
 
 		return el(
@@ -93,7 +61,7 @@ const WpmozoColorPicker = function(args){
 						el(
 							ColorIndicator,
 							{
-								colorValue: _color[colorType],
+								colorValue: _color,
 							}
 						),
 						label
@@ -105,7 +73,7 @@ const WpmozoColorPicker = function(args){
 					ColorPalette,
 					{
 						colors: AllColors.colors,
-						value: values[colorType],
+						value: _color,
 						onChange: (NewColor) => onChange( colorType, NewColor ),
 					}
 				),
@@ -140,8 +108,13 @@ const WpmozoColorPicker = function(args){
 				label: __( 'Color', 'wpmozo-product-carousel-for-woocommerce' ),
 				className: 'wpmozo-color-tools-panel',
 				resetAll: () => {
-					ColorTypes.map( type => setValue( type.key, null ) );
-					props.setAttributes( {[AttrKey]: theAtts} );
+					ColorTypes.map( type => { 
+
+						let value = setValue( type.key, null );
+						props.setAttributes( {[ ColorKey+styleType ]: value} ); 
+
+					} );
+					
 
 					if ( args.hasOwnProperty( 'afterOnChange' ) ) {
 						args.afterOnChange( props );

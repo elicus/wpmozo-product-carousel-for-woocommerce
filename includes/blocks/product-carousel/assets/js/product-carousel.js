@@ -12,7 +12,7 @@
 
 			var $this = $( this ),
 			atts      = $( this ).data( 'atts' ),
-			StyleAtts = atts.StyleAtts;
+			StyleAtts = wpmozo_get_styleAtts( atts );
 
 			if ( atts.hasOwnProperty( 'CAlign' ) ) {
 				CarouAlign = atts.CAlign;
@@ -21,8 +21,8 @@
 			var options    = StyleAtts.CarouContStyle;
 			let style      = convetInlineStyle( options, atts )
 			$this.attr( 'style', style );
-			let mobileSett = atts.Responsive.mobile;
-			let tabletSett = atts.Responsive.tablet;
+			let mobileSett = StyleAtts.mobile;
+			let tabletSett = StyleAtts.tablet;
 
 			var sw_obj = {
 				loop: atts.Loop,
@@ -176,7 +176,7 @@
 			var main  = $( this ).closest( '.wpmozo-product-carousel-wrap' ),
 			atts      = main.data( 'atts' ),
 			wraper    = 'body .mfp-content',
-			StyleAtts = atts.StyleAtts,
+			StyleAtts = wpmozo_get_styleAtts( atts ),
 			pro_id    = $( this ).data( 'pro-id' ),
 			body      = jQuery( 'body' );
 
@@ -299,6 +299,82 @@
 
 	}
 
+	function wpmozo_get_styleAtts( attributes ){
+
+        let StyleAtts = {},
+            stylesKeys = [
+                'CarouContStyle',
+                'CarouPagination',
+                'CarouNavigation',
+                'CarouNavigationLeft',
+                'CarouNavigationRight',
+                'TitleStyle',
+                'PriceStyle',
+                'SaleLabelStyle',
+                'StockLabelStyle',
+                'AddToCartStyle',
+                'QuickViewStyle',
+                'QuickViewPopupStyle',
+                'QuickViewTitleStyle',
+                'QuickViewPriceStyle',
+                'QuickViewSaleLabelStyle',
+                'QuickViewStockLabelStyle',
+                'QuickViewAddToCartStyle',
+                'QuickViewCloseStyle',
+            ],
+            stylesTypes = {
+                'FontSize' : '',
+                'FontAppearance' : {'fontStyle' : '', 'fontWeight' : ''},
+                'LetterSpacing' : '',
+                'Decoration' : '',
+                'LetterCase' : '',
+                'LineHeight' : '',
+                'text' : '',
+                'background' : '',
+                'borderRadius' : '',
+                'border' : [],
+                'padding' : '',
+                'margin' : '',
+                'position' : '',
+                'width' : '',
+                'height' : '',
+            };
+        
+        for (var i = 0; i < stylesKeys.length; i++) {
+            StyleAtts[ stylesKeys[i] ] = {};
+            for (const styleType in stylesTypes) {
+
+                if ( attributes.hasOwnProperty( stylesKeys[i]+styleType ) ) {
+                    StyleAtts[ stylesKeys[i] ][ styleType ] = attributes[ stylesKeys[i]+styleType ];
+                }
+
+            }
+        }
+
+        let responsiveKeys = [
+            'mobile',
+            'tablet',
+            ],
+            responsiveTypes = {
+                'Columns': '',
+                'SlidesToScroll': '',
+                'SpaceBetween': '',
+            };
+
+        for (var i = 0; i < responsiveKeys.length; i++) {
+            StyleAtts[ responsiveKeys[i] ] = {};
+            for (const responsiveType in responsiveTypes) {
+
+                if ( attributes.hasOwnProperty( responsiveKeys[i]+responsiveType ) ) {
+                    StyleAtts[ responsiveKeys[i] ][ responsiveType ] = attributes[ responsiveKeys[i]+responsiveType ];
+                }
+
+            }
+        }
+
+        return StyleAtts;
+    }
+
 	function getAlignStyle( Align ){
 
 		let style  = '',
@@ -397,6 +473,9 @@
 					for (const borderItem in options.border[border]) {
 						style += 'border-' + border + '-' + borderItem + ': ' + options.border[border][borderItem] + ' !important;';
 					}
+					if ( ! options.border[border].hasOwnProperty('style') ) {
+                        style += 'border-'+border+'-style: solid !important;';
+                    }
 				}
 			}
 		}

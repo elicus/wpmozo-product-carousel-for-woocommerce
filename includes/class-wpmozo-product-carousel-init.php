@@ -234,307 +234,880 @@ class WPMozo_Product_Carousel_Init {
 	 */
 	public function wpmozo_get_all_settings_options() {
 
-		$attributes = [
-    "clientId" => ["type" => "string"],
-    "CAlign" => ["type" => "string"],
-    "Columns" => ["type" => "integer", "default" => 4],
-    "SlidesToScroll" => ["type" => "integer", "default" => 4],
-    "SpaceBetween" => ["type" => "integer", "default" => 20],
-    "AutoPlay" => ["type" => "boolean", "default" => false],
-    "Delay" => ["type" => "integer", "default" => 3000],
-    "Loop" => ["type" => "boolean", "default" => false],
-    "ShowNavigation" => ["type" => "boolean", "default" => true],
-    "ShowPagination" => ["type" => "boolean", "default" => true],
-    "EqualSlideHeight" => ["type" => "boolean", "default" => false],
-    "PaginationType" => ["type" => "string", "default" => "bullets"],
-    "mobileColumns" => ["type" => "integer", "default" => 1],
-    "mobileSlidesToScroll" => ["type" => "integer", "default" => 1],
-    "mobileSpaceBetween" => ["type" => "integer", "default" => 20],
-    "tabletColumns" => ["type" => "integer", "default" => 2],
-    "tabletSlidesToScroll" => ["type" => "integer", "default" => 2],
-    "tabletSpaceBetween" => ["type" => "integer", "default" => 20],
-    "ProductViewType" => ["type" => "string", "default" => "default"],
-    "NumberOfProducts" => ["type" => "string", "default" => "10"],
-    "Offset" => ["type" => "string"],
-    "OrderBy" => ["type" => "string", "default" => "date"],
-    "Order" => ["type" => "string", "default" => "DESC"],
-    "IncludeCategories" => ["type" => "array"],
-    "IncludeTags" => ["type" => "array"],
-    "TaxonomiesRelation" => ["type" => "string", "default" => "AND"],
-    "OutOfStock" => ["type" => "boolean", "default" => false],
-    "Layout" => ["type" => "string", "default" => "default"],
-    "DisplayOutOfStockLabel" => ["type" => "boolean", "default" => false],
-    "OutOfStockLabel" => ["type" => "string"],
-    "EnableQuickViewLink" => ["type" => "boolean", "default" => false],
-    "QuickViewLinkText" => ["type" => "string", "default" => "Quick View"],
-    "QuickViewLinkIconEnabled" => ["type" => "boolean", "default" => false],
-    "QuickViewLinkIcon" => ["type" => "string", "default" => "fas fa-eye"],
-    "QuickViewLinkCustomIcon" => ["type" => "boolean", "default" => false],
-    "QuickViewLinkImg" => ["type" => "string", "default" => ""],
-    "ShowTitle" => ["type" => "boolean", "default" => true],
-    "ShowFeaturedImage" => ["type" => "boolean", "default" => true],
-    "FeaturedImageSize" => [
-        "type" => "string",
-        "default" => "woocommerce_thumbnail",
-    ],
-    "ShowRating" => ["type" => "boolean", "default" => true],
-    "ShowPrice" => ["type" => "boolean", "default" => true],
-    "ShowAddToCartButton" => ["type" => "boolean", "default" => true],
-    "ShowSaleBadge" => ["type" => "boolean", "default" => true],
-    "SaleBadgeType" => ["type" => "string", "default" => "sale_label"],
-    "SaleLabelText" => ["type" => "string", "default" => ""],
-    "CarouContStylepadding" => [
-        "type" => "object",
-        "default" => [
-            "bottom" => "20px",
-            "left" => "20px",
-            "right" => "20px",
-            "top" => "20px",
-        ],
-    ],
-    "CarouNavigationStyleFontSize" => ["type" => "string"],
-    "CarouNavigationStyletext" => ["type" => "string"],
-    "CarouNavigationStylebackground" => ["type" => "string"],
-    "CarouNavigationStyleFontAppearance" => [
-        "type" => "object",
-        "fontWeight" => ["type" => "string", "default" => ""],
-        "default" => ["fontWeight" => ""],
-    ],
-    "CarouNavigationStylepadding" => ["type" => "object"],
-    "CarouNavigationStylemargin" => ["type" => "object"],
-    "CarouNavigationStyleposition" => ["type" => "object"],
-    "CarouNavigationLeftposition" => ["type" => "object"],
-    "CarouNavigationRightposition" => ["type" => "object"],
-    "CarouPaginationFontSize" => ["type" => "string"],
-    "CarouPaginationtext" => ["type" => "string"],
-    "CarouPaginationbackground" => ["type" => "string"],
-    "CarouPaginationwidth" => ["type" => "string"],
-    "CarouPaginationheight" => ["type" => "string"],
-    "TitleStyleFontSize" => ["type" => "string", "default" => ""],
-    "TitleStyleFontAppearance" => [
-        "type" => "object",
-        "fontStyle" => ["type" => "string", "default" => ""],
-        "fontWeight" => ["type" => "string", "default" => ""],
-        "default" => ["fontStyle" => "", "fontWeight" => ""],
-    ],
-    "TitleStyleLetterSpacing" => ["type" => "string", "default" => ""],
-    "TitleStyleDecoration" => ["type" => "string", "default" => ""],
-    "TitleStyleLetterCase" => ["type" => "string", "default" => ""],
-    "TitleStyleLineHeight" => ["type" => "string", "default" => ""],
-    "TitleStyletext" => ["type" => "string", "default" => ""],
-    "PriceStyleFontSize" => ["type" => "string", "default" => ""],
-    "PriceStyleFontAppearance" => [
-        "type" => "object",
-        "fontStyle" => ["type" => "string", "default" => ""],
-        "fontWeight" => ["type" => "string", "default" => ""],
-        "default" => ["fontStyle" => "", "fontWeight" => ""],
-    ],
-    "PriceStyleLetterSpacing" => ["type" => "string", "default" => ""],
-    "PriceStyleDecoration" => ["type" => "string", "default" => ""],
-    "PriceStyleLetterCase" => ["type" => "string", "default" => ""],
-    "PriceStyleLineHeight" => ["type" => "string", "default" => ""],
-    "PriceStyletext" => ["type" => "string", "default" => ""],
-    "SaleLabelStyleFontSize" => ["type" => "string", "default" => ""],
-    "SaleLabelStyleFontAppearance" => [
-        "type" => "object",
-        "fontStyle" => ["type" => "string", "default" => ""],
-        "fontWeight" => ["type" => "string", "default" => ""],
-        "default" => ["fontStyle" => "", "fontWeight" => ""],
-    ],
-    "SaleLabelStyleLetterSpacing" => ["type" => "string", "default" => ""],
-    "SaleLabelStyleDecoration" => ["type" => "string", "default" => ""],
-    "SaleLabelStyleLetterCase" => ["type" => "string", "default" => ""],
-    "SaleLabelStyleLineHeight" => ["type" => "string", "default" => ""],
-    "SaleLabelStyletext" => ["type" => "string", "default" => ""],
-    "SaleLabelStylebackground" => ["type" => "string", "default" => ""],
-    "StockLabelStyleFontSize" => ["type" => "string", "default" => "14px"],
-    "StockLabelStyleFontAppearance" => [
-        "type" => "object",
-        "fontStyle" => ["type" => "string", "default" => ""],
-        "fontWeight" => ["type" => "string", "default" => ""],
-        "default" => ["fontStyle" => "normal", "fontWeight" => "500"],
-    ],
-    "StockLabelStyleLetterSpacing" => ["type" => "string", "default" => ""],
-    "StockLabelStyleDecoration" => ["type" => "string", "default" => ""],
-    "StockLabelStyleLetterCase" => ["type" => "string", "default" => ""],
-    "StockLabelStyleLineHeight" => ["type" => "string", "default" => ""],
-    "StockLabelStyledefault" => ["padding" => "", "margin" => "", "position" => ""],
-    "StockLabelStyletext" => ["type" => "string", "default" => "#ff0000"],
-    "StockLabelStyleborderRadius" => ["type" => "", "default" => "3px"],
-    "StockLabelStyleborder" => [
-        "type" => "object",
-        "default" => [
-            "width" => "1px",
-            "style" => "solid",
-            "color" => "#ff0000",
-        ],
-    ],
-    "StockLabelStylepadding" => [
-        "type" => "object",
-        "default" => [
-            "bottom" => "5px",
-            "left" => "12px",
-            "right" => "12px",
-            "top" => "5px",
-        ],
-    ],
-    "StockLabelStylemargin" => ["type" => "object"],
-    "StockLabelStyleposition" => ["type" => "object"],
-    "AddToCartStyleFontSize" => ["type" => "string", "default" => ""],
-    "AddToCartStyleFontAppearance" => [
-        "type" => "object",
-        "fontStyle" => ["type" => "string", "default" => ""],
-        "fontWeight" => ["type" => "string", "default" => ""],
-        "default" => ["fontStyle" => "", "fontWeight" => ""],
-    ],
-    "AddToCartStyleLetterSpacing" => ["type" => "string", "default" => ""],
-    "AddToCartStyleDecoration" => ["type" => "string", "default" => ""],
-    "AddToCartStyleLetterCase" => ["type" => "string", "default" => ""],
-    "AddToCartStyleLineHeight" => ["type" => "string", "default" => ""],
-    "default" => ["padding" => ""],
-    "AddToCartStyletext" => ["type" => "string", "default" => ""],
-    "AddToCartStylebackground" => ["type" => "string", "default" => ""],
-    "AddToCartStyleborderRadius" => ["type" => "", "default" => ""],
-    "AddToCartStyleborder" => ["type" => "object"],
-    "AddToCartStylepadding" => ["type" => "object"],
-    "QuickViewStyleFontSize" => ["type" => "string", "default" => ""],
-    "QuickViewStyleFontAppearance" => [
-        "type" => "object",
-        "fontStyle" => ["type" => "string", "default" => ""],
-        "fontWeight" => ["type" => "string", "default" => ""],
-        "default" => ["fontStyle" => "", "fontWeight" => ""],
-    ],
-    "QuickViewStyleLetterSpacing" => ["type" => "string", "default" => ""],
-    "QuickViewStyleDecoration" => ["type" => "string", "default" => ""],
-    "QuickViewStyleLetterCase" => ["type" => "string", "default" => ""],
-    "QuickViewStyleLineHeight" => ["type" => "string", "default" => ""],
-    "QuickViewStyletext" => ["type" => "string", "default" => ""],
-    "QuickViewStylebackground" => ["type" => "string", "default" => ""],
-    "QuickViewStyleborderRadius" => ["type" => "", "default" => ""],
-    "QuickViewStyleborder" => ["type" => "object"],
-    "QuickViewStylepadding" => ["type" => "object"],
-    "QuickViewStylemargin" => ["type" => "object"],
-    "QuickViewStyleposition" => ["type" => "object"],
-    "QuickViewPopupStylebackground" => ["type" => "string", "default" => ""],
-    "default" => ["SameAsCarousel" => true],
-    "QuickViewPopupStylepadding" => [
-        "type" => "object",
-        "default" => [
-            "bottom" => "20px",
-            "left" => "20px",
-            "right" => "20px",
-            "top" => "20px",
-        ],
-    ],
-    "QuickViewPopupStylemargin" => ["type" => "object"],
-    "QuickViewPopupStyleposition" => ["type" => "object"],
-    "QuickViewPopupStyleSameAsCarousel" => ["type" => "boolean"],
-    "QuickViewTitleStyleFontSize" => ["type" => "string", "default" => ""],
-    "QuickViewTitleStyleFontAppearance" => [
-        "type" => "object",
-        "fontStyle" => ["type" => "string", "default" => ""],
-        "fontWeight" => ["type" => "string", "default" => ""],
-        "default" => ["fontStyle" => "", "fontWeight" => ""],
-    ],
-    "QuickViewTitleStyleLetterSpacing" => ["type" => "string", "default" => ""],
-    "QuickViewTitleStyleDecoration" => ["type" => "string", "default" => ""],
-    "QuickViewTitleStyleLetterCase" => ["type" => "string", "default" => ""],
-    "QuickViewTitleStyleLineHeight" => ["type" => "string", "default" => ""],
-    "QuickViewTitleStyletext" => ["type" => "string", "default" => ""],
-    "QuickViewPriceStyleFontSize" => ["type" => "string", "default" => ""],
-    "QuickViewPriceStyleFontAppearance" => [
-        "type" => "object",
-        "fontStyle" => ["type" => "string", "default" => ""],
-        "fontWeight" => ["type" => "string", "default" => ""],
-        "default" => ["fontStyle" => "", "fontWeight" => ""],
-    ],
-    "QuickViewPriceStyleLetterSpacing" => ["type" => "string", "default" => ""],
-    "QuickViewPriceStyleDecoration" => ["type" => "string", "default" => ""],
-    "QuickViewPriceStyleLetterCase" => ["type" => "string", "default" => ""],
-    "QuickViewPriceStyleLineHeight" => ["type" => "string", "default" => ""],
-    "QuickViewPriceStyledefault" => ["text" => ""],
-    "QuickViewSaleLabelStyleFontSize" => ["type" => "string", "default" => ""],
-    "QuickViewSaleLabelStyleFontAppearance" => [
-        "type" => "object",
-        "fontStyle" => ["type" => "string", "default" => ""],
-        "fontWeight" => ["type" => "string", "default" => ""],
-        "default" => ["fontStyle" => "", "fontWeight" => ""],
-    ],
-    "QuickViewSaleLabelStyleLetterSpacing" => ["type" => "string", "default" => ""],
-    "QuickViewSaleLabelStyleDecoration" => ["type" => "string", "default" => ""],
-    "QuickViewSaleLabelStyleLetterCase" => ["type" => "string", "default" => ""],
-    "QuickViewSaleLabelStyleLineHeight" => ["type" => "string", "default" => ""],
-    "QuickViewSaleLabelStyletext" => ["type" => "string", "default" => ""],
-    "QuickViewSaleLabelStylebackground" => ["type" => "string", "default" => ""],
-    "QuickViewStockLabelStyleFontSize" => ["type" => "string", "default" => "14px"],
-    "QuickViewStockLabelStyleFontAppearance" => [
-        "type" => "object",
-        "fontStyle" => ["type" => "string", "default" => ""],
-        "fontWeight" => ["type" => "string", "default" => ""],
-        "default" => ["fontStyle" => "normal", "fontWeight" => "500"],
-    ],
-    "QuickViewStockLabelStyleLetterSpacing" => ["type" => "string", "default" => ""],
-    "QuickViewStockLabelStyleDecoration" => ["type" => "string", "default" => ""],
-    "QuickViewStockLabelStyleLetterCase" => ["type" => "string", "default" => ""],
-    "QuickViewStockLabelStyleLineHeight" => ["type" => "string", "default" => ""],
-    "QuickViewStockLabelStyletext" => ["type" => "string", "default" => "#ff0000"],
-    "QuickViewStockLabelStyleborderRadius" => ["type" => "", "default" => "3px"],
-    "QuickViewStockLabelStyleborder" => [
-        "type" => "object",
-        "default" => [
-            "width" => "1px",
-            "style" => "solid",
-            "color" => "#ff0000",
-        ],
-    ],
-    "QuickViewStockLabelStylepadding" => [
-        "type" => "object",
-        "default" => [
-            "bottom" => "5px",
-            "left" => "12px",
-            "right" => "12px",
-            "top" => "5px",
-        ],
-    ],
-    "QuickViewStockLabelStylemargin" => ["type" => "object"],
-    "QuickViewStockLabelStyleposition" => ["type" => "object"],
-    "QuickViewAddToCartStyleFontSize" => ["type" => "string", "default" => ""],
-    "QuickViewAddToCartStyleFontAppearance" => [
-        "type" => "object",
-        "fontStyle" => ["type" => "string", "default" => ""],
-        "fontWeight" => ["type" => "string", "default" => ""],
-        "default" => ["fontStyle" => "", "fontWeight" => ""],
-    ],
-    "QuickViewAddToCartStyleLetterSpacing" => ["type" => "string", "default" => ""],
-    "QuickViewAddToCartStyleDecoration" => ["type" => "string", "default" => ""],
-    "QuickViewAddToCartStyleLetterCase" => ["type" => "string", "default" => ""],
-    "QuickViewAddToCartStyleLineHeight" => ["type" => "string", "default" => ""],
-    "QuickViewAddToCartStyletext" => ["type" => "string", "default" => ""],
-    "QuickViewAddToCartStylebackground" => ["type" => "string", "default" => ""],
-    "QuickViewAddToCartStyleborderRadius" => ["type" => "", "default" => ""],
-    "QuickViewAddToCartStyleborder" => ["type" => "object"],
-    "QuickViewAddToCartStylepadding" => ["type" => "object"],
-    "QuickViewCloseStyleFontSize" => ["type" => "string", "default" => ""],
-    "QuickViewCloseStyleFontAppearance" => [
-        "type" => "object",
-        "fontStyle" => ["type" => "string", "default" => ""],
-        "fontWeight" => ["type" => "string", "default" => ""],
-        "default" => ["fontStyle" => "", "fontWeight" => ""],
-    ],
-    "QuickViewCloseStyleLetterSpacing" => ["type" => "string", "default" => ""],
-    "QuickViewCloseStyleDecoration" => ["type" => "string", "default" => ""],
-    "QuickViewCloseStyleLetterCase" => ["type" => "string", "default" => ""],
-    "QuickViewCloseStyleLineHeight" => ["type" => "string", "default" => ""],
-    "QuickViewCloseStyletext" => ["type" => "string", "default" => ""],
-    "QuickViewCloseStylebackground" => ["type" => "string", "default" => ""],
-    "QuickViewCloseStyleborderRadius" => ["type" => "", "default" => ""],
-    "QuickViewCloseStyleborder" => ["type" => "object"],
-    "QuickViewCloseStylepadding" => ["type" => "object"],
-    "QuickViewCloseStylemargin" => ["type" => "object"],
-    "QuickViewCloseStyleposition" => ["type" => "object"],
-    "QuickViewCloseStylewidth" => ["type" => "string"],
-    "QuickViewCloseStyleheight" => ["type" => "string"],
-];
+		$attributes = array (
+			'clientId' => array (
+			    'type' => 'string',
+			),
+			'CAlign' => array (
+			    'type' => 'string',
+			),
+			'Columns' => array (
+			    'type' => 'integer',
+			    'default' => 4,
+			),
+			'SlidesToScroll' => array (
+			    'type' => 'integer',
+			    'default' => 4,
+			),
+			'SpaceBetween' => array (
+			    'type' => 'integer',
+			    'default' => 20,
+			),
+			'AutoPlay' => array (
+			    'type' => 'boolean',
+			    'default' => false,
+			),
+			'Delay' => array (
+			    'type' => 'integer',
+			    'default' => 3000,
+			),
+			'Loop' => array (
+			    'type' => 'boolean',
+			    'default' => false,
+			),
+			'ShowNavigation' => array (
+			    'type' => 'boolean',
+			    'default' => true,
+			),
+			'ShowPagination' => array (
+			    'type' => 'boolean',
+			    'default' => true,
+			),
+			'EqualSlideHeight' => array (
+			    'type' => 'boolean',
+			    'default' => false,
+			),
+			'PaginationType' => array (
+			    'type' => 'string',
+			    'default' => 'bullets',
+			),
+			'mobileColumns' => array (
+			    'type' => 'integer',
+			    'default' => 1,
+			),
+			'mobileSlidesToScroll' => array (
+			    'type' => 'integer',
+			    'default' => 1,
+			),
+			'mobileSpaceBetween' => array (
+			    'type' => 'integer',
+			    'default' => 20,
+			),
+			'tabletColumns' => array (
+			    'type' => 'integer',
+			    'default' => 2,
+			),
+			'tabletSlidesToScroll' => array (
+			    'type' => 'integer',
+			    'default' => 2,
+			),
+			'tabletSpaceBetween' => array (
+			    'type' => 'integer',
+			    'default' => 20,
+			),
+			'ProductViewType' => array (
+			    'type' => 'string',
+			    'default' => 'default',
+			),
+			'NumberOfProducts' => array (
+			    'type' => 'string',
+			    'default' => '10',
+			),
+			'Offset' => array (
+			    'type' => 'string',
+			),
+			'OrderBy' => array (
+			    'type' => 'string',
+			    'default' => 'date',
+			),
+			'Order' => array (
+			    'type' => 'string',
+			    'default' => 'DESC',
+			),
+			'IncludeCategories' => array (
+			    'type' => 'array',
+			),
+			'IncludeTags' => array (
+			    'type' => 'array',
+			),
+			'TaxonomiesRelation' => array (
+			    'type' => 'string',
+			    'default' => 'AND',
+			),
+			'OutOfStock' => array (
+			    'type' => 'boolean',
+			    'default' => false,
+			),
+			'Layout' => array (
+			    'type' => 'string',
+			    'default' => 'default',
+			),
+			'DisplayOutOfStockLabel' => array (
+			    'type' => 'boolean',
+			    'default' => false,
+			),
+			'OutOfStockLabel' => array (
+			    'type' => 'string',
+			),
+			'EnableQuickViewLink' => array (
+			    'type' => 'boolean',
+			    'default' => false,
+			),
+			'QuickViewLinkText' => array (
+			    'type' => 'string',
+			    'default' => 'Quick View',
+			),
+			'QuickViewLinkIconEnabled' => array (
+			    'type' => 'boolean',
+			    'default' => false,
+			),
+			'QuickViewLinkIcon' => array (
+			    'type' => 'string',
+			    'default' => 'fas fa-eye',
+			),
+			'QuickViewLinkCustomIcon' => array (
+			    'type' => 'boolean',
+			    'default' => false,
+			),
+			'QuickViewLinkImg' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'ShowTitle' => array (
+			    'type' => 'boolean',
+			    'default' => true,
+			),
+			'ShowFeaturedImage' => array (
+			    'type' => 'boolean',
+			    'default' => true,
+			),
+			'FeaturedImageSize' => array (
+			    'type' => 'string',
+			    'default' => 'woocommerce_thumbnail',
+			),
+			'ShowRating' => array (
+			    'type' => 'boolean',
+			    'default' => true,
+			),
+			'ShowPrice' => array (
+			    'type' => 'boolean',
+			    'default' => true,
+			),
+			'ShowAddToCartButton' => array (
+			    'type' => 'boolean',
+			    'default' => true,
+			),
+			'ShowSaleBadge' => array (
+			    'type' => 'boolean',
+			    'default' => true,
+			),
+			'SaleBadgeType' => array (
+			    'type' => 'string',
+			    'default' => 'sale_label',
+			),
+			'SaleLabelText' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'CarouContStylepadding' => array (
+			    'type' => 'object',
+			    'default' => array (
+			      'bottom' => '20px',
+			      'left' => '20px',
+			      'right' => '20px',
+			      'top' => '20px',
+			    ),
+			),
+			'CarouNavigationStyleFontSize' => array (
+			    'type' => 'string',
+			),
+			'CarouNavigationStyletext' => array (
+			    'type' => 'string',
+			),
+			'CarouNavigationStylebackground' => array (
+			    'type' => 'string',
+			),
+			'CarouNavigationStyleFontAppearance' => array (
+			    'type' => 'object',
+			    'fontWeight' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'default' => array (
+			      'fontWeight' => '',
+			    ),
+			),
+			'CarouNavigationStylepadding' => array (
+			    'type' => 'object',
+			),
+			'CarouNavigationStylemargin' => array (
+			    'type' => 'object',
+			),
+			'CarouNavigationStyleposition' => array (
+			    'type' => 'object',
+			),
+			'CarouNavigationLeftposition' => array (
+			    'type' => 'object',
+			),
+			'CarouNavigationRightposition' => array (
+			    'type' => 'object',
+			),
+			'CarouPaginationFontSize' => array (
+			    'type' => 'string',
+			),
+			'CarouPaginationtext' => array (
+			    'type' => 'string',
+			),
+			'CarouPaginationbackground' => array (
+			    'type' => 'string',
+			),
+			'CarouPaginationwidth' => array (
+			    'type' => 'string',
+			),
+			'CarouPaginationheight' => array (
+			    'type' => 'string',
+			),
+			'TitleStyleFontSize' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'TitleStyleFontAppearance' => array (
+			    'type' => 'object',
+			    'fontStyle' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'fontWeight' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'default' => array (
+			      'fontStyle' => '',
+			      'fontWeight' => '',
+			    ),
+			),
+			'TitleStyleLetterSpacing' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'TitleStyleDecoration' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'TitleStyleLetterCase' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'TitleStyleLineHeight' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'TitleStyletext' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'PriceStyleFontSize' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'PriceStyleFontAppearance' => array (
+			    'type' => 'object',
+			    'fontStyle' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'fontWeight' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'default' => array (
+			      'fontStyle' => '',
+			      'fontWeight' => '',
+			    ),
+			),
+			'PriceStyleLetterSpacing' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'PriceStyleDecoration' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'PriceStyleLetterCase' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'PriceStyleLineHeight' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'PriceStyletext' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'SaleLabelStyleFontSize' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'SaleLabelStyleFontAppearance' => array (
+			    'type' => 'object',
+			    'fontStyle' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'fontWeight' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'default' => array (
+			      'fontStyle' => '',
+			      'fontWeight' => '',
+			    ),
+			),
+			'SaleLabelStyleLetterSpacing' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'SaleLabelStyleDecoration' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'SaleLabelStyleLetterCase' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'SaleLabelStyleLineHeight' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'SaleLabelStyletext' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'SaleLabelStylebackground' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'StockLabelStyleFontSize' => array (
+			    'type' => 'string',
+			    'default' => '14px',
+			),
+			'StockLabelStyleFontAppearance' => array (
+			    'type' => 'object',
+			    'fontStyle' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'fontWeight' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'default' => array (
+			      'fontStyle' => 'normal',
+			      'fontWeight' => '500',
+			    ),
+			),
+			'StockLabelStyleLetterSpacing' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'StockLabelStyleDecoration' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'StockLabelStyleLetterCase' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'StockLabelStyleLineHeight' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'StockLabelStyledefault' => array (
+			    'padding' => '',
+			    'margin' => '',
+			    'position' => '',
+			),
+			'StockLabelStyletext' => array (
+			    'type' => 'string',
+			    'default' => '#ff0000',
+			),
+			'StockLabelStyleborderRadius' => array (
+			    'type' => '',
+			    'default' => '3px',
+			),
+			'StockLabelStyleborder' => array (
+			    'type' => 'object',
+			    'default' => array (
+			      'width' => '1px',
+			      'style' => 'solid',
+			      'color' => '#ff0000',
+			    ),
+			),
+			'StockLabelStylepadding' => array (
+			    'type' => 'object',
+			    'default' => array (
+			      'bottom' => '5px',
+			      'left' => '12px',
+			      'right' => '12px',
+			      'top' => '5px',
+			    ),
+			),
+			'StockLabelStylemargin' => array (
+			    'type' => 'object',
+			),
+			'StockLabelStyleposition' => array (
+			    'type' => 'object',
+			),
+			'AddToCartStyleFontSize' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'AddToCartStyleFontAppearance' => array (
+			    'type' => 'object',
+			    'fontStyle' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'fontWeight' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'default' => array (
+			      'fontStyle' => '',
+			      'fontWeight' => '',
+			    ),
+			),
+			'AddToCartStyleLetterSpacing' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'AddToCartStyleDecoration' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'AddToCartStyleLetterCase' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'AddToCartStyleLineHeight' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'default' => array (
+			    'padding' => '',
+			),
+			'AddToCartStyletext' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'AddToCartStylebackground' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'AddToCartStyleborderRadius' => array (
+			    'type' => '',
+			    'default' => '',
+			),
+			'AddToCartStyleborder' => array (
+			    'type' => 'object',
+			),
+			'AddToCartStylepadding' => array (
+			    'type' => 'object',
+			),
+			'QuickViewStyleFontSize' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewStyleFontAppearance' => array (
+			    'type' => 'object',
+			    'fontStyle' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'fontWeight' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'default' => array (
+			      'fontStyle' => '',
+			      'fontWeight' => '',
+			    ),
+			),
+			'QuickViewStyleLetterSpacing' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewStyleDecoration' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewStyleLetterCase' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewStyleLineHeight' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewStyletext' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewStylebackground' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewStyleborderRadius' => array (
+			    'type' => '',
+			    'default' => '',
+			),
+			'QuickViewStyleborder' => array (
+			    'type' => 'object',
+			),
+			'QuickViewStylepadding' => array (
+			    'type' => 'object',
+			),
+			'QuickViewStylemargin' => array (
+			    'type' => 'object',
+			),
+			'QuickViewStyleposition' => array (
+			    'type' => 'object',
+			),
+			'QuickViewPopupStylebackground' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewPopupStylepadding' => array (
+			    'type' => 'object',
+			    'default' => array (
+			      'bottom' => '20px',
+			      'left' => '20px',
+			      'right' => '20px',
+			      'top' => '20px',
+			    ),
+			),
+			'QuickViewPopupStylemargin' => array (
+			    'type' => 'object',
+			),
+			'QuickViewPopupStyleposition' => array (
+			    'type' => 'object',
+			),
+			'QuickViewPopupStyleSameAsCarousel' => array (
+			    'type' => 'boolean',
+			    'default' => true,
+			),
+			'QuickViewTitleStyleFontSize' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewTitleStyleFontAppearance' => array (
+			    'type' => 'object',
+			    'fontStyle' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'fontWeight' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'default' => array (
+			      'fontStyle' => '',
+			      'fontWeight' => '',
+			    ),
+			),
+			'QuickViewTitleStyleLetterSpacing' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewTitleStyleDecoration' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewTitleStyleLetterCase' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewTitleStyleLineHeight' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewTitleStyletext' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewPriceStyleFontSize' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewPriceStyleFontAppearance' => array (
+			    'type' => 'object',
+			    'fontStyle' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'fontWeight' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'default' => array (
+			      'fontStyle' => '',
+			      'fontWeight' => '',
+			    ),
+			),
+			'QuickViewPriceStyleLetterSpacing' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewPriceStyleDecoration' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewPriceStyleLetterCase' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewPriceStyleLineHeight' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewPriceStyledefault' => array (
+			    'text' => '',
+			),
+			'QuickViewSaleLabelStyleFontSize' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewSaleLabelStyleFontAppearance' => array (
+			    'type' => 'object',
+			    'fontStyle' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'fontWeight' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'default' => array (
+			      'fontStyle' => '',
+			      'fontWeight' => '',
+			    ),
+			),
+			'QuickViewSaleLabelStyleLetterSpacing' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewSaleLabelStyleDecoration' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewSaleLabelStyleLetterCase' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewSaleLabelStyleLineHeight' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewSaleLabelStyletext' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewSaleLabelStylebackground' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewStockLabelStyleFontSize' => array (
+			    'type' => 'string',
+			    'default' => '14px',
+			),
+			'QuickViewStockLabelStyleFontAppearance' => array (
+			    'type' => 'object',
+			    'fontStyle' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'fontWeight' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'default' => array (
+			      'fontStyle' => 'normal',
+			      'fontWeight' => '500',
+			    ),
+			),
+			'QuickViewStockLabelStyleLetterSpacing' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewStockLabelStyleDecoration' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewStockLabelStyleLetterCase' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewStockLabelStyleLineHeight' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewStockLabelStyletext' => array (
+			    'type' => 'string',
+			    'default' => '#ff0000',
+			),
+			'QuickViewStockLabelStyleborderRadius' => array (
+			    'type' => '',
+			    'default' => '3px',
+			),
+			'QuickViewStockLabelStyleborder' => array (
+			    'type' => 'object',
+			    'default' => array (
+			      'width' => '1px',
+			      'style' => 'solid',
+			      'color' => '#ff0000',
+			    ),
+			),
+			'QuickViewStockLabelStylepadding' => array (
+			    'type' => 'object',
+			    'default' => array (
+			      'bottom' => '5px',
+			      'left' => '12px',
+			      'right' => '12px',
+			      'top' => '5px',
+			    ),
+			),
+			'QuickViewStockLabelStylemargin' => array (
+			    'type' => 'object',
+			),
+			'QuickViewStockLabelStyleposition' => array (
+			    'type' => 'object',
+			),
+			'QuickViewAddToCartStyleFontSize' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewAddToCartStyleFontAppearance' => array (
+			    'type' => 'object',
+			    'fontStyle' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'fontWeight' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'default' => array (
+			      'fontStyle' => '',
+			      'fontWeight' => '',
+			    ),
+			),
+			'QuickViewAddToCartStyleLetterSpacing' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewAddToCartStyleDecoration' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewAddToCartStyleLetterCase' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewAddToCartStyleLineHeight' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewAddToCartStyletext' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewAddToCartStylebackground' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewAddToCartStyleborderRadius' => array (
+			    'type' => '',
+			    'default' => '',
+			),
+			'QuickViewAddToCartStyleborder' => array (
+			    'type' => 'object',
+			),
+			'QuickViewAddToCartStylepadding' => array (
+			    'type' => 'object',
+			),
+			'QuickViewCloseStyleFontSize' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewCloseStyleFontAppearance' => array (
+			    'type' => 'object',
+			    'fontStyle' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'fontWeight' => array (
+			      'type' => 'string',
+			      'default' => '',
+			    ),
+			    'default' => array (
+			      'fontStyle' => '',
+			      'fontWeight' => '',
+			    ),
+			),
+			'QuickViewCloseStyleLetterSpacing' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewCloseStyleDecoration' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewCloseStyleLetterCase' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewCloseStyleLineHeight' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewCloseStyletext' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewCloseStylebackground' => array (
+			    'type' => 'string',
+			    'default' => '',
+			),
+			'QuickViewCloseStyleborderRadius' => array (
+			    'type' => '',
+			    'default' => '',
+			),
+			'QuickViewCloseStyleborder' => array (
+			    'type' => 'object',
+			),
+			'QuickViewCloseStylepadding' => array (
+			    'type' => 'object',
+			),
+			'QuickViewCloseStylemargin' => array (
+			    'type' => 'object',
+			),
+			'QuickViewCloseStyleposition' => array (
+			    'type' => 'object',
+			),
+			'QuickViewCloseStylewidth' => array (
+			    'type' => 'string',
+			),
+			'QuickViewCloseStyleheight' => array (
+			    'type' => 'string',
+			),
+			)
+
+echo "<pre>";
+var_export($attributes);
+echo "</pre>";
+die();
+
 
 		$product_view_type_options = array(
 			array(

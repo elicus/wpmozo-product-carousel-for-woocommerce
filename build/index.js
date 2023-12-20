@@ -29,7 +29,7 @@ const WpmozoBorder = function (args) {
     props
   } = args;
   let BorderTypes = args.hasOwnProperty('BorderTypes') ? args.BorderTypes : null;
-  const borderSetValue = function (styleType, value = '') {
+  const borderSetValue = function (styleType, value = null) {
     value = setValue(styleType, value);
     props.setAttributes({
       [BorderKey + styleType]: value
@@ -120,7 +120,7 @@ const WpmozoColorPicker = function (args) {
     props
   } = args;
   const AllColors = __experimentalUseMultipleOriginColorsAndGradients();
-  const colorSetValue = function (styleType, value = '') {
+  const colorSetValue = function (styleType, value = null) {
     value = setValue(styleType, value);
     props.setAttributes({
       [ColorKey + styleType]: value
@@ -185,7 +185,7 @@ const WpmozoColorPicker = function (args) {
       ColorTypes.map(type => {
         let value = setValue(type.key, null);
         props.setAttributes({
-          [ColorKey + styleType]: value
+          [ColorKey + type.key]: value
         });
       });
       if (args.hasOwnProperty('afterOnChange')) {
@@ -225,7 +225,7 @@ const WpmozoDimensions = function (args) {
   } = args;
   let DimensionsTypes = args.hasOwnProperty('DimensionsTypes') ? args.DimensionsTypes : null;
   const label = args.hasOwnProperty('label') ? args.label : __('Dimensions', 'wpmozo-product-carousel-for-woocommerce');
-  const dimensionsSetValue = function (styleType, value = '') {
+  const dimensionsSetValue = function (styleType, value = null) {
     value = setValue(styleType, value);
     props.setAttributes({
       [DimensionKey + styleType]: value
@@ -436,7 +436,7 @@ const WpmozoSize = function (args) {
     props
   } = args;
   let SizeTypes = args.hasOwnProperty('SizeTypes') ? args.SizeTypes : null;
-  const sizeSetValue = function (styleType, value = '') {
+  const sizeSetValue = function (styleType, value = null) {
     value = setValue(styleType, value);
     props.setAttributes({
       [SizeKey + styleType]: value

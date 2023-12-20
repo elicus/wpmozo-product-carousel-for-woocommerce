@@ -233,7 +233,7 @@
 							}
 
 							let styles = [];
-							if ( StyleAtts.QuickViewPopupStyle.SameAsCarousel ) {
+							if ( atts.QuickViewPopupStyleSameAsCarousel ) {
 								styles = [
 								{attKey: 'TitleStyle', selector: '.product_title'},
 								{attKey: 'PriceStyle', selector: '.price, .price > ins'},

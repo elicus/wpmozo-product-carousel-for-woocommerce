@@ -8,7 +8,7 @@ const WpmozoSize = function(args){
 	const { SizeKey, props } = args;
 	let SizeTypes                    = args.hasOwnProperty( 'SizeTypes' ) ? args.SizeTypes : null;
 
-	const sizeSetValue = function( styleType, value = '' ) {
+	const sizeSetValue = function( styleType, value = null ) {
 
 		value = setValue( styleType, value );
 		props.setAttributes( {[ SizeKey+styleType ]: value} );

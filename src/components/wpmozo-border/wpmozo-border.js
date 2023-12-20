@@ -9,7 +9,7 @@ const WpmozoBorder = function(args){
 	const { BorderKey, props } = args;
 	let BorderTypes                    = args.hasOwnProperty( 'BorderTypes' ) ? args.BorderTypes : null;
 
-	const borderSetValue = function( styleType, value = '' ) {
+	const borderSetValue = function( styleType, value = null ) {
 
 		value = setValue( styleType, value );
 		props.setAttributes( {[ BorderKey+styleType ]: value} );

@@ -11,7 +11,7 @@ const WpmozoDimensions = function(args){
 	let DimensionsTypes                   = args.hasOwnProperty( 'DimensionsTypes' ) ? args.DimensionsTypes : null;
 	const label                           = args.hasOwnProperty( 'label' ) ? args.label : __( 'Dimensions', 'wpmozo-product-carousel-for-woocommerce' );
 
-	const dimensionsSetValue = function( styleType, value = '' ) {
+	const dimensionsSetValue = function( styleType, value = null ) {
 
 		value = setValue( styleType, value );
 		props.setAttributes( {[ DimensionKey+styleType ]: value} );

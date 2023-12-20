@@ -9,7 +9,7 @@ const WpmozoColorPicker = function(args){
 	const { ColorKey, ColorTypes, props } = args;
 	const AllColors                               = __experimentalUseMultipleOriginColorsAndGradients();
 
-	const colorSetValue = function( styleType, value = '' ) {
+	const colorSetValue = function( styleType, value = null ) {
 
 		value = setValue( styleType, value );
 		props.setAttributes( {[ ColorKey+styleType ]: value} );
@@ -111,7 +111,7 @@ const WpmozoColorPicker = function(args){
 					ColorTypes.map( type => { 
 
 						let value = setValue( type.key, null );
-						props.setAttributes( {[ ColorKey+styleType ]: value} ); 
+						props.setAttributes( {[ ColorKey+type.key ]: value} ); 
 
 					} );
 					

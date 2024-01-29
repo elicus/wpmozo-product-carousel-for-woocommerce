@@ -9,12 +9,12 @@ const preAttributes = wpmozo_block_carousel_object.attributes;
 const WpmozoTypography = function(args){
 
 	const { TypographyKey, props } = args;
-	let TypoTypes                          = args.hasOwnProperty( 'TypoTypes' ) ? args.TypoTypes : null;
+	let TypoTypes                  = args.hasOwnProperty( 'TypoTypes' ) ? args.TypoTypes : null;
 
 	const typoSetValue = function( styleType, value = null ) {
 
 		value = setValue( styleType, value );
-		props.setAttributes( {[ TypographyKey+styleType ]: value} );
+		props.setAttributes( {[ TypographyKey + styleType ]: value} );
 
 		if ( args.hasOwnProperty( 'afterOnChange' ) ) {
 			args.afterOnChange( props );
@@ -24,8 +24,8 @@ const WpmozoTypography = function(args){
 
 	const setValue = function(styleType, value){
 
-		if ( null === value && 'undefined' !== typeof preAttributes[ TypographyKey+styleType ].default ) {
-			value = preAttributes[ TypographyKey+styleType ].default;
+		if ( null === value && 'undefined' !== typeof preAttributes[ TypographyKey + styleType ].default ) {
+			value = preAttributes[ TypographyKey + styleType ].default;
 		}
 		value = ( null !== value ) ? value : '';
 
@@ -44,10 +44,10 @@ const WpmozoTypography = function(args){
 
 		var _FontAppearanceValues = {};
 		if ( hasFontStyles ) {
-			_FontAppearanceValues['fontStyle'] = props.attributes[ TypographyKey+'FontAppearance' ].fontStyle;
+			_FontAppearanceValues['fontStyle'] = props.attributes[ TypographyKey + 'FontAppearance' ].fontStyle;
 		}
 		if ( hasFontWeights ) {
-			_FontAppearanceValues['fontWeight'] = props.attributes[ TypographyKey+'FontAppearance' ].fontWeight;
+			_FontAppearanceValues['fontWeight'] = props.attributes[ TypographyKey + 'FontAppearance' ].fontWeight;
 		}
 
 	}
@@ -58,7 +58,7 @@ const WpmozoTypography = function(args){
 			{
 				label: __( 'Typography', 'wpmozo-product-carousel-for-woocommerce' ),
 				resetAll: () => {
-					
+
 					if ( null === TypoTypes ) {
 						TypoTypes = {
 							'FontSize': '',
@@ -75,9 +75,9 @@ const WpmozoTypography = function(args){
 					for (const type in TypoTypes) {
 
 						let _typo = setValue( type, null );
-						props.setAttributes( {[ TypographyKey+type ]: _typo} );
+						props.setAttributes( {[ TypographyKey + type ]: _typo} );
 					}
-					
+
 					if ( args.hasOwnProperty( 'afterOnChange' ) ) {
 						args.afterOnChange( props );
 					}
@@ -95,7 +95,7 @@ const WpmozoTypography = function(args){
 					el(
 						FontSizePicker,
 						{
-							value: props.attributes[ TypographyKey+'FontSize' ],
+							value: props.attributes[ TypographyKey + 'FontSize' ],
 							onChange: (NewFontSize) => onChange( 'FontSize', NewFontSize ),
 							__nextHasNoMarginBottom: true,
 						}
@@ -135,7 +135,7 @@ const WpmozoTypography = function(args){
 					el(
 						__experimentalLetterSpacingControl,
 						{
-							value: props.attributes[ TypographyKey+'LetterSpacing' ],
+							value: props.attributes[ TypographyKey + 'LetterSpacing' ],
 							onChange: (NewLetterSpacing) => onChange( 'LetterSpacing', NewLetterSpacing ),
 						}
 					),
@@ -152,7 +152,7 @@ const WpmozoTypography = function(args){
 					el(
 						__experimentalTextDecorationControl,
 						{
-							value: props.attributes[ TypographyKey+'Decoration' ],
+							value: props.attributes[ TypographyKey + 'Decoration' ],
 							onChange: (NewDecoration) => onChange( 'Decoration', NewDecoration ),
 						}
 					),
@@ -169,7 +169,7 @@ const WpmozoTypography = function(args){
 					el(
 						__experimentalTextTransformControl,
 						{
-							value: props.attributes[ TypographyKey+'LetterCase' ],
+							value: props.attributes[ TypographyKey + 'LetterCase' ],
 							onChange: (NewLetterCase) => onChange( 'LetterCase', NewLetterCase ),
 						}
 					),
@@ -187,7 +187,7 @@ const WpmozoTypography = function(args){
 					el(
 						LineHeightControl,
 						{
-							value: props.attributes[ TypographyKey+'LineHeight' ],
+							value: props.attributes[ TypographyKey + 'LineHeight' ],
 							onChange: (NewLineHeight) => onChange( 'LineHeight', NewLineHeight ),
 							__nextHasNoMarginBottom: true,
 						}

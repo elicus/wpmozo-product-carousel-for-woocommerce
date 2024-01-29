@@ -7,12 +7,12 @@ const preAttributes = wpmozo_block_carousel_object.attributes;
 const WpmozoBorder = function(args){
 
 	const { BorderKey, props } = args;
-	let BorderTypes                    = args.hasOwnProperty( 'BorderTypes' ) ? args.BorderTypes : null;
+	let BorderTypes            = args.hasOwnProperty( 'BorderTypes' ) ? args.BorderTypes : null;
 
 	const borderSetValue = function( styleType, value = null ) {
 
 		value = setValue( styleType, value );
-		props.setAttributes( {[ BorderKey+styleType ]: value} );
+		props.setAttributes( {[ BorderKey + styleType ]: value} );
 
 		if ( args.hasOwnProperty( 'afterOnChange' ) ) {
 			args.afterOnChange( props );
@@ -22,8 +22,8 @@ const WpmozoBorder = function(args){
 
 	const setValue = function(styleType, value){
 
-		if ( null === value && 'undefined' !== typeof preAttributes[ BorderKey+styleType ].default ) {
-			value = preAttributes[ BorderKey+styleType ].default;
+		if ( null === value && 'undefined' !== typeof preAttributes[ BorderKey + styleType ].default ) {
+			value = preAttributes[ BorderKey + styleType ].default;
 		}
 		value = ( null !== value ) ? value : '';
 
@@ -48,7 +48,7 @@ const WpmozoBorder = function(args){
 					}
 					for (const type in BorderTypes) {
 						let value = setValue( type, null );
-						props.setAttributes( {[ BorderKey+type ]: value} );
+						props.setAttributes( {[ BorderKey + type ]: value} );
 					}
 
 					if ( args.hasOwnProperty( 'afterOnChange' ) ) {
@@ -70,7 +70,7 @@ const WpmozoBorder = function(args){
 						__experimentalBorderBoxControl,
 						{
 							label: 'Border',
-							value: props.attributes[ BorderKey+'border' ],
+							value: props.attributes[ BorderKey + 'border' ],
 							onChange: ( NewBorder ) => onChange( 'border', NewBorder ),
 						}
 					),
@@ -88,7 +88,7 @@ const WpmozoBorder = function(args){
 						__experimentalBorderRadiusControl,
 						{
 							label: 'Radius',
-							values: props.attributes[ BorderKey+'borderRadius' ],
+							values: props.attributes[ BorderKey + 'borderRadius' ],
 							onChange: ( NewRadius ) => onChange( 'borderRadius', NewRadius ),
 						}
 					),

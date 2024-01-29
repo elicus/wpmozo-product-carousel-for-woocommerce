@@ -69,9 +69,9 @@
 							);
 						}
 
-						 let main = Object.assign( {}, StyleAtts.CarouNavigation, StyleAtts.CarouNavigationLeft, StyleAtts.CarouNavigationRight ),
-						left      = Object.assign( {}, StyleAtts.CarouNavigation, StyleAtts.CarouNavigationLeft ),
-						right     = Object.assign( {}, StyleAtts.CarouNavigation, StyleAtts.CarouNavigationRight );
+						let main = Object.assign( {}, StyleAtts.CarouNavigationStyle, StyleAtts.CarouNavigationLeft, StyleAtts.CarouNavigationRight ),
+						left     = Object.assign( {}, StyleAtts.CarouNavigationStyle, StyleAtts.CarouNavigationLeft ),
+						right    = Object.assign( {}, StyleAtts.CarouNavigationStyle, StyleAtts.CarouNavigationRight );
 
 						let wraper = jQuery( $this );
 						let styles = [
@@ -193,7 +193,7 @@
 						settings: {
 							type: 'GET',
 							data: {
-								action: 'wpmozo_quick_view_content',
+								action: 'wpmozo_product_carousel_quick_view_content',
 								_ajax_nonce: wpmozo_carousel_object.nonce,
 								pro_id: pro_id
 							}
@@ -301,79 +301,79 @@
 
 	function wpmozo_get_styleAtts( attributes ){
 
-        let StyleAtts = {},
-            stylesKeys = [
-                'CarouContStyle',
-                'CarouPagination',
-                'CarouNavigation',
-                'CarouNavigationLeft',
-                'CarouNavigationRight',
-                'TitleStyle',
-                'PriceStyle',
-                'SaleLabelStyle',
-                'StockLabelStyle',
-                'AddToCartStyle',
-                'QuickViewStyle',
-                'QuickViewPopupStyle',
-                'QuickViewTitleStyle',
-                'QuickViewPriceStyle',
-                'QuickViewSaleLabelStyle',
-                'QuickViewStockLabelStyle',
-                'QuickViewAddToCartStyle',
-                'QuickViewCloseStyle',
-            ],
-            stylesTypes = {
-                'FontSize' : '',
-                'FontAppearance' : {'fontStyle' : '', 'fontWeight' : ''},
-                'LetterSpacing' : '',
-                'Decoration' : '',
-                'LetterCase' : '',
-                'LineHeight' : '',
-                'text' : '',
-                'background' : '',
-                'borderRadius' : '',
-                'border' : [],
-                'padding' : '',
-                'margin' : '',
-                'position' : '',
-                'width' : '',
-                'height' : '',
-            };
-        
-        for (var i = 0; i < stylesKeys.length; i++) {
-            StyleAtts[ stylesKeys[i] ] = {};
-            for (const styleType in stylesTypes) {
+		let StyleAtts   = {},
+			stylesKeys  = [
+				'CarouContStyle',
+				'CarouPagination',
+				'CarouNavigationStyle',
+				'CarouNavigationLeft',
+				'CarouNavigationRight',
+				'TitleStyle',
+				'PriceStyle',
+				'SaleLabelStyle',
+				'StockLabelStyle',
+				'AddToCartStyle',
+				'QuickViewStyle',
+				'QuickViewPopupStyle',
+				'QuickViewTitleStyle',
+				'QuickViewPriceStyle',
+				'QuickViewSaleLabelStyle',
+				'QuickViewStockLabelStyle',
+				'QuickViewAddToCartStyle',
+				'QuickViewCloseStyle',
+			],
+			stylesTypes = {
+				'FontSize' : '',
+				'FontAppearance' : {'fontStyle' : '', 'fontWeight' : ''},
+				'LetterSpacing' : '',
+				'Decoration' : '',
+				'LetterCase' : '',
+				'LineHeight' : '',
+				'text' : '',
+				'background' : '',
+				'borderRadius' : '',
+				'border' : [],
+				'padding' : '',
+				'margin' : '',
+				'position' : '',
+				'width' : '',
+				'height' : '',
+		};
 
-                if ( attributes.hasOwnProperty( stylesKeys[i]+styleType ) ) {
-                    StyleAtts[ stylesKeys[i] ][ styleType ] = attributes[ stylesKeys[i]+styleType ];
-                }
+		for (var i = 0; i < stylesKeys.length; i++) {
+			StyleAtts[ stylesKeys[i] ] = {};
+			for (const styleType in stylesTypes) {
 
-            }
-        }
+				if ( attributes.hasOwnProperty( stylesKeys[i] + styleType ) ) {
+					StyleAtts[ stylesKeys[i] ][ styleType ] = attributes[ stylesKeys[i] + styleType ];
+				}
 
-        let responsiveKeys = [
-            'mobile',
-            'tablet',
-            ],
-            responsiveTypes = {
-                'Columns': '',
-                'SlidesToScroll': '',
-                'SpaceBetween': '',
-            };
+			}
+		}
 
-        for (var i = 0; i < responsiveKeys.length; i++) {
-            StyleAtts[ responsiveKeys[i] ] = {};
-            for (const responsiveType in responsiveTypes) {
+		let responsiveKeys  = [
+			'mobile',
+			'tablet',
+			],
+			responsiveTypes = {
+				'Columns': '',
+				'SlidesToScroll': '',
+				'SpaceBetween': '',
+		};
 
-                if ( attributes.hasOwnProperty( responsiveKeys[i]+responsiveType ) ) {
-                    StyleAtts[ responsiveKeys[i] ][ responsiveType ] = attributes[ responsiveKeys[i]+responsiveType ];
-                }
+		for (var i = 0; i < responsiveKeys.length; i++) {
+			StyleAtts[ responsiveKeys[i] ] = {};
+			for (const responsiveType in responsiveTypes) {
 
-            }
-        }
+				if ( attributes.hasOwnProperty( responsiveKeys[i] + responsiveType ) ) {
+					StyleAtts[ responsiveKeys[i] ][ responsiveType ] = attributes[ responsiveKeys[i] + responsiveType ];
+				}
 
-        return StyleAtts;
-    }
+			}
+		}
+
+		return StyleAtts;
+	}
 
 	function getAlignStyle( Align ){
 
@@ -473,9 +473,9 @@
 					for (const borderItem in options.border[border]) {
 						style += 'border-' + border + '-' + borderItem + ': ' + options.border[border][borderItem] + ' !important;';
 					}
-					if ( ! options.border[border].hasOwnProperty('style') ) {
-                        style += 'border-'+border+'-style: solid !important;';
-                    }
+					if ( ! options.border[border].hasOwnProperty( 'style' ) ) {
+						style += 'border-' + border + '-style: solid !important;';
+					}
 				}
 			}
 		}

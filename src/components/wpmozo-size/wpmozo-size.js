@@ -6,12 +6,12 @@ const preAttributes = wpmozo_block_carousel_object.attributes;
 const WpmozoSize = function(args){
 
 	const { SizeKey, props } = args;
-	let SizeTypes                    = args.hasOwnProperty( 'SizeTypes' ) ? args.SizeTypes : null;
+	let SizeTypes            = args.hasOwnProperty( 'SizeTypes' ) ? args.SizeTypes : null;
 
 	const sizeSetValue = function( styleType, value = null ) {
 
 		value = setValue( styleType, value );
-		props.setAttributes( {[ SizeKey+styleType ]: value} );
+		props.setAttributes( {[ SizeKey + styleType ]: value} );
 
 		if ( args.hasOwnProperty( 'afterOnChange' ) ) {
 			args.afterOnChange( props );
@@ -21,8 +21,8 @@ const WpmozoSize = function(args){
 
 	const setValue = function(styleType, value){
 
-		if ( null === value && 'undefined' !== typeof preAttributes[ SizeKey+styleType ].default ) {
-			value = preAttributes[ SizeKey+styleType ].default;
+		if ( null === value && 'undefined' !== typeof preAttributes[ SizeKey + styleType ].default ) {
+			value = preAttributes[ SizeKey + styleType ].default;
 		}
 		value = ( null !== value ) ? value : '';
 
@@ -47,9 +47,8 @@ const WpmozoSize = function(args){
 					}
 					for (const type in SizeTypes) {
 						let value = setValue( type, null );
-						props.setAttributes( {[ SizeKey+type ]: value} );
+						props.setAttributes( {[ SizeKey + type ]: value} );
 					}
-					
 
 					if ( args.hasOwnProperty( 'afterOnChange' ) ) {
 						args.afterOnChange( props );
@@ -70,7 +69,7 @@ const WpmozoSize = function(args){
 						{
 							label: 'Width',
 							labelPosition: 'side',
-							value: props.attributes[ SizeKey+'width' ],
+							value: props.attributes[ SizeKey + 'width' ],
 							onChange: ( NewWidth ) => onChange( 'width', NewWidth ),
 						}
 					),
@@ -89,7 +88,7 @@ const WpmozoSize = function(args){
 						{
 							label: 'Height',
 							labelPosition: 'side',
-							value: props.attributes[ SizeKey+'height' ],
+							value: props.attributes[ SizeKey + 'height' ],
 							onChange: ( NewHeight ) => onChange( 'height', NewHeight ),
 						}
 					),

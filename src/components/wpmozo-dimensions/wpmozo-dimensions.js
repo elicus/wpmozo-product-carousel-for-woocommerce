@@ -8,13 +8,13 @@ const preAttributes = wpmozo_block_carousel_object.attributes;
 const WpmozoDimensions = function(args){
 
 	const { DimensionKey, props } = args;
-	let DimensionsTypes                   = args.hasOwnProperty( 'DimensionsTypes' ) ? args.DimensionsTypes : null;
-	const label                           = args.hasOwnProperty( 'label' ) ? args.label : __( 'Dimensions', 'wpmozo-product-carousel-for-woocommerce' );
+	let DimensionsTypes           = args.hasOwnProperty( 'DimensionsTypes' ) ? args.DimensionsTypes : null;
+	const label                   = args.hasOwnProperty( 'label' ) ? args.label : __( 'Dimensions', 'wpmozo-product-carousel-for-woocommerce' );
 
 	const dimensionsSetValue = function( styleType, value = null ) {
 
 		value = setValue( styleType, value );
-		props.setAttributes( {[ DimensionKey+styleType ]: value} );
+		props.setAttributes( {[ DimensionKey + styleType ]: value} );
 
 		if ( args.hasOwnProperty( 'afterOnChange' ) ) {
 			args.afterOnChange( props );
@@ -24,8 +24,8 @@ const WpmozoDimensions = function(args){
 
 	const setValue = function(styleType, value){
 
-		if ( null === value && 'undefined' !== typeof preAttributes[ DimensionKey+styleType ].default ) {
-			value = preAttributes[ DimensionKey+styleType ].default;
+		if ( null === value && 'undefined' !== typeof preAttributes[ DimensionKey + styleType ].default ) {
+			value = preAttributes[ DimensionKey + styleType ].default;
 		}
 		value = ( null !== value ) ? value : '';
 
@@ -50,9 +50,9 @@ const WpmozoDimensions = function(args){
 					}
 					for (const type in DimensionsTypes) {
 						let value = setValue( type, null );
-						props.setAttributes( {[ DimensionKey+type ]: value} );
+						props.setAttributes( {[ DimensionKey + type ]: value} );
 					}
-					
+
 					if ( args.hasOwnProperty( 'afterOnChange' ) ) {
 						args.afterOnChange( props );
 					}
@@ -72,7 +72,7 @@ const WpmozoDimensions = function(args){
 						__experimentalSpacingSizesControl,
 						{
 							label: 'Padding',
-							values: props.attributes[ DimensionKey+'padding' ],
+							values: props.attributes[ DimensionKey + 'padding' ],
 							onChange: ( NewPadding ) => onChange( 'padding', NewPadding ),
 						}
 					),
@@ -91,7 +91,7 @@ const WpmozoDimensions = function(args){
 						__experimentalSpacingSizesControl,
 						{
 							label: 'Margin',
-							values: props.attributes[ DimensionKey+'margin' ],
+							values: props.attributes[ DimensionKey + 'margin' ],
 							onChange: ( NewMargin ) => onChange( 'margin', NewMargin ),
 						}
 					),
@@ -110,7 +110,7 @@ const WpmozoDimensions = function(args){
 						__experimentalSpacingSizesControl,
 						{
 							label: 'Position',
-							values: props.attributes[ DimensionKey+'position' ],
+							values: props.attributes[ DimensionKey + 'position' ],
 							onChange: ( NewPosition ) => onChange( 'position', NewPosition ),
 						}
 					),

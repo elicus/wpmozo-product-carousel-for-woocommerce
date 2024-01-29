@@ -9,6 +9,11 @@
  * @subpackage WPMozo_Product_Carousel_For_Woocommerce/includes/blocks/product-carousel
  */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 global $wpmozo_product_carousel_args;
 require_once WPMOZO_PRODUCT_CAROUSEL_BLOCKS_DIR_PATH . 'product-carousel/functions.php';
 
@@ -28,7 +33,7 @@ function wpmozo_product_carousel_render_callback( $args ) {
 	$addi_classes                     = isset( $args['className'] ) ? ' ' . $args['className'] : '';
 	$equal_height                     = ( isset( $args['EqualSlideHeight'] ) && $args['EqualSlideHeight'] ) ? ' equal-slide-height' : '';
 	$is_display_products              = wpmozo_product_carousel_is_display_products( $args );
-	$wpmozo_product_carousel_is_admin = ( isset( $_GET['context'] ) && 'edit' === $_GET['context'] )
+	$wpmozo_product_carousel_is_admin = ( isset( $_GET['context'] ) && 'edit' === $_GET['context'] ) // phpcs:ignore
 	? true : false;
 
 	if ( ! $is_display_products ) {
@@ -57,7 +62,7 @@ function wpmozo_product_carousel_render_callback( $args ) {
 		<?php wpmozo_product_carousel_before_hooks( $args ); ?>
 		<?php do_action( 'wpmozo_product_carousel_before_wraper', $args ); ?>
 
-		<div class="wpmozo-product-carousel-wrap woocommerce swiper <?php echo esc_attr( $args['Layout'] ); ?><?php echo esc_attr( $admin_class ); ?><?php echo esc_attr( $addi_classes ); ?><?php echo esc_attr( $equal_height ); ?>" data-atts='<?php echo wp_json_encode( $args ); ?>' id="wpmozo_<?php echo esc_attr( $args['clientId'] ); ?>">
+		<div class="wpmozo-product-carousel-wrap woocommerce swiper <?php echo esc_attr( $args['Layout'] ); ?><?php echo esc_attr( $admin_class ); ?><?php echo esc_attr( $addi_classes ); ?><?php echo esc_attr( $equal_height ); ?>" data-atts='<?php echo esc_attr( wp_json_encode( $args ) ); ?>' id="wpmozo_<?php echo esc_attr( $args['clientId'] ); ?>">
 
 			<?php wpmozo_product_carousel_display_loader( $args ); ?>
 

@@ -9,6 +9,11 @@
  * @subpackage WPMozo_Product_Carousel_For_Woocommerce/includes/blocks/product-carousel
  */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 /**
  * Get query args.
  *
@@ -144,22 +149,22 @@ function wpmozo_product_carousel_before_hooks( $args ) {
 		}
 	}
 	if ( ! $args['ShowTitle'] ) {
-		wpmozo_remove_hooks( 'woocommerce_shop_loop_item_title', 'woocommerce_template_loop_product_title', 10 );
+		wpmozo_product_carousel_remove_hooks( 'woocommerce_shop_loop_item_title', 'woocommerce_template_loop_product_title', 10 );
 	}
 	if ( ! $args['ShowFeaturedImage'] ) {
-		wpmozo_remove_hooks( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail' );
+		wpmozo_product_carousel_remove_hooks( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail' );
 	}
 	if ( ! $args['ShowRating'] ) {
-		wpmozo_remove_hooks( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_rating' );
+		wpmozo_product_carousel_remove_hooks( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_rating' );
 	}
 	if ( ! $args['ShowPrice'] ) {
-		wpmozo_remove_hooks( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price' );
+		wpmozo_product_carousel_remove_hooks( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price' );
 	}
 	if ( ! $args['ShowAddToCartButton'] ) {
-		wpmozo_remove_hooks( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' );
+		wpmozo_product_carousel_remove_hooks( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' );
 	}
 	if ( ! $args['ShowSaleBadge'] ) {
-		wpmozo_remove_hooks( 'woocommerce_before_shop_loop_item_title', 'woocommerce_show_product_loop_sale_flash' );
+		wpmozo_product_carousel_remove_hooks( 'woocommerce_before_shop_loop_item_title', 'woocommerce_show_product_loop_sale_flash' );
 	}
 	if ( ! empty( $args['FeaturedImageSize'] ) ) {
 		add_filter( 'single_product_archive_thumbnail_size', 'wpmozo_product_carousel_image_size', 10 );
@@ -172,19 +177,19 @@ function wpmozo_product_carousel_before_hooks( $args ) {
 	}
 
 	if ( 'layout-1' === $args['Layout'] && $args['ShowPrice'] && $args['ShowAddToCartButton'] ) {
-		wpmozo_remove_hooks( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price' );
-		wpmozo_remove_hooks( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' );
+		wpmozo_product_carousel_remove_hooks( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price' );
+		wpmozo_product_carousel_remove_hooks( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' );
 		add_action( 'woocommerce_after_shop_loop_item', 'wpmozo_product_carousel_layout_1_bottom', 10 );
 	}
 
 	if ( 'layout-2' === $args['Layout'] && $args['ShowFeaturedImage'] && $args['ShowAddToCartButton'] ) {
-		add_action( 'woocommerce_before_shop_loop_item', 'wpmozo_add_div_to_top', 0 );
-		wpmozo_remove_hooks( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' );
+		add_action( 'woocommerce_before_shop_loop_item', 'wpmozo_product_carousel_add_div_to_top', 0 );
+		wpmozo_product_carousel_remove_hooks( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' );
 		add_action( 'woocommerce_before_shop_loop_item_title', 'wpmozo_woocommerce_template_loop_product_thumbnail', 10 );
 	}
 
 	if ( $args['EqualSlideHeight'] ) {
-		add_filter( 'woocommerce_loop_add_to_cart_link', 'wpmozo_add_wrap_for_addtocart', 999, 3 );
+		add_filter( 'woocommerce_loop_add_to_cart_link', 'wpmozo_product_carousel_add_wrap_for_addtocart', 999, 3 );
 	}
 
 	add_filter( 'woocommerce_post_class', 'wpmozo_product_carousel_add_class', 10, 2 );
@@ -199,7 +204,7 @@ function wpmozo_product_carousel_before_hooks( $args ) {
  */
 function wpmozo_product_carousel_after_hooks( $args ) {
 
-	wpmozo_add_hooks();
+	wpmozo_product_carousel_add_hooks();
 	remove_filter( 'is_woocommerce', 'wpmozo_product_carousel_set_is_woocommerce', 99 );
 
 	if ( ! empty( $args['FeaturedImageSize'] ) ) {
@@ -226,12 +231,12 @@ function wpmozo_product_carousel_after_hooks( $args ) {
 
 	// Layout 2 hooks.
 	if ( 'layout-2' === $args['Layout'] && $args['ShowFeaturedImage'] && $args['ShowAddToCartButton'] ) {
-		remove_action( 'woocommerce_before_shop_loop_item', 'wpmozo_add_div_to_top', 0 );
+		remove_action( 'woocommerce_before_shop_loop_item', 'wpmozo_product_carousel_add_div_to_top', 0 );
 		remove_action( 'woocommerce_before_shop_loop_item_title', 'wpmozo_woocommerce_template_loop_product_thumbnail', 10 );
 	}
 
 	if ( $args['EqualSlideHeight'] ) {
-		remove_filter( 'woocommerce_loop_add_to_cart_link', 'wpmozo_add_wrap_for_addtocart', 999, 3 );
+		remove_filter( 'woocommerce_loop_add_to_cart_link', 'wpmozo_product_carousel_add_wrap_for_addtocart', 999, 3 );
 	}
 
 	remove_filter( 'woocommerce_post_class', 'wpmozo_product_carousel_add_class', 10, 2 );
@@ -289,7 +294,7 @@ function wpmozo_product_carousel_add_hooks_admin_preview( $args ) {
 	}
 
 	if ( $args['EqualSlideHeight'] ) {
-		add_filter( 'woocommerce_loop_add_to_cart_link', 'wpmozo_add_wrap_for_addtocart', 999, 3 );
+		add_filter( 'woocommerce_loop_add_to_cart_link', 'wpmozo_product_carousel_add_wrap_for_addtocart', 999, 3 );
 	}
 
 	add_filter( 'woocommerce_post_class', 'wpmozo_product_carousel_add_class', 10, 2 );
@@ -418,7 +423,7 @@ function wpmozo_product_carousel_outofstock_badge() {
 		$html      = sprintf( '<div class="wpmozo-products-soldout-wrap"><span class="soldout-text stock %s">%s</span></div>', $class, $out_text );
 		$finalhtml = apply_filters( 'woocommerce_get_stock_html', $html, $product );
 		$finalhtml = apply_filters( 'wpmozo_product_carousel_outofstock_badge', $finalhtml, $product, $wpmozo_product_carousel_args );
-		echo $finalhtml; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo wp_kses_post( $finalhtml );
 	}
 
 }
@@ -489,13 +494,13 @@ function wpmozo_product_carousel_quick_view_button( $image, $product ) {
  *
  * @since 1.0.0
  */
-function wpmozo_quick_view_content() {
+function wpmozo_product_carousel_quick_view_content() {
 
 	check_ajax_referer( 'ajax-nonce' );
 	if ( isset( $_GET['pro_id'] ) ) {
 
 		if ( post_password_required() ) {
-			echo get_the_password_form(); // WPCS: XSS ok.
+			echo wp_kses_post( get_the_password_form() );
 			return;
 		}
 
@@ -548,8 +553,8 @@ function wpmozo_quick_view_content() {
 	wp_die();
 
 }
-add_action( 'wp_ajax_wpmozo_quick_view_content', 'wpmozo_quick_view_content' );
-add_action( 'wp_ajax_nopriv_wpmozo_quick_view_content', 'wpmozo_quick_view_content' );
+add_action( 'wp_ajax_wpmozo_product_carousel_quick_view_content', 'wpmozo_product_carousel_quick_view_content' );
+add_action( 'wp_ajax_nopriv_wpmozo_product_carousel_quick_view_content', 'wpmozo_product_carousel_quick_view_content' );
 
 /**
  * Display product carousel layout 1
@@ -621,7 +626,7 @@ function wpmozo_woocommerce_template_loop_product_thumbnail() {
  *
  * @since 1.0.0
  */
-function wpmozo_add_div_to_top() {
+function wpmozo_product_carousel_add_div_to_top() {
 
 	do_action( 'wpmozo_product_carousel_before_layout_2_top' );
 	echo '<span class="wpmozo-layout-wraper">';
@@ -639,7 +644,7 @@ function wpmozo_add_div_to_top() {
  * @param string  $callback The name of callback function.
  * @param boolean $to_add Add after or not.
  */
-function wpmozo_remove_hooks( $hook_name, $callback, $to_add = true ) {
+function wpmozo_product_carousel_remove_hooks( $hook_name, $callback, $to_add = true ) {
 
 	global $wp_filter;
 	$check_hooks   = array(
@@ -708,7 +713,7 @@ function wpmozo_remove_hooks( $hook_name, $callback, $to_add = true ) {
  *
  * @since 1.0.0
  */
-function wpmozo_add_hooks() {
+function wpmozo_product_carousel_add_hooks() {
 
 	$removed_hooks = wp_cache_get( 'wpmozo_removed_hooks' );
 
@@ -733,12 +738,12 @@ function wpmozo_add_hooks() {
  * @param object $product The product object.
  * @param array  $args The add to cart button arguments.
  */
-function wpmozo_add_wrap_for_addtocart( $button, $product, $args ) {
+function wpmozo_product_carousel_add_wrap_for_addtocart( $button, $product, $args ) {
 
 	do_action( 'wpmozo_product_carousel_before_euheight_addtocart_wrap' );
 	echo '<div class="wpmozo-add-to-cart-wrap">';
 		do_action( 'wpmozo_product_carousel_before_euheight_addtocart' );
-			echo $button; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo wp_kses_post( $button );
 		do_action( 'wpmozo_product_carousel_after_euheight_addtocart' );
 	echo '</div>';
 	do_action( 'wpmozo_product_carousel_after_euheight_addtocart_wrap' );
@@ -781,7 +786,7 @@ function wpmozo_product_carousel_display_loader( $args ) {
 	$columns       = intval( $args['Columns'] );
 	$space_between = $args['SpaceBetween'];
 	?>
-	<?php if ( ! isset( $_GET['context'] ) ) { ?>
+	<?php if ( ! isset( $_GET['context'] ) ) { // phpcs:ignore ?>
 		<div class="wpmozo-loader frontend">
 			<?php for ( $i = 0; $i < $columns; $i++ ) { ?>
 				<div class="ph-item" style="margin-right: <?php echo esc_attr( $space_between ); ?>px;">

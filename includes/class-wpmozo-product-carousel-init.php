@@ -29,21 +29,13 @@ class WPMozo_Product_Carousel_Init {
 	public $wpmozo_wc_styles = array();
 
 	/**
-	 * Initialize the class.
-	 *
-	 * @since    1.0.0
-	 */
-	public function __construct() {
-		$this->wpmozo_add_theme_support();
-	}
-
-	/**
 	 * Register the blocks.
 	 *
 	 * @since 1.0.0
 	 */
 	public function wpmozo_register_blocks() {
 
+		$this->wpmozo_add_theme_support();
 		$this->wpmozo_set_wc_styles();
 
 		// register the swiper script.

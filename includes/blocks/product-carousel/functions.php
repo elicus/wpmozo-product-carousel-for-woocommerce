@@ -139,6 +139,8 @@ function wpmozo_product_carousel_prepare_query_args( $args ) {
  */
 function wpmozo_product_carousel_before_hooks( $args ) {
 
+	do_action( 'wpmozo_product_carousel_before_hooks_before', $args );
+
 	add_filter( 'is_woocommerce', 'wpmozo_product_carousel_set_is_woocommerce', 99 );
 
 	if ( ! $args['OutOfStock'] && $args['DisplayOutOfStockLabel'] ) {
@@ -194,7 +196,7 @@ function wpmozo_product_carousel_before_hooks( $args ) {
 
 	add_filter( 'woocommerce_post_class', 'wpmozo_product_carousel_add_class', 10, 2 );
 
-	do_action( 'wpmozo_product_carousel_before_hooks', $args );
+	do_action( 'wpmozo_product_carousel_before_hooks_after', $args );
 
 }
 

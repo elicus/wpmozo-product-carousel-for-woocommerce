@@ -194,6 +194,8 @@ function wpmozo_product_carousel_before_hooks( $args ) {
 
 	add_filter( 'woocommerce_post_class', 'wpmozo_product_carousel_add_class', 10, 2 );
 
+	do_action( 'wpmozo_product_carousel_before_hooks', $args );
+
 }
 
 /**
@@ -240,6 +242,8 @@ function wpmozo_product_carousel_after_hooks( $args ) {
 	}
 
 	remove_filter( 'woocommerce_post_class', 'wpmozo_product_carousel_add_class', 10, 2 );
+
+	do_action( 'wpmozo_product_carousel_after_hooks', $args );
 }
 
 /**

@@ -29,7 +29,8 @@ const WpmozoBorder = function (args) {
     props
   } = args;
   let BorderTypes = args.hasOwnProperty('BorderTypes') ? args.BorderTypes : null;
-  const borderSetValue = function (styleType, value = null) {
+  const borderSetValue = function (styleType) {
+    let value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
     value = setValue(styleType, value);
     props.setAttributes({
       [BorderKey + styleType]: value
@@ -120,7 +121,8 @@ const WpmozoColorPicker = function (args) {
     props
   } = args;
   const AllColors = __experimentalUseMultipleOriginColorsAndGradients();
-  const colorSetValue = function (styleType, value = null) {
+  const colorSetValue = function (styleType) {
+    let value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
     value = setValue(styleType, value);
     props.setAttributes({
       [ColorKey + styleType]: value
@@ -150,16 +152,19 @@ const WpmozoColorPicker = function (args) {
         offset: 36,
         shift: true
       },
-      renderToggle: ({
-        isOpen,
-        onToggle
-      }) => el(Button, {
-        onClick: onToggle,
-        "aria-expanded": isOpen,
-        children: [el(ColorIndicator, {
-          colorValue: _color
-        }), label]
-      }),
+      renderToggle: _ref => {
+        let {
+          isOpen,
+          onToggle
+        } = _ref;
+        return el(Button, {
+          onClick: onToggle,
+          "aria-expanded": isOpen,
+          children: [el(ColorIndicator, {
+            colorValue: _color
+          }), label]
+        });
+      },
       renderContent: () => el(ColorPalette, {
         colors: AllColors.colors,
         value: _color,
@@ -225,7 +230,8 @@ const WpmozoDimensions = function (args) {
   } = args;
   let DimensionsTypes = args.hasOwnProperty('DimensionsTypes') ? args.DimensionsTypes : null;
   const label = args.hasOwnProperty('label') ? args.label : __('Dimensions', 'wpmozo-product-carousel-for-woocommerce');
-  const dimensionsSetValue = function (styleType, value = null) {
+  const dimensionsSetValue = function (styleType) {
+    let value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
     value = setValue(styleType, value);
     props.setAttributes({
       [DimensionKey + styleType]: value
@@ -360,8 +366,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 
 const {
   Component
@@ -375,30 +381,30 @@ class WpmozoLoader extends Component {
       column,
       margin
     } = this.props;
-    let loader = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    let loader = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-item",
         style: {
           marginRight: margin
         }
-      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-col-12"
-      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-picture"
-      }, " "), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      }, " "), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-row"
-      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-col-8"
-      }, " "), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      }, " "), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-col-4 empty"
-      }, " "), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      }, " "), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-col-4"
-      }, " "), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      }, " "), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-col-8 empty"
-      }, " "), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      }, " "), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-col-12 empty"
-      }, " "), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      }, " "), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-col-6 big"
-      }, " "), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      }, " "), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "ph-col-6 empty"
       }, " ")))),
       html = [];
@@ -436,7 +442,8 @@ const WpmozoSize = function (args) {
     props
   } = args;
   let SizeTypes = args.hasOwnProperty('SizeTypes') ? args.SizeTypes : null;
-  const sizeSetValue = function (styleType, value = null) {
+  const sizeSetValue = function (styleType) {
+    let value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
     value = setValue(styleType, value);
     props.setAttributes({
       [SizeKey + styleType]: value
@@ -532,7 +539,8 @@ const WpmozoTypography = function (args) {
     props
   } = args;
   let TypoTypes = args.hasOwnProperty('TypoTypes') ? args.TypoTypes : null;
-  const typoSetValue = function (styleType, value = null) {
+  const typoSetValue = function (styleType) {
+    let value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
     value = setValue(styleType, value);
     props.setAttributes({
       [TypographyKey + styleType]: value
@@ -648,13 +656,13 @@ const WpmozoTypography = function (args) {
 
 /***/ }),
 
-/***/ "react":
-/*!************************!*\
-  !*** external "React" ***!
-  \************************/
+/***/ "@wordpress/element":
+/*!*********************************!*\
+  !*** external ["wp","element"] ***!
+  \*********************************/
 /***/ ((module) => {
 
-module.exports = window["React"];
+module.exports = window["wp"]["element"];
 
 /***/ })
 
@@ -911,7 +919,9 @@ __webpack_require__.r(__webpack_exports__);
     }
     return style;
   }
-  function appendInlineStyle(item, wraper, values = false, attributes = false) {
+  function appendInlineStyle(item, wraper) {
+    let values = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+    let attributes = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
     let attKey = values === false ? item.attKey : '',
       selector = item.selector,
       _values = values === false ? attributes[attKey] : values,
@@ -1028,7 +1038,9 @@ __webpack_require__.r(__webpack_exports__);
       clientId = attributes.clientId,
       selector = 'wpmozo_' + clientId,
       mobileSett = StyleAtts.mobile,
-      tabletSett = StyleAtts.tablet;
+      tabletSett = StyleAtts.tablet,
+      swiperEl = getWraperEl(clientId),
+      swiperWraper = swiperEl.find('.swiper');
     let _dimensions = StyleAtts.CarouContStyle,
       inlineStyle = convetInlineStyle(_dimensions);
     if ('' !== inlineStyle) {
@@ -1169,7 +1181,9 @@ __webpack_require__.r(__webpack_exports__);
         type: attributes.PaginationType
       };
     }
-    let _swiper = new Swiper('#' + selector, sw_obj);
+    if (swiperWraper.length > 0) {
+      let _swiper = new Swiper(swiperWraper[0], sw_obj);
+    }
   };
   hooks.addAction('server-side-loading-finished', 'function_name', initializeSwiper);
   const TriggerWhenLoadingFinished = args => {
@@ -1202,10 +1216,17 @@ __webpack_require__.r(__webpack_exports__);
       })]
     }));
   };
+  function getWraperEl(clientId) {
+    let editorIfram = jQuery('body').find('[name="editor-canvas"]').contents(),
+      mainFromIfram = editorIfram.find('body').find('#block-' + clientId),
+      mainFromBody = jQuery('body').find('#block-' + clientId),
+      mainEl = mainFromIfram.length > 0 ? mainFromIfram : mainFromBody;
+    return mainEl;
+  }
   registerBlockType('wpmozo/product-carousel', {
     title: __('WPMozo Product Carousel', 'wpmozo-product-carousel-for-woocommerce'),
     icon: 'products',
-    apiVersion: 3,
+    apiVersion: 2,
     category: 'wpmozo',
     keywords: ['wpmozo', 'woocommerce-product-carousel', 'woocommerce', 'carousel'],
     attributes: GetAttributes,
@@ -1703,9 +1724,10 @@ __webpack_require__.r(__webpack_exports__);
         allowedTypes: ["image"],
         accept: "image/*",
         value: attributes.QuickViewLinkImg,
-        render: ({
-          open
-        }) => {
+        render: _ref => {
+          let {
+            open
+          } = _ref;
           return el(Fragment, {}, el('div', {
             class: "components-base-control wpmozo-quvili-icon-wrap",
             children: [attributes.QuickViewLinkImg && el('img', {

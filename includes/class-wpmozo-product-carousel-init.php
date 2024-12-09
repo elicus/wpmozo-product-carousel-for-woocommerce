@@ -28,7 +28,6 @@ class WPMozo_Product_Carousel_Init {
 	 */
 	public $wpmozo_wc_styles = array();
 
-
 	/**
 	 * Register the blocks.
 	 *
@@ -36,6 +35,7 @@ class WPMozo_Product_Carousel_Init {
 	 */
 	public function wpmozo_register_blocks() {
 
+		$this->wpmozo_add_theme_support();
 		$this->wpmozo_set_wc_styles();
 
 		// register the swiper script.
@@ -187,9 +187,13 @@ class WPMozo_Product_Carousel_Init {
 	public function wpmozo_set_wc_styles() {
 
 		global $wp_filter;
-		$wc_styles = WC_Frontend_Scripts::get_styles();
+		$wc_styles 				= WC_Frontend_Scripts::get_styles();
+		$current_theme 			= get_template();
+		$disable_themes_style	= array(
+			'astra'
+		);
 
-		if ( empty( $wc_styles ) ) {
+		if ( empty( $wc_styles ) || in_array( $current_theme, $disable_themes_style ) ) {
 
 			$all_hooks     = $wp_filter['woocommerce_enqueue_styles'];
 			$all_callbacks = $all_hooks->callbacks;
@@ -1266,6 +1270,21 @@ class WPMozo_Product_Carousel_Init {
 				),
 			)
 		);
+	}
+
+	/**
+	 * Add theme support.
+	 *
+	 */
+	public function wpmozo_add_theme_support() {
+
+		switch ( get_template() ) {
+			case 'astra':
+				include_once WPMOZO_PRODUCT_CAROUSEL_INC_DIR_PATH . 'theme-support/class-wpmozo-product-carousel-support-astra.php';
+				WPMozo_Product_Carousel_Support_Astra::add_hooks();
+				break;
+		}
+
 	}
 
 	/**

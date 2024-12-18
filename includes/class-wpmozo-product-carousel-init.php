@@ -167,11 +167,18 @@ class WPMozo_Product_Carousel_Init {
 	 */
 	public function wpmozo_add_editor_style() {
 
-		$wc_styles = $this->wpmozo_wc_styles;
+		$wc_styles 	   = $this->wpmozo_wc_styles;
+		$current_theme = get_template();
+
 		if ( ! empty( $wc_styles ) ) {
 			foreach ( $wc_styles as $handle => $args ) {
 				if ( ! isset( $args['has_rtl'] ) ) {
 					$args['has_rtl'] = false;
+				}
+				if ( 'twentytwentytwo' === $current_theme || 'twentytwentythree' === $current_theme ) {
+					if ( 'woocommerce-general' === $handle ) {
+						$args['src'] = 'http:' . $args['src'];
+					}
 				}
 				wp_register_style( $handle, $args['src'], $args['deps'], $args['version'], $args['media'], $args['has_rtl'] );
 			}
@@ -1179,8 +1186,9 @@ class WPMozo_Product_Carousel_Init {
 
 		if ( ! empty( $get_all_sizes ) ) {
 			foreach ( $get_all_sizes as $key => $size ) {
+				$label = str_replace('_', ' ', $key);
 				$all_sizes[] = array(
-					'label' => $key,
+					'label' => $label,
 					'value' => $key,
 				);
 			}
@@ -1282,6 +1290,10 @@ class WPMozo_Product_Carousel_Init {
 			case 'astra':
 				include_once WPMOZO_PRODUCT_CAROUSEL_INC_DIR_PATH . 'theme-support/class-wpmozo-product-carousel-support-astra.php';
 				WPMozo_Product_Carousel_Support_Astra::add_hooks();
+				break;
+			case 'Divi':
+				include_once WPMOZO_PRODUCT_CAROUSEL_INC_DIR_PATH . 'theme-support/class-wpmozo-product-carousel-support-divi.php';
+				WPMozo_Product_Carousel_Support_Divi::add_hooks();
 				break;
 		}
 

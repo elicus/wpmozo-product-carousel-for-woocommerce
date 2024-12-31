@@ -470,7 +470,10 @@ class WPMozo_Product_Carousel_Init {
 			'CarouPaginationtext'                    => array(
 				'type' => 'string',
 			),
-			'CarouPaginationbackground'              => array(
+			'CarouPaginationActiveBackground'        => array(
+				'type' => 'string',
+			),
+			'CarouPaginationInactiveBackground'      => array(
 				'type' => 'string',
 			),
 			'CarouPaginationwidth'                   => array(

@@ -928,7 +928,8 @@ __webpack_require__.r(__webpack_exports__);
       __values = item.hasOwnProperty('values') ? item.values : _values,
       inlineStyle = convetInlineStyle(__values, attributes),
       CarouAlign = '',
-      hasAlign = item.hasOwnProperty('hasAlign') ? item.hasAlign : true;
+      hasAlign = item.hasOwnProperty('hasAlign') ? item.hasAlign : true,
+      defaultInlineStyle = jQuery(wraper).find(selector).attr('style');
     if (attributes.hasOwnProperty('CAlign')) {
       CarouAlign = attributes.CAlign;
     }
@@ -944,6 +945,9 @@ __webpack_require__.r(__webpack_exports__);
       if (parent.hasClass('woocommerce-LoopProduct-link')) {
         inlineStyle = inlineStyle += Nstyle;
       }
+    }
+    if ('' !== defaultInlineStyle && 'undefined' !== typeof defaultInlineStyle) {
+      inlineStyle = defaultInlineStyle + inlineStyle;
     }
     jQuery(wraper).find(selector).attr('style', inlineStyle);
   }
@@ -1123,9 +1127,26 @@ __webpack_require__.r(__webpack_exports__);
             selector: PaginationSelector,
             values: StyleAtts.CarouPagination
           }];
+          if ('bullets' === attributes.PaginationType) {
+            styles.push({
+              selector: '.swiper-pagination span.swiper-pagination-bullet-active',
+              values: {
+                background: attributes.CarouPaginationActiveBackground
+              }
+            });
+            styles.push({
+              selector: '.swiper-pagination span:not(span.swiper-pagination-bullet-active)',
+              values: {
+                background: attributes.CarouPaginationInactiveBackground
+              }
+            });
+          }
           if ('progressbar' === attributes.PaginationType) {
             let barAtts = {
-                background: StyleAtts.CarouPagination.background
+                background: attributes.CarouPaginationActiveBackground
+              },
+              barBackAtts = {
+                background: attributes.CarouPaginationInactiveBackground
               },
               progAtts = {
                 width: StyleAtts.CarouPagination.width,
@@ -1133,8 +1154,58 @@ __webpack_require__.r(__webpack_exports__);
               };
             styles = [{
               hasAlign: false,
-              selector: PaginationSelector,
+              selector: '.swiper-pagination-progressbar-fill',
               values: barAtts
+            }, {
+              hasAlign: false,
+              selector: '.swiper-pagination-progressbar',
+              values: barBackAtts
+            }, {
+              hasAlign: false,
+              selector: '.swiper-pagination',
+              values: progAtts
+            }];
+          }
+          styles.map(function (item) {
+            appendInlineStyle(item, wraper, item.values, attributes);
+          });
+        },
+        slideChange: function (swiper) {
+          let wraper = jQuery('#' + selector),
+            styles = [];
+          if ('bullets' === attributes.PaginationType) {
+            styles.push({
+              selector: '.swiper-pagination span.swiper-pagination-bullet-active',
+              values: {
+                background: attributes.CarouPaginationActiveBackground
+              }
+            });
+            styles.push({
+              selector: '.swiper-pagination span:not(span.swiper-pagination-bullet-active)',
+              values: {
+                background: attributes.CarouPaginationInactiveBackground
+              }
+            });
+          }
+          if ('progressbar' === attributes.PaginationType) {
+            let barAtts = {
+                background: attributes.CarouPaginationActiveBackground
+              },
+              barBackAtts = {
+                background: attributes.CarouPaginationInactiveBackground
+              },
+              progAtts = {
+                width: StyleAtts.CarouPagination.width,
+                height: StyleAtts.CarouPagination.height
+              };
+            styles = [{
+              hasAlign: false,
+              selector: '.swiper-pagination-progressbar-fill',
+              values: barAtts
+            }, {
+              hasAlign: false,
+              selector: '.swiper-pagination-progressbar',
+              values: barBackAtts
             }, {
               hasAlign: false,
               selector: '.swiper-pagination',
@@ -1259,6 +1330,14 @@ __webpack_require__.r(__webpack_exports__);
         jQuery.each(ProductTypes, function (key, type) {
           add_to_cart_selector += ', .button.product_type_' + type;
         });
+      }
+      let paginationActiveColorLable = __('Active Icon Color', 'wpmozo-product-carousel-for-woocommerce'),
+        paginationInactiveColorLable = __('Inactive Icon Color', 'wpmozo-product-carousel-for-woocommerce');
+      if ('fraction' === attributes.PaginationType) {
+        paginationActiveColorLable = __('Text Color', 'wpmozo-product-carousel-for-woocommerce');
+      } else if ('progressbar' === attributes.PaginationType) {
+        paginationActiveColorLable = __('Bar Color', 'wpmozo-product-carousel-for-woocommerce');
+        paginationInactiveColorLable = __('Bar Background Color', 'wpmozo-product-carousel-for-woocommerce');
       }
       const setValue = function (args, value) {
         let depth = args.hasOwnProperty('depth') ? args.depth : [],
@@ -1902,13 +1981,19 @@ __webpack_require__.r(__webpack_exports__);
         ColorKey: 'CarouPagination',
         props: props,
         ColorTypes: [{
-          key: 'background',
-          label: __('Icon Color', 'wpmozo-product-carousel-for-woocommerce')
+          key: 'ActiveBackground',
+          label: paginationActiveColorLable
+        }, {
+          key: 'InactiveBackground',
+          label: paginationInactiveColorLable
         }],
         afterOnChange: props => {
           appendInlineStyle({
-            selector: '.swiper-pagination span'
-          }, wraper, styleAtts.CarouPagination, props.attributes);
+            selector: '.swiper-pagination span.swiper-pagination-bullet-active',
+            values: {
+              background: props.attributes.CarouPaginationActiveBackground
+            }
+          }, wraper, false, props.attributes);
         }
       }), el(_src_components_wpmozo_size_wpmozo_size__WEBPACK_IMPORTED_MODULE_5__["default"], {
         SizeKey: 'CarouPagination',
@@ -1924,7 +2009,7 @@ __webpack_require__.r(__webpack_exports__);
         props: props,
         ColorTypes: [{
           key: 'text',
-          label: __('Icon Color', 'wpmozo-product-carousel-for-woocommerce')
+          label: paginationActiveColorLable
         }],
         afterOnChange: props => {
           appendInlineStyle({

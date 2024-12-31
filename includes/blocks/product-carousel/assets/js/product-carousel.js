@@ -93,35 +93,89 @@
 					},
 					afterInit: function(swiper){
 
-						let wraper         = jQuery( $this ),
-						PaginationSelector = ( 'fraction' === atts.PaginationType ) ? '.swiper-pagination' : '.swiper-pagination span';
+						let wraper = jQuery( $this ),
+                        PaginationSelector = ( 'fraction' === atts.PaginationType ) ? '.swiper-pagination' : '.swiper-pagination span';
 
-						let styles = [
-						{attKey: 'CarouPagination', selector: PaginationSelector,hasAlign: false},
-						];
+	                    let styles = [
+	                        {hasAlign: false,selector: PaginationSelector, values: StyleAtts.CarouPagination},
+	                    ];
 
-						if ( 'progressbar' === atts.PaginationType ) {
-							let barAtts = { background: StyleAtts.CarouPagination.background},
-							progAtts    = {
-								width: StyleAtts.CarouPagination.width,
-								height: StyleAtts.CarouPagination.height,
-							};
-							styles      = [
-							{selector: PaginationSelector, values: barAtts,hasAlign: false},
-							{selector: '.swiper-pagination', values: progAtts,hasAlign: false},
-							];
-						}
+	                    if ( 'bullets' === atts.PaginationType ) {
+	                        styles.push( {
+	                            selector: '.swiper-pagination span.swiper-pagination-bullet-active',
+	                            values: {
+	                                background: atts.CarouPaginationActiveBackground
+	                            }
+	                        } )
+	                        styles.push( {
+	                            selector: '.swiper-pagination span:not(span.swiper-pagination-bullet-active)',
+	                            values: {
+	                                background: atts.CarouPaginationInactiveBackground
+	                            }
+	                        } )
+	                    }
 
-						styles.map(
-							function(item) { appendInlineStyle( item, wraper, false, StyleAtts ); }
-						);
+	                    if ( 'progressbar' === atts.PaginationType ) {
+	                        let barAtts = { background: atts.CarouPaginationActiveBackground},
+	                            barBackAtts = { background: atts.CarouPaginationInactiveBackground},
+	                            progAtts = {
+	                                width: StyleAtts.CarouPagination.width,
+	                                height: StyleAtts.CarouPagination.height,
+	                            };
+	                        styles = [
+	                            {hasAlign: false,selector: '.swiper-pagination-progressbar-fill', values: barAtts},
+	                            {hasAlign: false,selector: '.swiper-pagination-progressbar', values: barBackAtts},
+	                            {hasAlign: false,selector: '.swiper-pagination', values: progAtts},
+	                        ];
+	                    }
 
-						CarouAlign = null;
+	                    styles.map(
+	                        function(item) { appendInlineStyle(item, wraper, item.values, atts); }
+	                    );
 
 						$this.find( '.wpmozo-loader' ).remove();
 						$this.removeClass( 'loading' );
 
-					}
+					},
+					slideChange: function(swiper){
+
+	                    let wraper = jQuery( $this ),
+	                    styles = [];
+
+	                    if ( 'bullets' === atts.PaginationType ) {
+	                        styles.push( {
+	                            selector: '.swiper-pagination span.swiper-pagination-bullet-active',
+	                            values: {
+	                                background: atts.CarouPaginationActiveBackground
+	                            }
+	                        } )
+	                        styles.push( {
+	                            selector: '.swiper-pagination span:not(span.swiper-pagination-bullet-active)',
+	                            values: {
+	                                background: atts.CarouPaginationInactiveBackground
+	                            }
+	                        } )
+	                    }
+
+	                    if ( 'progressbar' === atts.PaginationType ) {
+	                        let barAtts = { background: atts.CarouPaginationActiveBackground},
+	                            barBackAtts = { background: atts.CarouPaginationInactiveBackground},
+	                            progAtts = {
+	                                width: StyleAtts.CarouPagination.width,
+	                                height: StyleAtts.CarouPagination.height,
+	                            };
+	                        styles = [
+	                            {hasAlign: false,selector: '.swiper-pagination-progressbar-fill', values: barAtts},
+	                            {hasAlign: false,selector: '.swiper-pagination-progressbar', values: barBackAtts},
+	                            {hasAlign: false,selector: '.swiper-pagination', values: progAtts},
+	                        ];
+	                    }
+
+	                    styles.map(
+	                        function(item) { appendInlineStyle(item, wraper, item.values, atts); }
+	                    );
+
+	                }
 				},
 				breakpoints: {
 					0: {
@@ -280,7 +334,8 @@
 		   _values     = ( values === false ) ? atts[attKey] : values,
 		   __values    = ( item.hasOwnProperty( 'values' ) ) ? item.values : _values,
 		   inlineStyle = convetInlineStyle( __values, atts ),
-		   hasAlign    = item.hasOwnProperty( 'hasAlign' ) ? item.hasAlign : true;
+		   hasAlign    = item.hasOwnProperty( 'hasAlign' ) ? item.hasAlign : true,
+		   defaultInlineStyle = jQuery(wraper).find(selector).attr('style');
 
 		if ( hasAlign && '' !== CarouAlign && 'undefined' !== typeof CarouAlign && null !== CarouAlign ) {
 
@@ -294,6 +349,10 @@
 				inlineStyle = inlineStyle += Nstyle;
 			}
 		}
+
+		if ( '' !== defaultInlineStyle && 'undefined' !== typeof defaultInlineStyle ) {
+            inlineStyle = defaultInlineStyle + inlineStyle;
+        }
 
 		jQuery( wraper ).find( selector ).attr( 'style', inlineStyle );
 

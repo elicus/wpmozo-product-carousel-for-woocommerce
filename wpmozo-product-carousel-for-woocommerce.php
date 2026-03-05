@@ -13,6 +13,7 @@
  *
  * @wordpress-plugin
  * Plugin Name:       WPMozo Product Carousel For WooCommerce
+ * Requires Plugins:  woocommerce
  * Plugin URI:        https://wpmozo.com/product/wpmozo-product-carousel-for-woocommerce
  * Description:       This plugin will create gutenberg block for woocommerce product carousel.
  * Version:           1.0.0

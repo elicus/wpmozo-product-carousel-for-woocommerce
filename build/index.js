@@ -929,7 +929,8 @@ __webpack_require__.r(__webpack_exports__);
       inlineStyle = convetInlineStyle(__values, attributes),
       CarouAlign = '',
       hasAlign = item.hasOwnProperty('hasAlign') ? item.hasAlign : true,
-      defaultInlineStyle = jQuery(wraper).find(selector).attr('style');
+      $root = getEditorRoot(),
+      defaultInlineStyle = $root.find(wraper).find(selector).attr('style');
     if (attributes.hasOwnProperty('CAlign')) {
       CarouAlign = attributes.CAlign;
     }
@@ -938,7 +939,7 @@ __webpack_require__.r(__webpack_exports__);
           Nstyle,
           NNstyle
         } = getAlignStyle(CarouAlign),
-        parent = jQuery(wraper).find(selector).parent();
+        parent = $root.find(wraper).find(selector).parent();
       if (parent.hasClass('product')) {
         inlineStyle = inlineStyle += NNstyle;
       }
@@ -949,7 +950,7 @@ __webpack_require__.r(__webpack_exports__);
     if ('' !== defaultInlineStyle && 'undefined' !== typeof defaultInlineStyle) {
       inlineStyle = defaultInlineStyle + inlineStyle;
     }
-    jQuery(wraper).find(selector).attr('style', inlineStyle);
+    $root.find(wraper).find(selector).attr('style', inlineStyle);
   }
   function getAlignStyle(Align) {
     let style = '',
@@ -1048,24 +1049,27 @@ __webpack_require__.r(__webpack_exports__);
     let _dimensions = StyleAtts.CarouContStyle,
       inlineStyle = convetInlineStyle(_dimensions);
     if ('' !== inlineStyle) {
-      jQuery('#' + selector).attr('style', inlineStyle);
+      getEditorRoot().find('#' + selector).attr('style', inlineStyle);
     }
     var sw_obj = {
       loop: attributes.Loop,
-      swipeHandler: 'li.product',
+      grabCursor: true,
+      observer: true,
+      observeParents: true,
       on: {
         tap: function (swiper, event) {
           dispatch('core/block-editor').selectBlock(clientId);
         },
         beforeInit: function (swiper) {
           let {
-            style,
-            Nstyle,
-            NNstyle
-          } = getAlignStyle(attributes.CAlign);
-          jQuery('#' + selector).find('ul.products li.product').attr('style', style);
-          let liChilds = jQuery('#' + selector).find('ul.products li.product').children();
-          let proLinkChilds = jQuery('#' + selector).find('ul.products li.product a.woocommerce-LoopProduct-link').children();
+              style,
+              Nstyle,
+              NNstyle
+            } = getAlignStyle(attributes.CAlign),
+            $carousel = getEditorRoot().find('#' + selector);
+          $carousel.find('ul.products li.product').attr('style', style);
+          let liChilds = $carousel.find('ul.products li.product').children();
+          let proLinkChilds = $carousel.find('ul.products li.product a.woocommerce-LoopProduct-link').children();
           liChilds.each(function (key, value) {
             jQuery(this).attr('style', NNstyle);
           });
@@ -1081,7 +1085,7 @@ __webpack_require__.r(__webpack_exports__);
           let main = Object.assign({}, StyleAtts.CarouNavigationStyle, StyleAtts.CarouNavigationLeft, StyleAtts.CarouNavigationRight),
             left = Object.assign({}, StyleAtts.CarouNavigationStyle, StyleAtts.CarouNavigationLeft),
             right = Object.assign({}, StyleAtts.CarouNavigationStyle, StyleAtts.CarouNavigationRight);
-          let wraper = jQuery('#' + selector);
+          let wraper = '#' + selector;
           let styles = [{
             selector: '.woocommerce-loop-product__title',
             values: StyleAtts.TitleStyle
@@ -1120,7 +1124,7 @@ __webpack_require__.r(__webpack_exports__);
           });
         },
         afterInit: function (swiper) {
-          let wraper = jQuery('#' + selector),
+          let wraper = '#' + selector,
             PaginationSelector = 'fraction' === attributes.PaginationType ? '.swiper-pagination' : '.swiper-pagination span';
           let styles = [{
             hasAlign: false,
@@ -1171,7 +1175,7 @@ __webpack_require__.r(__webpack_exports__);
           });
         },
         slideChange: function (swiper) {
-          let wraper = jQuery('#' + selector),
+          let wraper = '#' + selector,
             styles = [];
           if ('bullets' === attributes.PaginationType) {
             styles.push({
@@ -1235,24 +1239,12 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
     };
-    if (attributes.AutoPlay) {
-      sw_obj.autoplay = {
-        delay: attributes.Delay
-      };
+    if ('undefined' === typeof Swiper) {
+      console.warn('WPMozo Product Carousel: the Swiper library was not found on window. Make sure it is enqueued (e.g. via enqueue_block_assets, so it also loads inside the iframed block editor canvas) before this script runs.');
+      return;
     }
-    if (attributes.ShowNavigation) {
-      sw_obj.navigation = {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev"
-      };
-    }
-    if (attributes.ShowPagination) {
-      sw_obj.pagination = {
-        el: '.swiper-pagination',
-        type: attributes.PaginationType
-      };
-    }
-    if (swiperWraper.length > 0) {
+    if (swiperWraper.length > 0 && !swiperWraper[0].classList.contains('swiper-initialized')) {
+      console.log('initilazed');
       let _swiper = new Swiper(swiperWraper[0], sw_obj);
     }
   };
@@ -1287,12 +1279,31 @@ __webpack_require__.r(__webpack_exports__);
       })]
     }));
   };
+
+  /**
+   * Returns the correct jQuery-wrapped root to search the block's rendered
+   * markup in.
+   *
+   * Since WordPress 6.3+, block themes (Twenty Twenty-Two and any other
+   * theme with theme.json) render the post/site editor canvas inside a
+   * same-origin <iframe name="editor-canvas">. A jQuery lookup that only
+   * checks the top-level admin document silently finds nothing for those
+   * themes, even though the exact same lookup works fine on the frontend
+   * (no iframe there) and in classic themes (not iframed).
+   *
+   * This is re-resolved every call instead of cached, because Gutenberg
+   * can recreate the iframe (e.g. switching the editor's preview device
+   * size), which would otherwise leave a stale/detached reference.
+   */
+  function getEditorRoot() {
+    let $iframe = jQuery('body').find('iframe[name="editor-canvas"]');
+    if ($iframe.length && $iframe[0].contentDocument && $iframe[0].contentDocument.body) {
+      return jQuery($iframe[0].contentDocument.body);
+    }
+    return jQuery('body');
+  }
   function getWraperEl(clientId) {
-    let editorIfram = jQuery('body').find('[name="editor-canvas"]').contents(),
-      mainFromIfram = editorIfram.find('body').find('#block-' + clientId),
-      mainFromBody = jQuery('body').find('#block-' + clientId),
-      mainEl = mainFromIfram.length > 0 ? mainFromIfram : mainFromBody;
-    return mainEl;
+    return getEditorRoot().find('#block-' + clientId);
   }
   registerBlockType('wpmozo/product-carousel', {
     title: __('WPMozo Product Carousel', 'wpmozo-product-carousel-for-woocommerce'),

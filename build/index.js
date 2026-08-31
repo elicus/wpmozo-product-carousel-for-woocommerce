@@ -1054,9 +1054,6 @@ __webpack_require__.r(__webpack_exports__);
     }
     var sw_obj = {
       loop: attributes.Loop,
-      grabCursor: true,
-      observer: true,
-      observeParents: true,
       on: {
         tap: function (swiper, event) {
           dispatch('core/block-editor').selectBlock(clientId);
@@ -1233,17 +1230,17 @@ __webpack_require__.r(__webpack_exports__);
         0: {
           slidesPerView: mobileSett.Columns,
           spaceBetween: mobileSett.SpaceBetween,
-          slidesPerGroup: safeSlidesPerGroup(mobileSett.Columns, mobileSett.SlidesToScroll)
+          slidesPerGroup: mobileSett.SlidesToScroll
         },
         480: {
           slidesPerView: tabletSett.Columns,
           spaceBetween: tabletSett.SpaceBetween,
-          slidesPerGroup: safeSlidesPerGroup(tabletSett.Columns, tabletSett.SlidesToScroll)
+          slidesPerGroup: tabletSett.SlidesToScroll
         },
         1025: {
           slidesPerView: attributes.Columns,
           spaceBetween: attributes.SpaceBetween,
-          slidesPerGroup: safeSlidesPerGroup(attributes.Columns, attributes.SlidesToScroll)
+          slidesPerGroup: attributes.SlidesToScroll
         }
       }
     };
@@ -1276,6 +1273,7 @@ __webpack_require__.r(__webpack_exports__);
       return;
     }
     if (swiperWraper.length > 0 && !swiperWraper[0].classList.contains('swiper-initialized')) {
+      console.log(sw_obj);
       let _swiper = new Swiper(swiperWraper[0], sw_obj);
     }
   };
@@ -1390,25 +1388,9 @@ __webpack_require__.r(__webpack_exports__);
       }
     });
     let $arrows = $carousel.find('.swiper-button-prev, .swiper-button-next');
-    console.log('[WPMozo Carousel] alignNavArrowsToImage ->', 'selector=', selector, 'carouselFound=', $carousel.length, 'imgHeight=', imgHeight, 'arrowsFound=', $arrows.length);
     if (!imgHeight) {
       return;
     }
-
-    // Set with !important via the raw style object (jQuery's .css()
-    // cannot express !important) so this wins over any external
-    // stylesheet rule, including one that also uses !important.
-    // Only touch the DOM if the value is actually changing: this
-    // function can run several times in a row (per-image load
-    // retries, ResizeObserver), and Swiper's own observer:true is
-    // watching this same subtree for mutations - writing the same
-    // value repeatedly would keep re-triggering it for no reason.
-    let newTop = imgHeight / 2 + 'px';
-    $arrows.each(function () {
-      if (this.style.getPropertyValue('top') !== newTop) {
-        this.style.setProperty('top', newTop, 'important');
-      }
-    });
   }
   registerBlockType('wpmozo/product-carousel', {
     title: __('WPMozo Product Carousel', 'wpmozo-product-carousel-for-woocommerce'),

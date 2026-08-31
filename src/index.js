@@ -8,8 +8,6 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
 
 ( function(blocks, editor, element, components) {
 
-    console.log( '%c[WPMozo Carousel] index.js build: nav-align-v2 (with debug logging)', 'background:#111;color:#0f0;font-size:13px;padding:3px 8px;border-radius:3px;' );
-
     const __ = wp.i18n.__;
     const el = element.createElement;
     const registerBlockType = blocks.registerBlockType;
@@ -551,12 +549,10 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
         }
 
         if ( 'undefined' === typeof Swiper ) {
-            console.warn( 'WPMozo Product Carousel: the Swiper library was not found on window. Make sure it is enqueued (e.g. via enqueue_block_assets, so it also loads inside the iframed block editor canvas) before this script runs.' );
             return;
         }
 
         if ( swiperWraper.length > 0 && !swiperWraper[0].classList.contains('swiper-initialized') ) {
-            console.log( sw_obj );
             let _swiper = new Swiper(swiperWraper[0], sw_obj);
         }
 
@@ -630,25 +626,6 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
 
     function getWraperEl( clientId ){
         return getEditorRoot().find('#block-' + clientId);
-    }
-
-    /**
-     * Clamps slides-to-scroll so it never exceeds the number of columns
-     * shown at the same breakpoint.
-     *
-     * If slidesPerGroup (slides-to-scroll) is larger than slidesPerView
-     * (columns), Swiper jumps forward past slides that were never shown -
-     * this breaks pagination's bullet-count calculation (can come out to
-     * 0 bullets) and can make "next" look like it does nothing when it's
-     * actually landing on an index that doesn't resolve to a visible move.
-     *
-     * @since 1.0.1
-     */
-    function safeSlidesPerGroup( columns, slidesToScroll ){
-        let cols = Number( columns ) || 1,
-            group = Number( slidesToScroll ) || 1;
-
-        return Math.max( 1, Math.min( group, cols ) );
     }
 
     /**

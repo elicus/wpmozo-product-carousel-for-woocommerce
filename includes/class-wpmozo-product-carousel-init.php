@@ -91,9 +91,9 @@ class WPMozo_Product_Carousel_Init {
 
 		// register product carousel block script.
 		wp_register_script( 'wpmozo-block-product-carousel-script',
-			WPMOZO_PRODUCT_CAROUSEL_PLUGIN_DIR_URL . 'build/index.js',
+			WPMOZO_PRODUCT_CAROUSEL_PLUGIN_DIR_URL . 'build/index.min.js',
 			array( 'wp-blocks', 'wp-editor', 'wp-element', 'wp-components', 'wp-i18n', 'jquery' ),
-			time()
+			WPMOZO_PRODUCT_CAROUSEL_VERSION
 		);
 
 		$all_options = $this->wpmozo_get_all_settings_options();

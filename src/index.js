@@ -1,4 +1,3 @@
-
 import WpmozoTypography from '../src/components/wpmozo-typography/wpmozo-typography';
 import WpmozoLoader from '../src/components/wpmozo-loader/wpmozo-loader';
 import WpmozoIconpicker from '../src/components/wpmozo-iconpicker/wpmozo-iconpicker';
@@ -197,7 +196,8 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
             inlineStyle = convetInlineStyle( __values, attributes ),
             CarouAlign = '',
             hasAlign = item.hasOwnProperty('hasAlign') ? item.hasAlign : true,
-            defaultInlineStyle = jQuery(wraper).find(selector).attr('style');
+            $root = getEditorRoot(),
+            defaultInlineStyle = $root.find(wraper).find(selector).attr('style');
 
         if ( attributes.hasOwnProperty('CAlign') ) {
             CarouAlign = attributes.CAlign;
@@ -205,7 +205,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
         
         if ( hasAlign && '' !== CarouAlign && 'undefined' !== typeof CarouAlign && null !== CarouAlign ) {
             let { Nstyle, NNstyle } = getAlignStyle(CarouAlign),
-                parent = jQuery(wraper).find(selector).parent();
+                parent = $root.find(wraper).find(selector).parent();
 
             if ( parent.hasClass('product') ) {
                 inlineStyle = inlineStyle += NNstyle;
@@ -219,7 +219,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
             inlineStyle = defaultInlineStyle + inlineStyle;
         }
 
-        jQuery(wraper).find(selector).attr('style', inlineStyle);
+        $root.find(wraper).find(selector).attr('style', inlineStyle);
 
     }
 
@@ -358,22 +358,22 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
         let _dimensions = StyleAtts.CarouContStyle,
             inlineStyle = convetInlineStyle( _dimensions );
         if ( '' !== inlineStyle ) {
-            jQuery('#'+selector).attr('style', inlineStyle);
+            getEditorRoot().find('#'+selector).attr('style', inlineStyle);
         }
 
         var sw_obj = {
             loop: attributes.Loop,
-            swipeHandler: 'li.product',
             on: {
                 tap: function(swiper, event){
                     dispatch( 'core/block-editor' ).selectBlock( clientId );
                 },
                 beforeInit: function(swiper){
 
-                    let { style, Nstyle, NNstyle } = getAlignStyle(attributes.CAlign);
-                    jQuery('#'+selector).find('ul.products li.product').attr('style', style);
-                    let liChilds = jQuery('#'+selector).find('ul.products li.product').children();
-                    let proLinkChilds = jQuery('#'+selector).find('ul.products li.product a.woocommerce-LoopProduct-link').children();
+                    let { style, Nstyle, NNstyle } = getAlignStyle(attributes.CAlign),
+                        $carousel = getEditorRoot().find('#'+selector);
+                    $carousel.find('ul.products li.product').attr('style', style);
+                    let liChilds = $carousel.find('ul.products li.product').children();
+                    let proLinkChilds = $carousel.find('ul.products li.product a.woocommerce-LoopProduct-link').children();
                     liChilds.each(function(key, value) {
                         jQuery(this).attr('style', NNstyle);
                     });
@@ -392,7 +392,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                         left = Object.assign({}, StyleAtts.CarouNavigationStyle, StyleAtts.CarouNavigationLeft),
                         right = Object.assign({}, StyleAtts.CarouNavigationStyle, StyleAtts.CarouNavigationRight);
 
-                    let wraper = jQuery('#'+selector);
+                    let wraper = '#'+selector;
                     let styles = [
                         {selector: '.woocommerce-loop-product__title', values: StyleAtts.TitleStyle},
                         {selector: '.price, .price > ins', values: StyleAtts.PriceStyle},
@@ -412,7 +412,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                 },
                 afterInit: function(swiper){
 
-                    let wraper = jQuery('#'+selector),
+                    let wraper = '#'+selector,
                         PaginationSelector = ( 'fraction' === attributes.PaginationType ) ? '.swiper-pagination' : '.swiper-pagination span';
 
                     let styles = [
@@ -452,10 +452,19 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                         function(item) { appendInlineStyle(item, wraper, item.values, attributes); }
                     );
 
+                    alignNavArrowsToImage( selector );
+
+                    if ( 'undefined' !== typeof ResizeObserver && swiper.el ) {
+                        let navResizeObserver = new ResizeObserver( function(){
+                            alignNavArrowsToImage( selector );
+                        } );
+                        navResizeObserver.observe( swiper.el );
+                    }
+
                 },
                 slideChange: function(swiper){
 
-                    let wraper = jQuery('#'+selector),
+                    let wraper = '#'+selector,
                     styles = [];
 
                     if ( 'bullets' === attributes.PaginationType ) {
@@ -509,7 +518,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                   spaceBetween: attributes.SpaceBetween,
                   slidesPerGroup: attributes.SlidesToScroll,
                 },
-            },
+            }
         }
 
         if ( attributes.AutoPlay ) {
@@ -519,20 +528,31 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
         }
 
         if ( attributes.ShowNavigation ) {
+            // Pass actual elements rather than CSS-selector strings.
+            // Swiper resolves string selectors itself, and inside the
+            // block editor's iframed canvas that internal lookup does not
+            // reliably land in the iframe's own document - the elements
+            // exist, but Swiper's own search does not find them. Handing
+            // it the element directly (found the same iframe-aware way
+            // as everything else in this file) needs no resolving.
             sw_obj.navigation = {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
+                nextEl: swiperWraper.find('.swiper-button-next')[0],
+                prevEl: swiperWraper.find('.swiper-button-prev')[0],
             };
         }
 
         if ( attributes.ShowPagination ) {
             sw_obj.pagination = {
-                el: '.swiper-pagination',
+                el: swiperWraper.find('.swiper-pagination')[0],
                 type: attributes.PaginationType,
             };
         }
 
-        if ( swiperWraper.length > 0 ) {
+        if ( 'undefined' === typeof Swiper ) {
+            return;
+        }
+
+        if ( swiperWraper.length > 0 && !swiperWraper[0].classList.contains('swiper-initialized') ) {
             let _swiper = new Swiper(swiperWraper[0], sw_obj);
         }
 
@@ -579,13 +599,78 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
    
     }
 
-    function getWraperEl( clientId ){
-        let editorIfram = jQuery('body').find('[name="editor-canvas"]').contents(),
-        mainFromIfram = editorIfram.find('body').find('#block-' + clientId),
-        mainFromBody = jQuery('body').find('#block-' + clientId),
-        mainEl = mainFromIfram.length > 0 ? mainFromIfram : mainFromBody;
+    /**
+     * Returns the correct jQuery-wrapped root to search the block's rendered
+     * markup in.
+     *
+     * Since WordPress 6.3+, block themes (Twenty Twenty-Two and any other
+     * theme with theme.json) render the post/site editor canvas inside a
+     * same-origin <iframe name="editor-canvas">. A jQuery lookup that only
+     * checks the top-level admin document silently finds nothing for those
+     * themes, even though the exact same lookup works fine on the frontend
+     * (no iframe there) and in classic themes (not iframed).
+     *
+     * This is re-resolved every call instead of cached, because Gutenberg
+     * can recreate the iframe (e.g. switching the editor's preview device
+     * size), which would otherwise leave a stale/detached reference.
+     */
+    function getEditorRoot(){
+        let $iframe = jQuery('body').find('iframe[name="editor-canvas"]');
 
-        return mainEl;
+        if ( $iframe.length && $iframe[0].contentDocument && $iframe[0].contentDocument.body ) {
+            return jQuery( $iframe[0].contentDocument.body );
+        }
+
+        return jQuery('body');
+    }
+
+    function getWraperEl( clientId ){
+        return getEditorRoot().find('#block-' + clientId);
+    }
+
+    /**
+     * Vertically centers the nav arrows against the product IMAGE row
+     * instead of Swiper's default (50% of the whole .swiper element,
+     * which includes the title/price/button under the image).
+     *
+     * When one card's title wraps onto an extra line - e.g. the block
+     * editor's canvas is narrower than the frontend, especially with the
+     * sidebar open - the tallest card grows, which pushes that 50% mark
+     * down onto the text. This measures the actual rendered image height
+     * and pins the arrows there directly, so it stays correct regardless
+     * of container width or how any one title wraps.
+     *
+     * @since 1.0.1
+     */
+    function alignNavArrowsToImage( selector ){
+        let $carousel = getEditorRoot().find('#'+selector),
+            imgHeight = 0;
+
+        $carousel.find('ul.products li.product img').each(function(){
+            let img = this,
+                $img = jQuery(img);
+
+            if ( img.complete && 0 !== img.naturalHeight ) {
+                let h = $img.outerHeight();
+                if ( h > imgHeight ) {
+                    imgHeight = h;
+                }
+            } else {
+                // Not loaded yet at this exact moment (common on a cold
+                // cache) - re-run once it settles instead of measuring 0
+                // and silently giving up.
+                $img.one( 'load.wpmozoNavAlign error.wpmozoNavAlign', function(){
+                    alignNavArrowsToImage( selector );
+                } );
+            }
+        });
+
+        let $arrows = $carousel.find('.swiper-button-prev, .swiper-button-next');
+
+        if ( ! imgHeight ) {
+            return;
+        }
+
     }
 
     registerBlockType( 'wpmozo/product-carousel', {

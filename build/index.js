@@ -756,6 +756,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 (function (blocks, editor, element, components) {
+  console.log('%c[WPMozo Carousel] index.js build: nav-align-v2 (with debug logging)', 'background:#111;color:#0f0;font-size:13px;padding:3px 8px;border-radius:3px;');
   const __ = wp.i18n.__;
   const el = element.createElement;
   const registerBlockType = blocks.registerBlockType;
@@ -1173,6 +1174,13 @@ __webpack_require__.r(__webpack_exports__);
           styles.map(function (item) {
             appendInlineStyle(item, wraper, item.values, attributes);
           });
+          alignNavArrowsToImage(selector);
+          if ('undefined' !== typeof ResizeObserver && swiper.el) {
+            let navResizeObserver = new ResizeObserver(function () {
+              alignNavArrowsToImage(selector);
+            });
+            navResizeObserver.observe(swiper.el);
+          }
         },
         slideChange: function (swiper) {
           let wraper = '#' + selector,
@@ -1225,26 +1233,49 @@ __webpack_require__.r(__webpack_exports__);
         0: {
           slidesPerView: mobileSett.Columns,
           spaceBetween: mobileSett.SpaceBetween,
-          slidesPerGroup: mobileSett.SlidesToScroll
+          slidesPerGroup: safeSlidesPerGroup(mobileSett.Columns, mobileSett.SlidesToScroll)
         },
         480: {
           slidesPerView: tabletSett.Columns,
           spaceBetween: tabletSett.SpaceBetween,
-          slidesPerGroup: tabletSett.SlidesToScroll
+          slidesPerGroup: safeSlidesPerGroup(tabletSett.Columns, tabletSett.SlidesToScroll)
         },
         1025: {
           slidesPerView: attributes.Columns,
           spaceBetween: attributes.SpaceBetween,
-          slidesPerGroup: attributes.SlidesToScroll
+          slidesPerGroup: safeSlidesPerGroup(attributes.Columns, attributes.SlidesToScroll)
         }
       }
     };
+    if (attributes.AutoPlay) {
+      sw_obj.autoplay = {
+        delay: attributes.Delay
+      };
+    }
+    if (attributes.ShowNavigation) {
+      // Pass actual elements rather than CSS-selector strings.
+      // Swiper resolves string selectors itself, and inside the
+      // block editor's iframed canvas that internal lookup does not
+      // reliably land in the iframe's own document - the elements
+      // exist, but Swiper's own search does not find them. Handing
+      // it the element directly (found the same iframe-aware way
+      // as everything else in this file) needs no resolving.
+      sw_obj.navigation = {
+        nextEl: swiperWraper.find('.swiper-button-next')[0],
+        prevEl: swiperWraper.find('.swiper-button-prev')[0]
+      };
+    }
+    if (attributes.ShowPagination) {
+      sw_obj.pagination = {
+        el: swiperWraper.find('.swiper-pagination')[0],
+        type: attributes.PaginationType
+      };
+    }
     if ('undefined' === typeof Swiper) {
       console.warn('WPMozo Product Carousel: the Swiper library was not found on window. Make sure it is enqueued (e.g. via enqueue_block_assets, so it also loads inside the iframed block editor canvas) before this script runs.');
       return;
     }
     if (swiperWraper.length > 0 && !swiperWraper[0].classList.contains('swiper-initialized')) {
-      console.log('initilazed');
       let _swiper = new Swiper(swiperWraper[0], sw_obj);
     }
   };
@@ -1304,6 +1335,80 @@ __webpack_require__.r(__webpack_exports__);
   }
   function getWraperEl(clientId) {
     return getEditorRoot().find('#block-' + clientId);
+  }
+
+  /**
+   * Clamps slides-to-scroll so it never exceeds the number of columns
+   * shown at the same breakpoint.
+   *
+   * If slidesPerGroup (slides-to-scroll) is larger than slidesPerView
+   * (columns), Swiper jumps forward past slides that were never shown -
+   * this breaks pagination's bullet-count calculation (can come out to
+   * 0 bullets) and can make "next" look like it does nothing when it's
+   * actually landing on an index that doesn't resolve to a visible move.
+   *
+   * @since 1.0.1
+   */
+  function safeSlidesPerGroup(columns, slidesToScroll) {
+    let cols = Number(columns) || 1,
+      group = Number(slidesToScroll) || 1;
+    return Math.max(1, Math.min(group, cols));
+  }
+
+  /**
+   * Vertically centers the nav arrows against the product IMAGE row
+   * instead of Swiper's default (50% of the whole .swiper element,
+   * which includes the title/price/button under the image).
+   *
+   * When one card's title wraps onto an extra line - e.g. the block
+   * editor's canvas is narrower than the frontend, especially with the
+   * sidebar open - the tallest card grows, which pushes that 50% mark
+   * down onto the text. This measures the actual rendered image height
+   * and pins the arrows there directly, so it stays correct regardless
+   * of container width or how any one title wraps.
+   *
+   * @since 1.0.1
+   */
+  function alignNavArrowsToImage(selector) {
+    let $carousel = getEditorRoot().find('#' + selector),
+      imgHeight = 0;
+    $carousel.find('ul.products li.product img').each(function () {
+      let img = this,
+        $img = jQuery(img);
+      if (img.complete && 0 !== img.naturalHeight) {
+        let h = $img.outerHeight();
+        if (h > imgHeight) {
+          imgHeight = h;
+        }
+      } else {
+        // Not loaded yet at this exact moment (common on a cold
+        // cache) - re-run once it settles instead of measuring 0
+        // and silently giving up.
+        $img.one('load.wpmozoNavAlign error.wpmozoNavAlign', function () {
+          alignNavArrowsToImage(selector);
+        });
+      }
+    });
+    let $arrows = $carousel.find('.swiper-button-prev, .swiper-button-next');
+    console.log('[WPMozo Carousel] alignNavArrowsToImage ->', 'selector=', selector, 'carouselFound=', $carousel.length, 'imgHeight=', imgHeight, 'arrowsFound=', $arrows.length);
+    if (!imgHeight) {
+      return;
+    }
+
+    // Set with !important via the raw style object (jQuery's .css()
+    // cannot express !important) so this wins over any external
+    // stylesheet rule, including one that also uses !important.
+    // Only touch the DOM if the value is actually changing: this
+    // function can run several times in a row (per-image load
+    // retries, ResizeObserver), and Swiper's own observer:true is
+    // watching this same subtree for mutations - writing the same
+    // value repeatedly would keep re-triggering it for no reason.
+    let newTop = imgHeight / 2 + 'px';
+    $arrows.each(function () {
+      if (this.style.getPropertyValue('top') !== newTop) {
+        this.style.setProperty('top', newTop, 'important');
+      }
+    });
   }
   registerBlockType('wpmozo/product-carousel', {
     title: __('WPMozo Product Carousel', 'wpmozo-product-carousel-for-woocommerce'),

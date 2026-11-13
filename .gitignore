@@ -4,3 +4,6 @@ node_modules/
 
 build/index.asset.php
 build/index.js.map
+# OS files
+.DS_Store
+Thumbs.db

@@ -361,9 +361,15 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
             getEditorRoot().find('#'+selector).attr('style', inlineStyle);
         }
 
+        let loopEnabled = !! attributes.Loop,
+            slidesCount = swiperWraper.find('.swiper-wrapper > .swiper-slide').length;
+
         var sw_obj = {
-            loop: attributes.Loop,
+            loop: loopEnabled,
             on: {
+                breakpoint: function(swiper){
+                    wpmozo_sync_loop( swiper, loopEnabled, slidesCount );
+                },
                 tap: function(swiper, event){
                     dispatch( 'core/block-editor' ).selectBlock( clientId );
                 },
@@ -503,21 +509,9 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                 }
             },
             breakpoints: {
-                0: {
-                  slidesPerView: mobileSett.Columns,
-                  spaceBetween: mobileSett.SpaceBetween,
-                  slidesPerGroup: mobileSett.SlidesToScroll,
-                },
-                480: {
-                  slidesPerView: tabletSett.Columns,
-                  spaceBetween: tabletSett.SpaceBetween,
-                  slidesPerGroup: tabletSett.SlidesToScroll,
-                },
-                1025: {
-                  slidesPerView: attributes.Columns,
-                  spaceBetween: attributes.SpaceBetween,
-                  slidesPerGroup: attributes.SlidesToScroll,
-                },
+                0: wpmozo_breakpoint_params( mobileSett.Columns, mobileSett.SpaceBetween, mobileSett.SlidesToScroll ),
+                480: wpmozo_breakpoint_params( tabletSett.Columns, tabletSett.SpaceBetween, tabletSett.SlidesToScroll ),
+                1025: wpmozo_breakpoint_params( attributes.Columns, attributes.SpaceBetween, attributes.SlidesToScroll ),
             }
         }
 
@@ -557,6 +551,98 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
         }
 
     };
+
+    /**
+     * Builds the Swiper settings for one breakpoint.
+     *
+     * "Slides to scroll" is capped at the number of columns: scrolling
+     * more slides than are visible skips products, and with loop on it
+     * jams Swiper completely (e.g. 2 columns with the default 4 to scroll).
+     */
+    function wpmozo_breakpoint_params( columns, spaceBetween, slidesToScroll ){
+
+        let perView  = Math.max( 1, parseInt( columns, 10 ) || 1 ),
+            perGroup = Math.max( 1, parseInt( slidesToScroll, 10 ) || 1 );
+
+        return {
+            slidesPerView: perView,
+            spaceBetween: spaceBetween,
+            slidesPerGroup: Math.min( perGroup, perView ),
+        };
+
+    }
+
+    /**
+     * Whether Swiper 9 can loop these slides without jumping or sticking.
+     *
+     * Swiper 9 loops by moving existing slides around (it no longer clones
+     * them), so it needs a full screen of slides plus the ones it moves
+     * (columns rounded up to a multiple of slides-to-scroll). When
+     * slides-to-scroll does not divide the columns, the slide count must
+     * also be a multiple of it.
+     */
+    function wpmozo_can_loop( slidesCount, perView, perGroup ){
+
+        let loopedSlides = Math.ceil( perView / perGroup ) * perGroup;
+
+        if ( slidesCount < perView + loopedSlides ) {
+            return false;
+        }
+
+        return 1 === perGroup || perView === perGroup || 0 === slidesCount % perGroup;
+
+    }
+
+    /**
+     * Turns Swiper's loop on or off for the current breakpoint.
+     *
+     * Runs on Swiper's "breakpoint" event. When there are not enough
+     * products to loop at this breakpoint, rewind is used instead so the
+     * next/prev buttons and autoplay still wrap around instead of
+     * stopping. Swiper 9 cannot switch loop between breakpoints itself,
+     * so this does it when the screen is resized across one.
+     */
+    function wpmozo_sync_loop( swiper, loopEnabled, slidesCount ){
+
+        let params = swiper.params,
+            loop   = loopEnabled && wpmozo_can_loop( slidesCount, params.slidesPerView, params.slidesPerGroup );
+
+        params.rewind = loopEnabled && ! loop;
+
+        if ( loop === !! params.loop ) {
+            return;
+        }
+
+        // Still inside init(): Swiper builds the loop right after this event.
+        if ( ! swiper.initialized ) {
+            params.loop = loop;
+            return;
+        }
+
+        let realIndex = swiper.realIndex;
+
+        // Puts the slides back in their original order; needs loop still on.
+        if ( params.loop ) {
+            swiper.loopDestroy();
+        }
+
+        params.loop = loop;
+        swiper.updateSlides();
+
+        if ( loop ) {
+            swiper.loopCreate( realIndex );
+        }
+        swiper.slideToLoop( realIndex, 0, false );
+
+        if ( swiper.pagination && swiper.pagination.el ) {
+            swiper.pagination.render();
+            swiper.pagination.update();
+        }
+        if ( swiper.navigation ) {
+            swiper.navigation.update();
+        }
+
+    }
 
     hooks.addAction( 'server-side-loading-finished', 'function_name', initializeSwiper );
 

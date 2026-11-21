@@ -1,114 +1,156 @@
-=== Plugin Name ===
-Contributors: (this should be a list of wordpress.org userid's)
-Donate link: https://elicus.com
-Tags: comments, spam
-Requires at least: 3.0.1
-Tested up to: 3.4
-Stable tag: 4.3
+=== WPMozo Product Carousel for WooCommerce ===
+Contributors: elicus
+Tags: gutenberg blocks, woocommerce slider, product carousel, woocommerce product slider, gutenberg product slider
+Requires at least: 6.3
+Tested up to: 7.0
+Stable tag: 1.0.0
+Requires PHP: 7.0
 License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+WPMozo Product Carousel for WooCommerce will let you display your store products in a carousel.
 
 == Description ==
+WPMozo Product Carousel for WooCommerce is a plugin for your WooCommerce store.
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+This plugin will let you create interactive product sliders on your Woo based website. There are two available layouts in the plugin with great customization control to help you add and style your product carousel easily.
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+### [Live Demo](https://productcarousel.wpmozo.com "Live Demo")
 
-A few notes about the sections above:
+### Key Features of the Plugin
+#### Gutenberg Block
+The WPMozo Product Carousel for WooCommerce provides one block for Gutenberg named **WPMozo Product Carousel**. Load your builder, add and configure the block and get your desired carousel.
 
-*   "Contributors" is a comma separated list of wp.org/wp-plugins.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
+#### Two Product Carousel Layouts
+There are two available layouts for displaying each product card in your carousel. You can enable any one from the block setting and configure it.
 
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
+#### Intuitive Control
+Manage your carousel block with simplified control for various elements like:
+- Column control (add up to 8 columns).
+- Slide control.
+- Autoplay and loop.
+- Navigation and pagination settings.
+- Responsive settings for optimized display on different devices.
 
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
+#### Query Control
+Control what you want to display in your carousel with the following available settings:
+- Product view type (popular, featured, etc).
+- Number of products.
+- Order by settings.
+- Option to include categories and tags.
+- Taxonomies relations.
 
-== Installation ==
+#### Design Settings
+You can chose to display your carousel in one of the available prebuilt layout with further control for:
+- Show/hide out of stock products.
+- Enable/disable quick view.
+- Show/hide title.
+- Show/hide featured image with control of image size.
+- Show/hide rating.
+- Show/hide price.
+- Show/hide add to cart button.
+- Show/hide sale badge.
+- Sale badge label type and text control.
+- Advanced CSS control.
 
-This section describes how to install the plugin and get it working.
+### Documentation and Support
+- Check out the [product documentation](https://documentation.wpmozo.com/wpmozo-product-carousel-for-woocommerce/ "product documentation").
+- If you have a question, please visit the [plugin support forum](https://wordpress.org/support/plugin/wpmozo-product-carousel-for-woocommerce/ "plugin support forum").
+- If you have suggestions for a new feature, feel free to contact us using the support forum.
 
-e.g.
-
-1. Upload `wpmozo-product-carousel-for-woocommerce.php` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
-
-== Frequently Asked Questions ==
-
-= A question that someone might have =
-
-An answer to that question.
-
-= What about foo bar? =
-
-Answer to foo bar dilemma.
+### Like our Plugin?
+Do you like our plugin?
+- Connect with us on [Facebook](https://www.facebook.com/helloelicus "Facebook")!
+- Follow us on [Twitter](https://twitter.com/helloelicus "Twitter")!
+- Join our [YouTube](https://www.youtube.com/channel/UCOVS7z4-XeyiUcVDhYkIMNw "YouTube") channel
+- Rate us on [WordPress](https://wordpress.org/support/plugin/wpmozo-product-carousel-for-woocommerce/reviews/?rate=5#new-post "Rate our plugin").
 
 == Screenshots ==
+1. The WPMozo Product Carousel block in the Gutenberg editor, ready for you to create your carousel.
+2. A live view of the WPMozo Product Carousel in action, displaying products in an elegant sliding manner.
+3. Customization options for the carousel, including slide duration, effects, and more, ensuring your carousel fits perfectly with your site’s design.
+4. The responsive design of the WPMozo Product Carousel, ensuring a seamless experience for mobile users.
+5. Sample layouts implemented using different layout and styling options.
+6. Carousel column control.
+7. Simple layout selection panel.
+8. Choose what to display for each product.
+9. Control carousel autoplay, loop, animation and more settings.
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+== Frequently Asked Questions ==
+= How do I install and activate the WPMozo Product Carousel? =
+Once the plugin is installed, activate it through the 'Plugins' menu in WordPress. Upon activation, you'll see a new block available in the Gutenberg editor.
 
-== Changelog ==
+= Can I customize the look and feel of the carousel? =
+Yes, the WPMozo Product Carousel provides various customization options. You can adjust the slider speed, choose transition effects, and style the carousel to match your site's theme.
 
-= 1.0 =
-* A change since the previous version.
-* Another change.
+= Does the carousel support variable products? =
+Yes, our carousel supports both simple and variable products. If a product has multiple variations, the carousel will display the default variation or the one you specify.
 
-= 0.5 =
-* List versions from most recent at top to oldest at bottom.
+= Is the carousel mobile-responsive? =
+Absolutely! The WPMozo Product Carousel is designed to be responsive. It'll adapt to different screen sizes, ensuring a seamless shopping experience for your users on both desktop and mobile devices.
+
+= Are there any conflicts with other WooCommerce extensions? =
+While we strive for maximum compatibility, there can always be specific cases. If you encounter any conflicts with other extensions, please contact our support team for assistance.
+
+== Installation ==
+### Minimum Requirements
+PHP 7.0 or greater is required (PHP 7.3 or greater is recommended)
+MySQL 5.6 or greater, OR MariaDB version 10.1 or greater, is required
+For a detailed list of server requirements, please refer to the official WordPress requirements documentation.
+
+### Automatic Installation
+Automatic installation is the most straightforward approach. With this method, WordPress manages the file transfer for you, and there's no need to leave your browser. To perform an automatic install of WPMozo Product Carousel for WooCommerce:
+
+1. **Log in** to your **WordPress Dashboard**.
+2. Navigate to the Plugins menu and click “**Add New.**”
+3. In the search field, type “**WPMozo Product Carousel for WooCommerce**”.
+4. Once you locate the plugin, you'll see details like the version, ratings, and a brief description. Click “**Install Now**,” and WordPress will take care of the installation process.
+
+= Manual Installation =
+If you prefer to [install WPMozo Product Carousel for WooCommerce manually](https://documentation.wpmozo.com/wpmozo-product-carousel-for-woocommerce/installation/ "install WPMozo Product Carousel for WooCommerce manually"), you'll need to download the WPMozo Product Carousel for WooCommerce plugin and upload it to your server using your preferred FTP application. If you need guidance on this process, the WordPress codex offers detailed instructions on manual plugin installation.
+
+= Updating =
+While automatic updates typically occur without a hitch, it's always wise to back up your website before applying any updates.
+
+Should you run into any display issues with the carousel after updating, it may help to flush the permalinks. To do this, go to **WordPress** > **Settings** > **Permalinks** and click “**Save**.” This action often resolves any permalink-related issues post-update.
 
 == Upgrade Notice ==
 
-= 1.0 =
-Upgrade notices describe the reason a user should upgrade.  No more than 300 characters.
+== Third Party Code Credits ==
+#### FontAwesome
+-----------
+- File Location: /assets/frontend/fontawesome/all.min.css
+- License: MIT
 
-= 0.5 =
-This version fixes a security related bug.  Upgrade immediately.
+#### Magnific Popup
+-----------
+- File Location: /assets/frontend/magnific/css/magnific-popup.css
+- File Location: /assets/frontend/magnific/js/jquery.magnific-popup.min.js
+- License: MIT
 
-== Arbitrary section ==
+The MIT License (MIT)
+**Copyright (c) 2014-2016 Dmitry Semenov, http://dimsemenov.com**
 
-You may provide arbitrary sections, in the same format as the ones above.  This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation."  Arbitrary sections will be shown below the built-in sections outlined above.
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-== A brief Markdown Example ==
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-Ordered list:
+The software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.
 
-1. Some feature
-1. Another feature
-1. Something else about the plugin
+#### Swiper
+------
+- File Location: /assets/frontend/swiper/css/swiper-bundle.min.css
+- File Location: /assets/frontend/swiper/js/swiper-bundle.min.js
+- License: MIT
+- License URI: https://opensource.org/licenses/MIT
 
-Unordered list:
+The MIT License (MIT)
+**Copyright (c) 2019 Vladimir Kharlampidi**
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-* something
-* something else
-* third thing
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-Here's a link to [WordPress](http://wordpress.org/ "Your favorite software") and one to [Markdown's Syntax Documentation][markdown syntax].
-Titles are optional, naturally.
+The software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.
 
-[markdown syntax]: http://daringfireball.net/projects/markdown/syntax
-            "Markdown is what the parser uses to process much of the readme file"
-
-Markdown uses email style notation for blockquotes and I've been told:
-> Asterisks for *emphasis*. Double it up  for **strong**.
-
-`<?php code(); // goes in backticks ?>`
+== Changelog ==
+= 1.0.0 = This is the initial release  of the plugin.

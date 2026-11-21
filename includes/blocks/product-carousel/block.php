@@ -42,7 +42,7 @@ function wpmozo_product_carousel_render_callback( $args ) {
 		<?php if ( $wpmozo_product_carousel_is_admin ) { ?>
 			<?php do_action( 'wpmozo_product_carousel_before_noelements', $args ); ?>
 				<div class="wpmozo-products-wrap wpmozo-products-noelements-wrap">
-					<p class="wpmozo-products-noelements"><?php echo esc_html( apply_filters( 'wpmozo_product_carousel_noelements_text', __( 'All product components have been deactivated through the display settings.', 'wpmozo-products-for-woocommerce' ) ) ); ?></p>
+					<p class="wpmozo-products-noelements"><?php echo esc_html( apply_filters( 'wpmozo_product_carousel_noelements_text', __( 'All product components have been deactivated through the display settings.', 'wpmozo-product-carousel-for-woocommerce' ) ) ); ?></p>
 				</div>
 			<?php do_action( 'wpmozo_product_carousel_after_noelements', $args ); ?>
 		<?php } ?>

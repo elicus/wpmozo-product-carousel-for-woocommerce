@@ -886,8 +886,9 @@ class WPMozo_Product_Carousel_Init {
 				'type'    => 'string',
 				'default' => '',
 			),
-			'QuickViewPriceStyledefault'             => array(
-				'text' => '',
+			'QuickViewPriceStyletext'                => array(
+				'type'    => 'string',
+				'default' => '',
 			),
 			'QuickViewSaleLabelStyleFontSize'        => array(
 				'type'    => 'string',

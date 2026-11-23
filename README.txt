@@ -181,6 +181,7 @@ The software is provided "as is", without warranty of any kind, express or impli
 * Fixed: The Sale Products view showed every product when no products were on sale.
 * Fixed: The quick view price color setting was not saved.
 * Fixed: The "All product components have been deactivated" notice in the block editor could not be translated.
+* Fixed: "Number of Products" was misspelled in the block's Query Settings.
 * Fixed: Incorrect Swiper file paths in the readme's third-party credits.
 
 = 1.0.0 - 2024-02-27 =

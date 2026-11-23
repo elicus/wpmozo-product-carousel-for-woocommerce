@@ -1290,7 +1290,7 @@ import WpmozoProductPicker from '../src/components/wpmozo-product-picker/wpmozo-
                             {
                                 key: 'wpmozo-product-carousel-products',
                                 value: attributes.NumberOfProducts,
-                                label: __( 'Number of Porducts', 'wpmozo-product-carousel-for-woocommerce' ),
+                                label: __( 'Number of Products', 'wpmozo-product-carousel-for-woocommerce' ),
                                 onChange: function( NewNumberOfProducts ) {
                                     setAttributes( { NumberOfProducts: NewNumberOfProducts } );
                                 },

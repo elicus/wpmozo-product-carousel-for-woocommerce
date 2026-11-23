@@ -48,8 +48,9 @@ function wpmozo_product_carousel_prepare_query_args( $args ) {
 				);
 				break;
 			case 'sale':
-				$sale_ids            = wc_get_product_ids_on_sale();
-				$qu_args['post__in'] = $sale_ids;
+				// WP_Query ignores an empty post__in and would return every product,
+				// so the 0 keeps the result empty when nothing is on sale.
+				$qu_args['post__in'] = array_merge( array( 0 ), wc_get_product_ids_on_sale() );
 				break;
 			case 'best_selling':
 				$qu_args['meta_key'] = 'total_sales';
@@ -63,6 +64,20 @@ function wpmozo_product_carousel_prepare_query_args( $args ) {
 				break;
 		}
 	}
+
+	// A plain WP_Query ignores catalog visibility, so "Hidden" and "Search results only"
+	// products would show up. Same rule WooCommerce applies to the shop page.
+	$visibility_term_ids = wc_get_product_visibility_term_ids();
+	$exclude_term_ids    = array( $visibility_term_ids['exclude-from-catalog'] );
+	if ( 'yes' === get_option( 'woocommerce_hide_out_of_stock_items' ) ) {
+		$exclude_term_ids[] = $visibility_term_ids['outofstock'];
+	}
+	$tax_query[] = array(
+		'taxonomy' => 'product_visibility',
+		'field'    => 'term_taxonomy_id',
+		'terms'    => $exclude_term_ids,
+		'operator' => 'NOT IN',
+	);
 
 	if ( isset( $args['IncludeCategories'] ) && ! empty( $args['IncludeCategories'] ) ) {
 		$tax_args[] = array(
@@ -112,15 +127,11 @@ function wpmozo_product_carousel_prepare_query_args( $args ) {
 		$qu_args['orderby'] = $args['OrderBy'];
 	}
 
-	if ( ! empty( $tax_query ) ) {
-		if ( ! empty( $tax_args ) ) {
-			$tax_query['relation'] = 'AND';
-			$tax_query[]           = $tax_args;
-		}
-		$qu_args['tax_query'] = $tax_query;
-	} elseif ( ! empty( $tax_args ) ) {
-		$qu_args['tax_query'] = $tax_args;
+	if ( ! empty( $tax_args ) ) {
+		$tax_query['relation'] = 'AND';
+		$tax_query[]           = $tax_args;
 	}
+	$qu_args['tax_query'] = $tax_query;
 
 	if ( ! empty( $meta_query ) ) {
 		$qu_args['meta_query'] = $meta_query;

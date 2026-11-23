@@ -24,6 +24,9 @@ The WPMozo Product Carousel for WooCommerce provides one block for Gutenberg nam
 #### Two Product Carousel Layouts
 There are two available layouts for displaying each product card in your carousel. You can enable any one from the block setting and configure it.
 
+#### Works With Astra and Divi
+With Astra, the carousel's show/hide settings and layouts work with Astra's own shop layout, and the editor preview uses Astra's WooCommerce styles. With Divi, the block editor preview loads Divi's styles so it matches your site.
+
 #### Intuitive Control
 Manage your carousel block with simplified control for various elements like:
 - Column control (add up to 8 columns).
@@ -56,6 +59,7 @@ You can chose to display your carousel in one of the available prebuilt layout w
 - Show/hide add to cart button.
 - Show/hide sale badge.
 - Sale badge label type and text control.
+- Separate colors for active and inactive pagination.
 - Advanced CSS control.
 
 ### Documentation and Support
@@ -89,7 +93,7 @@ Once the plugin is installed, activate it through the 'Plugins' menu in WordPres
 Yes, the WPMozo Product Carousel provides various customization options. You can adjust the slider speed, choose transition effects, and style the carousel to match your site's theme.
 
 = Does the carousel support variable products? =
-Yes, our carousel supports both simple and variable products. If a product has multiple variations, the carousel will display the default variation or the one you specify.
+Yes, our carousel shows both simple and variable products. For a variable product, shoppers choose its options in the quick view popup or on the product page.
 
 = Is the carousel mobile-responsive? =
 Absolutely! The WPMozo Product Carousel is designed to be responsive. It'll adapt to different screen sizes, ensuring a seamless shopping experience for your users on both desktop and mobile devices.
@@ -168,6 +172,8 @@ The software is provided "as is", without warranty of any kind, express or impli
 * Added: Fade transition effect for carousels showing one product at a time.
 * Added: Pause on Hover option for autoplay.
 * Added: Hide Arrows on Mobile option, for screens under 480px wide.
+* Added: Separate colors for active and inactive pagination bullets, and for the progress bar's fill and track.
+* Added: Astra and Divi theme support. With Astra, the show/hide settings and layouts work with Astra's shop layout and the editor preview uses Astra's WooCommerce styles. With Divi, the editor preview loads Divi's styles.
 * Added: Documentation and Live Demo links in the plugin's row on the Plugins screen.
 * Added: Declared compatibility with WooCommerce High-Performance Order Storage (HPOS) and the Cart and Checkout blocks.
 * Improved: Accessibility. The arrow keys move the carousel while it has keyboard focus, autoplay holds still while a product in it has focus and does not start for visitors who prefer reduced motion, and the screen reader labels can now be translated.

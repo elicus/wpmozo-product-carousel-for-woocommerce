@@ -8,6 +8,8 @@ Version 1.1.0 - November 23rd, 2026
 - Added: Fade transition effect for carousels showing one product at a time.
 - Added: Pause on Hover option for autoplay.
 - Added: Hide Arrows on Mobile option, for screens under 480px wide.
+- Added: Separate colors for active and inactive pagination bullets, and for the progress bar's fill and track.
+- Added: Astra and Divi theme support. With Astra, the show/hide settings and layouts work with Astra's shop layout and the editor preview uses Astra's WooCommerce styles. With Divi, the editor preview loads Divi's styles.
 - Added: Documentation and Live Demo links in the plugin's row on the Plugins screen.
 - Added: Declared compatibility with WooCommerce High-Performance Order Storage (HPOS) and the Cart and Checkout blocks.
 - Improved: Accessibility. The arrow keys move the carousel while it has keyboard focus, autoplay holds still while a product in it has focus and does not start for visitors who prefer reduced motion, and the screen reader labels can now be translated.

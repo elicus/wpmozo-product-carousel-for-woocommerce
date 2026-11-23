@@ -164,7 +164,7 @@ The above copyright notice and this permission notice shall be included in all c
 The software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.
 
 == Changelog ==
-= 1.1.0 - 2026-11-23 =
+= 1.1.0 - 2026-11-24 =
 * Added: Selected Products view type, to hand-pick the products a carousel shows, in the order you pick them.
 * Added: Related Products, Upsells and Cross-sells view types for product pages. On a product that has none, the carousel is left out of the page.
 * Added: Exclude Products, Exclude Categories and Exclude Current Product settings.

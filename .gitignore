@@ -4,6 +4,9 @@ node_modules/
 
 build/index.asset.php
 build/index.js.map
+
+# Release zips from npm run zip
+dist/
 # OS files
 .DS_Store
 Thumbs.db

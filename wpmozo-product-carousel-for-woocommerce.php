@@ -24,7 +24,7 @@
  * Text Domain:       wpmozo-product-carousel-for-woocommerce
  * Domain Path:       /languages
  * WC requires at least: 7.7.0
- * WC tested up to:   11.2
+ * WC tested up to:   11.3
  */
 
 // If this file is called directly, abort.

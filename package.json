@@ -5,7 +5,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "wp-scripts start",
-    "build": "wp-scripts build"
+    "build": "wp-scripts build",
+    "prezip": "git diff --quiet HEAD || (echo 'Commit your changes first: the zip only includes committed files.' && exit 1)",
+    "zip": "mkdir -p dist && git archive --format=zip --prefix=wpmozo-product-carousel-for-woocommerce/ -o dist/wpmozo-product-carousel-for-woocommerce-$npm_package_version.zip HEAD -- . ':!src' ':!package.json' ':!package-lock.json' ':!.github' ':!.gitignore' && echo \"Created dist/wpmozo-product-carousel-for-woocommerce-$npm_package_version.zip\""
   },
   "devDependencies": {
     "@wordpress/scripts": "^26.5.0"

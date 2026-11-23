@@ -35,6 +35,7 @@ function wpmozo_product_carousel_prepare_query_args( $args ) {
 	$tax_query  = array();
 	$tax_args   = array();
 	$meta_query = array();
+	$current_id = wpmozo_product_carousel_current_product_id();
 
 	if ( isset( $args['ProductViewType'] ) && ! empty( $args['ProductViewType'] ) ) {
 
@@ -62,6 +63,21 @@ function wpmozo_product_carousel_prepare_query_args( $args ) {
 				$qu_args['order']    = 'DESC';
 				$qu_args['orderby']  = 'meta_value_num';
 				break;
+			case 'selected':
+				$selected_ids              = wpmozo_product_carousel_id_list( isset( $args['IncludeProducts'] ) ? $args['IncludeProducts'] : array() );
+				$qu_args['post__in']       = array_merge( array( 0 ), $selected_ids );
+				$qu_args['orderby']        = 'post__in';
+				$qu_args['posts_per_page'] = max( 1, count( $selected_ids ) );
+				break;
+			case 'related':
+			case 'upsells':
+			case 'cross_sells':
+				$limit      = isset( $qu_args['posts_per_page'] ) ? $qu_args['posts_per_page'] : -1;
+				$source_ids = wpmozo_product_carousel_source_ids( $args['ProductViewType'], $current_id, $limit );
+				if ( null !== $source_ids ) {
+					$qu_args['post__in'] = array_merge( array( 0 ), $source_ids );
+				}
+				break;
 		}
 	}
 
@@ -78,6 +94,28 @@ function wpmozo_product_carousel_prepare_query_args( $args ) {
 		'terms'    => $exclude_term_ids,
 		'operator' => 'NOT IN',
 	);
+
+	if ( ! empty( $args['ExcludeCategories'] ) ) {
+		$tax_query[] = array(
+			'taxonomy' => 'product_cat',
+			'field'    => 'name',
+			'terms'    => $args['ExcludeCategories'],
+			'operator' => 'NOT IN',
+		);
+	}
+
+	$exclude_ids = wpmozo_product_carousel_id_list( isset( $args['ExcludeProducts'] ) ? $args['ExcludeProducts'] : array() );
+	if ( ! empty( $args['ExcludeCurrentProduct'] ) && $current_id ) {
+		$exclude_ids[] = $current_id;
+	}
+	if ( ! empty( $exclude_ids ) ) {
+		// WP_Query ignores post__not_in whenever post__in is set, so take them out of post__in instead.
+		if ( isset( $qu_args['post__in'] ) ) {
+			$qu_args['post__in'] = array_values( array_diff( $qu_args['post__in'], $exclude_ids ) );
+		} else {
+			$qu_args['post__not_in'] = $exclude_ids;
+		}
+	}
 
 	if ( isset( $args['IncludeCategories'] ) && ! empty( $args['IncludeCategories'] ) ) {
 		$tax_args[] = array(
@@ -139,6 +177,92 @@ function wpmozo_product_carousel_prepare_query_args( $args ) {
 
 	$qu_args = apply_filters( 'wpmozo_product_carousel_query_args', $qu_args, $args );
 	return $qu_args;
+
+}
+
+/**
+ * Turn a saved list of product IDs into clean positive integers.
+ *
+ * @since 1.1.0
+ * @param mixed $ids The saved IDs.
+ * @return array The product IDs.
+ */
+function wpmozo_product_carousel_id_list( $ids ) {
+
+	if ( ! is_array( $ids ) ) {
+		return array();
+	}
+
+	return array_values( array_filter( array_map( 'absint', $ids ) ) );
+
+}
+
+/**
+ * ID of the product being viewed, or 0 when this isn't a single product page.
+ *
+ * @since 1.1.0
+ * @return int The product ID.
+ */
+function wpmozo_product_carousel_current_product_id() {
+
+	return is_singular( 'product' ) ? (int) get_queried_object_id() : 0;
+
+}
+
+/**
+ * Whether the block is being rendered for the editor preview.
+ *
+ * @since 1.1.0
+ * @return bool
+ */
+function wpmozo_product_carousel_is_editor_preview() {
+
+	return isset( $_GET['context'] ) && 'edit' === $_GET['context']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+}
+
+/**
+ * Whether the view type depends on the product being viewed.
+ *
+ * @since 1.1.0
+ * @param string $view_type The ProductViewType value.
+ * @return bool
+ */
+function wpmozo_product_carousel_is_product_page_type( $view_type ) {
+
+	return in_array( $view_type, array( 'related', 'upsells', 'cross_sells' ), true );
+
+}
+
+/**
+ * Related products, upsells or cross-sells of the product being viewed.
+ *
+ * The editor preview has no product to work from, so it returns null there and
+ * the caller leaves the query open, which shows sample products instead.
+ *
+ * @since 1.1.0
+ * @param string $view_type  related, upsells or cross_sells.
+ * @param int    $product_id The product being viewed.
+ * @param int    $limit      Number of products the carousel shows.
+ * @return array|null The product IDs, or null for the editor preview.
+ */
+function wpmozo_product_carousel_source_ids( $view_type, $product_id, $limit ) {
+
+	if ( ! $product_id ) {
+		return wpmozo_product_carousel_is_editor_preview() ? null : array();
+	}
+
+	if ( 'related' === $view_type ) {
+		$limit = (int) $limit;
+		return wc_get_related_products( $product_id, $limit > 0 ? $limit : -1 );
+	}
+
+	$product = wc_get_product( $product_id );
+	if ( ! $product ) {
+		return array();
+	}
+
+	return 'upsells' === $view_type ? $product->get_upsell_ids() : $product->get_cross_sell_ids();
 
 }
 

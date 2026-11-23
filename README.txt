@@ -37,9 +37,12 @@ Manage your carousel block with simplified control for various elements like:
 #### Query Control
 Control what you want to display in your carousel with the following available settings:
 - Product view type (popular, featured, etc).
+- Hand-picked products, shown in the order you choose.
+- Related products, upsells and cross-sells on product pages.
 - Number of products.
 - Order by settings.
 - Option to include categories and tags.
+- Option to exclude categories, specific products or the product being viewed.
 - Taxonomies relations.
 
 #### Design Settings

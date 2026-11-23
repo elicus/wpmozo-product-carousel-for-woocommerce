@@ -5,6 +5,7 @@ import WpmozoColorPicker from '../src/components/wpmozo-colorpicker/wpmozo-color
 import WpmozoDimensions from '../src/components/wpmozo-dimensions/wpmozo-dimensions';
 import WpmozoSize from '../src/components/wpmozo-size/wpmozo-size';
 import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
+import WpmozoProductPicker from '../src/components/wpmozo-product-picker/wpmozo-product-picker';
 
 ( function(blocks, editor, element, components) {
 
@@ -814,6 +815,10 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                 product_tag_options = product_tags.map( value => value.name );
             }
 
+            let isProductPageType = [ 'related', 'upsells', 'cross_sells' ].indexOf( attributes.ProductViewType ) > -1,
+                // These view types set their own order, so Order By and Order would do nothing there.
+                canChooseOrder = [ 'best_selling', 'top_rated', 'selected' ].indexOf( attributes.ProductViewType ) === -1;
+
             let add_to_cart_selector = '.add_to_cart_button';
             if ( ProductTypes.length ) {
                 jQuery.each(ProductTypes, function(key, type){
@@ -1258,11 +1263,28 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                                 label: __( 'Product View Type', 'wpmozo-product-carousel-for-woocommerce'),
                                 value: attributes.ProductViewType,
                                 options: GetProductViewTypeOptions,
+                                help: isProductPageType
+                                    ? __( 'Based on the product being viewed, so it only shows on product pages. The editor shows sample products.', 'wpmozo-product-carousel-for-woocommerce' )
+                                    : '',
                                 onChange: function( NewProductViewType ) {
                                     setAttributes( { ProductViewType: NewProductViewType } );
                                 },
                             },
                         ),
+                        'selected' === attributes.ProductViewType &&
+                            el(
+                                WpmozoProductPicker,
+                                {
+                                    key: 'wpmozo-product-carousel-include-products',
+                                    label: __( 'Products', 'wpmozo-product-carousel-for-woocommerce' ),
+                                    help: __( 'Shown in the order you add them.', 'wpmozo-product-carousel-for-woocommerce' ),
+                                    value: attributes.IncludeProducts,
+                                    onChange: function( NewIncludeProducts ) {
+                                        setAttributes( { IncludeProducts: NewIncludeProducts } );
+                                    },
+                                }
+                            ),
+                        'selected' !== attributes.ProductViewType &&
                         el(
                             TextControl,
                             {
@@ -1275,7 +1297,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                                 help: __( 'Enter -1 to show a list of all products.', 'wpmozo-product-carousel-for-woocommerce' ),
                             }
                         ),
-                       'best_selling' !== attributes.ProductViewType && 'top_rated' !== attributes.ProductViewType &&
+                       canChooseOrder &&
                             el(
                                 SelectControl,
                                 {
@@ -1288,7 +1310,7 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                                     },
                                 },
                             ),
-                        'best_selling' !== attributes.ProductViewType && 'top_rated' !== attributes.ProductViewType &&
+                        canChooseOrder &&
                             el(
                                 SelectControl,
                                 {
@@ -1353,6 +1375,40 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                                 },
                             },
                         ),
+                        el(
+                            FormTokenField,
+                            {
+                                value: attributes.ExcludeCategories,
+                                suggestions: product_cat_options,
+                                label: __( 'Exclude Categories', 'wpmozo-product-carousel-for-woocommerce' ),
+                                onChange: function( NewCats ) {
+                                    setAttributes( { ExcludeCategories: NewCats } );
+                                },
+                            }
+                        ),
+                        el(
+                            WpmozoProductPicker,
+                            {
+                                key: 'wpmozo-product-carousel-exclude-products',
+                                label: __( 'Exclude Products', 'wpmozo-product-carousel-for-woocommerce' ),
+                                value: attributes.ExcludeProducts,
+                                onChange: function( NewExcludeProducts ) {
+                                    setAttributes( { ExcludeProducts: NewExcludeProducts } );
+                                },
+                            }
+                        ),
+                        ! isProductPageType &&
+                            el(
+                                ToggleControl,
+                                {
+                                    checked: attributes.ExcludeCurrentProduct,
+                                    label: __( 'Exclude Current Product', 'wpmozo-product-carousel-for-woocommerce' ),
+                                    help: __( 'On product pages, leave out the product being viewed.', 'wpmozo-product-carousel-for-woocommerce' ),
+                                    onChange: function( NewExcludeCurrentProduct ) {
+                                        setAttributes( { ExcludeCurrentProduct: NewExcludeCurrentProduct } );
+                                    },
+                                }
+                            ),
                         el(
                             ToggleControl,
                             {

@@ -1,6 +1,9 @@
 Changelog for WPMozo Product Carousel for WooCommerce
 
 Version 1.1.0 - November 23rd, 2026
+- Added: Selected Products view type, to hand-pick the products a carousel shows, in the order you pick them.
+- Added: Related Products, Upsells and Cross-sells view types for product pages. On a product that has none, the carousel is left out of the page.
+- Added: Exclude Products, Exclude Categories and Exclude Current Product settings.
 - Added: Transition Speed setting to control how fast slides move.
 - Added: Fade transition effect for carousels showing one product at a time.
 - Added: Pause on Hover option for autoplay.

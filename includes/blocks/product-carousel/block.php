@@ -99,10 +99,18 @@ function wpmozo_product_carousel_render_callback( $args ) {
 		<?php wpmozo_product_carousel_after_hooks( $args ); ?>
 		<?php do_action( 'wpmozo_product_carousel_after_wraper', $args ); ?>
 
-	<?php } else { ?>
+	<?php
+	// Plenty of products have no related products, upsells or cross-sells; those pages
+	// get nothing at all rather than a "No products found." notice.
+	} elseif ( $wpmozo_product_carousel_is_admin || ! wpmozo_product_carousel_is_product_page_type( $args['ProductViewType'] ) ) {
+		$nofound_text = __( 'No products found.', 'wpmozo-product-carousel-for-woocommerce' );
+		if ( $wpmozo_product_carousel_is_admin && 'selected' === $args['ProductViewType'] && empty( $args['IncludeProducts'] ) ) {
+			$nofound_text = __( 'Choose the products to show under Query Settings.', 'wpmozo-product-carousel-for-woocommerce' );
+		}
+		?>
 		<?php do_action( 'wpmozo_product_carousel_before_nofound', $args ); ?>
 			<div class="wpmozo-product-carousel-nofound-wrap">
-				<p class="wpmozo-product-carousel-nofound"><?php echo esc_html( apply_filters( 'wpmozo_product_carousel_nofound_text', __( 'No products found.', 'wpmozo-product-carousel-for-woocommerce' ) ) ); ?></p>
+				<p class="wpmozo-product-carousel-nofound"><?php echo esc_html( apply_filters( 'wpmozo_product_carousel_nofound_text', $nofound_text ) ); ?></p>
 			</div>
 		<?php do_action( 'wpmozo_product_carousel_after_nofound', $args ); ?>
 	<?php } ?>

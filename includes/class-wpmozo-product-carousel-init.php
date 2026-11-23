@@ -376,6 +376,22 @@ class WPMozo_Product_Carousel_Init {
 				'type'    => 'string',
 				'default' => 'AND',
 			),
+			'ExcludeCategories'                      => array(
+				'type' => 'array',
+			),
+			// Product IDs for the "Selected Products" view type, in the order they were picked.
+			'IncludeProducts'                        => array(
+				'type'  => 'array',
+				'items' => array( 'type' => 'integer' ),
+			),
+			'ExcludeProducts'                        => array(
+				'type'  => 'array',
+				'items' => array( 'type' => 'integer' ),
+			),
+			'ExcludeCurrentProduct'                  => array(
+				'type'    => 'boolean',
+				'default' => false,
+			),
 			'OutOfStock'                             => array(
 				'type'    => 'boolean',
 				'default' => false,
@@ -1163,6 +1179,22 @@ class WPMozo_Product_Carousel_Init {
 			array(
 				'label' => __( 'Top Rated Products', 'wpmozo-product-carousel-for-woocommerce' ),
 				'value' => 'top_rated',
+			),
+			array(
+				'label' => __( 'Selected Products', 'wpmozo-product-carousel-for-woocommerce' ),
+				'value' => 'selected',
+			),
+			array(
+				'label' => __( 'Related Products', 'wpmozo-product-carousel-for-woocommerce' ),
+				'value' => 'related',
+			),
+			array(
+				'label' => __( 'Upsells', 'wpmozo-product-carousel-for-woocommerce' ),
+				'value' => 'upsells',
+			),
+			array(
+				'label' => __( 'Cross-sells', 'wpmozo-product-carousel-for-woocommerce' ),
+				'value' => 'cross_sells',
 			),
 		);
 

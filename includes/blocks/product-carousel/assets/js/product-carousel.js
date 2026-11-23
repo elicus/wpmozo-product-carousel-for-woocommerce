@@ -24,10 +24,12 @@
 			let mobileSett  = StyleAtts.mobile;
 			let tabletSett  = StyleAtts.tablet;
 			let loopEnabled = !! atts.Loop,
-				slidesCount = $this.find( '.swiper-wrapper > .swiper-slide' ).length;
+				slidesCount = $this.find( '.swiper-wrapper > .swiper-slide' ).length,
+				fade        = wpmozo_is_fade( atts );
 
 			var sw_obj = {
 				loop: loopEnabled,
+				speed: parseInt( atts.Speed, 10 ) || 300,
 				on: {
 					breakpoint: function(swiper){
 						wpmozo_sync_loop( swiper, loopEnabled, slidesCount );
@@ -183,15 +185,21 @@
 	                }
 				},
 				breakpoints: {
-					0: wpmozo_breakpoint_params( mobileSett.Columns, mobileSett.SpaceBetween, mobileSett.SlidesToScroll ),
-					480: wpmozo_breakpoint_params( tabletSett.Columns, tabletSett.SpaceBetween, tabletSett.SlidesToScroll ),
+					0: wpmozo_breakpoint_params( fade ? 1 : mobileSett.Columns, mobileSett.SpaceBetween, mobileSett.SlidesToScroll ),
+					480: wpmozo_breakpoint_params( fade ? 1 : tabletSett.Columns, tabletSett.SpaceBetween, tabletSett.SlidesToScroll ),
 					1025: wpmozo_breakpoint_params( atts.Columns, atts.SpaceBetween, atts.SlidesToScroll ),
 				},
+			}
+
+			if ( fade ) {
+				sw_obj.effect     = 'fade';
+				sw_obj.fadeEffect = { crossFade: true };
 			}
 
 			if ( atts.AutoPlay ) {
 				sw_obj.autoplay = {
 					delay: atts.Delay,
+					pauseOnMouseEnter: !! atts.PauseOnHover,
 				};
 			}
 
@@ -444,6 +452,20 @@
 			spaceBetween: spaceBetween,
 			slidesPerGroup: Math.min( perGroup, perView ),
 		};
+
+	}
+
+	/**
+	 * Whether the carousel should fade instead of slide.
+	 *
+	 * Swiper's fade stacks every visible slide on top of each other, so it only
+	 * works with one product on screen. It is honoured when Columns is 1, and the
+	 * caller then forces one column on tablet and mobile too. A saved "fade" with
+	 * more columns falls back to sliding.
+	 */
+	function wpmozo_is_fade( atts ){
+
+		return 'fade' === atts.Effect && 1 === parseInt( atts.Columns, 10 );
 
 	}
 

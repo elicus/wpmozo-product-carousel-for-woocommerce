@@ -1,6 +1,9 @@
 Changelog for WPMozo Product Carousel for WooCommerce
 
 Version 1.1.0 - November 23rd, 2026
+- Added: Transition Speed setting to control how fast slides move.
+- Added: Fade transition effect for carousels showing one product at a time.
+- Added: Pause on Hover option for autoplay.
 - Added: Documentation and Live Demo links in the plugin's row on the Plugins screen.
 - Added: Declared compatibility with WooCommerce High-Performance Order Storage (HPOS) and the Cart and Checkout blocks.
 - Fixed: Separate corner values for the out-of-stock label's border radius, in the carousel and in quick view, were replaced with the default 3px radius on the frontend.

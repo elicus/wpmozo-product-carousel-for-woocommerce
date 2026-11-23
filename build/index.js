@@ -362,10 +362,12 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
         }
 
         let loopEnabled = !! attributes.Loop,
-            slidesCount = swiperWraper.find('.swiper-wrapper > .swiper-slide').length;
+            slidesCount = swiperWraper.find('.swiper-wrapper > .swiper-slide').length,
+            fade = wpmozo_is_fade( attributes );
 
         var sw_obj = {
             loop: loopEnabled,
+            speed: parseInt( attributes.Speed, 10 ) || 300,
             on: {
                 breakpoint: function(swiper){
                     wpmozo_sync_loop( swiper, loopEnabled, slidesCount );
@@ -509,15 +511,21 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                 }
             },
             breakpoints: {
-                0: wpmozo_breakpoint_params( mobileSett.Columns, mobileSett.SpaceBetween, mobileSett.SlidesToScroll ),
-                480: wpmozo_breakpoint_params( tabletSett.Columns, tabletSett.SpaceBetween, tabletSett.SlidesToScroll ),
+                0: wpmozo_breakpoint_params( fade ? 1 : mobileSett.Columns, mobileSett.SpaceBetween, mobileSett.SlidesToScroll ),
+                480: wpmozo_breakpoint_params( fade ? 1 : tabletSett.Columns, tabletSett.SpaceBetween, tabletSett.SlidesToScroll ),
                 1025: wpmozo_breakpoint_params( attributes.Columns, attributes.SpaceBetween, attributes.SlidesToScroll ),
             }
+        }
+
+        if ( fade ) {
+            sw_obj.effect = 'fade';
+            sw_obj.fadeEffect = { crossFade: true };
         }
 
         if ( attributes.AutoPlay ) {
             sw_obj.autoplay = {
                delay: attributes.Delay,
+               pauseOnMouseEnter: !! attributes.PauseOnHover,
             };
         }
 
@@ -569,6 +577,19 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
             spaceBetween: spaceBetween,
             slidesPerGroup: Math.min( perGroup, perView ),
         };
+
+    }
+
+    /**
+     * Whether the carousel should fade instead of slide.
+     *
+     * Swiper's fade stacks every visible slide on top of each other, so it
+     * only works with one product on screen. Kept in step with the same
+     * helper in the frontend script.
+     */
+    function wpmozo_is_fade( attributes ){
+
+        return 'fade' === attributes.Effect && 1 === parseInt( attributes.Columns, 10 );
 
     }
 
@@ -930,7 +951,12 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                                 min: 1,
                                 label: __( 'Columns', 'wpmozo-product-carousel-for-woocommerce' ),
                                 onChange: function( NewColumns ) {
-                                    setAttributes( { Columns: NewColumns } );
+                                    let changes = { Columns: NewColumns };
+                                    // Fade can't show more than one product, so don't leave it selected and silently ignored.
+                                    if ( NewColumns > 1 && 'fade' === attributes.Effect ) {
+                                        changes.Effect = 'slide';
+                                    }
+                                    setAttributes( changes );
                                 },
                             }
                         ),
@@ -965,6 +991,48 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                             }
                         ),
                         el(
+                            SelectControl,
+                            {
+                                key: 'wpmozo-product-carousel-effect',
+                                label: __( 'Transition Effect', 'wpmozo-product-carousel-for-woocommerce' ),
+                                value: attributes.Effect,
+                                options: [
+                                    {
+                                        label: __( 'Slide', 'wpmozo-product-carousel-for-woocommerce' ),
+                                        value: 'slide',
+                                    },
+                                    {
+                                        label: __( 'Fade', 'wpmozo-product-carousel-for-woocommerce' ),
+                                        value: 'fade',
+                                        disabled: parseInt( attributes.Columns, 10 ) > 1,
+                                    },
+                                ],
+                                help: parseInt( attributes.Columns, 10 ) > 1
+                                    ? __( 'Set Columns to 1 to use Fade.', 'wpmozo-product-carousel-for-woocommerce' )
+                                    : ( 'fade' === attributes.Effect ? __( 'Fade shows one product at a time on every screen size.', 'wpmozo-product-carousel-for-woocommerce' ) : '' ),
+                                onChange: function( NewEffect ) {
+                                    setAttributes( { Effect: NewEffect } );
+                                },
+                            }
+                        ),
+                        el(
+                            RangeControl,
+                            {
+                                key: 'wpmozo-product-carousel-speed',
+                                value: attributes.Speed,
+                                allowReset: true,
+                                initialPosition: parseInt(GetAttributes.Speed.default),
+                                resetFallbackValue: parseInt(GetAttributes.Speed.default),
+                                min: 100,
+                                max: 3000,
+                                step: 50,
+                                label: __( 'Transition Speed (ms)', 'wpmozo-product-carousel-for-woocommerce' ),
+                                onChange: function( NewSpeed ) {
+                                    setAttributes( { Speed: NewSpeed } );
+                                },
+                            }
+                        ),
+                        el(
                             ToggleControl,
                             {
                                 checked: attributes.AutoPlay, 
@@ -983,6 +1051,17 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                                     label: __( 'Delay of Animation', 'wpmozo-product-carousel-for-woocommerce' ),
                                     onChange: function( NewDelay ) {
                                         setAttributes( { Delay: NewDelay } );
+                                    },
+                                }
+                            ),
+                        attributes.AutoPlay &&
+                            el(
+                                ToggleControl,
+                                {
+                                    checked: attributes.PauseOnHover,
+                                    label: __( 'Pause on Hover', 'wpmozo-product-carousel-for-woocommerce' ),
+                                    onChange: function( NewPauseOnHover ) {
+                                        setAttributes( { PauseOnHover: NewPauseOnHover } );
                                     },
                                 }
                             ),

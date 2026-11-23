@@ -28,7 +28,8 @@ There are two available layouts for displaying each product card in your carouse
 Manage your carousel block with simplified control for various elements like:
 - Column control (add up to 8 columns).
 - Slide control.
-- Autoplay and loop.
+- Transition speed, with a slide or fade effect.
+- Autoplay with pause on hover, and loop.
 - Navigation and pagination settings.
 - Responsive settings for optimized display on different devices.
 

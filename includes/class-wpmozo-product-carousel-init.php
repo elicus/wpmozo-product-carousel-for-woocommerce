@@ -273,6 +273,19 @@ class WPMozo_Product_Carousel_Init {
 				'type'    => 'integer',
 				'default' => 3000,
 			),
+			'PauseOnHover'                           => array(
+				'type'    => 'boolean',
+				'default' => false,
+			),
+			// 300 is Swiper's own default, so carousels saved before 1.1.0 keep their pace.
+			'Speed'                                  => array(
+				'type'    => 'integer',
+				'default' => 300,
+			),
+			'Effect'                                 => array(
+				'type'    => 'string',
+				'default' => 'slide',
+			),
 			'Loop'                                   => array(
 				'type'    => 'boolean',
 				'default' => false,

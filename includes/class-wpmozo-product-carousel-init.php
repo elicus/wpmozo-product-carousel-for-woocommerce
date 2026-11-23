@@ -638,17 +638,14 @@ class WPMozo_Product_Carousel_Init {
 				'type'    => 'string',
 				'default' => '',
 			),
-			'StockLabelStyledefault'                 => array(
-				'padding'  => '',
-				'margin'   => '',
-				'position' => '',
-			),
 			'StockLabelStyletext'                    => array(
 				'type'    => 'string',
 				'default' => '#ff0000',
 			),
+			// The radius control saves a string when the corners are linked and an
+			// object of corners when they aren't, so every *borderRadius takes both.
 			'StockLabelStyleborderRadius'            => array(
-				'type'    => 'string',
+				'type'    => array( 'string', 'object' ),
 				'default' => '3px',
 			),
 			'StockLabelStyleborder'                  => array(
@@ -709,9 +706,6 @@ class WPMozo_Product_Carousel_Init {
 				'type'    => 'string',
 				'default' => '',
 			),
-			'default'                                => array(
-				'padding' => '',
-			),
 			'AddToCartStyletext'                     => array(
 				'type'    => 'string',
 				'default' => '',
@@ -721,7 +715,7 @@ class WPMozo_Product_Carousel_Init {
 				'default' => '',
 			),
 			'AddToCartStyleborderRadius'             => array(
-				'type'    => '',
+				'type'    => array( 'string', 'object' ),
 				'default' => '',
 			),
 			'AddToCartStyleborder'                   => array(
@@ -774,7 +768,7 @@ class WPMozo_Product_Carousel_Init {
 				'default' => '',
 			),
 			'QuickViewStyleborderRadius'             => array(
-				'type'    => '',
+				'type'    => array( 'string', 'object' ),
 				'default' => '',
 			),
 			'QuickViewStyleborder'                   => array(
@@ -973,7 +967,7 @@ class WPMozo_Product_Carousel_Init {
 				'default' => '#ff0000',
 			),
 			'QuickViewStockLabelStyleborderRadius'   => array(
-				'type'    => 'string',
+				'type'    => array( 'string', 'object' ),
 				'default' => '3px',
 			),
 			'QuickViewStockLabelStyleborder'         => array(
@@ -1043,7 +1037,7 @@ class WPMozo_Product_Carousel_Init {
 				'default' => '',
 			),
 			'QuickViewAddToCartStyleborderRadius'    => array(
-				'type'    => '',
+				'type'    => array( 'string', 'object' ),
 				'default' => '',
 			),
 			'QuickViewAddToCartStyleborder'          => array(
@@ -1096,7 +1090,7 @@ class WPMozo_Product_Carousel_Init {
 				'default' => '',
 			),
 			'QuickViewCloseStyleborderRadius'        => array(
-				'type'    => '',
+				'type'    => array( 'string', 'object' ),
 				'default' => '',
 			),
 			'QuickViewCloseStyleborder'              => array(
@@ -1304,6 +1298,37 @@ class WPMozo_Product_Carousel_Init {
 	}
 
 	/**
+	 * Add Documentation and Live Demo links to the plugin's row on the Plugins screen.
+	 *
+	 * The plugin is block-only with no settings page, so this is the one place in
+	 * the dashboard that points people to it.
+	 *
+	 * @since 1.1.0
+	 * @param array  $links       The plugin row meta links.
+	 * @param string $plugin_file Path to the plugin file, relative to the plugins directory.
+	 * @return array The plugin row meta links.
+	 */
+	public function wpmozo_plugin_row_meta( $links, $plugin_file ) {
+
+		if ( plugin_basename( WPMOZO_PRODUCT_CAROUSEL_FILE ) !== $plugin_file ) {
+			return $links;
+		}
+
+		$links[] = sprintf(
+			'<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
+			esc_url( 'https://documentation.wpmozo.com/wpmozo-product-carousel-for-woocommerce/' ),
+			esc_html__( 'Documentation', 'wpmozo-product-carousel-for-woocommerce' )
+		);
+		$links[] = sprintf(
+			'<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
+			esc_url( 'https://productcarousel.wpmozo.com/' ),
+			esc_html__( 'Live Demo', 'wpmozo-product-carousel-for-woocommerce' )
+		);
+
+		return $links;
+	}
+
+	/**
 	 * Add all hooks.
 	 *
 	 * @since 1.0.0
@@ -1315,6 +1340,7 @@ class WPMozo_Product_Carousel_Init {
 		$loader->add_filter( 'block_categories_all', $instance, 'wpmozo_block_category', 10, 2 );
 		$loader->add_action( 'init', $instance, 'wpmozo_register_blocks' );
 		$loader->add_action( 'enqueue_block_editor_assets', $instance, 'wpmozo_add_editor_style' );
+		$loader->add_filter( 'plugin_row_meta', $instance, 'wpmozo_plugin_row_meta', 10, 2 );
 
 	}
 

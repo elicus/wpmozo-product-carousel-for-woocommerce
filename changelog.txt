@@ -1,6 +1,10 @@
 Changelog for WPMozo Product Carousel for WooCommerce
 
 Version 1.1.0 - November 23rd, 2026
+- Added: Documentation and Live Demo links in the plugin's row on the Plugins screen.
+- Added: Declared compatibility with WooCommerce High-Performance Order Storage (HPOS) and the Cart and Checkout blocks.
+- Fixed: Separate corner values for the out-of-stock label's border radius, in the carousel and in quick view, were replaced with the default 3px radius on the frontend.
+- Fixed: PHP notices about invalid block attribute types when WP_DEBUG is enabled.
 - Fixed: The carousel loop could get stuck when Slides to Scroll was higher than the number of columns. Slides to Scroll is now capped at the column count for each screen size.
 - Fixed: With Loop enabled and too few products for the current screen size, the navigation arrows could stop working. The carousel now only loops when there are enough products, and rewinds to the first slide otherwise.
 - Fixed: The loop setting is now re-checked when the screen size changes, keeping the current slide, pagination and navigation in sync.

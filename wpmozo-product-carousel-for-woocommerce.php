@@ -23,6 +23,8 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       wpmozo-product-carousel-for-woocommerce
  * Domain Path:       /languages
+ * WC requires at least: 7.7.0
+ * WC tested up to:   11.2
  */
 
 // If this file is called directly, abort.
@@ -56,6 +58,23 @@ define( 'WPMOZO_PRODUCT_CAROUSEL_BLOCKS_DIR_URL', WPMOZO_PRODUCT_CAROUSEL_INC_DI
 
 // Assets dir url.
 define( 'WPMOZO_PRODUCT_CAROUSEL_ASSE_DIR_URL', WPMOZO_PRODUCT_CAROUSEL_PLUGIN_DIR_URL . 'assets/' );
+
+/**
+ * Declare compatibility with HPOS (custom order tables) and with the Cart and
+ * Checkout blocks. The carousel touches neither, but WooCommerce flags any
+ * plugin that doesn't say so.
+ *
+ * @since 1.1.0
+ */
+add_action(
+	'before_woocommerce_init',
+	function () {
+		if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
+		}
+	}
+);
 
 /**
  * The core plugin class that is used to define internationalization,

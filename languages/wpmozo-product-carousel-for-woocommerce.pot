@@ -1,0 +1,573 @@
+# Copyright (C) 2026 Elicus
+# This file is distributed under the GPL-2.0+.
+msgid ""
+msgstr ""
+"Project-Id-Version: WPMozo Product Carousel For WooCommerce 1.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wpmozo-product-carousel-for-woocommerce\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-11-23T08:21:53+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: wpmozo-product-carousel-for-woocommerce\n"
+
+#. Plugin Name of the plugin
+#: wpmozo-product-carousel-for-woocommerce.php
+msgid "WPMozo Product Carousel For WooCommerce"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: wpmozo-product-carousel-for-woocommerce.php
+msgid "https://wpmozo.com/product/wpmozo-product-carousel-for-woocommerce"
+msgstr ""
+
+#. Description of the plugin
+#: wpmozo-product-carousel-for-woocommerce.php
+msgid "This plugin will create gutenberg block for woocommerce product carousel."
+msgstr ""
+
+#. Author of the plugin
+#: wpmozo-product-carousel-for-woocommerce.php
+msgid "Elicus"
+msgstr ""
+
+#. Author URI of the plugin
+#: wpmozo-product-carousel-for-woocommerce.php
+msgid "https://elicus.com"
+msgstr ""
+
+#: includes/blocks/product-carousel/block.php:46
+msgid "All product components have been deactivated through the display settings."
+msgstr ""
+
+#: includes/blocks/product-carousel/block.php:106
+msgid "No products found."
+msgstr ""
+
+#: includes/blocks/product-carousel/block.php:108
+msgid "Choose the products to show under Query Settings."
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:110
+msgid "Loading..."
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:115
+msgid "Previous slide"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:116
+msgid "Next slide"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:117
+msgid "This is the first slide"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:118
+msgid "This is the last slide"
+msgstr ""
+
+#. translators: Keep {{index}} as is; it is replaced with the slide number.
+#: includes/class-wpmozo-product-carousel-init.php:120
+msgid "Go to slide {{index}}"
+msgstr ""
+
+#. translators: Keep {{index}} and {{slidesLength}} as is; they become e.g. "2 / 7".
+#: includes/class-wpmozo-product-carousel-init.php:122
+msgid "{{index}} / {{slidesLength}}"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:123
+msgid "carousel"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:124
+msgid "slide"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1164
+#: includes/class-wpmozo-product-carousel-init.php:1270
+msgid "Default"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1168
+msgid "Featured Products"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1172
+msgid "Sale Products"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1176
+msgid "Best Selling Products"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1180
+msgid "Top Rated Products"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1184
+msgid "Selected Products"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1188
+msgid "Related Products"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1192
+msgid "Upsells"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1196
+msgid "Cross-sells"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1203
+msgid "Date"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1207
+msgid "Modified Date"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1211
+msgid "Menu Order"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1215
+msgid "Title"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1219
+msgid "Slug"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1223
+msgid "Id"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1227
+msgid "Random"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1231
+msgid "Stock Status"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1235
+msgid "Price"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1239
+msgid "None"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1259
+msgid "Sale Label"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1263
+msgid "Sale Percentage"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1274
+msgid "Layout 1"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1278
+msgid "Layout 2"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1337
+msgid "WPMozo"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1382
+msgid "Documentation"
+msgstr ""
+
+#: includes/class-wpmozo-product-carousel-init.php:1387
+msgid "Live Demo"
+msgstr ""
+
+#: build/index.js:24
+#: build/index.js:30
+msgid "Text"
+msgstr ""
+
+#: build/index.js:34
+#: build/index.js:40
+#: build/index.js:1696
+msgid "Background"
+msgstr ""
+
+#: build/index.js:785
+msgid "WPMozo Product Carousel"
+msgstr ""
+
+#: build/index.js:829
+msgid "Active Icon Color"
+msgstr ""
+
+#: build/index.js:830
+msgid "Inactive Icon Color"
+msgstr ""
+
+#: build/index.js:833
+msgid "Text Color"
+msgstr ""
+
+#: build/index.js:835
+msgid "Bar Color"
+msgstr ""
+
+#: build/index.js:836
+msgid "Bar Background Color"
+msgstr ""
+
+#: build/index.js:939
+msgid "Alignment"
+msgstr ""
+
+#: build/index.js:946
+msgid "Carousel Settings"
+msgstr ""
+
+#: build/index.js:957
+#: build/index.js:1172
+#: build/index.js:1220
+msgid "Columns"
+msgstr ""
+
+#: build/index.js:978
+#: build/index.js:1188
+#: build/index.js:1236
+msgid "Slides To Scroll"
+msgstr ""
+
+#: build/index.js:992
+#: build/index.js:1202
+#: build/index.js:1250
+msgid "Space Between"
+msgstr ""
+
+#: build/index.js:1002
+msgid "Transition Effect"
+msgstr ""
+
+#: build/index.js:1006
+msgid "Slide"
+msgstr ""
+
+#: build/index.js:1010
+msgid "Fade"
+msgstr ""
+
+#: build/index.js:1016
+msgid "Set Columns to 1 to use Fade."
+msgstr ""
+
+#: build/index.js:1017
+msgid "Fade shows one product at a time on every screen size."
+msgstr ""
+
+#: build/index.js:1034
+msgid "Transition Speed (ms)"
+msgstr ""
+
+#: build/index.js:1044
+msgid "Auto Play"
+msgstr ""
+
+#: build/index.js:1056
+msgid "Delay of Animation"
+msgstr ""
+
+#: build/index.js:1067
+msgid "Pause on Hover"
+msgstr ""
+
+#: build/index.js:1077
+msgid "Loop"
+msgstr ""
+
+#: build/index.js:1087
+msgid "Show Navigation"
+msgstr ""
+
+#: build/index.js:1098
+msgid "Hide Arrows on Mobile"
+msgstr ""
+
+#: build/index.js:1099
+msgid "Below 480px wide, visitors swipe instead."
+msgstr ""
+
+#: build/index.js:1109
+msgid "Show Pagination"
+msgstr ""
+
+#: build/index.js:1119
+msgid "Equalize Slide Height"
+msgstr ""
+
+#: build/index.js:1130
+msgid "Pagination Type"
+msgstr ""
+
+#: build/index.js:1134
+msgid "Bullets"
+msgstr ""
+
+#: build/index.js:1138
+msgid "Fraction"
+msgstr ""
+
+#: build/index.js:1142
+msgid "Progressbar"
+msgstr ""
+
+#: build/index.js:1160
+msgid "Carousel Responsive Settings"
+msgstr ""
+
+#: build/index.js:1161
+msgid "Mobile"
+msgstr ""
+
+#: build/index.js:1209
+msgid "Tablet"
+msgstr ""
+
+#: build/index.js:1258
+msgid "Query Settings"
+msgstr ""
+
+#: build/index.js:1263
+msgid "Product View Type"
+msgstr ""
+
+#: build/index.js:1267
+msgid "Based on the product being viewed, so it only shows on product pages. The editor shows sample products."
+msgstr ""
+
+#: build/index.js:1279
+msgid "Products"
+msgstr ""
+
+#: build/index.js:1280
+msgid "Shown in the order you add them."
+msgstr ""
+
+#: build/index.js:1293
+msgid "Number of Porducts"
+msgstr ""
+
+#: build/index.js:1297
+msgid "Enter -1 to show a list of all products."
+msgstr ""
+
+#: build/index.js:1305
+msgid "Order By"
+msgstr ""
+
+#: build/index.js:1318
+msgid "Order"
+msgstr ""
+
+#: build/index.js:1322
+msgid "Ascending"
+msgstr ""
+
+#: build/index.js:1326
+msgid "Descending"
+msgstr ""
+
+#: build/index.js:1340
+msgid "Include Categories"
+msgstr ""
+
+#: build/index.js:1351
+msgid "Include Tags"
+msgstr ""
+
+#: build/index.js:1361
+msgid "Taxonomies Relation"
+msgstr ""
+
+#: build/index.js:1365
+msgid "OR"
+msgstr ""
+
+#: build/index.js:1369
+msgid "AND"
+msgstr ""
+
+#: build/index.js:1383
+msgid "Exclude Categories"
+msgstr ""
+
+#: build/index.js:1393
+msgid "Exclude Products"
+msgstr ""
+
+#: build/index.js:1405
+msgid "Exclude Current Product"
+msgstr ""
+
+#: build/index.js:1406
+msgid "On product pages, leave out the product being viewed."
+msgstr ""
+
+#: build/index.js:1416
+msgid "Hide Out of Stock Products"
+msgstr ""
+
+#: build/index.js:1423
+msgid "Display Settings"
+msgstr ""
+
+#: build/index.js:1428
+msgid "Layout"
+msgstr ""
+
+#: build/index.js:1446
+msgid "Display Out of Stock Label"
+msgstr ""
+
+#: build/index.js:1458
+msgid "Out Of Stock Label"
+msgstr ""
+
+#: build/index.js:1468
+msgid "Enable Quick View"
+msgstr ""
+
+#: build/index.js:1480
+msgid "Quickview Button text"
+msgstr ""
+
+#: build/index.js:1491
+msgid "Quickview Display icon"
+msgstr ""
+
+#: build/index.js:1499
+msgid "Quickview Icon"
+msgstr ""
+
+#: build/index.js:1508
+msgid "Quickview Custom Icon"
+msgstr ""
+
+#: build/index.js:1541
+msgid "Edit Icon"
+msgstr ""
+
+#: build/index.js:1542
+msgid "Select Icon"
+msgstr ""
+
+#: build/index.js:1554
+msgid "Show Title"
+msgstr ""
+
+#: build/index.js:1564
+msgid "Show Featured Image"
+msgstr ""
+
+#: build/index.js:1575
+msgid "Featured Image Size"
+msgstr ""
+
+#: build/index.js:1587
+msgid "Show Rating"
+msgstr ""
+
+#: build/index.js:1597
+msgid "Show Price"
+msgstr ""
+
+#: build/index.js:1607
+msgid "Show Add to Cart button"
+msgstr ""
+
+#: build/index.js:1617
+msgid "Show Sale Badge"
+msgstr ""
+
+#: build/index.js:1628
+msgid "Sale Badge Type"
+msgstr ""
+
+#: build/index.js:1642
+msgid "Sale Label Text"
+msgstr ""
+
+#: build/index.js:1653
+msgid "Carousel Container Style"
+msgstr ""
+
+#: build/index.js:1682
+msgid "Carousel Navigation Style"
+msgstr ""
+
+#: build/index.js:1692
+msgid "Icon Color"
+msgstr ""
+
+#: build/index.js:1723
+msgid "Previous Position"
+msgstr ""
+
+#: build/index.js:1732
+msgid "Next Position"
+msgstr ""
+
+#: build/index.js:1744
+msgid "Carousel Pagination Style"
+msgstr ""
+
+#: build/index.js:1824
+#: build/index.js:1988
+msgid "Title Style"
+msgstr ""
+
+#: build/index.js:1843
+#: build/index.js:2005
+msgid "Price Style"
+msgstr ""
+
+#: build/index.js:1869
+#: build/index.js:2029
+msgid "Add to Cart Style"
+msgstr ""
+
+#: build/index.js:1901
+msgid "Quick View Button Style"
+msgstr ""
+
+#: build/index.js:1933
+msgid "Quick View Style"
+msgstr ""
+
+#: build/index.js:1951
+msgid "Close Button Style"
+msgstr ""
+
+#: build/index.js:1980
+msgid "Inner Elements Style Same As Carousel"
+msgstr ""
+
+#: build/index.js:2057
+#: build/index.js:2102
+msgid "Sale Label Style"
+msgstr ""
+
+#: build/index.js:2074
+#: build/index.js:2121
+msgid "Out Of Stock Label Style"
+msgstr ""

@@ -3,7 +3,7 @@ Contributors: elicus
 Tags: gutenberg blocks, woocommerce slider, product carousel, woocommerce product slider, gutenberg product slider
 Requires at least: 6.3
 Tested up to: 7.0
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -120,6 +120,8 @@ While automatic updates typically occur without a hitch, it's always wise to bac
 Should you run into any display issues with the carousel after updating, it may help to flush the permalinks. To do this, go to **WordPress** > **Settings** > **Permalinks** and click “**Save**.” This action often resolves any permalink-related issues post-update.
 
 == Upgrade Notice ==
+= 1.1.0 =
+Adds hand-picked, related, upsell and cross-sell carousels, transition speed and fade, and keyboard and screen reader improvements. Fixes hidden products showing in the carousel and off-center slides on Astra.
 
 == Third Party Code Credits ==
 #### FontAwesome
@@ -158,4 +160,28 @@ The above copyright notice and this permission notice shall be included in all c
 The software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.
 
 == Changelog ==
-= 1.0.0 = This is the initial release  of the plugin.
+= 1.1.0 - 2026-11-23 =
+* Added: Selected Products view type, to hand-pick the products a carousel shows, in the order you pick them.
+* Added: Related Products, Upsells and Cross-sells view types for product pages. On a product that has none, the carousel is left out of the page.
+* Added: Exclude Products, Exclude Categories and Exclude Current Product settings.
+* Added: Transition Speed setting to control how fast slides move.
+* Added: Fade transition effect for carousels showing one product at a time.
+* Added: Pause on Hover option for autoplay.
+* Added: Hide Arrows on Mobile option, for screens under 480px wide.
+* Added: Documentation and Live Demo links in the plugin's row on the Plugins screen.
+* Added: Declared compatibility with WooCommerce High-Performance Order Storage (HPOS) and the Cart and Checkout blocks.
+* Improved: Accessibility. The arrow keys move the carousel while it has keyboard focus, autoplay holds still while a product in it has focus and does not start for visitors who prefer reduced motion, and the screen reader labels can now be translated.
+* Fixed: On themes that add a left margin to lists, such as Astra, slides were pushed off-center and cut off on the right.
+* Fixed: Separate corner values for the out-of-stock label's border radius, in the carousel and in quick view, were replaced with the default 3px radius on the frontend.
+* Fixed: PHP notices about invalid block attribute types when WP_DEBUG is enabled.
+* Fixed: The carousel loop could get stuck when Slides to Scroll was higher than the number of columns. Slides to Scroll is now capped at the column count for each screen size.
+* Fixed: With Loop enabled and too few products for the current screen size, the navigation arrows could stop working. The carousel now only loops when there are enough products, and rewinds to the first slide otherwise.
+* Fixed: The loop setting is now re-checked when the screen size changes, keeping the current slide, pagination and navigation in sync.
+* Fixed: Products with their catalog visibility set to "Hidden" or "Search results only" were shown in the carousel. The carousel now also respects the "Hide out of stock items from the catalog" setting.
+* Fixed: The Sale Products view showed every product when no products were on sale.
+* Fixed: The quick view price color setting was not saved.
+* Fixed: The "All product components have been deactivated" notice in the block editor could not be translated.
+* Fixed: Incorrect Swiper file paths in the readme's third-party credits.
+
+= 1.0.0 - 2024-02-27 =
+* Initial release.

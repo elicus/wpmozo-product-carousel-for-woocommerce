@@ -16,7 +16,7 @@
  * Requires Plugins:  woocommerce
  * Plugin URI:        https://wpmozo.com/product/wpmozo-product-carousel-for-woocommerce
  * Description:       This plugin will create gutenberg block for woocommerce product carousel.
- * Version:           1.0.0
+ * Version:           1.1.0
  * Author:            Elicus
  * Author URI:        https://elicus.com
  * License:           GPL-2.0+
@@ -33,7 +33,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Current plugin version.
-define( 'WPMOZO_PRODUCT_CAROUSEL_VERSION', '1.0.0' );
+define( 'WPMOZO_PRODUCT_CAROUSEL_VERSION', '1.1.0' );
 
 // Plugin main file.
 define( 'WPMOZO_PRODUCT_CAROUSEL_FILE', __FILE__ );

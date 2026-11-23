@@ -78,7 +78,7 @@ class WPMozo_Product_Carousel_For_Woocommerce {
 		if ( defined( 'WPMOZO_PRODUCT_CAROUSEL_VERSION' ) ) {
 			$this->version = WPMOZO_PRODUCT_CAROUSEL_VERSION;
 		} else {
-			$this->version = '1.0.0';
+			$this->version = '1.1.0';
 		}
 		$this->plugin_name = 'wpmozo-product-carousel-for-woocommerce';
 

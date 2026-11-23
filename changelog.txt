@@ -4,8 +4,11 @@ Version 1.1.0 - November 23rd, 2026
 - Added: Transition Speed setting to control how fast slides move.
 - Added: Fade transition effect for carousels showing one product at a time.
 - Added: Pause on Hover option for autoplay.
+- Added: Hide Arrows on Mobile option, for screens under 480px wide.
 - Added: Documentation and Live Demo links in the plugin's row on the Plugins screen.
 - Added: Declared compatibility with WooCommerce High-Performance Order Storage (HPOS) and the Cart and Checkout blocks.
+- Improved: Accessibility. The arrow keys move the carousel while it has keyboard focus, autoplay holds still while a product in it has focus and does not start for visitors who prefer reduced motion, and the screen reader labels can now be translated.
+- Fixed: On themes that add a left margin to lists, such as Astra, slides were pushed off-center and cut off on the right.
 - Fixed: Separate corner values for the out-of-stock label's border radius, in the carousel and in quick view, were replaced with the default 3px radius on the frontend.
 - Fixed: PHP notices about invalid block attribute types when WP_DEBUG is enabled.
 - Fixed: The carousel loop could get stuck when Slides to Scroll was higher than the number of columns. Slides to Scroll is now capped at the column count for each screen size.

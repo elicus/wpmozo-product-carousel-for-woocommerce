@@ -196,11 +196,18 @@
 				sw_obj.fadeEffect = { crossFade: true };
 			}
 
-			if ( atts.AutoPlay ) {
+			// No autoplay for people who have asked their system for reduced motion.
+			let autoplay = atts.AutoPlay && ! wpmozo_prefers_reduced_motion();
+
+			if ( autoplay ) {
 				sw_obj.autoplay = {
 					delay: atts.Delay,
 					pauseOnMouseEnter: !! atts.PauseOnHover,
 				};
+			}
+
+			if ( wpmozo_carousel_object.a11y ) {
+				sw_obj.a11y = wpmozo_carousel_object.a11y;
 			}
 
 			if ( atts.ShowPagination ) {
@@ -220,6 +227,57 @@
 
 			let _swiper = new Swiper( this, sw_obj );
 			swiper.push( _swiper );
+
+			// Swiper's own keyboard module listens on the whole page and would move every
+			// carousel in view at once, so arrow keys only act while focus is inside this one.
+			this.addEventListener(
+				'keydown',
+				function( e ) {
+					if ( 'ArrowLeft' === e.key ) {
+						_swiper.slidePrev();
+						e.preventDefault();
+					} else if ( 'ArrowRight' === e.key ) {
+						_swiper.slideNext();
+						e.preventDefault();
+					}
+				}
+			);
+
+			// Hold still while a keyboard user is on a product, so it doesn't slide away from them.
+			// stop()/start() rather than pause(): Swiper 9 resumes a pause on its own at the next
+			// transition end or visibility change.
+			if ( autoplay ) {
+				let heldForFocus = false;
+
+				this.addEventListener(
+					'focusin',
+					function() {
+						if ( _swiper.autoplay.running ) {
+							_swiper.autoplay.stop();
+							heldForFocus = true;
+						}
+					}
+				);
+				this.addEventListener(
+					'focusout',
+					function( e ) {
+						if ( heldForFocus && ! this.contains( e.relatedTarget ) ) {
+							heldForFocus = false;
+							_swiper.autoplay.start();
+						}
+					}
+				);
+				// Arrows, bullets or arrow keys used meanwhile: leave autoplay stopped, as Swiper
+				// does for any interaction (disableOnInteraction).
+				_swiper.on(
+					'beforeTransitionStart',
+					function( s, speed, internal ) {
+						if ( ! internal ) {
+							heldForFocus = false;
+						}
+					}
+				);
+			}
 
 		}
 	);
@@ -466,6 +524,12 @@
 	function wpmozo_is_fade( atts ){
 
 		return 'fade' === atts.Effect && 1 === parseInt( atts.Columns, 10 );
+
+	}
+
+	function wpmozo_prefers_reduced_motion(){
+
+		return !! ( window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches );
 
 	}
 

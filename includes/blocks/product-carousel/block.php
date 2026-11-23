@@ -32,7 +32,8 @@ function wpmozo_product_carousel_render_callback( $args ) {
 	$admin_class                      = ' loading';
 	$addi_classes                     = isset( $args['className'] ) ? ' ' . $args['className'] : '';
 	$equal_height                     = ( isset( $args['EqualSlideHeight'] ) && $args['EqualSlideHeight'] ) ? ' equal-slide-height' : '';
-	$is_display_products              = wpmozo_product_carousel_is_display_products( $args );
+	$hide_nav_mobile                  = ! empty( $args['HideNavigationOnMobile'] ) ? ' hide-nav-mobile' : '';
+	$is_display_products             = wpmozo_product_carousel_is_display_products( $args );
 	$wpmozo_product_carousel_is_admin = ( isset( $_GET['context'] ) && 'edit' === $_GET['context'] ) // phpcs:ignore
 	? true : false;
 
@@ -62,7 +63,7 @@ function wpmozo_product_carousel_render_callback( $args ) {
 		<?php wpmozo_product_carousel_before_hooks( $args ); ?>
 		<?php do_action( 'wpmozo_product_carousel_before_wraper', $args ); ?>
 
-		<div class="wpmozo-product-carousel-wrap woocommerce swiper <?php echo esc_attr( $args['Layout'] ); ?><?php echo esc_attr( $admin_class ); ?><?php echo esc_attr( $addi_classes ); ?><?php echo esc_attr( $equal_height ); ?>" data-atts='<?php echo esc_attr( wp_json_encode( $args ) ); ?>' id="wpmozo_<?php echo esc_attr( $args['clientId'] ); ?>">
+		<div class="wpmozo-product-carousel-wrap woocommerce swiper <?php echo esc_attr( $args['Layout'] ); ?><?php echo esc_attr( $admin_class ); ?><?php echo esc_attr( $addi_classes ); ?><?php echo esc_attr( $equal_height ); ?><?php echo esc_attr( $hide_nav_mobile ); ?>" data-atts='<?php echo esc_attr( wp_json_encode( $args ) ); ?>' id="wpmozo_<?php echo esc_attr( $args['clientId'] ); ?>">
 
 			<?php wpmozo_product_carousel_display_loader( $args ); ?>
 

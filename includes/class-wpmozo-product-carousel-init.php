@@ -110,6 +110,19 @@ class WPMozo_Product_Carousel_Init {
 			'loading'        => esc_html__( 'Loading...', 'wpmozo-product-carousel-for-woocommerce' ),
 			'nonce'          => wp_create_nonce( 'ajax-nonce' ),
 			'products_types' => $products_type_keys,
+			// Screen reader text for Swiper's a11y module, which otherwise only speaks English.
+			'a11y'           => array(
+				'prevSlideMessage'                => __( 'Previous slide', 'wpmozo-product-carousel-for-woocommerce' ),
+				'nextSlideMessage'                => __( 'Next slide', 'wpmozo-product-carousel-for-woocommerce' ),
+				'firstSlideMessage'               => __( 'This is the first slide', 'wpmozo-product-carousel-for-woocommerce' ),
+				'lastSlideMessage'                => __( 'This is the last slide', 'wpmozo-product-carousel-for-woocommerce' ),
+				/* translators: Keep {{index}} as is; it is replaced with the slide number. */
+				'paginationBulletMessage'         => __( 'Go to slide {{index}}', 'wpmozo-product-carousel-for-woocommerce' ),
+				/* translators: Keep {{index}} and {{slidesLength}} as is; they become e.g. "2 / 7". */
+				'slideLabelMessage'               => __( '{{index}} / {{slidesLength}}', 'wpmozo-product-carousel-for-woocommerce' ),
+				'containerRoleDescriptionMessage' => __( 'carousel', 'wpmozo-product-carousel-for-woocommerce' ),
+				'itemRoleDescriptionMessage'      => __( 'slide', 'wpmozo-product-carousel-for-woocommerce' ),
+			),
 		);
 
 		wp_localize_script( 'wpmozo-product-carousel-script', 'wpmozo_carousel_object', $wpmozo_carousel_object );
@@ -293,6 +306,10 @@ class WPMozo_Product_Carousel_Init {
 			'ShowNavigation'                         => array(
 				'type'    => 'boolean',
 				'default' => true,
+			),
+			'HideNavigationOnMobile'                 => array(
+				'type'    => 'boolean',
+				'default' => false,
 			),
 			'ShowPagination'                         => array(
 				'type'    => 'boolean',

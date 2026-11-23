@@ -1085,6 +1085,18 @@ import WpmozoBorder from '../src/components/wpmozo-border/wpmozo-border';
                                 },
                             }
                         ),
+                        attributes.ShowNavigation &&
+                            el(
+                                ToggleControl,
+                                {
+                                    checked: attributes.HideNavigationOnMobile,
+                                    label: __( 'Hide Arrows on Mobile', 'wpmozo-product-carousel-for-woocommerce' ),
+                                    help: __( 'Below 480px wide, visitors swipe instead.', 'wpmozo-product-carousel-for-woocommerce' ),
+                                    onChange: function( NewHideNavigationOnMobile ) {
+                                        setAttributes( { HideNavigationOnMobile: NewHideNavigationOnMobile } );
+                                    },
+                                }
+                            ),
                         el(
                             ToggleControl,
                             {

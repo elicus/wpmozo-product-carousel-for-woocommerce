@@ -30,7 +30,8 @@ Manage your carousel block with simplified control for various elements like:
 - Slide control.
 - Transition speed, with a slide or fade effect.
 - Autoplay with pause on hover, and loop.
-- Navigation and pagination settings.
+- Navigation and pagination settings, with an option to hide the arrows on mobile.
+- Keyboard and screen reader friendly.
 - Responsive settings for optimized display on different devices.
 
 #### Query Control

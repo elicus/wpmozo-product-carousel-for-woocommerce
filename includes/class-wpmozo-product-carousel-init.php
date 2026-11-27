@@ -1378,12 +1378,12 @@ class WPMozo_Product_Carousel_Init {
 
 		$links[] = sprintf(
 			'<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
-			esc_url( 'https://documentation.wpmozo.com/wpmozo-product-carousel-for-woocommerce/' ),
+			esc_url( 'https://wpmozo.com/documentation/wpmozo-product-carousel-for-woocommerce/' ),
 			esc_html__( 'Documentation', 'wpmozo-product-carousel-for-woocommerce' )
 		);
 		$links[] = sprintf(
 			'<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
-			esc_url( 'https://productcarousel.wpmozo.com/' ),
+			esc_url( 'https://wpmozo.com/demo/product-carousel/' ),
 			esc_html__( 'Live Demo', 'wpmozo-product-carousel-for-woocommerce' )
 		);
 

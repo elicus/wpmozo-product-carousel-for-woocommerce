@@ -15,7 +15,7 @@ WPMozo Product Carousel for WooCommerce is a plugin for your WooCommerce store.
 
 This plugin will let you create interactive product sliders on your Woo based website. There are two available layouts in the plugin with great customization control to help you add and style your product carousel easily.
 
-### [Live Demo](https://productcarousel.wpmozo.com "Live Demo")
+### [Live Demo](https://wpmozo.com/demo/product-carousel/ "Live Demo")
 
 ### Key Features of the Plugin
 #### Gutenberg Block
@@ -63,7 +63,7 @@ You can chose to display your carousel in one of the available prebuilt layout w
 - Advanced CSS control.
 
 ### Documentation and Support
-- Check out the [product documentation](https://documentation.wpmozo.com/wpmozo-product-carousel-for-woocommerce/ "product documentation").
+- Check out the [product documentation](https://wpmozo.com/documentation/wpmozo-product-carousel-for-woocommerce/ "product documentation").
 - If you have a question, please visit the [plugin support forum](https://wordpress.org/support/plugin/wpmozo-product-carousel-for-woocommerce/ "plugin support forum").
 - If you have suggestions for a new feature, feel free to contact us using the support forum.
 
@@ -116,7 +116,7 @@ Automatic installation is the most straightforward approach. With this method, W
 4. Once you locate the plugin, you'll see details like the version, ratings, and a brief description. Click “**Install Now**,” and WordPress will take care of the installation process.
 
 = Manual Installation =
-If you prefer to [install WPMozo Product Carousel for WooCommerce manually](https://documentation.wpmozo.com/wpmozo-product-carousel-for-woocommerce/installation/ "install WPMozo Product Carousel for WooCommerce manually"), you'll need to download the WPMozo Product Carousel for WooCommerce plugin and upload it to your server using your preferred FTP application. If you need guidance on this process, the WordPress codex offers detailed instructions on manual plugin installation.
+If you prefer to [install WPMozo Product Carousel for WooCommerce manually](https://wpmozo.com/documentation/wpmozo-product-carousel-for-woocommerce/installation/ "install WPMozo Product Carousel for WooCommerce manually"), you'll need to download the WPMozo Product Carousel for WooCommerce plugin and upload it to your server using your preferred FTP application. If you need guidance on this process, the WordPress codex offers detailed instructions on manual plugin installation.
 
 = Updating =
 While automatic updates typically occur without a hitch, it's always wise to back up your website before applying any updates.

@@ -117,7 +117,7 @@ function wpmozo_product_carousel_render_callback( $args ) {
 	<?php
 
 	wc_reset_loop();
-	wp_reset_query();
+	wp_reset_postdata();
 
 	return ob_get_clean();
 

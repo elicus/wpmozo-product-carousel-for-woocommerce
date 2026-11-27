@@ -2,7 +2,7 @@
 Contributors: elicus
 Tags: gutenberg blocks, woocommerce slider, product carousel, woocommerce product slider, gutenberg product slider
 Requires at least: 6.3
-Tested up to: 7.0
+Tested up to: 7.1
 Stable tag: 1.1.0
 Requires PHP: 7.0
 License: GPLv2 or later
@@ -176,6 +176,7 @@ The software is provided "as is", without warranty of any kind, express or impli
 * Added: Astra and Divi theme support. With Astra, the show/hide settings and layouts work with Astra's shop layout and the editor preview uses Astra's WooCommerce styles. With Divi, the editor preview loads Divi's styles.
 * Added: Documentation and Live Demo links in the plugin's row on the Plugins screen.
 * Added: Declared compatibility with WooCommerce High-Performance Order Storage (HPOS) and the Cart and Checkout blocks.
+* Improved: Tested with WordPress 7.1 and WooCommerce 11.3.
 * Improved: Accessibility. The arrow keys move the carousel while it has keyboard focus, autoplay holds still while a product in it has focus and does not start for visitors who prefer reduced motion, and the screen reader labels can now be translated.
 * Fixed: On themes that add a left margin to lists, such as Astra, slides were pushed off-center and cut off on the right.
 * Fixed: Separate corner values for the out-of-stock label's border radius, in the carousel and in quick view, were replaced with the default 3px radius on the frontend.
@@ -186,6 +187,7 @@ The software is provided "as is", without warranty of any kind, express or impli
 * Fixed: Products with their catalog visibility set to "Hidden" or "Search results only" were shown in the carousel. The carousel now also respects the "Hide out of stock items from the catalog" setting.
 * Fixed: The Sale Products view showed every product when no products were on sale.
 * Fixed: The quick view price color setting was not saved.
+* Fixed: A custom sale badge label or percentage only replaced the badge when its text was WooCommerce's own "Sale!" translation. It now replaces the badge text directly, so it also works on translated sites and with themes that print their own "Sale!" text, such as Astra's classic shop style.
 * Fixed: The "All product components have been deactivated" notice in the block editor could not be translated.
 * Fixed: "Number of Products" was misspelled in the block's Query Settings.
 * Fixed: Incorrect Swiper file paths in the readme's third-party credits.

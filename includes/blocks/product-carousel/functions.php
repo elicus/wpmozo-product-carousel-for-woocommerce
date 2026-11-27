@@ -477,7 +477,6 @@ function wpmozo_product_carousel_image_size( $size ) {
 function wpmozo_product_carousel_sale_badge( $html, $post, $product ) {
 
 	global $wpmozo_product_carousel_args;
-	$sale_text = esc_html__( 'Sale!', 'woocommerce' );
 
 	if ( 'percentage' === $wpmozo_product_carousel_args['SaleBadgeType'] ) {
 		$percentages = array();
@@ -529,15 +528,38 @@ function wpmozo_product_carousel_sale_badge( $html, $post, $product ) {
 
 		}
 
-		$html = str_replace( $sale_text, $percentage, $html );
+		$html = wpmozo_product_carousel_set_badge_text( $html, $percentage );
 	} else {
-		$new_text = esc_html( $wpmozo_product_carousel_args['SaleLabelText'] );
-		$html     = str_replace( $sale_text, $new_text, $html );
+		$html = wpmozo_product_carousel_set_badge_text( $html, esc_html( $wpmozo_product_carousel_args['SaleLabelText'] ) );
 	}
 
 	$html = apply_filters( 'wpmozo_product_carousel_sale_badge', $html, $post, $product, $wpmozo_product_carousel_args );
 
 	return $html;
+
+}
+
+/**
+ * Replace the text inside a sale badge.
+ *
+ * Works on the badge's span instead of matching WooCommerce's translated "Sale!",
+ * because themes such as Astra print their own badge with their own wording.
+ *
+ * @since 1.1.0
+ * @param string $html The sale badge markup.
+ * @param string $text The escaped text to show instead.
+ * @return string The sale badge markup.
+ */
+function wpmozo_product_carousel_set_badge_text( $html, $text ) {
+
+	return preg_replace_callback(
+		'/(<span\b[^>]*\bonsale\b[^>]*>).*?(<\/span>)/is',
+		function ( $matches ) use ( $text ) {
+			return $matches[1] . $text . $matches[2];
+		},
+		$html,
+		1
+	);
 
 }
 

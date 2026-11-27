@@ -35,7 +35,7 @@ class WPMozo_Product_Carousel_Support_Astra {
 	 */
 	public static function wpmozo_add_editor_style() {
 
-		wp_enqueue_style( 'astra-theme-css', ASTRA_THEME_URI . 'assets/css/minified/main.min.css' );
+		wp_enqueue_style( 'astra-theme-css', ASTRA_THEME_URI . 'assets/css/minified/main.min.css', array(), ASTRA_THEME_VERSION );
 
 		$Astra_Woocommerce = Astra_Woocommerce::get_instance();
 		add_filter('astra_get_option_woo_support_global_settings', '__return_false');
